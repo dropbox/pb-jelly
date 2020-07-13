@@ -22,6 +22,7 @@
 - [ ] Credit other Dropboxers that have contributed to pb-rs development (look at git log)
 - [ ] Document features of this implementation
 - [ ] Document why it exists (vs the standard open source proto options)
+- [ ] Figure out how to host documentation somewhere
 - [ ] Bonus: Port over the test which serializes in go and deserializes/reserializes in rust
 - [ ] Bonus: Python3
 
