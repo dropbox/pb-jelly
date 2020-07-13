@@ -25,6 +25,7 @@
 - [ ] Figure out how to host documentation somewhere
 - [ ] Bonus: Port over the test which serializes in go and deserializes/reserializes in rust
 - [ ] Bonus: Python3
+- [ ] Create helper library similar to `prost_build`
 
 ## Contributors
 
