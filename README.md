@@ -6,11 +6,15 @@
 - [x] Get lib compiling
 - [x] Get tests compiling
 - [ ] Remove references to dbx specific stuff
-- [ ] Add critical protos (eg rust.proto for extensions)
+- [x] Add critical protos (eg rust.proto for extensions)
 - [x] Move pbtest into tests/ directory per traditional rust testing design
-- [ ] Add pbtest protos
+- [x] Add pbtest protos
+- [ ] Get protos compiling in a build.rs
+- [ ] Rename pbtest.proto to pbtest2.proto
+- [ ] Add service generation codegen as well
 - [ ] Add blob crate / zerocopy
 - [ ] run benchmarks against zerocopy blob impl
+- [ ] Make extensions.proto and servicepb.proto proto3
 - [ ] Add travis-ci integration
 - [ ] Mypy the codegen.py in CI
 - [ ] Add examples to README

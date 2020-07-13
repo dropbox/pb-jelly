@@ -1,0 +1,258 @@
+syntax="proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/google/protobuf/empty.proto";
+import "proto/pbtest.proto";
+import "rust/extensions.proto";
+
+package pbtest;
+
+message ForeignMessage3 {
+ int32 c = 1;
+}
+
+enum ForeignEnum3 {
+ FOREIGN3_FOO = 0;
+ FOREIGN3_BAR = 1;
+ FOREIGN3_BAZ = 2;
+}
+
+message Version31OneOfNoneNullable {
+    oneof test_oneof {
+        option (rust.nullable) = false;
+        string string_one_of = 1;
+        string string_two_of = 2;
+    }
+}
+
+message Version32OneOfNoneNullable {
+    oneof test_oneof {
+        option (rust.nullable) = false;
+        string string_one_of = 1;
+        string string_two_of = 2;
+        int32 int_one_Of = 3;
+    }
+}
+
+message Version31Enum {
+    enum TestEnum {
+        ENUM0 = 0;
+    }
+    TestEnum enum_field = 1;
+}
+
+message Version32Enum {
+    enum TestEnum {
+        ENUM0 = 0;
+        ENUM1 = 1;
+    }
+    TestEnum enum_field = 1;
+}
+
+message Version31OneOf {
+    oneof test_oneof {
+        string string_one_of = 1;
+    }
+}
+
+message Version32OneOf {
+    oneof test_oneof {
+        string string_one_of = 1;
+        int32 int_one_of = 2;
+    }
+}
+
+message Version31 {
+    string optional_string1 = 1;
+}
+
+message Version32 {
+    string   optional_string1     = 1;
+    int32    optional_int32       = 2;
+    int64    optional_int64       = 3;
+    uint32   optional_uint32      = 4;
+    uint64   optional_uint64      = 5;
+    fixed64  optional_fixed64     = 6;
+    fixed32  optional_fixed32     = 7;
+    sfixed64 optional_sfixed64    = 8;
+    sfixed32 optional_sfixed32    = 9;
+    double   optional_double      = 10;
+    bool     optional_bool        = 11;
+    string   optional_string      = 12;
+    bytes    optional_bytes       = 13;
+    float    optional_float       = 14;
+}
+
+message TestMessage3 {
+ enum NestedEnum3 {
+  FOO = 0;
+  BAR = 1;
+  BAZ = 2;
+  NEG = -1;  // Intentionally negative.
+ }
+
+ int32    optional_int32     = 1;
+ int64    optional_int64     = 2;
+ uint32   optional_uint32    = 3;
+ uint64   optional_uint64    = 4;
+ fixed64  optional_fixed64   = 8;
+ fixed32  optional_fixed32   = 9;
+ sfixed64 optional_sfixed64  = 10;
+ sfixed32 optional_sfixed32  = 11;
+ double   optional_double    = 12;
+ bool     optional_bool      = 13;
+ string   optional_string    = 14;
+ bytes    optional_bytes     = 15;
+ float    optional_float     = 16;
+
+ ForeignMessage3 optional_foreign_message = 19;
+
+ NestedEnum3    optional_nested_enum     = 21;
+ ForeignEnum3   optional_foreign_enum    = 22;
+
+ repeated    int32 repeated_int32    = 31;
+ repeated    int64 repeated_int64    = 32;
+ repeated   uint32 repeated_uint32   = 33;
+ repeated   uint64 repeated_uint64   = 34;
+ repeated  fixed64 repeated_fixed64  = 38;
+ repeated  fixed32 repeated_fixed32  = 39;
+ repeated sfixed64 repeated_sfixed64 = 40;
+ repeated sfixed32 repeated_sfixed32 = 41;
+ repeated   double repeated_double   = 42;
+ repeated     bool repeated_bool     = 43;
+ repeated   string repeated_string   = 44;
+ repeated    bytes repeated_bytes    = 45;
+ repeated    float repeated_float    = 46;
+
+ repeated ForeignMessage3 repeated_foreign_message = 49;
+
+ repeated NestedEnum3    repeated_nested_enum     = 51;
+ repeated ForeignEnum3   repeated_foreign_enum    = 52;
+
+ // Message compatibility with proto2.
+ // proto2 enum are not compatible, but messages are.
+ ForeignMessage proto2_msg = 53;
+ ForeignMessage proto2_msg_empty = 54;
+ ForeignMessage proto2_msg_missing = 55;
+ ForeignMessage3 optional_foreign_message_boxed = 56 [(rust.box_it)=true];
+ ForeignMessage3 optional_foreign_message_nonnullable = 69 [(gogoproto.nullable)=false];
+
+ oneof oneof_int {
+   int32 int1 = 57;
+   ForeignMessage3 foreign1 = 58;
+ }
+ oneof oneof_foreign {
+   int32 int2 = 59;
+   ForeignMessage3 foreign2 = 60;
+ }
+ oneof oneof_zero {
+   int32 int3 = 61;
+   ForeignMessage3 foreign3 = 62;
+ }
+ oneof oneof_null {
+   int32 int4 = 63;
+   ForeignMessage3 foreign4 = 64;
+ }
+ oneof oneof_unset {
+   int32 int5 = 65;
+   ForeignMessage3 foreign5 = 66;
+ }
+ oneof oneof_primitives {
+   int32 int6 = 67;
+   bool bool6 = 68;
+ }
+
+ // Generate a rust enum like this:
+ // Enum { a, b, c(int32) }
+ oneof oneof_empty_field {
+   option (rust.nullable) = false;
+   google.protobuf.Empty a = 70;
+   google.protobuf.Empty b = 71;
+   int32 c = 72;
+ }
+
+ message NestedMessage {
+   message File {
+     repeated bytes blocklist = 1;
+     uint32 size = 2;
+   }
+   message Dir {}
+   enum Enum {
+     ENUM_VARIANT_ONE = 0;
+   }
+   enum NonNullableEnum {
+     option (rust.err_if_default_or_unknown) = true;
+     NON_NULLABLE_VARIANT_UNKNOWN = 0;
+     NON_NULLABLE_VARIANT_ONE = 1;
+   }
+
+   oneof nested_oneof {
+     option (rust.nullable) = false;
+     File f = 3;
+     Dir d = 4;
+     Enum e = 5;
+     NonNullableEnum n = 6;
+   }
+ }
+
+ NestedMessage nested = 73 [(gogoproto.nullable)=false];
+ NestedMessage nested_nullable = 74;
+ repeated NestedMessage nested_repeated = 75 [(gogoproto.nullable)=false];
+
+ bytes fixed_length = 76 [(rust.type)="[u8; 4]"];
+ repeated bytes fixed_length_repeated = 77 [(rust.type)="[u8; 4]"];
+ bytes zero_or_fixed_length = 78 [(rust.type)="Option<[u8; 4]>"];
+ repeated bytes zero_or_fixed_length_repeated = 79 [(rust.type)="Option<[u8; 4]>"];
+}
+
+message TestMessage3NonNullableOneof {
+  oneof non_nullable_oneof {
+      option (rust.nullable) = false;
+
+      int32 a = 1;
+      int32 b = 2;
+  }
+
+  uint64 other_field = 3;
+}
+
+message TestMessage3ErrIfDefaultEnum {
+    enum ErrIfDefaultEnum {
+        option (rust.err_if_default_or_unknown) = true;
+
+        UNKNOWN_INVALID_VALUE = 0;
+        THE_OTHER_ONE = 1;
+    }
+    ErrIfDefaultEnum field = 1;
+}
+
+message TestMessage3RepeatedErrIfDefaultEnum {
+    repeated TestMessage3ErrIfDefaultEnum.ErrIfDefaultEnum field = 1;
+}
+
+message TestPreserveUnrecognized1 {
+    option (rust.preserve_unrecognized) = true;
+    string string1 = 1;
+}
+
+message TestPreserveUnrecognized2 {
+    option (rust.preserve_unrecognized) = true;
+    string   a_string1     = 1;
+    int32    a_int32       = 2;
+    int64    a_int64       = 3;
+    uint32   a_uint32      = 4;
+    uint64   a_uint64      = 5;
+    fixed64  a_fixed64     = 6;
+    fixed32  a_fixed32     = 7;
+    sfixed64 a_sfixed64    = 8;
+    sfixed32 a_sfixed32    = 9;
+    double   a_double      = 10;
+    bool     a_bool        = 11;
+    string   a_string      = 12;
+    bytes    a_bytes       = 13;
+    float    a_float       = 14;
+}
+
+message TestPreserveUnrecognizedEmpty {
+    option (rust.preserve_unrecognized) = true;
+}

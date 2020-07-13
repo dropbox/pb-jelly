@@ -1,0 +1,15 @@
+syntax="proto2";
+
+package pbtest;
+
+message InpMessage {
+   optional int32 i = 1;
+}
+
+message OutMessage {
+   optional int32 o = 1;
+}
+
+service TestService {
+    rpc TestRPC(InpMessage) returns (OutMessage) {}
+}
