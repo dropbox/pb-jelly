@@ -7,7 +7,7 @@
 - [x] Get tests compiling
 - [ ] Remove references to dbx specific stuff
 - [ ] Add critical protos (eg rust.proto for extensions)
-- [ ] Move pbtest into tests/ directory per traditional rust testing design
+- [x] Move pbtest into tests/ directory per traditional rust testing design
 - [ ] Add pbtest protos
 - [ ] Add blob crate / zerocopy
 - [ ] run benchmarks against zerocopy blob impl

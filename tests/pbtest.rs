@@ -1,5 +1,4 @@
-extern crate blob;
-extern crate blob_pb;
+#![warn(rust_2018_idioms)]
 extern crate pb;
 #[macro_use]
 extern crate pretty_assertions;

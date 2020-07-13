@@ -1,4 +1,4 @@
-#![cfg_attr(test, feature(test))]
+#![warn(rust_2018_idioms)]
 
 extern crate test;
 
