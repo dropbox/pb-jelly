@@ -1,7 +1,7 @@
 syntax = "proto2";
 package rust;
 
-import "github.com/google/protobuf/descriptor.proto";
+import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.FieldOptions {
     // Generate this field in a Box as opposed to inline Option
