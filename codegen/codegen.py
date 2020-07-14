@@ -39,8 +39,8 @@ from google.protobuf.descriptor_pb2 import (
 )
 from google.protobuf.message import Message
 
-from dropbox.proto.gogoproto import gogo_pb2
-from dropbox.proto.rust import extensions_pb2
+from proto.github.com.gogo.protobuf.gogoproto import gogo_pb2
+from proto.rust import extensions_pb2
 
 # Proto type -> (RustType, ImplsEq, ImplsCopy))
 PRIMITIVE_TYPES = {

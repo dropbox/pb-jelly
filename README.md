@@ -9,7 +9,7 @@
 - [x] Add critical protos (eg rust.proto for extensions)
 - [x] Move pbtest into tests/ directory per traditional rust testing design
 - [x] Add pbtest protos
-- [ ] Get protos compiling in a build.rs
+- [x] Get protos compiling somehow for tests
 - [ ] Rename pbtest.proto to pbtest2.proto
 - [ ] Add service generation codegen as well
 - [ ] Add blob crate / zerocopy
@@ -17,6 +17,7 @@
 - [ ] Make extensions.proto and servicepb.proto proto3
 - [ ] Add travis-ci integration
 - [ ] Mypy the codegen.py in CI
+- [ ] Run mypy-protobuf for the tests - to better mypy codegen.py
 - [ ] Add examples to README
 - [ ] Create github issues for remaining todos
 - [ ] Credit other Dropboxers that have contributed to pb-rs development (look at git log)
