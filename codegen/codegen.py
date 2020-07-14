@@ -1584,6 +1584,37 @@ class Context(object):
             targets = SPEC_TOML_TEMPLATE.format(crate=crate, deps=deps_str)
             yield crate, targets
 
+    def get_cargo_toml_file(self, derive_serde):
+        # type: (Text, bool) -> Iterator[Tuple[Text, Text]]
+        for crate, deps in six.iteritems(self.deps_map):
+            all_deps = ({"lazy_static", "pb"} | deps | self.extra_crates[crate]) - {
+                "std"
+            }
+            if derive_serde:
+                all_deps.update({"serde"})
+            features = {u"serde": u', features=["serde_derive"]'}
+            versions = {
+                u"lazy_static": u'version = "1.4.0"',
+                u"pb": u'version = "0.1.0"',
+                u"serde": u'version = "1.0.114"',
+            }
+
+            deps_lines = []
+            for dep in sorted(all_deps):
+                fields = []
+                if dep in features:
+                    fields.append(features[dep])
+                if dep in versions:
+                    fields.append(versions[dep])
+                else:
+                    fields.append(u'path = "../{dep}"'.format(dep=dep))
+                deps_lines.append(
+                    "{dep} = {{{fields}}}".format(dep=dep, fields=",".join(fields))
+                )
+
+            targets = CARGO_TOML_TEMPLATE.format(crate=crate, deps="\n".join(deps_lines))
+            yield crate, targets
+
     def crate_from_proto_filename(self, proto_filename):
         # type: (Text) -> Tuple[Text, List[Text]]
         filename = proto_filename.replace("dropbox/proto/", "").replace(".proto", "")
@@ -1614,6 +1645,19 @@ SPEC_TOML_TEMPLATE = (
     """# @"""
     + """generated, do not edit
 name = "{crate}"
+
+[dependencies]
+{deps}
+"""
+)
+
+CARGO_TOML_TEMPLATE = (
+    """# @"""
+    + """generated, do not edit
+[package]
+name = "{crate}"
+version = "0.0.1"
+edition = "2018"
 
 [dependencies]
 {deps}
@@ -1718,12 +1762,17 @@ def generate_single_crate(ctx, file_prefix, file_to_generate, response):
             output = response.file.add()
             output.name = file_prefix + crate + "/BUILD.in-gen-proto~"
             output.content = build_file
-
-    if "generate_spec_toml" in request.parameter:
+    elif "generate_spec_toml" in request.parameter:
         for crate, spec_toml_file in ctx.get_spec_toml_file(derive_serde):
             output = response.file.add()
             output.name = file_prefix + crate + "/Spec.toml"
             output.content = spec_toml_file
+    else:
+        # Generate good ol Cargo.toml files
+        for crate, cargo_toml_file in ctx.get_cargo_toml_file(derive_serde):
+            output = response.file.add()
+            output.name = file_prefix + crate + "/Cargo.toml"
+            output.content = cargo_toml_file
 
 
 def generate_code(request, response):

@@ -12,3 +12,4 @@ serde = { version = "1.0.114", features = ["derive"] }
 [dev-dependencies]
 pretty_assertions = "0.6.1"
 proto_pbtest = { path = "generated/rust/proto/proto_pbtest" }
+proto_google = { path = "generated/rust/proto/proto_google" }

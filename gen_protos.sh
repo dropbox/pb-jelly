@@ -21,4 +21,6 @@ find generated/python -type d -exec touch {}/__init__.py \;
 
 
 # Rust codegen the protos!
-protoc $PROTOC_ARGS --plugin=protoc-gen-rust=codegen/codegen.py --rust_out=generated/rust/proto `find proto -name "*.proto"`
+OURS=`find proto -name "*.proto"`
+GOOGLE=`find /usr/local/Cellar/protobuf/3.7.1/include/google/protobuf -name "*.proto"`
+protoc $PROTOC_ARGS --plugin=protoc-gen-rust=codegen/codegen.py --rust_out=generated/rust/proto $OURS $GOOGLE
