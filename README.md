@@ -8,6 +8,7 @@
 - Autogenerates Cargo.toml, or optionally Spec.toml / bazel BUILD files
 - Supports generating non-nullable fields types with `(gogoproto.nullable)=false`
 - Supports generating `Box<Message>` field types with `(rust.box_it)=true`
+- Automatically boxes messages if it finds a recursive message definition
 - Supports generating custom field type with `(rust.custom_type)=type`
 - Supports generating oneofs as non-nullable (fail on deserialization) type with `(rust.nullable)=false`
 - Supports generating enums as non-zeroable (fail on deserialization) type with `(rust.err_if_default_or_unknown)=true`
@@ -41,10 +42,10 @@ all callsites with assistance from the compiler.
 - [x] Get protos compiling somehow for tests
 - [x] Document features of this implementation
 - [x] Add open source license (Apache 2.0) and Copyright attribution `"Copyright (c) 2020 Dropbox, Inc."` - http://www.apache.org/licenses/LICENSE-2.0
+- [x] Credit other Dropboxers that have contributed to pb-rs development (look at git log)
 - [ ] Document why it exists (vs the standard open source proto options)
 - [ ] Make extensions.proto and servicepb.proto proto3
 - [ ] Add examples to README
-- [ ] Credit other Dropboxers that have contributed to pb-rs development (look at git log)
 - [ ] remove this section from the README
 - [ ] Remove references to dbx specific stuff
 - [ ] Link to CLA for outside contributions https://opensource.dropbox.com/cla/
@@ -73,3 +74,14 @@ all callsites with assistance from the compiler.
 
 ### Dropboxers
 - [@nipunn1313](https://github.com/nipunn1313)
+- [@rajatgoel](https://github.com/rajatgoel)
+- [@rbtying](https://github.com/rbtying)
+- [@goffrie](https://github.com/goffrie)
+- [@euroelessar](https://github.com/euroelessar)
+- [@bradenaw](https://github.com/bradenaw)
+- [@aaronp]
+- [@tonyx]
+- [@dyv](https://github.com/dyv)
+- [@joshuawarner32](https://github.com/joshuawarner32)
+- [@peterlvilim](https://github.com/peterlvilim)
+- [@ddeville](https://github.com/ddeville)
