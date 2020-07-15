@@ -80,7 +80,7 @@ all callsites with assistance from the compiler.
 - [@euroelessar](https://github.com/euroelessar)
 - [@bradenaw](https://github.com/bradenaw)
 - [@aaronp]
-- [@tonyx]
+- [@jiayixu](https://github.com/jiayixu)
 - [@dyv](https://github.com/dyv)
 - [@joshuawarner32](https://github.com/joshuawarner32)
 - [@peterlvilim](https://github.com/peterlvilim)
