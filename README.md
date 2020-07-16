@@ -31,19 +31,24 @@ compiler to identify all callsites that may need to be visited. However, it can 
 many callsites a bit tedious. We opted to go this route to make it easier to add a new field and update
 all callsites with assistance from the compiler.
 
-# Installation
+# Contributing
+
+Outside contributors must agree to Dropbox's CLA https://opensource.dropbox.com/cla/
+
+# Running the `pbtest` unit tests
 
 1. Clone Repo
-2. Install Dependencies
+2. Install Dependencies / Testing Dependencies
 	a. protoc
-		On OSX `brew install protobuf`
-	b. gogoproto
-		If you don't have go `brew install go`
-		`go get github.com/gogo/protobuf/proto`
-	c. python & dependencies
-		`brew install python3`
-		`pip install six`
-		`pip install protobuf`
+		- On OSX: `brew install protobuf`
+	b. Install go
+		- go: `brew install go`
+	b. Install gogoproto
+		- `go get github.com/gogo/protobuf/proto`
+	c. Install python & dependencies
+		- `brew install python3`
+		- `pip install six`
+		- `pip install protobuf`
 3. `cargo test`
 
 
@@ -59,12 +64,13 @@ all callsites with assistance from the compiler.
 - [x] Document features of this implementation
 - [x] Add open source license (Apache 2.0) and Copyright attribution `"Copyright (c) 2020 Dropbox, Inc."` - http://www.apache.org/licenses/LICENSE-2.0
 - [x] Credit other Dropboxers that have contributed to pb-rs development (look at git log)
+- [x] Link to CLA for outside contributions https://opensource.dropbox.com/cla/
 - [ ] Document why it exists (vs the standard open source proto options)
 - [ ] Make extensions.proto and servicepb.proto proto3
 - [ ] Add examples to README
 - [ ] remove this section from the README
 - [ ] Remove references to dbx specific stuff
-- [ ] Link to CLA for outside contributions https://opensource.dropbox.com/cla/
+- [ ] Add requirements.txt for python dependencies
 
 ### TODO
 
