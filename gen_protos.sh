@@ -1,13 +1,15 @@
-set -ex
+#!/bin/sh
 
-# Install protoc
-# - https://github.com/protocolbuffers/protobuf
-# Install gogoproto
-# - go get github.com/gogo/protobuf/proto
+set -ex
 
 rm -rf generated/  # Start clean
 mkdir -p generated/python/proto
 mkdir -p generated/rust/proto
+
+# If GOPATH is not set use the default
+if [[ -z $GOPATH ]]; then 
+	GOPATH=$HOME/go 
+fi
 
 PROTOC_ARGS="--proto_path=$GOPATH/src --proto_path=proto/"
 
@@ -19,8 +21,10 @@ protoc $PROTOC_ARGS --python_out=generated/python/proto proto/rust/extensions.pr
 # Add __init__.py files
 find generated/python -type d -exec touch {}/__init__.py \;
 
+# Determine protobuf path
+PROTOC_PATH=$(readlink -f $(which protoc) || realpath $(which protoc))
 
 # Rust codegen the protos!
-OURS=`find proto -name "*.proto"`
-GOOGLE=`find /usr/local/Cellar/protobuf/3.7.1/include/google/protobuf -name "*.proto"`
+OURS=$(find proto -name "*.proto")
+GOOGLE=$(find "${PROTOC_PATH%/bin/protoc}/include/google/protobuf" -name "*.proto")
 protoc $PROTOC_ARGS --plugin=protoc-gen-rust=codegen/codegen.py --rust_out=generated/rust/proto $OURS $GOOGLE

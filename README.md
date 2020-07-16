@@ -31,6 +31,22 @@ compiler to identify all callsites that may need to be visited. However, it can 
 many callsites a bit tedious. We opted to go this route to make it easier to add a new field and update
 all callsites with assistance from the compiler.
 
+# Installation
+
+1. Clone Repo
+2. Install Dependencies
+	a. protoc
+		On OSX `brew install protobuf`
+	b. gogoproto
+		If you don't have go `brew install go`
+		`go get github.com/gogo/protobuf/proto`
+	c. python & dependencies
+		`brew install python3`
+		`pip install six`
+		`pip install protobuf`
+3. `cargo test`
+
+
 ### TODO - before open sourcing
 
 - [x] Get onto github
