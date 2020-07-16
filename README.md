@@ -101,3 +101,4 @@ all callsites with assistance from the compiler.
 - [@joshuawarner32](https://github.com/joshuawarner32)
 - [@peterlvilim](https://github.com/peterlvilim)
 - [@ddeville](https://github.com/ddeville)
+- [@isho](https://github.com/isho)
