@@ -49,6 +49,9 @@ Outside contributors must agree to Dropbox's CLA https://opensource.dropbox.com/
 		- `brew install python3`
 		- `pip install six`
 		- `pip install protobuf`
+    d. Generate test protos
+        - On OSX: you'll have to install coreutils for realpath `brew install coreutils`
+        - `./gen_protos.sh
 3. `cargo test`
 
 

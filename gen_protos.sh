@@ -21,6 +21,7 @@ protoc $PROTOC_ARGS --python_out=generated/python/proto proto/rust/extensions.pr
 # Add __init__.py files
 find generated/python -type d -exec touch {}/__init__.py \;
 
+# May have to do brew install coreutils to get realpath
 # Determine protobuf path
 PROTOC_PATH=$(readlink -f $(which protoc) || realpath $(which protoc))
 
