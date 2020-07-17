@@ -40,19 +40,20 @@ your understanding.
 
 # Running the `pbtest` unit tests
 
-1. Clone Repo
-2. Install Dependencies / Testing Dependencies
-	a. protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
-		- On OSX: `brew install protobuf`
-	b. Install Go
-		- go: `brew install go`
-	b. Install [gogoproto](https://github.com/gogo/protobuf)
-		- `go get github.com/gogo/protobuf/proto`
-	c. Install Python & dependencies
-		- `brew install python3`
-		- `pip install six`
-		- `pip install protobuf`
-    d. Generate test protos
+1. Clone Repo.
+2. Install Dependencies / Testing Dependencies. These instructions are for OSX using the brew
+   package manager. Use the appropriate package manager for your system.
+    - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)	
+        - `brew install protobuf`
+    - Install Go
+        - `brew install go`
+    - Install [gogoproto](https://github.com/gogo/protobuf)
+        - `go get github.com/gogo/protobuf/proto`	
+    - Install Python & dependencies
+        - `brew install python3`
+        - `pip install six`
+        - `pip install protobuf`
+    - Generate test protos
         - On OSX: you'll have to install coreutils for realpath `brew install coreutils`
         - `./gen_protos.sh`
 3. **pb-rs** currently uses an experimental test framework that requires a nightly build of rust.
