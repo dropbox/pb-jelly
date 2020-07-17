@@ -3,6 +3,7 @@
 #![allow(clippy::cast_possible_truncation)]
 #![allow(clippy::cast_possible_wrap)]
 
+
 #[macro_use]
 extern crate serde;
 
@@ -52,6 +53,7 @@ pub use crate::base_types::{
 
 mod descriptor;
 pub use crate::descriptor::MessageDescriptor;
+
 
 #[cfg(test)]
 mod tests;

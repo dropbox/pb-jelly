@@ -3,13 +3,17 @@ extern crate pb;
 #[macro_use]
 extern crate pretty_assertions;
 extern crate proto_pbtest;
-extern crate runfiles;
+
+// TODO: separate tests that require runfiles for Dropbox use.
+// extern crate runfiles;
 
 use std::io::Cursor;
 use std::process::Command;
+use std::fs::File;
+use std::io::Read;
 
-use blob::Blob;
-use blob_pb::BlobReaderImpl;
+// use blob::Blob;
+// use blob_pb::BlobReaderImpl;
 use pb::wire_format::Type;
 use pb::{
     ClosedProtoEnum,
@@ -20,16 +24,23 @@ use proto_pbtest::pbtest::*;
 use proto_pbtest::pbtest3::*;
 
 fn get_go_proto_bytes(name: &str) -> ::std::vec::Vec<u8> {
-    let path = runfiles::resolve("//go/src/dropbox/pbtest/pbtest").unwrap();
-    let output = Command::new(path).arg(name).output().unwrap();
-    if !output.status.success() {
-        panic!(
-            "unexpected exit status {}, stderr:\n{}",
-            output.status,
-            ::std::string::String::from_utf8(output.stderr).unwrap()
-        );
-    }
-    output.stdout
+    // let path = runfiles::resolve("//go/src/dropbox/pbtest/pbtest").unwrap();
+    // let output = Command::new(path).arg(name).output().unwrap();
+    // if !output.status.success() {
+    //     panic!(
+    //         "unexpected exit status {}, stderr:\n{}",
+    //         output.status,
+    //         ::std::string::String::from_utf8(output.stderr).unwrap()
+    //     );
+    // }
+    // output.stdout
+    let filename = format!("proto/pbtest-bin/{}.bin", name);
+    let mut f = File::open(&filename).expect("no file found");
+    let metadata = fs::metadata(&filename).expect("unable to read metadata");
+    let mut buffer = vec![0; metadata.len() as usize];
+    f.read(&mut buffer).expect("buffer overflow");
+
+    buffer
 }
 
 fn succeeds<S: AsRef<[u8]> + Clone, M: Message + PartialEq>(s: S, expected: M) {
