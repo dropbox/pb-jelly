@@ -33,26 +33,31 @@ all callsites with assistance from the compiler.
 
 # Contributing
 
-Outside contributors must agree to Dropbox's CLA https://opensource.dropbox.com/cla/
+First contributions are greatly appreciated and highly encouraged. For legal reasons all outside 
+contributors must agree to [Dropbox's CLA](https://opensource.dropbox.com/cla/). Thank you for
+your understanding.
+
 
 # Running the `pbtest` unit tests
 
 1. Clone Repo
 2. Install Dependencies / Testing Dependencies
-	a. protoc
+	a. protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
 		- On OSX: `brew install protobuf`
-	b. Install go
+	b. Install Go
 		- go: `brew install go`
-	b. Install gogoproto
+	b. Install [gogoproto](https://github.com/gogo/protobuf)
 		- `go get github.com/gogo/protobuf/proto`
-	c. Install python & dependencies
+	c. Install Python & dependencies
 		- `brew install python3`
 		- `pip install six`
 		- `pip install protobuf`
     d. Generate test protos
         - On OSX: you'll have to install coreutils for realpath `brew install coreutils`
-        - `./gen_protos.sh
-3. `cargo test`
+        - `./gen_protos.sh`
+3. **pb-rs** currently uses an experimental test framework that requires a nightly build of rust.
+	-  `rustup default nightly`
+4. `cargo test`
 
 
 ### TODO - before open sourcing
