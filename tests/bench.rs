@@ -1,4 +1,6 @@
 #![warn(rust_2018_idioms)]
+#![feature(test)]
+
 
 extern crate test;
 
@@ -7,8 +9,8 @@ extern crate test;
 extern crate blob;
 extern crate blob_pb;
 extern crate proto_mp;
-*/
 extern crate pb;
+*/
 
 #[cfg(test)]
 mod tests {
