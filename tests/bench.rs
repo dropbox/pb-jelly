@@ -2,33 +2,43 @@
 
 extern crate test;
 
+/* blob crate to-be-opensourced
+
 extern crate blob;
 extern crate blob_pb;
-extern crate pb;
 extern crate proto_mp;
+*/
+extern crate pb;
 
 #[cfg(test)]
 mod tests {
-    use std::io::Cursor;
     use test::{
         black_box,
         Bencher,
     };
+
+// TODO: opensource blob crate
+/* blob crate to-be-opensourced
+
+
+    use std::io::Cursor;
 
     use blob::Blob;
     use blob_pb::{
         BlobReaderImpl,
         WrappedBlob,
     };
-    use pb::{
-        Lazy,
-        Message,
-    };
 
     use proto_mp::osd::{
         OsdGetStripesResponse,
         OsdStripe,
     };
+
+    use pb::{
+        Lazy,
+        Message,
+    };
+
 
     #[bench]
     fn bench_protos(b: &mut Bencher) {
@@ -62,7 +72,7 @@ mod tests {
             black_box(&decoded);
         });
     }
-
+*/
     #[bench]
     fn vec_copy(b: &mut Bencher) {
         let data = vec![0 as u8; 1024 * 4];
