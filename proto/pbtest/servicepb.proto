@@ -1,13 +1,13 @@
-syntax="proto2";
+syntax="proto3";
 
 package pbtest;
 
 message InpMessage {
-   optional int32 i = 1;
+    int32 i = 1;
 }
 
 message OutMessage {
-   optional int32 o = 1;
+    int32 o = 1;
 }
 
 service TestService {

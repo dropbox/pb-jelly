@@ -1,3 +1,10 @@
+// Protocol Buffers for Rust with Gadgets
+//
+// Note: While proto3 still supports extensions for custom fields (https://github.com/protocolbuffers/protobuf/issues/1460)
+// it does not support default values. Unfortunately the OneOfOptions::nullable field has a default value of true, while
+// in proto3 booleans have a default value of false. We can't migrate this file to proto3 without deprecating nullable
+// and changing its semantics. gogoproto extensions still use proto2 as well (https://github.com/gogo/protobuf/blob/master/gogoproto/gogo.proto)
+
 syntax = "proto2";
 package rust;
 
