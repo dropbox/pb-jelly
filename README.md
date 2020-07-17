@@ -80,6 +80,7 @@ Outside contributors must agree to Dropbox's CLA https://opensource.dropbox.com/
 - [ ] Document and add tests for `grpc_slices`
 - [ ] Add `custom_type` example to pbtest
 - [ ] Mypy the codegen.py in CI
+- [ ] rustfmt in CI
 - [ ] Add service generation codegen as well
 - [ ] Rename pbtest.proto to pbtest2.proto
 - [ ] Add blob crate / zerocopy
