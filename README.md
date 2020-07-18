@@ -89,9 +89,9 @@ your understanding.
 - [x] Link to CLA for outside contributions https://opensource.dropbox.com/cla/
 - [x] Document why it exists (vs the standard open source proto options)
 - [x] Make extensions.proto and servicepb.proto proto3
+- [x] Remove references to dbx specific stuff
 - [ ] Add examples to README
 - [ ] remove this section from the README
-- [ ] Remove references to dbx specific stuff
 - [ ] Add requirements.txt for python dependencies
 
 ### TODO

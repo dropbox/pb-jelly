@@ -1617,7 +1617,7 @@ class Context(object):
 
     def crate_from_proto_filename(self, proto_filename):
         # type: (Text) -> Tuple[Text, List[Text]]
-        filename = proto_filename.replace("dropbox/proto/", "").replace(".proto", "")
+        filename = proto_filename.replace(".proto", "")
         mod_parts_unsanitized = filename.split("/")
         mod_parts = [
             mod + "_" if mod in RESERVED_KEYWORDS else mod
@@ -1786,7 +1786,7 @@ def generate_code(request, response):
             files_by_dir[dir_path].append(file_path)
 
         for dir_path, to_generate in sorted(files_by_dir.items()):
-            file_prefix = dir_path.replace("dropbox/proto/", "").split("/")[0] + "/"
+            file_prefix = dir_path.split("/")[0] + "/"
             ctx = Context(crate_per_dir=True)
             for proto_file in request.proto_file:
                 ctx.feed(proto_file, to_generate)
