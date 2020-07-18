@@ -2,6 +2,19 @@
 
 `pb-rs` is a protobuf code generation framework for the rust language developed at Dropbox.
 
+This implementation was initially written in 2016 to satisfy the need of shuffling large amount
+of bytes in [Dropbox's Storage System (Magic Pocket)](https://dropbox.tech/infrastructure/inside-the-magic-pocket).
+Previously, we were using https://github.com/stepancheg/rust-protobuf (and therefore generated code looks exactly
+like that to make it easy to migrate), but serializing Rust structs to proto messages and then serializing them in
+our RPC layer meant multiple copies (and same thing in reverse on parsing stack). Taking control of this
+implementation and integrating it in our RPC stack end-to-end helped avoid extra copies.
+
+Over the years, the implementation has grown and matured and is used in several parts of Dropbox, including
+our [Sync Engine](https://dropbox.tech/infrastructure/rewriting-the-heart-of-our-sync-engine)
+
+Other implementations exist in the rust ecosystem (eg [prost](https://github.com/danburkert/prost)), and
+we wanted to share ours as well.
+
 # Features
 - Scalable - generates separate crates per module, with option for crate-per-directory
 - Closed structs with public fields
@@ -15,11 +28,11 @@
 - Supports generating serde serializable/deserializable messages with file level `(rust.serde_derive)=true`
 - Supports preserving unrecognized proto fields into `_unrecognized` struct field with `(rust.preserve_unrecognized)=true`
   - Defaults to false - to eliminate serde dependency
-- zero-copy deserialization (coming soon)
+- capability for zero-copy deserialization (examples coming soon)
 - service generation (coming soon)
 
-# Shortcomings
-Some of the features here require additional tooling to be useful, which is not public yet.
+# Upcoming
+Some of the features here require additional tooling to be useful, which are not yet public.
 - Spec.toml is a stripped down templated Cargo.toml - which you can script convert into
     Cargo.toml in order to get consistent dependency versions in a multi-crate project.
     Currently, the script to convert Spec.toml -> Cargo.toml isn't yet available
@@ -74,8 +87,8 @@ your understanding.
 - [x] Add open source license (Apache 2.0) and Copyright attribution `"Copyright (c) 2020 Dropbox, Inc."` - http://www.apache.org/licenses/LICENSE-2.0
 - [x] Credit other Dropboxers that have contributed to pb-rs development (look at git log)
 - [x] Link to CLA for outside contributions https://opensource.dropbox.com/cla/
-- [ ] Document why it exists (vs the standard open source proto options)
-- [ ] Make extensions.proto and servicepb.proto proto3
+- [x] Document why it exists (vs the standard open source proto options)
+- [x] Make extensions.proto and servicepb.proto proto3
 - [ ] Add examples to README
 - [ ] remove this section from the README
 - [ ] Remove references to dbx specific stuff
@@ -118,3 +131,4 @@ your understanding.
 - [@peterlvilim](https://github.com/peterlvilim)
 - [@ddeville](https://github.com/ddeville)
 - [@isho](https://github.com/isho)
+- [@ParkMyCar](https://github.com/ParkMyCar)
