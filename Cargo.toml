@@ -1,15 +1,6 @@
-[package]
-name = "pb"
-version = "0.1.0"
-authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>"]
-edition = "2018"
-
-[dependencies]
-byteorder = "1.3.4"
-bytes = "0.5.5"
-serde = { version = "1.0.114", features = ["derive"] }
-
-[dev-dependencies]
-pretty_assertions = "0.6.1"
-proto_pbtest = { path = "generated/rust/proto/proto_pbtest" }
-proto_google = { path = "generated/rust/proto/proto_google" }
+[workspace]
+members = [
+    "pb-rs",
+    "pb-gen",
+    "pb-test",
+]

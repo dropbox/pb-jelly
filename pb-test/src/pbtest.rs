@@ -1,7 +1,5 @@
 #![warn(rust_2018_idioms)]
 // extern crate pb;
-#[macro_use]
-extern crate pretty_assertions;
 // extern crate proto_pbtest;
 
 // TODO: separate tests that require runfiles for Dropbox use.

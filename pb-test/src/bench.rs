@@ -1,8 +1,5 @@
 #![warn(rust_2018_idioms)]
-#![feature(test)]
 
-
-extern crate test;
 
 /* blob crate to-be-opensourced
 
