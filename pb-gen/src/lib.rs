@@ -1,10 +1,17 @@
 use std::{
     convert::AsRef,
-    env, fs,
+    fs,
+    io::Write,
+    os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
     process::Command,
 };
+use include_dir::{include_dir, Dir};
+use tempdir::TempDir;
 use walkdir::WalkDir;
+
+const CODEGEN: Dir = include_dir!("codegen");
+
 
 pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> std::io::Result<()> {
     let builder = GenProtosBuilder::new(src_paths);
@@ -13,16 +20,12 @@ pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> std::io::Result<()> {
 
 struct GenProtosBuilder {
     gen_path: PathBuf,
-    go_path: PathBuf,
     src_paths: Vec<PathBuf>,
 }
 
 impl GenProtosBuilder {
     fn new<P: AsRef<Path>>(src_paths: Vec<P>) -> GenProtosBuilder {
-        let home_path = env!("HOME");
-
         let gen_path = PathBuf::from("./gen");
-        let go_path = PathBuf::from(home_path).join(Path::new("go"));
         let src_paths = src_paths
             .into_iter()
             .map(|p| p.as_ref().to_owned())
@@ -30,7 +33,6 @@ impl GenProtosBuilder {
 
         GenProtosBuilder {
             gen_path,
-            go_path,
             src_paths,
         }
     }
@@ -45,96 +47,35 @@ impl GenProtosBuilder {
         }
         fs::create_dir(&paths.root_gen_path)?;
 
+        dbg!(paths.rust_gen_dir());
+        dbg!(paths.rust_out());
+
         // Create language specific generate directories
-        // fs::create_dir(paths.python_gen_dir())?;
-        // fs::create_dir(paths.python_out())?;
         fs::create_dir(paths.rust_gen_dir())?;
         fs::create_dir(paths.rust_out())?;
 
-        // Generate Python protos, codegen uses them
-        // self.gen_python_protos()?;
+        // Re-create essential files
+        let temp_dir = self.create_temp_files()?;
         // Generate Rust protos
-        self.gen_rust_protos()?;
+        self.gen_rust_protos(temp_dir)?;
 
         Ok(())
     }
 
-    fn gen_python_protos(&self) -> std::io::Result<()> {
+    fn gen_rust_protos(&self, temp_dir: TempDir) -> std::io::Result<()> {
         let paths = ArgPaths::generate(&self);
-
-        let mut python_cmd = Command::new("protoc");
-
-        // Setup environment
-        python_cmd.env("PYTHONPATH", paths.python_gen_dir());
-
-        // Directories that contain protos
-        let proto_src_dirs = vec![paths.root_proto(), paths.go_proto_src()];
-        for path in proto_src_dirs {
-            python_cmd.arg("-I");
-            python_cmd.arg(path);
-        }
-
-        // Set Python out path
-        python_cmd.arg(format!(
-            "--python_out={}",
-            paths.python_out().canonicalize().unwrap().to_str().unwrap()
-        ));
-
-        // Paths of proto files
-        let proto_files = vec![
-            paths.rust_extensions().canonicalize().unwrap(),
-            paths.gogo_proto_src().canonicalize().unwrap(),
-        ];
-        for path in proto_files {
-            python_cmd.arg(path);
-        }
-
-        // Generate Python protos
-        python_cmd.spawn()?.wait()?;
-
-        // Generate __init__.py
-        self.generate_py_init()
-    }
-
-    fn generate_py_init(&self) -> std::io::Result<()> {
-        let paths = ArgPaths::generate(&self);
-
-        for entry in WalkDir::new(paths.python_gen_dir()) {
-            let entry = entry?;
-            let metadata = entry.metadata()?;
-
-            if metadata.is_dir() {
-                fs::File::create(entry.path().join("__init__.py"))?;
-            }
-        }
-
-        Ok(())
-    }
-
-    fn gen_rust_protos(&self) -> std::io::Result<()> {
-        let paths = ArgPaths::generate(&self);
-
-        let mut protoc_root_dir = paths.protoc_path.clone();
-        protoc_root_dir.pop();
-        protoc_root_dir.pop();
-        let google_proto_dir = protoc_root_dir.join("include/google/protobuf");
+        let codegen_path = temp_dir.path().join("codegen.py");
 
         let mut rust_cmd = Command::new("protoc");
         
-        // Path of user protos
-        let src_path = &self.src_paths.clone().pop().unwrap();
-        let src_path = src_path.canonicalize().unwrap();
-        dbg!(&src_path);
-
         // Directories that contain protos
-        let proto_src_dirs = vec![paths.root_proto(), paths.go_proto_src(), src_path.clone()];
-        for path in proto_src_dirs {
+        for path in self.src_paths.iter() {
             rust_cmd.arg("-I");
             rust_cmd.arg(path);
         }
 
         // Set the rust plugin
-        rust_cmd.arg(format!("--plugin=protoc-gen-rust={}", paths.codegen_script().to_str().unwrap()));
+        rust_cmd.arg(format!("--plugin=protoc-gen-rust={}", codegen_path.to_str().unwrap()));
 
         // Set the Rust out path
         rust_cmd.arg(format!(
@@ -142,102 +83,93 @@ impl GenProtosBuilder {
             paths.rust_out().canonicalize().unwrap().to_str().unwrap()
         ));
 
-        // Get paths to Google Protos
-        let entries = fs::read_dir(&google_proto_dir)?;
-        let proto_paths: Vec<PathBuf> = entries
-            .filter_map(Result::ok)
-            .filter(|file| file.path().extension().unwrap_or_default() == "proto")
-            .map(|file| file.path())
-            .collect();
-
-        // Set the Google Protos
-        for path in proto_paths {
-            rust_cmd.arg(path);
-        }
-
         // Get paths of our Protos
-        let entries = fs::read_dir(src_path)?;
-        let proto_paths: Vec<PathBuf> = entries
-            .filter_map(Result::ok)
-            .filter(|file| file.path().extension().unwrap_or_default() == "proto")
-            .map(|file| file.path())
-            .collect();
+        let proto_paths = self.src_paths
+            .iter()
+            .map(|path| {
+                WalkDir::new(path)
+                    .into_iter()
+                    .filter_map(Result::ok)
+                    .filter(|file| file.path().extension().unwrap_or_default() == "proto")
+                    .map(|file| file.into_path())
+            })
+            .flatten();
 
         // Set our protos
         for path in proto_paths {
+            dbg!(&path);
             rust_cmd.arg(path);
         }
 
-        rust_cmd.spawn()?.wait().map(|_| ())
+        let output = rust_cmd.output()?;
+        dbg!(output);
+
+        Ok(())
+    }
+
+    /// We bundle all non-Rust, but necessary files into a static CODEGEN blob. When we run the codegen script,
+    /// we recreate these in a temp directory `/tmp/codegen` that is cleaned up after.
+    fn create_temp_files(&self) -> std::io::Result<TempDir> {
+        let temp_dir = TempDir::new("codegen")?;
+
+        fn create_temp_files_helper(dir: &Dir, temp_dir: &TempDir) -> std::io::Result<()> {
+            for file in dir.files() {
+                let blob_path = file.path();
+                let abs_path = temp_dir.path().join(blob_path);
+                dbg!(&abs_path);
+
+                let mut abs_file = fs::OpenOptions::new().write(true).create_new(true).open(&abs_path)?;
+                abs_file.write_all(file.contents())?;
+
+                let mut permissions = abs_file.metadata()?.permissions();
+                permissions.set_mode(0o777);
+                drop(abs_file);
+
+                // Set permissions of the file so it is executable
+                fs::set_permissions(&abs_path, permissions)?;
+            }
+
+            for dir in dir.dirs() {
+                let blob_path = dir.path();
+                let abs_path = temp_dir.path().join(blob_path);
+                dbg!(&abs_path);
+                fs::create_dir(&abs_path)?;
+
+                create_temp_files_helper(dir, temp_dir)?;
+            }
+
+            Ok(())
+        }
+        create_temp_files_helper(&CODEGEN, &temp_dir)?;
+
+        Ok(temp_dir)
     }
 }
 
 #[derive(Debug)]
 struct ArgPaths {
-    go_path: PathBuf,
-    protoc_path: PathBuf,
     root: PathBuf,
     root_gen_path: PathBuf,
 }
 
 impl ArgPaths {
     fn generate(builder: &GenProtosBuilder) -> ArgPaths {
-        let abs_cargo = env!("CARGO_MANIFEST_DIR");
-        let root = PathBuf::from(abs_cargo);
-
+        // TODO: Figuring out these paths should be better
+        let abs_target = std::env::current_dir().unwrap();
+        let root = PathBuf::from(abs_target);
         let root_gen_path = root.join(&builder.gen_path);
-        let go_path = builder.go_path.clone();
-
-        // BLAH HACKY
-        let mut protoc_path_raw = String::from_utf8(Command::new("which").arg("protoc").output().unwrap().stdout).unwrap();
-        protoc_path_raw.pop();
-        let mut real_protoc_path_raw = String::from_utf8(Command::new("realpath").arg(protoc_path_raw).output().unwrap().stdout).unwrap();
-        real_protoc_path_raw.pop();
-
-        let protoc_path = PathBuf::from(real_protoc_path_raw);
 
         ArgPaths {
-            go_path,
-            protoc_path,
             root,
             root_gen_path,
         }
-    }
-
-    fn python_gen_dir(&self) -> PathBuf {
-        self.root_gen_path.join("python")
     }
 
     fn rust_gen_dir(&self) -> PathBuf {
         self.root_gen_path.join("rust")
     }
 
-    fn go_proto_src(&self) -> PathBuf {
-        self.go_path.join("src")
-    }
-
-    fn gogo_proto_src(&self) -> PathBuf {
-        self.go_proto_src()
-            .join("github.com/gogo/protobuf/gogoproto/gogo.proto")
-    }
-
-    fn rust_extensions(&self) -> PathBuf {
-        self.root.join("proto/rust/extensions.proto")
-    }
-
-    fn python_out(&self) -> PathBuf {
-        self.python_gen_dir().join("proto")
-    }
-
     fn rust_out(&self) -> PathBuf {
         self.rust_gen_dir().join("proto")
-    }
-
-    fn root_proto(&self) -> PathBuf {
-        self.root.join("proto")
-    }
-
-    fn codegen_script(&self) -> PathBuf {
-        self.root.join("codegen/codegen.py")
     }
 }

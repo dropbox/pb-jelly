@@ -12,4 +12,4 @@
 extern crate lazy_static;
 extern crate pb;
 
-pub mod protobuf;
+pub mod hello;

@@ -5,3 +5,7 @@ members = [
     "pb-test",
     "pb-types",
 ]
+
+exclude = [
+    "examples",
+]

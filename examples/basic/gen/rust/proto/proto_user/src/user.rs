@@ -8,49 +8,45 @@
 #![allow(unused_variables)]
 #![allow(irrefutable_let_patterns)]
 
-/// `SourceContext` represents information about the source of a
-/// protobuf element, like the file in which it is defined.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct SourceContext {
-  /// The path-qualified name of the .proto file that contained the associated
-  /// protobuf element.  For example: `"google/protobuf/source_context.proto"`.
-  pub file_name: ::std::string::String,
+pub struct HelloUser {
+  pub name: ::std::string::String,
 }
-impl ::std::default::Default for SourceContext {
+impl ::std::default::Default for HelloUser {
   fn default() -> Self {
-    SourceContext {
-      file_name: ::std::default::Default::default(),
+    HelloUser {
+      name: ::std::default::Default::default(),
     }
   }
 }
 lazy_static! {
-  pub static ref SourceContext_default: SourceContext = SourceContext::default();
+  pub static ref HelloUser_default: HelloUser = HelloUser::default();
 }
-impl ::pb::Message for SourceContext {
+impl ::pb::Message for HelloUser {
   fn compute_size(&self) -> usize  {
     let mut size = 0;
-    let mut file_name_size = 0;
-    if self.file_name != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.file_name;
+    let mut name_size = 0;
+    if self.name != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.name;
       let l = ::pb::Message::compute_size(val);
-      file_name_size += ::pb::wire_format::serialized_length(1);
-      file_name_size += ::pb::varint::serialized_length(l as u64);
-      file_name_size += l;
+      name_size += ::pb::wire_format::serialized_length(1);
+      name_size += ::pb::varint::serialized_length(l as u64);
+      name_size += l;
     }
-    size += file_name_size;
+    size += name_size;
     size
   }
   fn compute_grpc_slices_size(&self) -> usize  {
     let mut size = 0;
-    if self.file_name != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.file_name;
+    if self.name != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.name;
       size += ::pb::Message::compute_grpc_slices_size(val);
     }
     size
   }
   fn serialize<W: ::pb::BlobWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.file_name != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.file_name;
+    if self.name != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.name;
       ::pb::wire_format::write(1, ::pb::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb::Message::compute_size(val);
       ::pb::varint::write(l as u64, w)?;
@@ -62,12 +58,12 @@ impl ::pb::Message for SourceContext {
     while let Some((field_number, typ)) = ::pb::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb::ensure_wire_format(typ, ::pb::wire_format::Type::LengthDelimited, "SourceContext", 1)?;
+          ::pb::ensure_wire_format(typ, ::pb::wire_format::Type::LengthDelimited, "HelloUser", 1)?;
           let len = ::pb::varint::ensure_read(&mut buf)?;
           let mut next = ::pb::ensure_split(buf, len as usize)?;
           let mut val: ::std::string::String = ::std::default::Default::default();
           ::pb::Message::deserialize(&mut val, &mut next)?;
-          self.file_name = val;
+          self.name = val;
         }
         _ => {
           ::pb::skip(typ, &mut buf)?;
@@ -77,8 +73,8 @@ impl ::pb::Message for SourceContext {
     Ok(())
   }
 }
-impl ::pb::MessageDescriptor for SourceContext {
-  const NAME: &'static str = "SourceContext";
-  const FULL_NAME: &'static str = "google.protobuf.SourceContext";
+impl ::pb::MessageDescriptor for HelloUser {
+  const NAME: &'static str = "HelloUser";
+  const FULL_NAME: &'static str = "user.HelloUser";
 }
 
