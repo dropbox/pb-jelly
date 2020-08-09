@@ -1,6 +1,0 @@
-syntax = "proto3";
-package team;
-
-message HelloTeam {
-    uint64 team_id = 1;
-}

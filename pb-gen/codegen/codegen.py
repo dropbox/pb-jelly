@@ -1592,11 +1592,11 @@ class Context(object):
             }
             if derive_serde:
                 all_deps.update({"serde"})
-            features = {u"serde": u', features=["serde_derive"]'}
+            features = {u"serde": u' features = ["serde_derive"]'}
             versions = {
-                u"lazy_static": u'version = "1.4.0"',
-                u"pb": u'git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included"',
-                u"serde": u'version = "1.0.114"',
+                u"lazy_static": u' version = "1.4.0" ',
+                u"pb": u' git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" ',
+                u"serde": u' version = "1.0.114" ',
             }
 
             deps_lines = []

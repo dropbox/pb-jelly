@@ -1,0 +1,10 @@
+# @generated, do not edit
+[package]
+name = "proto_serde"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+lazy_static = { version = "1.4.0" }
+pb = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+serde = { features = ["serde_derive"], version = "1.0.114" }

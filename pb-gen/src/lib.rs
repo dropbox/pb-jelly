@@ -21,20 +21,32 @@ pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> std::io::Result<()> {
 struct GenProtosBuilder {
     gen_path: PathBuf,
     src_paths: Vec<PathBuf>,
+    include_extensions: bool,
 }
 
-impl GenProtosBuilder {
-    fn new<P: AsRef<Path>>(src_paths: Vec<P>) -> GenProtosBuilder {
-        let gen_path = PathBuf::from("./gen");
-        let src_paths = src_paths
-            .into_iter()
-            .map(|p| p.as_ref().to_owned())
-            .collect();
+impl std::default::Default for GenProtosBuilder {
+    fn default() -> Self {
+        let gen_path = PathBuf::from("./gen"); 
+        let src_paths = vec![];
+        let include_extensions = true;
 
         GenProtosBuilder {
             gen_path,
             src_paths,
+            include_extensions,
         }
+    }
+}
+
+impl GenProtosBuilder {
+    fn new<P: AsRef<Path>>(src_paths: Vec<P>) -> GenProtosBuilder {
+        let mut builder = GenProtosBuilder::default();
+        builder.src_paths = src_paths
+            .into_iter()
+            .map(|p| p.as_ref().to_owned())
+            .collect();
+
+        builder
     }
 
     fn gen_protos(self) -> std::io::Result<()> {
@@ -72,6 +84,12 @@ impl GenProtosBuilder {
         for path in self.src_paths.iter() {
             rust_cmd.arg("-I");
             rust_cmd.arg(path);
+        }
+
+        if self.include_extensions {
+            let ext_path = temp_dir.path();
+            rust_cmd.arg("-I");
+            rust_cmd.arg(ext_path);
         }
 
         // Set the rust plugin

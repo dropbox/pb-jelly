@@ -1,0 +1,8 @@
+syntax = "proto3";
+package linked_list;
+
+message Node {
+    string content = 1;
+    // This self-referential node will automatically be put in a Box
+    Node next = 2;
+}

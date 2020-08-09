@@ -1,0 +1,11 @@
+syntax = "proto3";
+package basic;
+
+// rust/extensions.proto is included by default
+import "rust/extensions.proto";
+
+option (rust.serde_derive) = true;
+
+message NewYorkCity {
+    uint64 num_windows = 1;
+}
