@@ -119,18 +119,15 @@ impl GenProtosBuilder {
         protoc_root_dir.pop();
         let google_proto_dir = protoc_root_dir.join("include/google/protobuf");
 
-        let entries = fs::read_dir(&google_proto_dir)?;
-        
-        let proto_paths: Vec<PathBuf> = entries
-            .filter_map(Result::ok)
-            .filter(|file| file.path().extension().unwrap_or_default() == "proto")
-            .map(|file| file.path())
-            .collect();
-
         let mut rust_cmd = Command::new("protoc");
         
+        // Path of user protos
+        let src_path = &self.src_paths.clone().pop().unwrap();
+        let src_path = src_path.canonicalize().unwrap();
+        dbg!(&src_path);
+
         // Directories that contain protos
-        let proto_src_dirs = vec![paths.root_proto(), paths.go_proto_src()];
+        let proto_src_dirs = vec![paths.root_proto(), paths.go_proto_src(), src_path.clone()];
         for path in proto_src_dirs {
             rust_cmd.arg("-I");
             rust_cmd.arg(path);
@@ -139,12 +136,34 @@ impl GenProtosBuilder {
         // Set the rust plugin
         rust_cmd.arg(format!("--plugin=protoc-gen-rust={}", paths.codegen_script().to_str().unwrap()));
 
-        // Ser the Rust out path
+        // Set the Rust out path
         rust_cmd.arg(format!(
             "--rust_out={}",
             paths.rust_out().canonicalize().unwrap().to_str().unwrap()
         ));
 
+        // Get paths to Google Protos
+        let entries = fs::read_dir(&google_proto_dir)?;
+        let proto_paths: Vec<PathBuf> = entries
+            .filter_map(Result::ok)
+            .filter(|file| file.path().extension().unwrap_or_default() == "proto")
+            .map(|file| file.path())
+            .collect();
+
+        // Set the Google Protos
+        for path in proto_paths {
+            rust_cmd.arg(path);
+        }
+
+        // Get paths of our Protos
+        let entries = fs::read_dir(src_path)?;
+        let proto_paths: Vec<PathBuf> = entries
+            .filter_map(Result::ok)
+            .filter(|file| file.path().extension().unwrap_or_default() == "proto")
+            .map(|file| file.path())
+            .collect();
+
+        // Set our protos
         for path in proto_paths {
             rust_cmd.arg(path);
         }
