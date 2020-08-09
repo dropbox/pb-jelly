@@ -12,5 +12,4 @@ proto_user = { path = "gen/rust/proto/proto_user" }
 proto_team = { path = "gen/rust/proto/proto_team" }
 
 [build-dependencies]
-pb-gen = { path = "../../pb-gen" }
-
+pb-gen = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
