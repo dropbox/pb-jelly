@@ -1,10 +1,11 @@
-# pb-rs
+<h1 align="left">protobuf-rs</h1>
+<p align="right"><a href="https://dropbox.tech/">by <img src="https://www.dropbox.com/s/vwygq2i9gmx60bz/dropbox_small.png?raw=1" width="32" height="32"/></a></p>
 
-`pb-rs` is a protobuf code generation framework for the rust language developed at Dropbox.
+`pb-rs` is a protobuf code generation framework for the Rust language developed at Dropbox.
 
 This implementation was initially written in 2016 to satisfy the need of shuffling large amount
 of bytes in [Dropbox's Storage System (Magic Pocket)](https://dropbox.tech/infrastructure/inside-the-magic-pocket).
-Previously, we were using https://github.com/stepancheg/rust-protobuf (and therefore generated code looks exactly
+Previously, we were using [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf) (and therefore generated code looks exactly
 like that to make it easy to migrate), but serializing Rust structs to proto messages and then serializing them in
 our RPC layer meant multiple copies (and same thing in reverse on parsing stack). Taking control of this
 implementation and integrating it in our RPC stack end-to-end helped avoid extra copies.
@@ -12,7 +13,7 @@ implementation and integrating it in our RPC stack end-to-end helped avoid extra
 Over the years, the implementation has grown and matured and is used in several parts of Dropbox, including
 our [Sync Engine](https://dropbox.tech/infrastructure/rewriting-the-heart-of-our-sync-engine)
 
-Other implementations exist in the rust ecosystem (eg [prost](https://github.com/danburkert/prost)), and
+Other implementations exist in the rust ecosystem (eg [`prost`](https://github.com/danburkert/prost)), and
 we wanted to share ours as well.
 
 # Features
@@ -46,7 +47,7 @@ all callsites with assistance from the compiler.
 
 # Contributing
 
-First contributions are greatly appreciated and highly encouraged. For legal reasons all outside 
+First contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
 contributors must agree to [Dropbox's CLA](https://opensource.dropbox.com/cla/). Thank you for
 your understanding.
 
