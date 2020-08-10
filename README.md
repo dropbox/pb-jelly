@@ -133,3 +133,9 @@ your understanding.
 - [@ddeville](https://github.com/ddeville)
 - [@isho](https://github.com/isho)
 - [@ParkMyCar](https://github.com/ParkMyCar)
+
+## Similar Projects
+[`rust-protobuf`](https://github.com/stepancheg/rust-protobuf) - Rust implementation of Google protocol buffers <br />
+[`prost`](https://github.com/danburkert/prost) - PROST! a Protocol Buffers implementation for the Rust Language <br />
+[`quick-protobuf`](https://github.com/tafia/quick-protobuf) - A rust implementation of protobuf parser <br />
+[`serde-protobuf`](https://github.com/dflemstr/serde-protobuf)
