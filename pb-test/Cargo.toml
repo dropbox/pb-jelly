@@ -1,0 +1,13 @@
+[package]
+name = "pb-test"
+version = "0.1.0"
+authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>", "Parker Timmerman <parkertimmerman@dropbox.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pb = { path = "../pb-rs" }
+pretty_assertions = "0.6.1"
+proto_pbtest = { path = "generated/rust/proto/proto_pbtest" }
+proto_google = { path = "generated/rust/proto/proto_google" }

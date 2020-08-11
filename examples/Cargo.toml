@@ -1,0 +1,32 @@
+[package]
+name = "basic"
+version = "0.1.0"
+authors = ["Parker Timmerman <parkertimmerman@dropbox.com>"]
+edition = "2018"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pb = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+proto_linked_list = { path = "gen/rust/proto/proto_linked_list" }
+proto_serde = { path = "gen/rust/proto/proto_serde" }
+proto_user = { path = "gen/rust/proto/proto_user" }
+serde_json = "1"
+
+[build-dependencies]
+# pb-gen = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+pb-gen = { path = "../pb-gen" }
+
+
+[[bin]]
+name = "basic"
+path = "src/basic/main.rs"
+
+[[bin]]
+name = "linked_list"
+path = "src/linked_list/main.rs"
+
+[[bin]]
+name = "serde"
+path = "src/serde/main.rs"
