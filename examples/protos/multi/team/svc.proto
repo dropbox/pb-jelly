@@ -1,0 +1,6 @@
+syntax = "proto3";
+package team;
+
+message TeamRequest {
+    uint64 team_id = 1;
+}

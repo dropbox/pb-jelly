@@ -23,7 +23,7 @@ we wanted to share ours as well.
 - Supports generating non-nullable fields types with `(gogoproto.nullable)=false`
 - Supports generating `Box<Message>` field types with `(rust.box_it)=true`
 - Automatically boxes messages if it finds a recursive message definition
-- Supports generating custom field type with `(rust.custom_type)=type`
+- Supports generating custom field type with `(rust.type)="type"`
 - Supports generating oneofs as non-nullable (fail on deserialization) type with `(rust.nullable)=false`
 - Supports generating enums as non-zeroable (fail on deserialization) type with `(rust.err_if_default_or_unknown)=true`
 - Supports generating serde serializable/deserializable messages with file level `(rust.serde_derive)=true`
