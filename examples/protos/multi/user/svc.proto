@@ -1,0 +1,6 @@
+syntax = "proto3";
+package user;
+
+message UserRequest {
+    uint64 user_id = 1;
+}

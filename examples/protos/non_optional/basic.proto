@@ -1,0 +1,23 @@
+syntax = "proto3";
+package basic;
+
+import "rust/extensions.proto";
+
+enum City {
+    // In the generated Rust code, `enum City` won't have `INVALID` as a variant.
+    option (rust.err_if_default_or_unknown) = true;
+    INVALID = 0;
+    NEW_YORK = 1;
+    SAN_FRANCISCO = 2;
+}
+
+message PlaneTicket {
+    string passenger = 1;
+    City city = 2;
+    oneof airport {
+        // This makes the `airport` field required
+        option (rust.nullable) = false;
+        string name = 3;
+        uint32 id = 4;
+    }
+}

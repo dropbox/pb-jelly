@@ -9,7 +9,10 @@ publish = false
 
 [dependencies]
 pb = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+proto_custom_type = { path = "gen/rust/proto/proto_custom_type" }
 proto_linked_list = { path = "gen/rust/proto/proto_linked_list" }
+proto_multi = { path = "gen/rust/proto/proto_multi" }
+proto_non_optional = { path = "gen/rust/proto/proto_non_optional" }
 proto_serde = { path = "gen/rust/proto/proto_serde" }
 proto_user = { path = "gen/rust/proto/proto_user" }
 serde_json = "1"
@@ -24,8 +27,20 @@ name = "basic"
 path = "src/basic/main.rs"
 
 [[bin]]
+name = "custom_type"
+path = "src/custom_type/main.rs"
+
+[[bin]]
 name = "linked_list"
 path = "src/linked_list/main.rs"
+
+[[bin]]
+name = "multi"
+path = "src/multi/main.rs"
+
+[[bin]]
+name = "non_optional"
+path = "src/non_optional/main.rs"
 
 [[bin]]
 name = "serde"

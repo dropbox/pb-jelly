@@ -1,0 +1,17 @@
+syntax = "proto3";
+package custom;
+
+import "rust/extensions.proto";
+
+message UserId {
+    // `rust.type` is more or less a string replacement
+    bytes id = 1 [(rust.type)="[u8; 8]"];
+
+    // Note: If your bytes has a defined size, using `rust.type` could be advantageous because
+    // your generated code will include a statically sized array, as opposed to a dynamically 
+    // sized `Vec<u8>` that `bytes` typically maps to.
+}
+
+message UserRequest {
+    UserId user_id = 1;
+}
