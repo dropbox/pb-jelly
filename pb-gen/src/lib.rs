@@ -4,7 +4,10 @@ use std::{
     io::Write,
     os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
-    process::Command,
+    process::{
+        Command,
+        Output,
+    },
 };
 use include_dir::{include_dir, Dir};
 use tempdir::TempDir;
@@ -13,7 +16,7 @@ use walkdir::WalkDir;
 const CODEGEN: Dir = include_dir!("codegen");
 
 
-pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> std::io::Result<()> {
+pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> std::io::Result<Output> {
     let builder = GenProtosBuilder::new(src_paths);
     builder.gen_protos()
 }
@@ -26,7 +29,7 @@ struct GenProtosBuilder {
 
 impl std::default::Default for GenProtosBuilder {
     fn default() -> Self {
-        let gen_path = PathBuf::from("./gen"); 
+        let gen_path = PathBuf::from("./gen");
         let src_paths = vec![];
         let include_extensions = true;
 
@@ -49,7 +52,7 @@ impl GenProtosBuilder {
         builder
     }
 
-    fn gen_protos(self) -> std::io::Result<()> {
+    fn gen_protos(self) -> std::io::Result<Output> {
         let paths = ArgPaths::generate(&self);
         dbg!(&paths);
 
@@ -69,17 +72,15 @@ impl GenProtosBuilder {
         // Re-create essential files
         let temp_dir = self.create_temp_files()?;
         // Generate Rust protos
-        self.gen_rust_protos(temp_dir)?;
-
-        Ok(())
+        self.gen_rust_protos(temp_dir)
     }
 
-    fn gen_rust_protos(&self, temp_dir: TempDir) -> std::io::Result<()> {
+    fn gen_rust_protos(&self, temp_dir: TempDir) -> std::io::Result<Output> {
         let paths = ArgPaths::generate(&self);
         let codegen_path = temp_dir.path().join("codegen.py");
 
         let mut rust_cmd = Command::new("protoc");
-        
+
         // Directories that contain protos
         for path in self.src_paths.iter() {
             rust_cmd.arg("-I");
@@ -119,10 +120,7 @@ impl GenProtosBuilder {
             rust_cmd.arg(path);
         }
 
-        let output = rust_cmd.output()?;
-        dbg!(output);
-
-        Ok(())
+        rust_cmd.output()
     }
 
     /// We bundle all non-Rust, but necessary files into a static CODEGEN blob. When we run the codegen script,

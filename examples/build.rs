@@ -4,5 +4,9 @@ fn main() -> std::io::Result<()> {
     // Tell Cargo only re-run our build script if something in protos changes
     // println!("cargo:rerun-if-changed=protos");
 
-    gen_protos(vec!["./protos"])
+    let output = gen_protos(vec!["./protos"])?;
+
+    dbg!(output);
+
+    Ok(())
 }

@@ -63,6 +63,7 @@ PRIMITIVE_TYPES = {
 
 BLOB_TYPE = "::pb::Lazy<::blob_pb::WrappedBlob>"
 VEC_SLICE_TYPE = "::pb::Lazy<::blob_pb::VecSlice>"
+LAZY_BYTES_TYPE = "::pb::Lazy<::bytes::Bytes>"
 # pull out `x` from every instance of `::x::y::z`, but not `y` or `z`
 CRATE_NAME_REGEX = re.compile(r"(?:^|\W)::(\w+)(?:::\w+)*")
 
@@ -247,6 +248,13 @@ class RustType(object):
             and self.field.options.ctype == FieldOptions.CORD
         )
 
+    def is_lazy_bytes(self):
+        # type: () -> bool
+        return (
+            self.field.type == FieldDescriptorProto.TYPE_BYTES
+            and self.field.options.Extensions[extensions_pb2.zero_copy]
+        )
+
     def is_boxed(self):
         # type: () -> bool
         return (
@@ -333,6 +341,8 @@ class RustType(object):
                 return BLOB_TYPE, "v"
             elif self.is_grpc_slices():
                 return VEC_SLICE_TYPE, "v"
+            elif self.is_lazy_bytes():
+                return LAZY_BYTES_TYPE, "v"
             else:
                 return "::std::vec::Vec<u8>", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
@@ -365,6 +375,8 @@ class RustType(object):
                 return BLOB_TYPE, expr
             elif self.is_grpc_slices():
                 return VEC_SLICE_TYPE, expr
+            elif self.is_lazy_bytes():
+                return LAZY_BYTES_TYPE, expr
             else:
                 return "::std::vec::Vec<u8>", expr
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
@@ -414,7 +426,7 @@ class RustType(object):
             )
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             assert not (
-                self.is_blob() or self.is_grpc_slices()
+                self.is_blob() or self.is_grpc_slices() or self.is_lazy_bytes()
             ), "Can't generate get method for lazy field"
             return "&[u8]", "self.%s.as_ref().map(|v| &**v).unwrap_or(&[])" % name
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
@@ -442,6 +454,9 @@ class RustType(object):
 
         if self.is_grpc_slices():
             return VEC_SLICE_TYPE
+
+        if self.is_lazy_bytes():
+            return LAZY_BYTES_TYPE
 
         if typ in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[typ][0]
@@ -951,7 +966,7 @@ class CodeWriter(object):
                             ):
                                 self.write(return_expr)
 
-                        if not (typ.is_blob() or typ.is_grpc_slices()):
+                        if not (typ.is_blob() or typ.is_grpc_slices() or typ.is_lazy_bytes()):
                             # It's hard to make this make sense, so let's not generate `get` method for lazy things.
                             return_type, return_expr = typ.get_method()
                             with block(
@@ -1409,12 +1424,17 @@ class Context(object):
             if field.label == FieldDescriptorProto.LABEL_REPEATED:
                 msg_impls_copy = False  # Vecs are not Copy.
 
+            # If we use a Blob type, or GRPC Slice
             if typ == FieldDescriptorProto.TYPE_BYTES and (
                 field.options.ctype == FieldOptions.CORD
                 or field.options.Extensions[extensions_pb2.grpc_slices]
             ):
                 (msg_impls_eq, msg_impls_copy) = (False, False)  # Blob is not eq/copy
                 self.extra_crates[crate].add("blob_pb")
+            # If we use a Bytes type
+            elif typ == FieldDescriptorProto.TYPE_BYTES and field.options.Extensions[extensions_pb2.zero_copy]:
+                (msg_impls_eq, msg_impls_copy) = (False, False)
+                self.extra_crates[crate].add("bytes")
             elif typ in PRIMITIVE_TYPES:
                 if not PRIMITIVE_TYPES[typ][1]:
                     msg_impls_eq = False
@@ -1595,8 +1615,10 @@ class Context(object):
             features = {u"serde": u' features = ["serde_derive"]'}
             versions = {
                 u"lazy_static": u' version = "1.4.0" ',
-                u"pb": u' git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" ',
+                # u"pb": u' git = "https://github.com/dropbox/pb-rs.git" ',
+                u"pb": u' path = "../../../../../pb-rs" ',
                 u"serde": u' version = "1.0.114" ',
+                u"bytes": u' version = "0.5.6" '
             }
 
             deps_lines = []

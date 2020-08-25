@@ -1,0 +1,10 @@
+syntax = "proto2";
+package basic;
+
+// rust/extensions.proto is included by default
+import "rust/extensions.proto";
+
+message BytesMessage {
+    optional bytes data = 1 [(rust.zero_copy)=true];
+    optional string name = 2;
+}

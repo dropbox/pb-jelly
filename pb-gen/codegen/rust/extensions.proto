@@ -18,6 +18,9 @@ extend google.protobuf.FieldOptions {
     // All paths must be fully qualified, as in `::my_crate::full::path::to::type`.
     // This only works with proto3.
     optional string type = 50004;
+
+    // Generate this `bytes` field using a Lazy<bytes::Bytes> to enable zero-copy deserialization.
+    optional bool zero_copy = 50007;
 }
 
 extend google.protobuf.EnumOptions {

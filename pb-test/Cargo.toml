@@ -9,5 +9,5 @@ edition = "2018"
 [dependencies]
 pb = { path = "../pb-rs" }
 pretty_assertions = "0.6.1"
-proto_pbtest = { path = "generated/rust/proto/proto_pbtest" }
-proto_google = { path = "generated/rust/proto/proto_google" }
+# proto_pbtest = { path = "generated/rust/proto/proto_pbtest" }
+# proto_google = { path = "generated/rust/proto/proto_google" }

@@ -1,5 +1,5 @@
 [package]
-name = "basic"
+name = "examples"
 version = "0.1.0"
 authors = ["Parker Timmerman <parkertimmerman@dropbox.com>"]
 edition = "2018"
@@ -8,17 +8,18 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-pb = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+bytes = "0.5.6"
+pb = { path = "../pb-rs" }
 proto_custom_type = { path = "gen/rust/proto/proto_custom_type" }
 proto_linked_list = { path = "gen/rust/proto/proto_linked_list" }
 proto_multi = { path = "gen/rust/proto/proto_multi" }
 proto_non_optional = { path = "gen/rust/proto/proto_non_optional" }
 proto_serde = { path = "gen/rust/proto/proto_serde" }
 proto_user = { path = "gen/rust/proto/proto_user" }
+proto_zero_copy = { path = "gen/rust/proto/proto_zero_copy"}
 serde_json = "1"
 
 [build-dependencies]
-# pb-gen = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
 pb-gen = { path = "../pb-gen" }
 
 
@@ -45,3 +46,7 @@ path = "src/non_optional/main.rs"
 [[bin]]
 name = "serde"
 path = "src/serde/main.rs"
+
+[[bin]]
+name = "zero_copy"
+path = "src/zero_copy/main.rs"
