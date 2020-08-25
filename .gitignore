@@ -2,4 +2,5 @@ target
 Cargo.lock
 .*.swp
 generated/
+gen/
 .DS_Store

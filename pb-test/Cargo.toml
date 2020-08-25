@@ -7,7 +7,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-pb = { path = "../pb-rs" }
+bytes = "0.5.6"
+pb = { git = "ssh://git@github.com/dropbox/pb-rs.git" }
 pretty_assertions = "0.6.1"
-# proto_pbtest = { path = "generated/rust/proto/proto_pbtest" }
-# proto_google = { path = "generated/rust/proto/proto_google" }
+proto_pbtest = { path = "gen/rust/proto/proto_pbtest" }
+proto_google = { path = "gen/rust/proto/proto_google" }
+
+[build-dependencies]
+pb-gen = { path = "../pb-gen" }

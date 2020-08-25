@@ -19,7 +19,7 @@ fn main() -> std::io::Result<()> {
     let ser_bytes: Vec<u8> = proto.serialize_to_vec();
 
 
-    // Serialized proto gets "sent" across ☁️ The Internet ☁️
+    // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
 
 
     // To achieve zero copy deserialization, we need to our serialized bytes to be in a container

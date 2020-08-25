@@ -1615,8 +1615,7 @@ class Context(object):
             features = {u"serde": u' features = ["serde_derive"]'}
             versions = {
                 u"lazy_static": u' version = "1.4.0" ',
-                # u"pb": u' git = "https://github.com/dropbox/pb-rs.git" ',
-                u"pb": u' path = "../../../../../pb-rs" ',
+                u"pb": u' git = "ssh://git@github.com/dropbox/pb-rs.git" ',
                 u"serde": u' version = "1.0.114" ',
                 u"bytes": u' version = "0.5.6" '
             }
