@@ -3,6 +3,9 @@
 ### basic
 How to use `protobuf-rs` in the most basic sense. Creating, serializing, and de-serializing a message.
 
+### box_it
+Using the `(rust.box_it)` extension to box up fields of your proto message.
+
 ### custom_type
 Defining custom Rust types for a field.
 

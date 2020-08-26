@@ -12,8 +12,7 @@ fn main() -> std::io::Result<()> {
     println!("Bytes 0x{:X?}", se_msg);
 
     // De-serialize our message back to a Rust struct
-    let de_res: std::io::Result<HelloUser> = Message::deserialize_from_slice(&se_msg[..]);
-    let de_msg = de_res?;
+    let de_msg: HelloUser = Message::deserialize_from_slice(&se_msg[..])?;
 
     // Pretty print!
     println!("Message: {:#?}", de_msg);

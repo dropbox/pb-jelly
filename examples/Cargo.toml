@@ -10,6 +10,7 @@ publish = false
 [dependencies]
 bytes = "0.5.6"
 pb = { git = "ssh://git@github.com/dropbox/pb-rs.git" }
+proto_box_it = { path = "gen/rust/proto/proto_box_it" }
 proto_custom_type = { path = "gen/rust/proto/proto_custom_type" }
 proto_linked_list = { path = "gen/rust/proto/proto_linked_list" }
 proto_multi = { path = "gen/rust/proto/proto_multi" }
@@ -26,6 +27,10 @@ pb-gen = { path = "../pb-gen" }
 [[bin]]
 name = "basic"
 path = "src/basic/main.rs"
+
+[[bin]]
+name = "box_it"
+path = "src/box_it/main.rs"
 
 [[bin]]
 name = "custom_type"

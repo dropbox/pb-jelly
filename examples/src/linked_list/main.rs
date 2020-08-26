@@ -19,8 +19,7 @@ fn main() -> std::io::Result<()> {
     let bytes = head.serialize_to_vec();
 
     // Deserialize
-    let list: std::io::Result<Node> = Message::deserialize_from_slice(&bytes[..]);
-    let list = list?;
+    let list: Node = Message::deserialize_from_slice(&bytes[..])?;
 
     // Pretty print!
     println!("{:#?}", list);

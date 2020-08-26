@@ -36,7 +36,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 |                Extension                |                                                 Description                                                | Type  | Example |
 |:---------------------------------------:|:----------------------------------------------------------------------------------------------------------:|-------|:-------:|
 | `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field | [`zero_copy`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
-| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | `TODO` |
+| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
 | `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
 | `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
 | `(gogoproto.nullable)=false`            | Generates non-nullable fields types									       | Field | `TODO` |
