@@ -13,5 +13,21 @@ pretty_assertions = "0.6.1"
 proto_pbtest = { path = "gen/rust/proto/proto_pbtest" }
 proto_google = { path = "gen/rust/proto/proto_google" }
 
+# only used when benchmarking PROST!
+prost = { version = "0.6", optional = true }
+# only used when benchmarking rust-protobuf
+protobuf = { version = "2.17", features = ["with-bytes"], optional = true }
+
+
 [build-dependencies]
 pb-gen = { path = "../pb-gen" }
+
+# only used when benchmarking PROST!
+prost-build = { version = "0.6", optional = true }
+# only used when benchmarking rust-protobuf
+protoc-rust = { version = "2.17", optional = true }
+
+
+[features]
+bench_prost = ["prost", "prost-build"]
+bench_rust_protobuf = ["protobuf", "protoc-rust"]
