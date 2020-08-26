@@ -1,4 +1,4 @@
-<h1 align="left">protobuf-rs</h1>
+# `protobuf-rs`
 <p align="right"><a href="https://dropbox.tech/">by <img src="https://www.dropbox.com/s/vwygq2i9gmx60bz/dropbox_small.png?raw=1" width="32" height="32"/></a></p>
 
 `pb-rs` is a [protobuf](https://developers.google.com/protocol-buffers) code generation framework for the [Rust language](https://www.rust-lang.org/) developed at Dropbox.
