@@ -3,5 +3,4 @@ Cargo.lock
 .*.swp
 generated/
 gen/
-!src/gen
 .DS_Store
