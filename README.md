@@ -7,15 +7,15 @@
 
 This implementation was initially written in 2016 to satisfy the need of shuffling large amount
 of bytes in [Dropbox's Storage System (Magic Pocket)](https://dropbox.tech/infrastructure/inside-the-magic-pocket).
-Previously, we were using [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf) (and therefore generated code looks exactly
-like that to make it easy to migrate) but serializing Rust structs to proto messages, and then serializing them again in
+Previously, we were using [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf) (and therefore generated APIs are exactly
+the same to make it easy to migrate) but serializing Rust structs to proto messages, and then serializing them again in
 our RPC layer, meant multiple copies (and same thing in reverse on parsing stack). Taking control of this
 implementation and integrating it in our RPC stack end-to-end helped avoid these extra copies.
 
 Over the years, the implementation has grown and matured and is currently used in several parts of Dropbox, including
 our [Sync Engine](https://dropbox.tech/infrastructure/rewriting-the-heart-of-our-sync-engine), and the aforementioned [Magic Pocket](https://dropbox.tech/infrastructure/inside-the-magic-pocket).
 
-Other implementations exist in the rust ecosystem (e.g. [`prost`](https://github.com/danburkert/prost) and [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf)), we wanted to share ours as well.
+Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github.com/danburkert/prost) and [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf)), we wanted to share ours as well.
 
 <br />
 
@@ -35,13 +35,13 @@ Other implementations exist in the rust ecosystem (e.g. [`prost`](https://github
 
 |                Extension                |                                                 Description                                                | Type  | Example |
 |:---------------------------------------:|:----------------------------------------------------------------------------------------------------------:|-------|:-------:|
-| `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field |         |
-| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field |         |
-| `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field |         |
-| `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field |         |
-| `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof |         |
-| `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  |         |
-| `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  |         |
+| `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field | [`zero_copy`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
+| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | `TODO` |
+| `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
+| `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
+| `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
+| `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
+| `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
 
 <br />
 
@@ -75,14 +75,27 @@ Take a look at the [`examples`](https://github.com/dropbox/pb-rs/tree/master/exa
 
 <br />
 
-### Non-essential Crates
+#### Non-essential Crates
 - `pb-test` contains integration tests and benchmarks. You don't need to worry about this one unless you want to contribute to this repository!
 - `pb-types` contains generated Rust types for [well known proto types](https://developers.google.com/protocol-buffers/docs/reference/csharp/namespace/google/protobuf/well-known-types) [TODO]: Might deprecate this?
 
+<br />
 
+### A Note On Scalability 📝
+We mention "scalabilty" as a feature, what does that mean? We take an opinionated stance that every module should be a crate, as opposed to generating Rust files 1:1 with proto files. We take this stance because `rustc` is parallel *across* crates, but not yet totally parallel *within* a crate. When we had all of our generated Rust code in a single crate, it was often that single crate that took the longest to compile. The solution to these long compile times, was creating many crates!
+
+<br />
+
+# Contributing
+
+First contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
+contributors must agree to [Dropbox's CLA](https://opensource.dropbox.com/cla/). Thank you for
+your understanding.
 
 
 <br />
+
+---
 
 # Upcoming
 Some of the features here require additional tooling to be useful, which are not yet public.
@@ -98,14 +111,7 @@ many callsites a bit tedious. We opted to go this route to make it easier to add
 all callsites with assistance from the compiler.
 
 Service Generation
-
-
-# Contributing
-
-First contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
-contributors must agree to [Dropbox's CLA](https://opensource.dropbox.com/cla/). Thank you for
-your understanding.
-
+- Generating stubs for gPRC clients and servers
 
 # Running the `pbtest` unit tests
 
