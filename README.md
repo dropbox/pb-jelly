@@ -8,7 +8,7 @@
 This implementation was initially written in 2016 to satisfy the need of shuffling large amount
 of bytes in [Dropbox's Storage System (Magic Pocket)](https://dropbox.tech/infrastructure/inside-the-magic-pocket).
 Previously, we were using [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf) (and therefore generated APIs are exactly
-the same to make it easy to migrate) but serializing Rust structs to proto messages, and then serializing them again in
+the same to make migration easy) but serializing Rust structs to proto messages, and then serializing them again in
 our RPC layer, meant multiple copies (and same thing in reverse on parsing stack). Taking control of this
 implementation and integrating it in our RPC stack end-to-end helped avoid these extra copies.
 
@@ -52,7 +52,7 @@ Multiple crates, multiple languages, my oh my!
 There are only two crates you'll need if you want to use this with you project `pb-rs` and `pb-gen`. <br />
 
 ##### `pb-rs` 
-Contains the all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
+Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
 ```
 [dependencies]
 pb = "0.1"
@@ -141,21 +141,18 @@ Service Generation
 
 - [ ] Document and add tests for `grpc_slices`
 - [ ] Add `custom_type` example to pbtest
+- [ ] Add travis-ci integration
 - [ ] Mypy the codegen.py in CI
 - [ ] rustfmt in CI
 - [ ] Add service generation codegen as well
 - [ ] Rename pbtest.proto to pbtest2.proto
-- [ ] Add blob crate / zerocopy
-- [ ] run benchmarks against zerocopy blob impl
 - [ ] Create github issues for remaining todos
-- [ ] Add travis-ci integration
 - [ ] Run mypy-protobuf for the tests - to better mypy codegen.py
 - [ ] Autogenerate warn on rust 2018 idioms
 - [ ] Add test files w/ multiple generated crates that depend on each other
 - [ ] Figure out how to host documentation somewhere
 - [ ] Bonus: Port over the test which serializes in go and deserializes/reserializes in rust
 - [ ] Bonus: Python3
-- [ ] Create helper library similar to `prost_build`
 - [ ] Open source oxidize (or something of the sort)
 
 ## Contributors
