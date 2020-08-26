@@ -1,6 +1,6 @@
 # Why does this module exist?
 
-When trying to include generated code from [`protoc-rust`](https://github.com/stepancheg/rust-protobuf/tree/master/protoc-rust) in the same fashion as PROST!, e.g.
+When trying to include generated code from [`protoc-rust`](https://github.com/stepancheg/rust-protobuf/tree/master/protoc-rust) in the same fashion as `PROST!`, e.g.
 ```
 mod gen {
     include!(concat!(env!("CARGO_MANIFEST_DIR"), "/gen/prost/pbtest.rs"));
