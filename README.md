@@ -39,6 +39,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 | `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | `TODO` |
 | `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
 | `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
+| `(gogoproto.nullable)=false`            | Generates non-nullable fields types									       | Field | `TODO` |
 | `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
 | `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
 | `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
