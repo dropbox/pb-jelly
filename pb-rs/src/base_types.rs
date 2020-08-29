@@ -2,33 +2,17 @@
 
 use std::convert::TryFrom;
 use std::fmt::Debug;
-use std::io::{
-    Error,
-    ErrorKind,
-    Read,
-    Result,
-};
-use std::ops::{
-    Deref,
-    DerefMut,
+use std::io::{Error, ErrorKind, Read, Result};
+use std::ops::{Deref, DerefMut};
+
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+use bytes::{
+    buf::{ext::BufExt, BufMut},
+    Buf,
 };
 
-use byteorder::{
-    LittleEndian,
-    ReadBytesExt,
-    WriteBytesExt,
-};
-use bytes::buf::ext::BufExt;
-use bytes::Buf;
-
-use super::{
-    unexpected_eof,
-    Message,
-};
-use crate::blob::{
-    BlobReader,
-    BlobWriter,
-};
+use super::{unexpected_eof, Message};
+use crate::blob::{BlobReader, BlobWriter};
 use crate::varint;
 
 /// Trait implemented by enums which are generated with the `err_if_default` option. Note that
@@ -74,7 +58,9 @@ where
         let mut v: i32 = 0;
         v.deserialize(buf)?;
 
-        *self = T::try_from(v).map_err(|u| Error::new(ErrorKind::Other, format!("invalid value for enum: {:?}", u)))?;
+        *self = T::try_from(v).map_err(|u| {
+            Error::new(ErrorKind::Other, format!("invalid value for enum: {:?}", u))
+        })?;
         Ok(())
     }
 }
@@ -185,7 +171,9 @@ impl Message for i64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(
+    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
+)]
 pub struct Signed64(pub i64);
 
 impl Signed64 {
@@ -230,7 +218,9 @@ impl DerefMut for Signed64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(
+    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
+)]
 pub struct Signed32(pub i32);
 
 impl Signed32 {
@@ -275,7 +265,9 @@ impl DerefMut for Signed32 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(
+    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
+)]
 pub struct Fixed64(pub u64);
 
 impl Message for Fixed64 {
@@ -309,7 +301,9 @@ impl DerefMut for Fixed64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(
+    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
+)]
 pub struct Fixed32(pub u32);
 
 impl Message for Fixed32 {
@@ -343,7 +337,9 @@ impl DerefMut for Fixed32 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(
+    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
+)]
 pub struct Sfixed64(pub i64);
 
 impl Message for Sfixed64 {
@@ -377,7 +373,9 @@ impl DerefMut for Sfixed64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(
+    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
+)]
 pub struct Sfixed32(pub i32);
 
 impl Message for Sfixed32 {
@@ -476,8 +474,11 @@ impl Message for Vec<u8> {
 
     fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
         let cnt = buf.remaining();
-        *self = Vec::with_capacity(cnt);
-        buf.reader().read_to_end(self)?;
+        if !self.is_empty() {
+            self.clear();
+        }
+        self.reserve(cnt);
+        self.put(buf);
         Ok(())
     }
 }
