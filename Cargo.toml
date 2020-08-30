@@ -3,7 +3,6 @@ members = [
     "pb-rs",
     "pb-gen",
     "pb-test",
-    "pb-types",
 
     # Not published
     "examples",

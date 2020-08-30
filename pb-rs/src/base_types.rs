@@ -2,7 +2,7 @@
 
 use std::convert::TryFrom;
 use std::fmt::Debug;
-use std::io::{Error, ErrorKind, Read, Result};
+use std::io::{Error, ErrorKind, Result};
 use std::ops::{Deref, DerefMut};
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
@@ -12,7 +12,7 @@ use bytes::{
 };
 
 use super::{unexpected_eof, Message};
-use crate::blob::{BlobReader, BlobWriter};
+use crate::buffer::{PbBufferReader, PbBufferWriter};
 use crate::varint;
 
 /// Trait implemented by enums which are generated with the `err_if_default` option. Note that
@@ -49,12 +49,12 @@ where
         v.compute_size()
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         let v: i32 = (*self).into();
         v.serialize(w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let mut v: i32 = 0;
         v.deserialize(buf)?;
 
@@ -74,7 +74,7 @@ impl<T: Message> Message for Option<T> {
         }
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         if let Some(ref inner) = *self {
             inner.serialize(w)
         } else {
@@ -82,7 +82,7 @@ impl<T: Message> Message for Option<T> {
         }
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         if buf.has_remaining() {
             if self.is_none() {
                 *self = Some(T::default());
@@ -100,11 +100,11 @@ impl Message for u32 {
         varint::serialized_length(u64::from(*self))
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(u64::from(*self), w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         *self = match varint::read(buf)? {
             Some(n) => n as u32,
             None => return Err(unexpected_eof()),
@@ -119,11 +119,11 @@ impl Message for i32 {
         varint::serialized_length(*self as u64)
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(*self as u64, w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         *self = match varint::read(buf)? {
             Some(n) => n as i32,
             None => return Err(unexpected_eof()),
@@ -138,11 +138,11 @@ impl Message for u64 {
         varint::serialized_length(*self)
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(*self, w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         *self = match varint::read(buf)? {
             Some(n) => n as u64,
             None => return Err(unexpected_eof()),
@@ -157,11 +157,11 @@ impl Message for i64 {
         varint::serialized_length(*self as u64)
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(*self as u64, w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         *self = match varint::read(buf)? {
             Some(n) => n as i64,
             None => return Err(unexpected_eof()),
@@ -191,11 +191,11 @@ impl Message for Signed64 {
         varint::serialized_length(Self::encode(self.0))
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(Self::encode(self.0), w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         self.0 = match varint::read(buf)? {
             Some(n) => Self::decode(n as u64),
             None => return Err(unexpected_eof()),
@@ -238,11 +238,11 @@ impl Message for Signed32 {
         varint::serialized_length(u64::from(Self::encode(self.0)))
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(u64::from(Self::encode(self.0)), w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         self.0 = match varint::read(buf)? {
             Some(n) => Self::decode(n as u32),
             None => return Err(unexpected_eof()),
@@ -275,12 +275,12 @@ impl Message for Fixed64 {
         8
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_u64::<LittleEndian>(self.0)?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let val = buf.reader().read_u64::<LittleEndian>()?;
         self.0 = val;
         Ok(())
@@ -311,12 +311,12 @@ impl Message for Fixed32 {
         4
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_u32::<LittleEndian>(self.0)?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let val = buf.reader().read_u32::<LittleEndian>()?;
         self.0 = val;
         Ok(())
@@ -347,12 +347,12 @@ impl Message for Sfixed64 {
         8
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_i64::<LittleEndian>(self.0)?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let val = buf.reader().read_i64::<LittleEndian>()?;
         self.0 = val;
         Ok(())
@@ -383,12 +383,12 @@ impl Message for Sfixed32 {
         4
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_i32::<LittleEndian>(self.0)?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let val = buf.reader().read_i32::<LittleEndian>()?;
         self.0 = val;
         Ok(())
@@ -414,12 +414,12 @@ impl Message for f32 {
         4
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_f32::<LittleEndian>(*self)?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let val = buf.reader().read_f32::<LittleEndian>()?;
         *self = val;
         Ok(())
@@ -431,12 +431,12 @@ impl Message for f64 {
         8
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_f64::<LittleEndian>(*self)?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let val = buf.reader().read_f64::<LittleEndian>()?;
         *self = val;
         Ok(())
@@ -448,11 +448,11 @@ impl Message for bool {
         1
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         varint::write(*self as u64, w)
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         *self = match varint::read(buf)? {
             Some(n) => n > 0,
             None => return Err(unexpected_eof()),
@@ -467,12 +467,12 @@ impl Message for Vec<u8> {
         self.len()
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_all(&self[..])?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         let cnt = buf.remaining();
         if !self.is_empty() {
             self.clear();
@@ -501,12 +501,12 @@ impl Message for String {
         self.len()
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         w.write_all(self.as_bytes())?;
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         // To make this more performant we write to our underlying buffer directly. Rust Strings
         // are guaranteed to be valid UTF-8, so to make sure we don't leak a String that has
         // invalid data, we use an RAII Guard. This guard holds a reference to our underlying 
@@ -547,11 +547,11 @@ impl Message for () {
         0
     }
 
-    fn serialize<W: BlobWriter>(&self, _w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, _w: &mut W) -> Result<()> {
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, _buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, _buf: &mut B) -> Result<()> {
         Ok(())
     }
 }
@@ -562,11 +562,11 @@ macro_rules! fixed_length_impls {
             fn compute_size(&self) -> usize {
                 $len
             }
-            fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+            fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
                 w.write_all(self)?;
                 Ok(())
             }
-            fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
+            fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
                 if buf.remaining() != $len {
                     return Err(Error::new(ErrorKind::InvalidData, concat!("not of length ", stringify!($len))));
                 }

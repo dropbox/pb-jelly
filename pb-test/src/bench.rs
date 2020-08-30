@@ -5,7 +5,7 @@
 mod benches {
     use bytes::Bytes;
     use pb::{
-        Blob,
+        PbBuffer,
         Lazy,
         Message
     };
@@ -34,7 +34,7 @@ mod benches {
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
-            // Convert our bytes::Bytes into a pb::BlobReader
+            // Convert our bytes::Bytes into a pb::PbBufferReader
             let mut bytes_reader = bytes_buf.clone().into_reader();
 
             // Deserialize our proto
@@ -62,7 +62,7 @@ mod benches {
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
-            // Convert our bytes::Bytes into a pb::BlobReader
+            // Convert our bytes::Bytes into a pb::PbBufferReader
             let mut bytes_reader = bytes_buf.clone().into_reader();
 
             // Deserialize our proto
@@ -84,7 +84,7 @@ mod benches {
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
-            // Convert our bytes::Bytes into a pb::BlobReader
+            // Convert our bytes::Bytes into a pb::PbBufferReader
             let mut bytes_reader = bytes_buf.clone().into_reader();
 
             // Deserialize our proto

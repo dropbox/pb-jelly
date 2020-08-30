@@ -27,12 +27,12 @@ use bytes::buf::{
 pub mod varint;
 pub mod wire_format;
 
-mod blob;
-pub use crate::blob::{
-    cast_blob,
-    Blob,
-    BlobReader,
-    BlobWriter,
+mod buffer;
+pub use crate::buffer::{
+    cast_buffer,
+    PbBuffer,
+    PbBufferReader,
+    PbBufferWriter,
     CopyWriter,
     Lazy,
 };
@@ -73,10 +73,10 @@ pub trait Message: PartialEq + Default + Debug + Any {
     }
 
     /// Serializes the message to the writer.
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()>;
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()>;
 
     /// Reads the message from the blob reader, copying as necessary.
-    fn deserialize<B: BlobReader>(&mut self, r: &mut B) -> Result<()>;
+    fn deserialize<B: PbBufferReader>(&mut self, r: &mut B) -> Result<()>;
 
     /// Helper method for serializing a message to a [Vec<u8>].
     #[inline]
@@ -212,7 +212,7 @@ pub fn skip<B: Buf>(typ: wire_format::Type, buf: &mut B) -> Result<()> {
     Ok(())
 }
 
-pub fn ensure_split<B: BlobReader>(buf: &mut B, len: usize) -> Result<B> {
+pub fn ensure_split<B: PbBufferReader>(buf: &mut B, len: usize) -> Result<B> {
     if buf.remaining() < len {
         Err(unexpected_eof())
     } else {
