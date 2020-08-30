@@ -1,7 +1,7 @@
 syntax="proto3";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "google/protobuf/empty.proto";
+import "gogo/gogo.proto";
+import "google/empty.proto";
 import "pbtest/pbtest.proto";
 import "rust/extensions.proto";
 

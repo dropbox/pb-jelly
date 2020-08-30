@@ -1,0 +1,15 @@
+syntax = "proto2";
+package pbtest;
+
+// rust/extensions.proto is included by default
+import "rust/extensions.proto";
+
+message BytesData {
+    // Using the `zero_copy` option, the `bytes` type maps to `pb::Lazy<bytes::Bytes>`
+    optional bytes data = 1 [(rust.zero_copy)=true];
+}
+
+message VecData {
+    // By default, the `bytes` type maps to Vec<u8>
+    optional bytes data = 1;
+}

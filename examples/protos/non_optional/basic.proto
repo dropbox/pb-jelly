@@ -1,6 +1,7 @@
 syntax = "proto3";
 package basic;
 
+// rust/extensions.proto is included by default
 import "rust/extensions.proto";
 
 enum City {

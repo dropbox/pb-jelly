@@ -1,0 +1,13 @@
+syntax = "proto3";
+package basic;
+
+import "rust/extensions.proto";
+
+message BoxedMessage {
+    string name = 1;
+}
+
+message OuterMessage {
+    BoxedMessage msg = 1 [(rust.box_it)=true];
+    string other = 2;
+}

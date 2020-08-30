@@ -8,4 +8,5 @@ edition = "2018"
 
 [dependencies]
 lazy_static = { version = "1.4.0" }
-pb = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+# pb = { git = "ssh://git@github.com/dropbox/pb-rs.git", branch = "pb/pb-gen-batteries-included" }
+pb = { path = "../pb-rs"}
