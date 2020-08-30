@@ -25,7 +25,7 @@ fn main() -> std::io::Result<()> {
         env::set_var("OUT_DIR", crate_path);
 
         #[cfg(feature = "bench_prost")]
-        prost_build::compile_protos(&["proto/pbtest/zero_copy.proto"],
+        prost_build::compile_protos(&["proto/pbtest/bench.proto"],
                                     &["proto"]).unwrap();
     }
 
@@ -38,7 +38,7 @@ fn main() -> std::io::Result<()> {
         #[cfg(feature = "bench_rust_protobuf")]
         protoc_rust::Codegen::new()
             .out_dir("gen/rust_protobuf")
-            .inputs(&["proto/pbtest/zero_copy.proto"])
+            .inputs(&["proto/pbtest/bench.proto"])
             .include("proto")
             .customize(Customize {
                 carllerche_bytes_for_bytes: Some(true),
