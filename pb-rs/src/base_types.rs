@@ -483,6 +483,19 @@ impl Message for Vec<u8> {
     }
 }
 
+/// A guard used to enforce the contract that all Rust Strings are valid UTF-8.
+/// Used in implementation of `trait Message` for `String`.
+#[doc(hidden)]
+struct UTF8Guard<'a> {
+    buf: &'a mut Vec<u8>,
+}
+
+impl Drop for UTF8Guard<'_> {
+    fn drop(&mut self) {
+        self.buf.clear();
+    }
+}
+
 impl Message for String {
     fn compute_size(&self) -> usize {
         self.len()
@@ -494,8 +507,38 @@ impl Message for String {
     }
 
     fn deserialize<B: BlobReader>(&mut self, buf: &mut B) -> Result<()> {
-        buf.reader().read_to_string(self)?;
-        Ok(())
+        // To make this more performant we write to our underlying buffer directly. Rust Strings
+        // are guaranteed to be valid UTF-8, so to make sure we don't leak a String that has
+        // invalid data, we use an RAII Guard. This guard holds a reference to our underlying 
+        // buffer, and if the guard is dropped (e.g. in the case of a panic), then we clear the 
+        // buffer. Once we validate our buffer contains valid UTF-8, we forget the guard.
+
+        // Get a reference to the underlying bytes of the String. This is technically unsafe, but
+        // we uphold the UTF-8 constraint with our guard.
+        let self_bytes = unsafe {
+            self.as_mut_vec()
+        };
+
+        // If our String isn't empty, clear it.
+        if !self_bytes.is_empty() {
+            self_bytes.clear();
+        }
+
+        // Create our UTF8Guard to protect against invalid UTF-8
+        let guard = UTF8Guard { buf: self_bytes };
+
+        // Write all of our message into our underlying buffer
+        let cnt = buf.remaining();
+        guard.buf.reserve(cnt);
+        guard.buf.put(buf);
+
+        // Try and make a str to validate that we have valid UTF-8
+        match std::str::from_utf8(guard.buf) {
+            // Success! We have valid UTF-8, we can forget our guard.
+            Ok(_) => Ok(std::mem::forget(guard)),
+            // Error! Our guard will be dropped, and the buffer will be cleared.
+            Err(_) => Err(std::io::ErrorKind::InvalidData.into())
+        }
     }
 }
 
