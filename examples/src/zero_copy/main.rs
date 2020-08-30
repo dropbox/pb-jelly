@@ -1,6 +1,6 @@
 use bytes::Bytes;
 use pb::{
-    Blob,
+    PbBuffer,
     Lazy,
     Message,
 };
@@ -23,7 +23,7 @@ fn main() -> std::io::Result<()> {
 
 
     // To achieve zero copy deserialization, we need to our serialized bytes to be in a container
-    // that implements the `pb::BlobReader` trait, `bytes::Bytes` implements this trait.
+    // that implements the `pb::PbBufferReader` trait, `bytes::Bytes` implements this trait.
     //
     // Ideally your serialized bytes would already be in a `Bytes` struct, e.g. some network request you're about to
     // handle.
@@ -34,7 +34,7 @@ fn main() -> std::io::Result<()> {
     let mut de_proto = BytesMessage::default();
     de_proto.deserialize(&mut reader)?;
     // Grab the bytes from the Lazy field
-    let inner_bytes: Bytes = de_proto.data.unwrap().into_blob();
+    let inner_bytes: Bytes = de_proto.data.unwrap().into_buffer();
 
     // Print our fields!
     println!("Name: {}", de_proto.name.unwrap());

@@ -1054,7 +1054,7 @@ class CodeWriter(object):
 
             with block(
                 self,
-                "fn serialize<W: ::pb::BlobWriter>(&self, w: &mut W) -> ::std::io::Result<()>",
+                "fn serialize<W: ::pb::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()>",
             ):
                 for field in sorted(msg_type.field, key=lambda f: f.number):
                     typ = self.rust_type(msg_type, field)
@@ -1087,7 +1087,7 @@ class CodeWriter(object):
 
             with block(
                 self,
-                "fn deserialize<B: ::pb::BlobReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()>",
+                "fn deserialize<B: ::pb::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()>",
             ):
                 preserve_unrecognized = msg_type.options.Extensions[
                     extensions_pb2.preserve_unrecognized

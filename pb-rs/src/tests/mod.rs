@@ -13,13 +13,13 @@ use crate::varint;
 use crate::wire_format;
 
 use super::{
-    cast_blob,
+    cast_buffer,
     ensure_split,
     ensure_wire_format,
     skip,
-    Blob,
-    BlobReader,
-    BlobWriter,
+    PbBuffer,
+    PbBufferReader,
+    PbBufferWriter,
     Lazy,
     Message,
 };
@@ -32,7 +32,7 @@ struct VecReader {
     end: usize,
 }
 
-impl Blob for VecReader {
+impl PbBuffer for VecReader {
     type Reader = VecReader;
     fn len(&self) -> usize {
         self.remaining()
@@ -68,9 +68,9 @@ impl Buf for VecReader {
     }
 }
 
-impl BlobReader for VecReader {
-    fn as_blob<B: Blob>(&self) -> Result<B> {
-        cast_blob(self.clone())
+impl PbBufferReader for VecReader {
+    fn as_buffer<B: PbBuffer>(&self) -> Result<B> {
+        cast_buffer(self.clone())
     }
 
     fn split(&mut self, at: usize) -> Self {
@@ -116,11 +116,11 @@ impl Write for VecWriter {
     }
 }
 
-impl BlobWriter for VecWriter {
-    /// Attempt to write non-deserialized blob into [Self]
-    fn write_blob<B: Blob>(&mut self, blob: &B) -> Result<()> {
-        if let Some(blob) = (blob as &dyn Any).downcast_ref::<VecReader>() {
-            self.contents.push(blob.clone());
+impl PbBufferWriter for VecWriter {
+    /// Attempt to write non-deserialized buf into [Self]
+    fn write_buffer<B: PbBuffer>(&mut self, buf: &B) -> Result<()> {
+        if let Some(buf) = (buf as &dyn Any).downcast_ref::<VecReader>() {
+            self.contents.push(buf.clone());
             Ok(())
         } else {
             Err(Error::new(ErrorKind::Other, "Can't zero-copy non-VecReader"))
@@ -153,7 +153,7 @@ impl Message for TestMessage {
         self.normal_data.compute_grpc_slices_size() + self.payload.compute_grpc_slices_size()
     }
 
-    fn serialize<W: BlobWriter>(&self, w: &mut W) -> Result<()> {
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
         wire_format::write(1, wire_format::Type::LengthDelimited, w)?;
         let l = self.normal_data.compute_size();
         varint::write(l as u64, w)?;
@@ -167,7 +167,7 @@ impl Message for TestMessage {
         Ok(())
     }
 
-    fn deserialize<B: BlobReader>(&mut self, mut buf: &mut B) -> Result<()> {
+    fn deserialize<B: PbBufferReader>(&mut self, mut buf: &mut B) -> Result<()> {
         while let Some((field_number, typ)) = wire_format::read(&mut buf)? {
             match field_number {
                 1 => {
@@ -216,8 +216,8 @@ fn test_serialize_message_into_slice() {
 
     assert_eq!(deserialized.normal_data, message.normal_data);
     assert_eq!(
-        deserialized.payload.into_blob().bytes(),
-        message.payload.into_blob().bytes()
+        deserialized.payload.into_buffer().bytes(),
+        message.payload.into_buffer().bytes()
     );
 
     assert_eq!(serialized, vec![10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
@@ -247,8 +247,8 @@ fn test_serialize_message_into_vec_writer() {
 
     assert_eq!(deserialized.normal_data, message.normal_data);
     assert_eq!(
-        deserialized.payload.into_blob().bytes(),
-        message.payload.into_blob().bytes()
+        deserialized.payload.into_buffer().bytes(),
+        message.payload.into_buffer().bytes()
     );
 
     assert_eq!(serialized, vec![10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
