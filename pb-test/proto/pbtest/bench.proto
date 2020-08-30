@@ -13,3 +13,7 @@ message VecData {
     // By default, the `bytes` type maps to Vec<u8>
     optional bytes data = 1;
 }
+
+message StringMessage {
+    optional string data = 1;
+}

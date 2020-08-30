@@ -9,8 +9,9 @@ mod benches {
         Lazy,
         Message
     };
-    use proto_pbtest::zero_copy::{
+    use proto_pbtest::bench::{
         BytesData,
+        StringMessage,
         VecData,
     };
     use test::Bencher;
@@ -70,6 +71,28 @@ mod benches {
             assert!(de_proto.has_data());
         });
     }
+
+    #[bench]
+    fn bench_deserialize_string(b: &mut Bencher) {
+        let data = String::from(include_str!("../data/moby_dick.txt"));
+
+        let mut proto = StringMessage::default();
+        proto.set_data(data);
+
+        let ser_bytes: Vec<u8> = proto.serialize_to_vec();
+
+        let bytes_buf = Bytes::from(ser_bytes);
+
+        b.iter(|| {
+            // Convert our bytes::Bytes into a pb::BlobReader
+            let mut bytes_reader = bytes_buf.clone().into_reader();
+
+            // Deserialize our proto
+            let mut de_proto = StringMessage::default();
+            de_proto.deserialize(&mut bytes_reader).unwrap();
+            assert!(de_proto.has_data());
+        });
+    }
 }
 
 #[cfg(all(test, feature = "bench_prost"))]
@@ -112,7 +135,7 @@ mod prost {
 #[cfg(all(test, feature = "bench_rust_protobuf"))]
 mod rust_protobuf {
     use bytes::Bytes;
-    use crate::gen::rust_protobuf::zero_copy::BytesData;
+    use crate::gen::rust_protobuf::bench::BytesData;
     use protobuf::{
         CodedInputStream,
         Message,
