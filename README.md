@@ -89,7 +89,7 @@ We mention "scalabilty" as a feature, what does that mean? We take an opinionate
 
 # Contributing
 
-First contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
+First, contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
 contributors must agree to [Dropbox's CLA](https://opensource.dropbox.com/cla/). Thank you for
 your understanding.
 
