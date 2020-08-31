@@ -1,3 +1,35 @@
+//! `pb_gen` generates Rust bindings for `proto2` and `proto3` files. It's intended to be used with [`pb_rs`](https://github.com/dropbox/pb-rs).
+//! 
+//! ## Examples
+//! Complete examples can be found in the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate, 
+//! or the [`pb-test`](https://github.com/dropbox/pb-rs/tree/master/pb-test) crate of the [`protobuf_rs`](https://github.com/dropbox/pb-rs) workspace.
+//! 
+//! ## In a nutshell 🥜
+//! You can include `pb_gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
+//! ```
+//! [build-dependencies]
+//! pb-gen = "0.1"
+//! ```
+//! 
+//! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct, 
+//! or the `gen_protos` convience function to specify where your protos live, and where the generated code should be put.
+//! ```
+//! use pb_gen::GenProtos;
+//! 
+//! fn main() -> std::io::Result<()> {
+//!    GenProtos::builder()
+//!        // output path for our generated code
+//!        .out_path("./gen")
+//!        // directory where our protos live
+//!        .src_path("./protos")
+//!        // delete and recreate the `out_path` directory every time
+//!        .cleanup_out_path(true)
+//!        .gen_protos();
+//!
+//!    Ok(())
+//! }
+//! ```
+
 use include_dir::{include_dir, Dir};
 use std::{
     convert::AsRef,
