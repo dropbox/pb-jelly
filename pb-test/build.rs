@@ -1,8 +1,5 @@
-use pb_gen::gen_protos;
-use std::{
-    env,
-    fs,
-};
+use pb_gen::GenProtos;
+use std::{env, fs};
 
 #[cfg(feature = "bench_prost")]
 use prost_build;
@@ -14,8 +11,12 @@ fn main() -> std::io::Result<()> {
     // Tell Cargo only re-run our build script if something in protos changes
     // println!("cargo:rerun-if-changed=protos");
 
-    let output = gen_protos(vec!["./proto"])?;
-    dbg!(output);
+    // Generate protobuf-rust bindings
+    GenProtos::builder()
+        .out_path("./gen/protobuf_rs")
+        .src_path("./proto/packages")
+        .include_path("./proto/includes")
+        .gen_protos();
 
     // compile the protos we use for bench marking, if we want to benchmark against PROST!
     if cfg!(feature = "bench_prost") {
@@ -25,8 +26,11 @@ fn main() -> std::io::Result<()> {
         env::set_var("OUT_DIR", crate_path);
 
         #[cfg(feature = "bench_prost")]
-        prost_build::compile_protos(&["proto/pbtest/bench.proto"],
-                                    &["proto"]).unwrap();
+        prost_build::compile_protos(
+            &["proto/packages/pbtest/bench.proto"],
+            &["proto/packages", "proto/includes"],
+        )
+        .unwrap();
     }
 
     // compile the protos we use for bench marking, if we want to benchmark against rust_protobuf
@@ -38,8 +42,9 @@ fn main() -> std::io::Result<()> {
         #[cfg(feature = "bench_rust_protobuf")]
         protoc_rust::Codegen::new()
             .out_dir("gen/rust_protobuf")
-            .inputs(&["proto/pbtest/bench.proto"])
-            .include("proto")
+            .inputs(&["proto/packages/pbtest/bench.proto"])
+            .include("proto/includes")
+            .include("proto/packages")
             .customize(Customize {
                 carllerche_bytes_for_bytes: Some(true),
                 ..Default::default()
