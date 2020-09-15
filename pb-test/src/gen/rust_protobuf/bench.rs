@@ -23,7 +23,7 @@
 /// of protobuf runtime.
 // const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_17_0;
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct BytesData {
     // message fields
     data: ::std::option::Option<::bytes::Bytes>,
@@ -44,7 +44,6 @@ impl BytesData {
     }
 
     // optional bytes data = 1;
-
 
     pub fn get_data(&self) -> &[u8] {
         match self.data.as_ref() {
@@ -85,16 +84,28 @@ impl ::protobuf::Message for BytesData {
         true
     }
 
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+    fn merge_from(
+        &mut self,
+        is: &mut ::protobuf::CodedInputStream<'_>,
+    ) -> ::protobuf::ProtobufResult<()> {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_carllerche_bytes_into(wire_type, is, &mut self.data)?;
-                },
+                    ::protobuf::rt::read_singular_carllerche_bytes_into(
+                        wire_type,
+                        is,
+                        &mut self.data,
+                    )?;
+                }
                 _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                    ::protobuf::rt::read_unknown_or_skip_group(
+                        field_number,
+                        wire_type,
+                        is,
+                        self.mut_unknown_fields(),
+                    )?;
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -112,7 +123,10 @@ impl ::protobuf::Message for BytesData {
         my_size
     }
 
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+    fn write_to_with_cached_sizes(
+        &self,
+        os: &mut ::protobuf::CodedOutputStream<'_>,
+    ) -> ::protobuf::ProtobufResult<()> {
         if let Some(ref v) = self.data.as_ref() {
             os.write_bytes(1, v)?;
         }
@@ -151,18 +165,22 @@ impl ::protobuf::Message for BytesData {
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> =
+            ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_option_accessor::<_, ::protobuf::types::ProtobufTypeCarllercheBytes>(
+            fields.push(::protobuf::reflect::accessor::make_option_accessor::<
+                _,
+                ::protobuf::types::ProtobufTypeCarllercheBytes,
+            >(
                 "data",
-                |m: &BytesData| { &m.data },
-                |m: &mut BytesData| { &mut m.data },
+                |m: &BytesData| &m.data,
+                |m: &mut BytesData| &mut m.data,
             ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<BytesData>(
                 "BytesData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -192,7 +210,7 @@ impl ::protobuf::reflect::ProtobufValue for BytesData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct VecData {
     // message fields
     data: ::std::option::Option<::bytes::Bytes>,
@@ -213,7 +231,6 @@ impl VecData {
     }
 
     // optional bytes data = 1;
-
 
     pub fn get_data(&self) -> &[u8] {
         match self.data.as_ref() {
@@ -254,16 +271,28 @@ impl ::protobuf::Message for VecData {
         true
     }
 
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+    fn merge_from(
+        &mut self,
+        is: &mut ::protobuf::CodedInputStream<'_>,
+    ) -> ::protobuf::ProtobufResult<()> {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_carllerche_bytes_into(wire_type, is, &mut self.data)?;
-                },
+                    ::protobuf::rt::read_singular_carllerche_bytes_into(
+                        wire_type,
+                        is,
+                        &mut self.data,
+                    )?;
+                }
                 _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                    ::protobuf::rt::read_unknown_or_skip_group(
+                        field_number,
+                        wire_type,
+                        is,
+                        self.mut_unknown_fields(),
+                    )?;
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -281,7 +310,10 @@ impl ::protobuf::Message for VecData {
         my_size
     }
 
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+    fn write_to_with_cached_sizes(
+        &self,
+        os: &mut ::protobuf::CodedOutputStream<'_>,
+    ) -> ::protobuf::ProtobufResult<()> {
         if let Some(ref v) = self.data.as_ref() {
             os.write_bytes(1, v)?;
         }
@@ -320,18 +352,22 @@ impl ::protobuf::Message for VecData {
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> =
+            ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_option_accessor::<_, ::protobuf::types::ProtobufTypeCarllercheBytes>(
+            fields.push(::protobuf::reflect::accessor::make_option_accessor::<
+                _,
+                ::protobuf::types::ProtobufTypeCarllercheBytes,
+            >(
                 "data",
-                |m: &VecData| { &m.data },
-                |m: &mut VecData| { &mut m.data },
+                |m: &VecData| &m.data,
+                |m: &mut VecData| &mut m.data,
             ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VecData>(
                 "VecData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -361,7 +397,7 @@ impl ::protobuf::reflect::ProtobufValue for VecData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct StringMessage {
     // message fields
     data: ::protobuf::SingularField<::std::string::String>,
@@ -382,7 +418,6 @@ impl StringMessage {
     }
 
     // optional string data = 1;
-
 
     pub fn get_data(&self) -> &str {
         match self.data.as_ref() {
@@ -414,7 +449,9 @@ impl StringMessage {
 
     // Take field
     pub fn take_data(&mut self) -> ::std::string::String {
-        self.data.take().unwrap_or_else(|| ::std::string::String::new())
+        self.data
+            .take()
+            .unwrap_or_else(|| ::std::string::String::new())
     }
 }
 
@@ -423,16 +460,24 @@ impl ::protobuf::Message for StringMessage {
         true
     }
 
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+    fn merge_from(
+        &mut self,
+        is: &mut ::protobuf::CodedInputStream<'_>,
+    ) -> ::protobuf::ProtobufResult<()> {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_string_into(wire_type, is, &mut self.data)?;
-                },
+                }
                 _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                    ::protobuf::rt::read_unknown_or_skip_group(
+                        field_number,
+                        wire_type,
+                        is,
+                        self.mut_unknown_fields(),
+                    )?;
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -450,7 +495,10 @@ impl ::protobuf::Message for StringMessage {
         my_size
     }
 
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+    fn write_to_with_cached_sizes(
+        &self,
+        os: &mut ::protobuf::CodedOutputStream<'_>,
+    ) -> ::protobuf::ProtobufResult<()> {
         if let Some(ref v) = self.data.as_ref() {
             os.write_string(1, &v)?;
         }
@@ -489,18 +537,24 @@ impl ::protobuf::Message for StringMessage {
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> =
+            ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_singular_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "data",
-                |m: &StringMessage| { &m.data },
-                |m: &mut StringMessage| { &mut m.data },
-            ));
+            fields.push(
+                ::protobuf::reflect::accessor::make_singular_field_accessor::<
+                    _,
+                    ::protobuf::types::ProtobufTypeString,
+                >(
+                    "data",
+                    |m: &StringMessage| &m.data,
+                    |m: &mut StringMessage| &mut m.data,
+                ),
+            );
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<StringMessage>(
                 "StringMessage",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -537,14 +591,14 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     ata\"#\n\rStringMessage\x12\x12\n\x04data\x18\x01\x20\x01(\tR\x04data\
 ";
 
-static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
+static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<
+    ::protobuf::descriptor::FileDescriptorProto,
+> = ::protobuf::rt::LazyV2::INIT;
 
 fn parse_descriptor_proto() -> ::protobuf::descriptor::FileDescriptorProto {
     ::protobuf::parse_from_bytes(file_descriptor_proto_data).unwrap()
 }
 
 pub fn file_descriptor_proto() -> &'static ::protobuf::descriptor::FileDescriptorProto {
-    file_descriptor_proto_lazy.get(|| {
-        parse_descriptor_proto()
-    })
+    file_descriptor_proto_lazy.get(|| parse_descriptor_proto())
 }

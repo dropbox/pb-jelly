@@ -4,21 +4,13 @@
 #[cfg(test)]
 mod benches {
     use bytes::Bytes;
-    use pb::{
-        PbBuffer,
-        Lazy,
-        Message
-    };
-    use proto_pbtest::bench::{
-        BytesData,
-        StringMessage,
-        VecData,
-    };
+    use pb::{Lazy, Message, PbBuffer};
+    use proto_pbtest::bench::{BytesData, StringMessage, VecData};
     use test::Bencher;
 
     #[bench]
     fn bench_deserialize_zero_copy_bytes(b: &mut Bencher) {
-        // Generate 4MB of data 
+        // Generate 4MB of data
         let data = Lazy::new(Bytes::from(vec![42 as u8; 4 * 1024 * 1024]));
 
         // Create our proto struct
@@ -117,16 +109,19 @@ mod prost {
         // Serialize the proto
         let csz = proto.encoded_len();
         let mut ser_bytes = Vec::with_capacity(csz);
-        proto.encode(&mut ser_bytes).expect("failed to encode PROST proto!");
+        proto
+            .encode(&mut ser_bytes)
+            .expect("failed to encode PROST proto!");
 
         // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
-        
+
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
             // Deserialize our proto
-            let de_proto = gen::BytesData::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
+            let de_proto =
+                gen::BytesData::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
             assert!(de_proto.data.is_some());
         });
     }
@@ -142,16 +137,19 @@ mod prost {
         // Serialize the proto
         let csz = proto.encoded_len();
         let mut ser_bytes = Vec::with_capacity(csz);
-        proto.encode(&mut ser_bytes).expect("failed to encode PROST proto!");
+        proto
+            .encode(&mut ser_bytes)
+            .expect("failed to encode PROST proto!");
 
         // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
-        
+
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
             // Deserialize our proto
-            let de_proto = gen::StringMessage::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
+            let de_proto = gen::StringMessage::decode(bytes_buf.clone())
+                .expect("failed to decode PROST proto!");
             assert!(de_proto.data.is_some());
         });
     }
@@ -159,15 +157,9 @@ mod prost {
 
 #[cfg(all(test, feature = "bench_rust_protobuf"))]
 mod rust_protobuf {
+    use crate::gen::rust_protobuf::bench::{BytesData, StringMessage};
     use bytes::Bytes;
-    use crate::gen::rust_protobuf::bench::{
-        BytesData,
-        StringMessage,
-    };
-    use protobuf::{
-        CodedInputStream,
-        Message,
-    };
+    use protobuf::{CodedInputStream, Message};
     use test::Bencher;
 
     #[bench]
@@ -182,18 +174,22 @@ mod rust_protobuf {
         // Serialize the proto
         let csz = proto.compute_size();
         let mut ser_bytes = Vec::with_capacity(csz as usize);
-        proto.write_to_vec(&mut ser_bytes).expect("failed to encode rust_protobuf proto!");
+        proto
+            .write_to_vec(&mut ser_bytes)
+            .expect("failed to encode rust_protobuf proto!");
 
         // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
-        
+
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
-        
+
         b.iter(|| {
             // Deserialize our proto
             let mut input_stream = CodedInputStream::from_carllerche_bytes(&bytes_buf);
             let mut de_proto = BytesData::default();
-            de_proto.merge_from(&mut input_stream).expect("failed to decode rust_protobuf proto!");
+            de_proto
+                .merge_from(&mut input_stream)
+                .expect("failed to decode rust_protobuf proto!");
             assert!(de_proto.has_data());
         });
     }
@@ -209,18 +205,22 @@ mod rust_protobuf {
         // Serialize the proto
         let csz = proto.compute_size();
         let mut ser_bytes = Vec::with_capacity(csz as usize);
-        proto.write_to_vec(&mut ser_bytes).expect("failed to encode rust_protobuf proto!");
+        proto
+            .write_to_vec(&mut ser_bytes)
+            .expect("failed to encode rust_protobuf proto!");
 
         // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
-        
+
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
-        
+
         b.iter(|| {
             // Deserialize our proto
             let mut input_stream = CodedInputStream::from_carllerche_bytes(&bytes_buf);
             let mut de_proto = StringMessage::default();
-            de_proto.merge_from(&mut input_stream).expect("failed to decode rust_protobuf proto!");
+            de_proto
+                .merge_from(&mut input_stream)
+                .expect("failed to decode rust_protobuf proto!");
             assert!(de_proto.has_data());
         });
     }

@@ -2,15 +2,11 @@
 
 use std::fs::metadata;
 use std::fs::File;
-use std::io::Read;
 use std::io::Cursor;
+use std::io::Read;
 
 use pb::wire_format::Type;
-use pb::{
-    ClosedProtoEnum,
-    Message,
-    OpenProtoEnum,
-};
+use pb::{ClosedProtoEnum, Message, OpenProtoEnum};
 use proto_pbtest::pbtest::*;
 use proto_pbtest::pbtest3::*;
 
@@ -62,7 +58,9 @@ fn test_construct() {
 #[test]
 fn repeated_varint_fields() {
     let mut expected = TestMessage::default();
-    expected.mut_repeated_uint32().extend(vec![1, 2, 3, 1, 2, 3]);
+    expected
+        .mut_repeated_uint32()
+        .extend(vec![1, 2, 3, 1, 2, 3]);
 
     // Write first 3 fields in packed format and other 3 in old repeated format
     let serialized = {
@@ -124,28 +122,40 @@ fn all_fields() {
     expected
         .mut_repeated_int64()
         .extend(vec![1283, -129_837, 1_239_871_298, -123_871_287]);
-    expected.mut_repeated_uint32().extend(vec![213, 123, 3646, 34]);
-    expected.mut_repeated_uint64().extend(vec![123, 14, 123, 34324, 2]);
+    expected
+        .mut_repeated_uint32()
+        .extend(vec![213, 123, 3646, 34]);
+    expected
+        .mut_repeated_uint64()
+        .extend(vec![123, 14, 123, 34324, 2]);
     expected
         .mut_repeated_fixed64()
         .extend(vec![pb::Fixed64(std::u64::MIN), pb::Fixed64(std::u64::MAX)]);
     expected
         .mut_repeated_fixed32()
         .extend(vec![pb::Fixed32(std::u32::MIN), pb::Fixed32(std::u32::MAX)]);
+    expected.mut_repeated_sfixed64().extend(vec![
+        pb::Sfixed64(std::i64::MIN),
+        pb::Sfixed64(std::i64::MAX),
+    ]);
+    expected.mut_repeated_sfixed32().extend(vec![
+        pb::Sfixed32(std::i32::MIN),
+        pb::Sfixed32(std::i32::MAX),
+    ]);
     expected
-        .mut_repeated_sfixed64()
-        .extend(vec![pb::Sfixed64(std::i64::MIN), pb::Sfixed64(std::i64::MAX)]);
+        .mut_repeated_double()
+        .extend(vec![0.1, 0.2, 0.3, 0.4, 0.5]);
     expected
-        .mut_repeated_sfixed32()
-        .extend(vec![pb::Sfixed32(std::i32::MIN), pb::Sfixed32(std::i32::MAX)]);
-    expected.mut_repeated_double().extend(vec![0.1, 0.2, 0.3, 0.4, 0.5]);
-    expected.mut_repeated_float().extend(vec![1.1, 2.2, 3.3, 4.4, 5.5]);
+        .mut_repeated_float()
+        .extend(vec![1.1, 2.2, 3.3, 4.4, 5.5]);
     expected
         .mut_repeated_bool()
         .extend(vec![false, true, false, true, true]);
-    expected
-        .mut_repeated_string()
-        .extend(vec!["str1".to_owned(), "str2".to_owned(), "str3 str4".to_owned()]);
+    expected.mut_repeated_string().extend(vec![
+        "str1".to_owned(),
+        "str2".to_owned(),
+        "str3 str4".to_owned(),
+    ]);
     expected
         .mut_repeated_bytes()
         .extend(vec![b"byte1".to_vec(), b"byte2".to_vec()]);
@@ -161,7 +171,9 @@ fn all_fields() {
     expected.optional_foreign_message_boxed = Some(Box::new(ForeignMessage { c: Some(-1234) }));
     expected.optional_foreign_message_nonnullable = ForeignMessage { c: Some(-1234) };
     expected.oneof_int = Some(TestMessage_OneofInt::Int1(34));
-    expected.oneof_foreign = Some(TestMessage_OneofForeign::Foreign2(ForeignMessage { c: Some(-1234) }));
+    expected.oneof_foreign = Some(TestMessage_OneofForeign::Foreign2(ForeignMessage {
+        c: Some(-1234),
+    }));
     expected.oneof_zero = Some(TestMessage_OneofZero::Int3(0)); // Caller set the int to 0 explicitly
     expected.oneof_null = None as ::std::option::Option<TestMessage_OneofNull>; // Caller set the message to None
     expected.oneof_unset = None as ::std::option::Option<TestMessage_OneofUnset>; // Caller never set the field
@@ -197,8 +209,14 @@ fn all_fields_default3() {
         default.optional_foreign_message_boxed,
         None as ::std::option::Option<Box<ForeignMessage3>>
     );
-    assert_eq!(default.optional_foreign_message_nonnullable, ForeignMessage3::default());
-    assert_eq!(default.oneof_int, None as ::std::option::Option<TestMessage3_OneofInt>);
+    assert_eq!(
+        default.optional_foreign_message_nonnullable,
+        ForeignMessage3::default()
+    );
+    assert_eq!(
+        default.oneof_int,
+        None as ::std::option::Option<TestMessage3_OneofInt>
+    );
     assert_eq!(
         default.oneof_foreign,
         None as ::std::option::Option<TestMessage3_OneofForeign>
@@ -253,7 +271,9 @@ fn all_fields_default3() {
     expected.optional_foreign_message_boxed = Some(Box::new(ForeignMessage3 { c: 78 }));
     expected.optional_foreign_message_nonnullable = ForeignMessage3 { c: 78 };
     expected.oneof_int = Some(TestMessage3_OneofInt::Int1(34));
-    expected.oneof_foreign = Some(TestMessage3_OneofForeign::Foreign2(ForeignMessage3 { c: 79 }));
+    expected.oneof_foreign = Some(TestMessage3_OneofForeign::Foreign2(ForeignMessage3 {
+        c: 79,
+    }));
     expected.oneof_zero = Some(TestMessage3_OneofZero::Int3(0)); // Caller set the int to 0 explicitly
     expected.oneof_null = None as ::std::option::Option<TestMessage3_OneofNull>; // Caller set the message to None
     expected.oneof_unset = None as ::std::option::Option<TestMessage3_OneofUnset>; // Caller never set the field
@@ -278,7 +298,8 @@ fn all_fields_default3() {
     expected.fixed_length = [0, 1, 2, 3];
     expected.fixed_length_repeated = vec![[0, 1, 2, 3], [4, 5, 6, 7]];
     expected.zero_or_fixed_length = None;
-    expected.zero_or_fixed_length_repeated = vec![None, Some([0, 1, 2, 3]), None, Some([4, 5, 6, 7])];
+    expected.zero_or_fixed_length_repeated =
+        vec![None, Some([0, 1, 2, 3]), None, Some([4, 5, 6, 7])];
 
     succeeds(&buf[..], expected);
 }
@@ -405,7 +426,9 @@ fn read_v2_one_ofs_with_v1_compatibility() {
         let parsed2 = Version2OneOf::deserialize_from_slice(buf1.as_ref()).unwrap();
         assert_eq!(
             parsed2.test_oneof,
-            Some(Version2OneOf_TestOneof::StringOneOf(::std::string::String::from("abc")))
+            Some(Version2OneOf_TestOneof::StringOneOf(
+                ::std::string::String::from("abc")
+            ))
         );
     }
     // Test protobuf2 with rust null disabled
@@ -425,9 +448,9 @@ fn read_v2_one_ofs_with_v1_compatibility() {
         let parsed2 = Version32OneOf::deserialize_from_slice(buf1.as_ref()).unwrap();
         assert_eq!(
             parsed2.test_oneof,
-            Some(Version32OneOf_TestOneof::StringOneOf(::std::string::String::from(
-                "abc"
-            )))
+            Some(Version32OneOf_TestOneof::StringOneOf(
+                ::std::string::String::from("abc")
+            ))
         );
     }
     // Test protobuf3 with rust null disabled
@@ -513,7 +536,7 @@ fn err_if_default_non_default_succeeds() {
 
     // Ensure no variant is produced for UNKNOWN_INVALID_VALUE.
     match expected.field {
-        TestMessage3ErrIfDefaultEnum_ErrIfDefaultEnum::THE_OTHER_ONE => {},
+        TestMessage3ErrIfDefaultEnum_ErrIfDefaultEnum::THE_OTHER_ONE => {}
     }
 
     succeeds(&buf[..], expected);
@@ -603,7 +626,8 @@ fn test_preserve_unrecognized() {
     let redeserialized = TestPreserveUnrecognized2::deserialize_from_slice(&reserialized).unwrap();
     assert_eq!(msg, redeserialized);
 
-    let deserialized_empty = TestPreserveUnrecognizedEmpty::deserialize_from_slice(&serialized).unwrap();
+    let deserialized_empty =
+        TestPreserveUnrecognizedEmpty::deserialize_from_slice(&serialized).unwrap();
     assert_eq!(deserialized_empty.serialize_to_vec(), serialized);
 }
 
