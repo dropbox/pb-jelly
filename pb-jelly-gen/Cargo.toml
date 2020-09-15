@@ -1,5 +1,5 @@
 [package]
-name = "pb-gen"
+name = "pb-jelly-gen"
 version = "0.1.0"
 authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>", "Parker Timmerman <parkertimmerman@dropbox.com>"]
 edition = "2018"

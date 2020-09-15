@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "pb-jelly",
-    "pb-gen",
+    "pb-jelly-gen",
     "pb-test",
 
     # Not published

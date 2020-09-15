@@ -21,7 +21,7 @@ proto_zero_copy = { path = "gen/rust/proto/proto_zero_copy"}
 serde_json = "1"
 
 [build-dependencies]
-pb-gen = { path = "../pb-gen" }
+pb-jelly-gen = { path = "../pb-jelly-gen" }
 
 
 [[bin]]
