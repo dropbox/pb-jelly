@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "pb-rs",
+    "pb-jelly",
     "pb-gen",
     "pb-test",
 
