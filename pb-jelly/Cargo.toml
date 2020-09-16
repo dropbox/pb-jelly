@@ -7,6 +7,7 @@ edition = "2018"
 license-file = "LICENSE"
 homepage = "https://github.com/dropbox/pb-rs"
 repository = "https://github.com/dropbox/pb-rs"
+readme = "README.md"
 keywords = ["google", "protobuf", "proto", "dropbox"]
 categories = ["encoding", "parsing", "web-programming"]
 
