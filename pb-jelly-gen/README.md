@@ -1,4 +1,4 @@
-# `pb-gen`
+# `pb-jelly-gen`
 ###### It's working! It's working! - Anakin Skywalker
 
 This crate provides a tool to generate [`Rust`](https://www.rust-lang.org/) code from `proto2` or `proto3` files. 
@@ -20,12 +20,12 @@ Once you've completed the above steps, you should include this crate as a build-
 ##### `Cargo.toml`
 ```
 [build-dependencies]
-pb-gen = "0.1"
+pb-jelly-gen = "0.0.1"
 ```
 
 ##### `build.rs`
 ```
-use pb_gen::gen_protos;
+use pb_jelly_gen::gen_protos;
 
 fn main() -> std::io::Result<()> {
     // Replace `./protos` with a path to your proto files.
