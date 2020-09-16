@@ -5,8 +5,8 @@ use std::fs::File;
 use std::io::Cursor;
 use std::io::Read;
 
-use pb::wire_format::Type;
-use pb::{ClosedProtoEnum, Message, OpenProtoEnum};
+use pb_jelly::wire_format::Type;
+use pb_jelly::{ClosedProtoEnum, Message, OpenProtoEnum};
 use proto_pbtest::pbtest::*;
 use proto_pbtest::pbtest3::*;
 
@@ -67,25 +67,25 @@ fn repeated_varint_fields() {
         let mut v = ::std::vec::Vec::new();
 
         // repeated part
-        pb::wire_format::write(33, Type::Varint, &mut v).unwrap();
-        pb::varint::write(1, &mut v).unwrap();
+        pb_jelly::wire_format::write(33, Type::Varint, &mut v).unwrap();
+        pb_jelly::varint::write(1, &mut v).unwrap();
 
         // packed part
-        pb::wire_format::write(33, Type::LengthDelimited, &mut v).unwrap();
-        pb::varint::write(4, &mut v).unwrap();
+        pb_jelly::wire_format::write(33, Type::LengthDelimited, &mut v).unwrap();
+        pb_jelly::varint::write(4, &mut v).unwrap();
 
-        pb::varint::write(2, &mut v).unwrap();
-        pb::varint::write(3, &mut v).unwrap();
-        pb::varint::write(1, &mut v).unwrap();
-        pb::varint::write(2, &mut v).unwrap();
+        pb_jelly::varint::write(2, &mut v).unwrap();
+        pb_jelly::varint::write(3, &mut v).unwrap();
+        pb_jelly::varint::write(1, &mut v).unwrap();
+        pb_jelly::varint::write(2, &mut v).unwrap();
 
         // repeated part
-        pb::wire_format::write(33, Type::Varint, &mut v).unwrap();
-        pb::varint::write(3, &mut v).unwrap();
+        pb_jelly::wire_format::write(33, Type::Varint, &mut v).unwrap();
+        pb_jelly::varint::write(3, &mut v).unwrap();
 
         // set non-nullable oneof to a so it parses
-        pb::wire_format::write(70, Type::LengthDelimited, &mut v).unwrap();
-        pb::varint::write(0, &mut v).unwrap();
+        pb_jelly::wire_format::write(70, Type::LengthDelimited, &mut v).unwrap();
+        pb_jelly::varint::write(0, &mut v).unwrap();
 
         v
     };
@@ -130,17 +130,17 @@ fn all_fields() {
         .extend(vec![123, 14, 123, 34324, 2]);
     expected
         .mut_repeated_fixed64()
-        .extend(vec![pb::Fixed64(std::u64::MIN), pb::Fixed64(std::u64::MAX)]);
+        .extend(vec![pb_jelly::Fixed64(std::u64::MIN), pb_jelly::Fixed64(std::u64::MAX)]);
     expected
         .mut_repeated_fixed32()
-        .extend(vec![pb::Fixed32(std::u32::MIN), pb::Fixed32(std::u32::MAX)]);
+        .extend(vec![pb_jelly::Fixed32(std::u32::MIN), pb_jelly::Fixed32(std::u32::MAX)]);
     expected.mut_repeated_sfixed64().extend(vec![
-        pb::Sfixed64(std::i64::MIN),
-        pb::Sfixed64(std::i64::MAX),
+        pb_jelly::Sfixed64(std::i64::MIN),
+        pb_jelly::Sfixed64(std::i64::MAX),
     ]);
     expected.mut_repeated_sfixed32().extend(vec![
-        pb::Sfixed32(std::i32::MIN),
-        pb::Sfixed32(std::i32::MAX),
+        pb_jelly::Sfixed32(std::i32::MIN),
+        pb_jelly::Sfixed32(std::i32::MAX),
     ]);
     expected
         .mut_repeated_double()
@@ -196,7 +196,7 @@ fn all_fields_default3() {
     assert_eq!(default.optional_int64, 0);
     assert_eq!(default.optional_uint32, 0);
     assert_eq!(default.optional_uint64, 0);
-    assert_eq!(default.optional_fixed64, pb::Fixed64(0));
+    assert_eq!(default.optional_fixed64, pb_jelly::Fixed64(0));
     assert_eq!(default.optional_double, 0.0);
     assert_eq!(default.optional_bool, false);
     assert_eq!(default.optional_string, "");
@@ -256,18 +256,18 @@ fn all_fields_default3() {
     let mut expected = TestMessage3::default();
     expected.optional_int32 = -1;
     expected.optional_uint32 = 7;
-    expected.optional_fixed64 = pb::Fixed64(33);
-    expected.optional_fixed32 = pb::Fixed32(12);
-    expected.optional_sfixed64 = pb::Sfixed64(500);
-    expected.optional_sfixed32 = pb::Sfixed32(22);
+    expected.optional_fixed64 = pb_jelly::Fixed64(33);
+    expected.optional_fixed32 = pb_jelly::Fixed32(12);
+    expected.optional_sfixed64 = pb_jelly::Sfixed64(500);
+    expected.optional_sfixed32 = pb_jelly::Sfixed32(22);
     expected.optional_float = 1.3;
     expected.optional_bool = false;
     expected.proto2_msg = Some(p2_msg);
     expected.proto2_msg_empty = Some(ForeignMessage::default());
-    expected.repeated_fixed64 = vec![pb::Fixed64(std::u64::MIN), pb::Fixed64(std::u64::MAX)];
-    expected.repeated_fixed32 = vec![pb::Fixed32(std::u32::MIN), pb::Fixed32(std::u32::MAX)];
-    expected.repeated_sfixed64 = vec![pb::Sfixed64(std::i64::MIN), pb::Sfixed64(std::i64::MAX)];
-    expected.repeated_sfixed32 = vec![pb::Sfixed32(std::i32::MIN), pb::Sfixed32(std::i32::MAX)];
+    expected.repeated_fixed64 = vec![pb_jelly::Fixed64(std::u64::MIN), pb_jelly::Fixed64(std::u64::MAX)];
+    expected.repeated_fixed32 = vec![pb_jelly::Fixed32(std::u32::MIN), pb_jelly::Fixed32(std::u32::MAX)];
+    expected.repeated_sfixed64 = vec![pb_jelly::Sfixed64(std::i64::MIN), pb_jelly::Sfixed64(std::i64::MAX)];
+    expected.repeated_sfixed32 = vec![pb_jelly::Sfixed32(std::i32::MIN), pb_jelly::Sfixed32(std::i32::MAX)];
     expected.optional_foreign_message_boxed = Some(Box::new(ForeignMessage3 { c: 78 }));
     expected.optional_foreign_message_nonnullable = ForeignMessage3 { c: 78 };
     expected.oneof_int = Some(TestMessage3_OneofInt::Int1(34));
@@ -514,10 +514,10 @@ fn read_pb3_v1_v2_compatibility() {
     assert_eq!(parsed2.optional_int64, 0);
     assert_eq!(parsed2.optional_uint32, 0);
     assert_eq!(parsed2.optional_uint64, 0);
-    assert_eq!(parsed2.optional_fixed64, pb::Fixed64(0));
-    assert_eq!(parsed2.optional_fixed32, pb::Fixed32(0));
-    assert_eq!(parsed2.optional_sfixed64, pb::Sfixed64(0));
-    assert_eq!(parsed2.optional_sfixed32, pb::Sfixed32(0));
+    assert_eq!(parsed2.optional_fixed64, pb_jelly::Fixed64(0));
+    assert_eq!(parsed2.optional_fixed32, pb_jelly::Fixed32(0));
+    assert_eq!(parsed2.optional_sfixed64, pb_jelly::Sfixed64(0));
+    assert_eq!(parsed2.optional_sfixed32, pb_jelly::Sfixed32(0));
     assert!(parsed2.optional_double.abs() < 0.00001);
     assert_eq!(parsed2.optional_bool, false);
     assert_eq!(parsed2.optional_string.as_str(), "");
@@ -568,7 +568,7 @@ fn wrong_wireformat() {
         for &(tag, expected) in correct_wireformat {
             let mut serialized: BlobReaderImpl = {
                 let mut v = ::std::vec::Vec::new();
-                pb::wire_format::write(tag, *wf, &mut v).unwrap();
+                pb_jelly::wire_format::write(tag, *wf, &mut v).unwrap();
                 Blob::from_vec(v).into()
             };
 
@@ -604,10 +604,10 @@ fn test_preserve_unrecognized() {
         a_int64: 4,
         a_uint32: 5,
         a_uint64: 6,
-        a_fixed64: pb::Fixed64(7),
-        a_fixed32: pb::Fixed32(8),
-        a_sfixed64: pb::Sfixed64(9),
-        a_sfixed32: pb::Sfixed32(10),
+        a_fixed64: pb_jelly::Fixed64(7),
+        a_fixed32: pb_jelly::Fixed32(8),
+        a_sfixed64: pb_jelly::Sfixed64(9),
+        a_sfixed32: pb_jelly::Sfixed32(10),
         a_double: 3.4,
         a_bool: true,
         a_string: "world".to_owned(),

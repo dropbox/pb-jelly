@@ -50,20 +50,20 @@ PRIMITIVE_TYPES = {
     FieldDescriptorProto.TYPE_INT64: ("i64", True, True),
     FieldDescriptorProto.TYPE_UINT32: ("u32", True, True),
     FieldDescriptorProto.TYPE_UINT64: ("u64", True, True),
-    FieldDescriptorProto.TYPE_SINT32: ("::pb::Signed32", True, True),
-    FieldDescriptorProto.TYPE_SINT64: ("::pb::Signed64", True, True),
-    FieldDescriptorProto.TYPE_FIXED32: ("::pb::Fixed32", True, True),
-    FieldDescriptorProto.TYPE_FIXED64: ("::pb::Fixed64", True, True),
-    FieldDescriptorProto.TYPE_SFIXED32: ("::pb::Sfixed32", True, True),
-    FieldDescriptorProto.TYPE_SFIXED64: ("::pb::Sfixed64", True, True),
+    FieldDescriptorProto.TYPE_SINT32: ("::pb_jelly::Signed32", True, True),
+    FieldDescriptorProto.TYPE_SINT64: ("::pb_jelly::Signed64", True, True),
+    FieldDescriptorProto.TYPE_FIXED32: ("::pb_jelly::Fixed32", True, True),
+    FieldDescriptorProto.TYPE_FIXED64: ("::pb_jelly::Fixed64", True, True),
+    FieldDescriptorProto.TYPE_SFIXED32: ("::pb_jelly::Sfixed32", True, True),
+    FieldDescriptorProto.TYPE_SFIXED64: ("::pb_jelly::Sfixed64", True, True),
     FieldDescriptorProto.TYPE_BOOL: ("bool", True, True),
     FieldDescriptorProto.TYPE_STRING: ("::std::string::String", True, False),
     FieldDescriptorProto.TYPE_BYTES: ("::std::vec::Vec<u8>", True, False),
 }
 
-BLOB_TYPE = "::pb::Lazy<::blob_pb::WrappedBlob>"
-VEC_SLICE_TYPE = "::pb::Lazy<::blob_pb::VecSlice>"
-LAZY_BYTES_TYPE = "::pb::Lazy<::bytes::Bytes>"
+BLOB_TYPE = "::pb_jelly::Lazy<::blob_pb::WrappedBlob>"
+VEC_SLICE_TYPE = "::pb_jelly::Lazy<::blob_pb::VecSlice>"
+LAZY_BYTES_TYPE = "::pb_jelly::Lazy<::bytes::Bytes>"
 # pull out `x` from every instance of `::x::y::z`, but not `y` or `z`
 CRATE_NAME_REGEX = re.compile(r"(?:^|\W)::(\w+)(?:::\w+)*")
 
@@ -321,17 +321,17 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_UINT64:
             return "u64", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_SINT32:
-            return "i32", "::pb::Signed32(v)"
+            return "i32", "::pb_jelly::Signed32(v)"
         elif self.field.type == FieldDescriptorProto.TYPE_SINT64:
-            return "i64", "::pb::Signed64(v)"
+            return "i64", "::pb_jelly::Signed64(v)"
         elif self.field.type == FieldDescriptorProto.TYPE_FIXED64:
-            return "u64", "::pb::Fixed64(v)"
+            return "u64", "::pb_jelly::Fixed64(v)"
         elif self.field.type == FieldDescriptorProto.TYPE_SFIXED64:
-            return "i64", "::pb::Sfixed64(v)"
+            return "i64", "::pb_jelly::Sfixed64(v)"
         elif self.field.type == FieldDescriptorProto.TYPE_FIXED32:
-            return "u32", "::pb::Fixed32(v)"
+            return "u32", "::pb_jelly::Fixed32(v)"
         elif self.field.type == FieldDescriptorProto.TYPE_SFIXED32:
-            return "i32", "::pb::Sfixed32(v)"
+            return "i32", "::pb_jelly::Sfixed32(v)"
         elif self.field.type == FieldDescriptorProto.TYPE_BOOL:
             return "bool", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_STRING:
@@ -722,10 +722,10 @@ class CodeWriter(object):
                         )
                     self.write("_ => Err(v),")
 
-        with block(self, "impl ::pb::ProtoEnum for " + name):
+        with block(self, "impl ::pb_jelly::ProtoEnum for " + name):
             pass
 
-        with block(self, "impl ::pb::ClosedProtoEnum for " + name):
+        with block(self, "impl ::pb_jelly::ClosedProtoEnum for " + name):
             with block(self, "fn name(self) -> &'static str"):
                 with block(self, "match self"):
                     for _, value in enum_variants:
@@ -801,10 +801,10 @@ class CodeWriter(object):
             with block(self, "fn from(v: %s) -> %s" % (closed_name, name)):
                 self.write("%s(v as i32)" % name)
 
-        with block(self, "impl ::pb::ProtoEnum for " + name):
+        with block(self, "impl ::pb_jelly::ProtoEnum for " + name):
             pass
 
-        with block(self, "impl ::pb::OpenProtoEnum for " + name):
+        with block(self, "impl ::pb_jelly::OpenProtoEnum for " + name):
             with block(self, "fn name(self) -> ::std::option::Option<&'static str>"):
                 with block(self, "match self"):
                     for _, value in enum_variants:
@@ -824,7 +824,7 @@ class CodeWriter(object):
                 self,
                 "fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result",
             ):
-                self.write("use ::pb::OpenProtoEnum;")
+                self.write("use ::pb_jelly::OpenProtoEnum;")
                 with block(self, "match self.name()"):
                     self.write('Some(s) => write!(f, "{}", s),')
                     self.write('None => write!(f, "Unknown({})", self.0),')
@@ -997,7 +997,7 @@ class CodeWriter(object):
                 "pub static ref %s_default: %s = %s::default();" % (name, name, name)
             )
 
-        with block(self, "impl ::pb::Message for " + name):
+        with block(self, "impl ::pb_jelly::Message for " + name):
             with block(self, "fn compute_size(&self) -> usize "):
                 if (
                     len(msg_type.field) > 0
@@ -1009,26 +1009,26 @@ class CodeWriter(object):
 
                         self.write("let mut %s_size = 0;" % field.name)
                         with field_iter(self, "val", name, msg_type, field):
-                            self.write("let l = ::pb::Message::compute_size(val);")
+                            self.write("let l = ::pb_jelly::Message::compute_size(val);")
                             if not typ.should_serialize_packed():
                                 self.write(
-                                    "%s_size += ::pb::wire_format::serialized_length(%s);"
+                                    "%s_size += ::pb_jelly::wire_format::serialized_length(%s);"
                                     % (field.name, field.number)
                                 )
                             if typ.is_length_delimited():
                                 self.write(
-                                    "%s_size += ::pb::varint::serialized_length(l as u64);"
+                                    "%s_size += ::pb_jelly::varint::serialized_length(l as u64);"
                                     % field.name
                                 )
                             self.write("%s_size += l;" % field.name)
                         if typ.should_serialize_packed():
                             with block(self, "if !self.%s.is_empty()" % field.name):
                                 self.write(
-                                    "size += ::pb::wire_format::serialized_length(%s);"
+                                    "size += ::pb_jelly::wire_format::serialized_length(%s);"
                                     % field.number
                                 )
                                 self.write(
-                                    "size += ::pb::varint::serialized_length(%s_size as u64);"
+                                    "size += ::pb_jelly::varint::serialized_length(%s_size as u64);"
                                     % field.name
                                 )
                         self.write("size += %s_size;" % field.name)
@@ -1046,7 +1046,7 @@ class CodeWriter(object):
                     for field in msg_type.field:
                         with field_iter(self, "val", name, msg_type, field):
                             self.write(
-                                "size += ::pb::Message::compute_grpc_slices_size(val);"
+                                "size += ::pb_jelly::Message::compute_grpc_slices_size(val);"
                             )
                     self.write("size")
                 else:
@@ -1054,7 +1054,7 @@ class CodeWriter(object):
 
             with block(
                 self,
-                "fn serialize<W: ::pb::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()>",
+                "fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()>",
             ):
                 for field in sorted(msg_type.field, key=lambda f: f.number):
                     typ = self.rust_type(msg_type, field)
@@ -1064,36 +1064,36 @@ class CodeWriter(object):
                         with block(self, "if !self.%s.is_empty()" % field.name):
                             self.write("let mut size = 0;")
                             with field_iter(self, "val", name, msg_type, field):
-                                self.write("size += ::pb::Message::compute_size(val);")
+                                self.write("size += ::pb_jelly::Message::compute_size(val);")
                             self.write(
-                                "::pb::wire_format::write(%s, ::pb::wire_format::Type::LengthDelimited, w)?;"
+                                "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;"
                                 % field.number
                             )
-                            self.write("::pb::varint::write(size as u64, w)?;")
+                            self.write("::pb_jelly::varint::write(size as u64, w)?;")
 
                     with field_iter(self, "val", name, msg_type, field):
                         if not typ.should_serialize_packed():
                             self.write(
-                                "::pb::wire_format::write(%s, ::pb::wire_format::Type::%s, w)?;"
+                                "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::%s, w)?;"
                                 % (field.number, typ.wire_format())
                             )
                         if typ.is_length_delimited():
-                            self.write("let l = ::pb::Message::compute_size(val);")
-                            self.write("::pb::varint::write(l as u64, w)?;")
-                        self.write("::pb::Message::serialize(val, w)?;")
+                            self.write("let l = ::pb_jelly::Message::compute_size(val);")
+                            self.write("::pb_jelly::varint::write(l as u64, w)?;")
+                        self.write("::pb_jelly::Message::serialize(val, w)?;")
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
                     self.write("w.write_all(&self._unrecognized)?;")
                 self.write("Ok(())")
 
             with block(
                 self,
-                "fn deserialize<B: ::pb::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()>",
+                "fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()>",
             ):
                 preserve_unrecognized = msg_type.options.Extensions[
                     extensions_pb2.preserve_unrecognized
                 ]
                 if preserve_unrecognized:
-                    self.write("let mut unrecognized = ::pb::Unrecognized::default();")
+                    self.write("let mut unrecognized = ::pb_jelly::Unrecognized::default();")
 
                 for oneof in msg_type.oneof_decl:
                     if not oneof_nullable(oneof):
@@ -1121,7 +1121,7 @@ class CodeWriter(object):
 
                 with block(
                     self,
-                    "while let Some((field_number, typ)) = ::pb::wire_format::read(&mut buf)?",
+                    "while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)?",
                 ):
                     with block(self, "match field_number"):
                         for field in msg_type.field:
@@ -1131,13 +1131,13 @@ class CodeWriter(object):
                                     with block(self, "match typ"):
                                         with block(
                                             self,
-                                            "::pb::wire_format::Type::LengthDelimited =>",
+                                            "::pb_jelly::wire_format::Type::LengthDelimited =>",
                                         ):
                                             self.write(
-                                                "let len = ::pb::varint::ensure_read(&mut buf)?;"
+                                                "let len = ::pb_jelly::varint::ensure_read(&mut buf)?;"
                                             )
                                             self.write(
-                                                "let mut vals = ::pb::ensure_split(buf, len as usize)?;"
+                                                "let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;"
                                             )
                                             with block(
                                                 self, "while vals.has_remaining()"
@@ -1147,14 +1147,14 @@ class CodeWriter(object):
                                                     % typ.rust_type()
                                                 )
                                                 self.write(
-                                                    "::pb::Message::deserialize(&mut val, &mut vals)?;"
+                                                    "::pb_jelly::Message::deserialize(&mut val, &mut vals)?;"
                                                 )
                                                 self.write(
                                                     "self.%s.push(val);" % field.name
                                                 )
                                         with block(self, "_ =>"):
                                             self.write(
-                                                '::pb::ensure_wire_format(typ, ::pb::wire_format::Type::%s, "%s", %s)?;'
+                                                '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::%s, "%s", %s)?;'
                                                 % (
                                                     typ.wire_format(),
                                                     name,
@@ -1166,7 +1166,7 @@ class CodeWriter(object):
                                                 % typ.rust_type()
                                             )
                                             self.write(
-                                                "::pb::Message::deserialize(&mut val, buf)?;"
+                                                "::pb_jelly::Message::deserialize(&mut val, buf)?;"
                                             )
                                             self.write(
                                                 "self.%s.push(val);" % field.name
@@ -1174,25 +1174,25 @@ class CodeWriter(object):
                                 else:
                                     if typ.is_length_delimited():
                                         self.write(
-                                            '::pb::ensure_wire_format(typ, ::pb::wire_format::Type::LengthDelimited, "%s", %s)?;'
+                                            '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "%s", %s)?;'
                                             % (name, field.number)
                                         )
                                         self.write(
-                                            "let len = ::pb::varint::ensure_read(&mut buf)?;"
+                                            "let len = ::pb_jelly::varint::ensure_read(&mut buf)?;"
                                         )
                                         self.write(
-                                            "let mut next = ::pb::ensure_split(buf, len as usize)?;"
+                                            "let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;"
                                         )
                                         self.write(
                                             "let mut val: %s = ::std::default::Default::default();"
                                             % typ.rust_type()
                                         )
                                         self.write(
-                                            "::pb::Message::deserialize(&mut val, &mut next)?;"
+                                            "::pb_jelly::Message::deserialize(&mut val, &mut next)?;"
                                         )
                                     else:
                                         self.write(
-                                            '::pb::ensure_wire_format(typ, ::pb::wire_format::Type::%s, "%s", %s)?;'
+                                            '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::%s, "%s", %s)?;'
                                             % (typ.wire_format(), name, field.number)
                                         )
                                         self.write(
@@ -1200,7 +1200,7 @@ class CodeWriter(object):
                                             % typ.rust_type()
                                         )
                                         self.write(
-                                            "::pb::Message::deserialize(&mut val, buf)?;"
+                                            "::pb_jelly::Message::deserialize(&mut val, buf)?;"
                                         )
 
                                     if typ.is_repeated():
@@ -1248,7 +1248,7 @@ class CodeWriter(object):
                                     "unrecognized.gather(field_number, typ, &mut buf)?;"
                                 )
                             else:
-                                self.write("::pb::skip(typ, &mut buf)?;")
+                                self.write("::pb_jelly::skip(typ, &mut buf)?;")
                 for oneof in msg_type.oneof_decl:
                     if not oneof_nullable(oneof):
                         with block(self, "match oneof_" + oneof.name):
@@ -1277,7 +1277,7 @@ class CodeWriter(object):
         name = "_".join(path + [desc_proto.name])
         full_name = ".".join([package, name]) if package else name
 
-        with block(self, "impl ::pb::MessageDescriptor for " + name):
+        with block(self, "impl ::pb_jelly::MessageDescriptor for " + name):
             self.write('const NAME: &\'static str = "%s";' % name)
             self.write('const FULL_NAME: &\'static str = "%s";' % full_name)
 
@@ -1543,7 +1543,7 @@ class Context(object):
             if derive_serde:
                 librs.write("#[macro_use]")
                 librs.write("extern crate serde;")
-            all_deps = ({"pb"} | deps | self.extra_crates[crate]) - {"std"}
+            all_deps = ({"pb_jelly"} | deps | self.extra_crates[crate]) - {"std"}
             for dep in sorted(all_deps):
                 librs.write("extern crate %s;" % dep)
             librs.write("")
@@ -1591,7 +1591,7 @@ class Context(object):
     def get_spec_toml_file(self, derive_serde):
         # type: (bool) -> Iterator[Tuple[Text, Text]]
         for crate, deps in six.iteritems(self.deps_map):
-            all_deps = ({"lazy_static", "pb"} | deps | self.extra_crates[crate]) - {
+            all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
             }
             if derive_serde:
@@ -1607,7 +1607,7 @@ class Context(object):
     def get_cargo_toml_file(self, derive_serde):
         # type: (Text, bool) -> Iterator[Tuple[Text, Text]]
         for crate, deps in six.iteritems(self.deps_map):
-            all_deps = ({"lazy_static", "pb"} | deps | self.extra_crates[crate]) - {
+            all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
             }
             if derive_serde:
@@ -1615,7 +1615,7 @@ class Context(object):
             features = {u"serde": u' features = ["serde_derive"]'}
             versions = {
                 u"lazy_static": u' version = "1.4.0" ',
-                u"pb": u' git = "ssh://git@github.com/dropbox/pb-rs.git" ',
+                u"pb-jelly": u' version = "0.0.1" ',
                 u"serde": u' version = "1.0.114" ',
                 u"bytes": u' version = "0.5.6" '
             }

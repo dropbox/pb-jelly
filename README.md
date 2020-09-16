@@ -56,14 +56,14 @@ There are only two crates you'll need if you want to use this with you project `
 Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
 ```
 [dependencies]
-pb-jelly = "0.1"
+pb-jelly = "0.0.1"
 ```
 
 ##### `pb-jelly-gen` 
 A framework for generating Rust structs and implementations for `proto2` and `proto3` files. Include this as a `build-dependency`, e.g.
 ```
 [build-dependencies]
-pb-jelly-gen = "0.1"
+pb-jelly-gen = "0.0.1"
 ```
 
 ### Generating Rust Code
