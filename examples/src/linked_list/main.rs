@@ -1,4 +1,4 @@
-use pb::Message;
+use pb_jelly::Message;
 use proto_linked_list::node::Node;
 
 fn main() -> std::io::Result<()> {

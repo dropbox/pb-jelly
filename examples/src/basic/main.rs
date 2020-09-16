@@ -1,4 +1,4 @@
-use pb::Message;
+use pb_jelly::Message;
 use proto_user::user::HelloUser;
 
 fn main() -> std::io::Result<()> {
