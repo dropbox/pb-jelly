@@ -46,7 +46,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 <br />
 
-## Using `protobuf-pb-jelly` in your project
+## Using `pb-jelly` in your project
 Multiple crates, multiple languages, my oh my!
 
 ### Essential Crates
