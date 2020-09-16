@@ -151,23 +151,6 @@ Service Generation
 4. `cargo test`
 
 
-
-### TODO
-
-- [ ] Document and add tests for `grpc_slices`
-- [ ] Add `custom_type` example to pbtest
-- [ ] Add travis-ci integration
-- [ ] Mypy the codegen.py in CI
-- [ ] rustfmt in CI
-- [ ] Add service generation codegen as well
-- [ ] Rename pbtest.proto to pbtest2.proto
-- [ ] Create github issues for remaining todos
-- [ ] Run mypy-protobuf for the tests - to better mypy codegen.py
-- [ ] Autogenerate warn on rust 2018 idioms
-- [ ] Add test files w/ multiple generated crates that depend on each other
-- [ ] Figure out how to host documentation somewhere
-- [ ] Bonus: Port over the test which serializes in go and deserializes/reserializes in rust
-
 ## Contributors
 
 ### Dropboxers
