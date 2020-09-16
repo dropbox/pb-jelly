@@ -92,6 +92,15 @@ We mention "scalabilty" as a feature, what does that mean? We take an opinionate
 
 <br />
 
+### The Name
+
+pb-jelly is a shoutout to the jellyfish known for its [highly efficient locomotion](https://en.wikipedia.org/wiki/Jellyfish).
+This library is capable of highly efficient locomotion of deserialized data. Also a shoutout to ability of the jellyfish
+to have [substantial increases in population](https://en.wikipedia.org/wiki/Jellyfish_bloom). This library handles generating
+a very large number of proto modules with complex dependencies, by generating to multiple crates.
+
+We also like [the popular sandwich](https://en.wikipedia.org/wiki/Peanut_butter_and_jelly_sandwich).
+
 # Contributing
 
 First, contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
