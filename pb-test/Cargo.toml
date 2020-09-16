@@ -19,7 +19,7 @@ protobuf = { version = "2.17", features = ["with-bytes"], optional = true }
 
 
 [build-dependencies]
-pb-jelly-gen = { path = "../pb-jelly-gen" }
+pb-jelly-gen = "0.0.1"
 
 # only used when benchmarking PROST!
 prost-build = { version = "0.6", optional = true }

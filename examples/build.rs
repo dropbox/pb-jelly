@@ -1,4 +1,4 @@
-use pb_gen::GenProtos;
+use pb_jelly_gen::GenProtos;
 
 fn main() -> std::io::Result<()> {
     // Tell Cargo only re-run our build script if something in protos changes

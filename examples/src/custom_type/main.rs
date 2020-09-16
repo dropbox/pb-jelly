@@ -1,4 +1,4 @@
-use pb::Message;
+use pb_jelly::Message;
 use proto_custom_type::custom::{UserId, UserRequest};
 
 fn main() -> std::io::Result<()> {

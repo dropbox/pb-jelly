@@ -1,4 +1,4 @@
-use pb::Message;
+use pb_jelly::Message;
 use proto_box_it::basic::{
     BoxedMessage,
     OuterMessage,

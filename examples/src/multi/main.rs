@@ -1,4 +1,4 @@
-use pb::Message;
+use pb_jelly::Message;
 // Under the multi folder we have two folders /team and /user
 use proto_multi::{
     // generates a team module

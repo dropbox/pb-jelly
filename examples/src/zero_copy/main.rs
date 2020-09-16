@@ -1,5 +1,5 @@
 use bytes::Bytes;
-use pb::{
+use pb_jelly::{
     PbBuffer,
     Lazy,
     Message,

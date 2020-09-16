@@ -9,7 +9,7 @@ publish = false
 
 [dependencies]
 bytes = "0.5.6"
-pb = { git = "ssh://git@github.com/dropbox/pb-rs.git" }
+pb-jelly = "0.0.1"
 proto_box_it = { path = "gen/rust/proto/proto_box_it" }
 proto_custom_type = { path = "gen/rust/proto/proto_custom_type" }
 proto_linked_list = { path = "gen/rust/proto/proto_linked_list" }
@@ -21,7 +21,7 @@ proto_zero_copy = { path = "gen/rust/proto/proto_zero_copy"}
 serde_json = "1"
 
 [build-dependencies]
-pb-jelly-gen = { path = "../pb-jelly-gen" }
+pb-jelly-gen = "0.0.1"
 
 
 [[bin]]
