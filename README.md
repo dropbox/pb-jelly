@@ -1,7 +1,9 @@
 # `pb-jelly`
 <p align="right"><a href="https://dropbox.tech/">by <img src="https://www.dropbox.com/s/vwygq2i9gmx60bz/dropbox_small.png?raw=1" width="32" height="32"/></a></p>
 
+
 `pb-jelly` is a [protobuf](https://developers.google.com/protocol-buffers) code generation framework for the [Rust language](https://www.rust-lang.org/) developed at Dropbox.
+
 
 ### History
 
@@ -18,6 +20,9 @@ our [Sync Engine](https://dropbox.tech/infrastructure/rewriting-the-heart-of-our
 Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github.com/danburkert/prost) and [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf)), we wanted to share ours as well.
 
 <br />
+
+[![Crates.io](https://img.shields.io/crates/v/pb-jelly)](https://crates.io/crates/pb-jelly) [![Documentation](https://docs.rs/pb-jelly/badge.svg)](https://docs.rs/pb-jelly) [![Crates.io](https://img.shields.io/crates/l/pb-jelly)](LICENSE)
+
 
 ## Features
 - Functional "Rust-minded" proto extensions, e.g. `[(rust.box_it)=true]`
