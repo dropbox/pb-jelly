@@ -1,7 +1,7 @@
-# `protobuf-rs`
+# `pb-jelly`
 <p align="right"><a href="https://dropbox.tech/">by <img src="https://www.dropbox.com/s/vwygq2i9gmx60bz/dropbox_small.png?raw=1" width="32" height="32"/></a></p>
 
-`pb-rs` is a [protobuf](https://developers.google.com/protocol-buffers) code generation framework for the [Rust language](https://www.rust-lang.org/) developed at Dropbox.
+`pb-jelly` is a [protobuf](https://developers.google.com/protocol-buffers) code generation framework for the [Rust language](https://www.rust-lang.org/) developed at Dropbox.
 
 ### History
 
@@ -46,33 +46,33 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 <br />
 
-## Using `protobuf-rs` in your project
+## Using `protobuf-pb-jelly in your project
 Multiple crates, multiple languages, my oh my!
 
 ### Essential Crates
-There are only two crates you'll need if you want to use this with you project `pb-rs` and `pb-gen`. <br />
+There are only two crates you'll need if you want to use this with you project `pb-jelly` and `pb-jelly-gen`. <br />
 
-##### `pb-rs` 
+##### `pb-jelly` 
 Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
 ```
 [dependencies]
 pb = "0.1"
 ```
 
-##### `pb-gen` 
+##### `pb-jelly-gen` 
 A framework for generating Rust structs and implementations for `proto2` and `proto3` files. Include this as a `build-dependency`, e.g.
 ```
 [build-dependencies]
-pb-gen = "0.1"
+pb-jelly-gen = "0.1"
 ```
 
 ### Generating Rust Code
 In order to generate Rust code from your proto definitions you'll need three things
-1. `pb-gen`
+1. `pb-jelly-gen`
 2. `protoc` - The protobuf compiler, this can be built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed via `brew install protobuf`.
 3. `python2` - The codegen plugin used with `protoc` is written in Python2. Before running it, you'll need to install some packages, a requirements.txt is pending [#18](https://github.com/dropbox/pb-rs/issues/18).
 
-Take a look at the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate to see how we leverage `pb-gen` and `build.rs` to get started using protobufs in Rust!
+Take a look at the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
 
 <br />
 
@@ -132,7 +132,7 @@ Service Generation
     - Generate test protos
         - On OSX: you'll have to install coreutils for realpath `brew install coreutils`
         - `./gen_protos.sh`
-3. **pb-rs** currently uses an experimental test framework that requires a nightly build of rust.
+3. **pb-jelly** currently uses an experimental test framework that requires a nightly build of rust.
 	-  `rustup default nightly`
 4. `cargo test`
 
