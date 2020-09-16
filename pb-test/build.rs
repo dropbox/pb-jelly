@@ -13,7 +13,7 @@ fn main() -> std::io::Result<()> {
 
     // Generate protobuf-rust bindings
     GenProtos::builder()
-        .out_path("./gen/protobuf_rs")
+        .out_path("./gen/pb-jelly")
         .src_path("./proto/packages")
         .include_path("./proto/includes")
         .gen_protos();
