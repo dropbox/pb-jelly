@@ -177,7 +177,7 @@ Service Generation
 - [@goffrie](https://github.com/goffrie)
 - [@euroelessar](https://github.com/euroelessar)
 - [@bradenaw](https://github.com/bradenaw)
-- [@aaronp]
+- [@glaysche2](https://github.com/glaysche2)
 - [@jiayixu](https://github.com/jiayixu)
 - [@dyv](https://github.com/dyv)
 - [@joshuawarner32](https://github.com/joshuawarner32)
