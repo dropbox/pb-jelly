@@ -1,8 +1,14 @@
 [package]
 name = "pb-jelly"
+description = "A protobuf runtime for the Rust language developed at Dropbox"
 version = "0.1.0"
 authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>", "Parker Timmerman <parkertimmerman@dropbox.com>"]
 edition = "2018"
+license-file = "LICENSE.txt"
+homepage = "https://github.com/dropbox/pb-rs"
+repository = "https://github.com/dropbox/pb-rs"
+keywords = ["google", "protobuf", "proto", "dropbox"]
+categories = ["encoding", "parsing", "web-programming"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
