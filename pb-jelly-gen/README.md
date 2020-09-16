@@ -7,7 +7,7 @@ This crate provides a tool to generate [`Rust`](https://www.rust-lang.org/) code
 ### How To Use
 
 ##### `python` + `protoc`
-The core of this crate is a python2 script `codegen.py` that is provided to the protobuf compiler, `protoc` as a plugin.
+The core of this crate is a python script `codegen.py` that is provided to the protobuf compiler, `protoc` as a plugin.
 There are a few python depdendencies which can be installed by running one of two commands:
 1. Running `pip install six protobuf typing` or...
 2. Running `pip install -r requirements.txt` from the root of this crate, if you have it cloned.
