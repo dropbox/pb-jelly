@@ -4,7 +4,7 @@
 #[cfg(test)]
 mod benches {
     use bytes::Bytes;
-    use pb::{Lazy, Message, PbBuffer};
+    use pb_jelly::{Lazy, Message, PbBuffer};
     use proto_pbtest::bench::{BytesData, StringMessage, VecData};
     use test::Bencher;
 

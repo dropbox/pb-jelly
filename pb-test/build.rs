@@ -1,4 +1,4 @@
-use pb_gen::GenProtos;
+use pb_jelly_gen::GenProtos;
 use std::{env, fs};
 
 #[cfg(feature = "bench_prost")]

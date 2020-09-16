@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 bytes = "0.5.6"
-pb = { git = "ssh://git@github.com/dropbox/pb-rs.git" }
+pb-jelly = "0.0.1"
 pretty_assertions = "0.6.1"
 proto_pbtest = { path = "gen/protobuf_rs/proto_pbtest" }
 
