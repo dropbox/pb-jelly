@@ -158,8 +158,6 @@ Service Generation
 - [ ] Add test files w/ multiple generated crates that depend on each other
 - [ ] Figure out how to host documentation somewhere
 - [ ] Bonus: Port over the test which serializes in go and deserializes/reserializes in rust
-- [ ] Bonus: Python3
-- [ ] Open source oxidize (or something of the sort)
 
 ## Contributors
 
