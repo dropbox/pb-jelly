@@ -40,14 +40,14 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 |                Extension                |                                                 Description                                                | Type  | Example |
 |:---------------------------------------:|:----------------------------------------------------------------------------------------------------------:|-------|:-------:|
-| `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field | [`zero_copy`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
-| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
-| `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
+| `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field | [`zero_copy`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
 | `(gogoproto.nullable)=false`            | Generates non-nullable fields types									       | Field | `TODO` |
-| `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
-| `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
-| `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-rs/tree/zero_copy/examples/src) |
+| `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 
 <br />
 
@@ -77,7 +77,7 @@ In order to generate Rust code from your proto definitions you'll need three thi
 2. `protoc` - The protobuf compiler, this can be built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed via `brew install protobuf`.
 3. `python2` - The codegen plugin used with `protoc` is written in Python2. Before running it, you'll need to install some packages, a requirements.txt is pending [#18](https://github.com/dropbox/pb-rs/issues/18).
 
-Take a look at the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
+Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
 
 <br />
 
