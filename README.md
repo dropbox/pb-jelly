@@ -46,7 +46,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 <br />
 
-## Using `protobuf-pb-jelly in your project
+## Using `protobuf-pb-jelly` in your project
 Multiple crates, multiple languages, my oh my!
 
 ### Essential Crates
@@ -56,7 +56,7 @@ There are only two crates you'll need if you want to use this with you project `
 Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
 ```
 [dependencies]
-pb = "0.1"
+pb-jelly = "0.1"
 ```
 
 ##### `pb-jelly-gen` 
