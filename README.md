@@ -75,7 +75,7 @@ pb-jelly-gen = "0.0.1"
 In order to generate Rust code from your proto definitions you'll need three things
 1. `pb-jelly-gen`
 2. `protoc` - The protobuf compiler, this can be built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed via `brew install protobuf`.
-3. `python2` - The codegen plugin used with `protoc` is written in Python2. Before running it, you'll need to install some packages, a requirements.txt is pending [#18](https://github.com/dropbox/pb-rs/issues/18).
+3. `python` - The codegen plugin used with `protoc` is written in Python (compatible with both py2 and py3). Before running it, you'll need to install some packages, a requirements.txt is pending [#18](https://github.com/dropbox/pb-rs/issues/18).
 
 Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
 
