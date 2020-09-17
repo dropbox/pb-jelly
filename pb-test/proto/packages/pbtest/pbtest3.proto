@@ -2,7 +2,7 @@ syntax="proto3";
 
 import "gogo/gogo.proto";
 import "google/empty.proto";
-import "pbtest/pbtest.proto";
+import "pbtest/pbtest2.proto";
 import "rust/extensions.proto";
 
 package pbtest;

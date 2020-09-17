@@ -163,7 +163,7 @@ impl GenProtos {
             .expect("something went wrong in generating Rust bindings 🤮");
         
         if !output.status.success() {
-            dbg!(output.status);
+            dbg!(output.status.code());
             eprintln!("stdout={}", from_utf8(&output.stdout).unwrap_or("cant decode stdout"));
             eprintln!("stderr={}", from_utf8(&output.stderr).unwrap_or("cant decode stderr"));
             panic!("Failed to generate Rust bindings to proto files!")
@@ -196,39 +196,39 @@ impl GenProtos {
         // Temp path to the codegen script
         let codegen_path = temp_dir.path().join("codegen.py");
 
-        let mut rust_cmd = Command::new("protoc");
+        let mut protoc_cmd = Command::new("protoc");
 
         // Directories that contain protos
         dbg!("Include paths");
         for path in self.src_paths.iter() {
-            rust_cmd.arg("-I");
-            rust_cmd.arg(path);
+            protoc_cmd.arg("-I");
+            protoc_cmd.arg(path);
             dbg!(path);
         }
 
         // If we want to include our `extensions.proto` file for Rust extentions
         if self.include_extensions {
             let ext_path = temp_dir.path();
-            rust_cmd.arg("-I");
-            rust_cmd.arg(ext_path);
+            protoc_cmd.arg("-I");
+            protoc_cmd.arg(ext_path);
             dbg!(ext_path);
         }
 
         // Include any protos from our include paths
         for path in self.include_paths.iter() {
-            rust_cmd.arg("-I");
-            rust_cmd.arg(path);
+            protoc_cmd.arg("-I");
+            protoc_cmd.arg(path);
             dbg!(path);
         }
 
         // Set the rust plugin
-        rust_cmd.arg(format!(
+        protoc_cmd.arg(format!(
             "--plugin=protoc-gen-rust={}",
             codegen_path.to_str().unwrap()
         ));
 
         // Set the Rust out path
-        rust_cmd.arg(format!(
+        protoc_cmd.arg(format!(
             "--rust_out={}",
             self.gen_path.to_str().unwrap()
         ));
@@ -250,10 +250,11 @@ impl GenProtos {
         dbg!("Proto paths");
         for path in proto_paths {
             dbg!(&path);
-            rust_cmd.arg(path);
+            protoc_cmd.arg(path);
         }
 
-        rust_cmd.output()
+        dbg!(&protoc_cmd);
+        protoc_cmd.output()
     }
 
     /// We bundle all non-Rust, but necessary files into a static CODEGEN blob. When we run the codegen script,

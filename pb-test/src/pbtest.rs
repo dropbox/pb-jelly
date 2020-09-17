@@ -7,7 +7,7 @@ use std::io::Read;
 
 use pb_jelly::wire_format::Type;
 use pb_jelly::{ClosedProtoEnum, Message, OpenProtoEnum};
-use proto_pbtest::pbtest::*;
+use proto_pbtest::pbtest2::*;
 use proto_pbtest::pbtest3::*;
 
 fn get_go_proto_bytes(name: &str) -> ::std::vec::Vec<u8> {
