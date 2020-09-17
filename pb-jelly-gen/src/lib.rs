@@ -168,6 +168,8 @@ impl GenProtos {
             eprintln!("stderr={}", from_utf8(&output.stderr).unwrap_or("cant decode stderr"));
             panic!("Failed to generate Rust bindings to proto files!")
         }
+
+        dbg!("Protos Generated Successfully");
     }
 }
 
