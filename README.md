@@ -157,8 +157,8 @@ Service Generation
         - `python3 -m pip install -r pb-jelly-gen/requirements.txt`
 3. **pb-jelly** currently uses an experimental test framework that requires a nightly build of rust.
 	-  `rustup default nightly`
-4. `cd pb-test/pb_test_gen ; cargo run`
-5. `cd pb-test/; cargo test`
+4. `cd pb-test`
+5. `( cd pb_test_gen ; cargo run ) ; cargo test`
 
 
 ## Contributors
