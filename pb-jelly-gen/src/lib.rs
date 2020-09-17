@@ -6,15 +6,15 @@
 //! 
 //! ## In a nutshell 🥜
 //! You can include `pb_gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
-//! ```
+//! ```toml
 //! [build-dependencies]
 //! pb-gen = "0.1"
 //! ```
 //! 
 //! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct, 
 //! or the `gen_protos` convience function to specify where your protos live, and where the generated code should be put.
-//! ```
-//! use pb_gen::GenProtos;
+//! ```no_run
+//! use pb_jelly_gen::GenProtos;
 //! 
 //! fn main() -> std::io::Result<()> {
 //!    GenProtos::builder()
@@ -39,6 +39,7 @@ use std::{
     os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
     process::{Command, Output},
+    str::from_utf8,
 };
 use tempdir::TempDir;
 use walkdir::WalkDir;
@@ -162,7 +163,9 @@ impl GenProtos {
             .expect("something went wrong in generating Rust bindings 🤮");
         
         if !output.status.success() {
-            dbg!(output);
+            dbg!(output.status);
+            eprintln!("stdout={}", from_utf8(&output.stdout).unwrap_or("cant decode stdout"));
+            eprintln!("stderr={}", from_utf8(&output.stderr).unwrap_or("cant decode stderr"));
             panic!("Failed to generate Rust bindings to proto files!")
         }
     }
@@ -172,12 +175,17 @@ impl GenProtos {
 impl GenProtos {
     fn gen_protos_helper(self) -> std::io::Result<Output> {
         // Clean up root generated directory
+        dbg!("Cleaning up");
         if self.cleanup_out_path && self.gen_path.exists() && self.gen_path.is_dir() {
             fs::remove_dir_all(&self.gen_path)?;
-            fs::create_dir(&self.gen_path)?;
         }
 
         // Re-create essential files
+        dbg!("Recreating gen path", &self.gen_path);
+        if !self.gen_path.exists() {
+            fs::create_dir_all(&self.gen_path)?;
+        }
+        dbg!("Recreating temp files");
         let temp_dir = self.create_temp_files()?;
         // Generate Rust protos
         self.gen_rust_protos(temp_dir)
@@ -221,7 +229,7 @@ impl GenProtos {
         // Set the Rust out path
         rust_cmd.arg(format!(
             "--rust_out={}",
-            self.gen_path.canonicalize().unwrap().to_str().unwrap()
+            self.gen_path.to_str().unwrap()
         ));
 
         // Get paths of our Protos
