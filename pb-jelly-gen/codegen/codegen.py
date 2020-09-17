@@ -1543,9 +1543,6 @@ class Context(object):
             if derive_serde:
                 librs.write("#[macro_use]")
                 librs.write("extern crate serde;")
-            all_deps = ({"pb_jelly"} | deps | self.extra_crates[crate]) - {"std"}
-            for dep in sorted(all_deps):
-                librs.write("extern crate %s;" % dep)
             librs.write("")
 
             def mod_tree_dfs(mod_prefix_path, sub_mod_tree):
@@ -1688,6 +1685,7 @@ edition = "2018"
 RS_HEADER = (
     """// @"""
     + """generated, do not edit
+#![warn(rust_2018_idioms)]
 #![allow(clippy::float_cmp)]
 #![allow(irrefutable_let_patterns)]
 #![allow(non_camel_case_types)]
