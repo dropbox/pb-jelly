@@ -175,17 +175,16 @@ impl GenProtos {
 impl GenProtos {
     fn gen_protos_helper(self) -> std::io::Result<Output> {
         // Clean up root generated directory
-        dbg!("Cleaning up");
         if self.cleanup_out_path && self.gen_path.exists() && self.gen_path.is_dir() {
+            dbg!("Cleaning up existing gen path", &self.gen_path);
             fs::remove_dir_all(&self.gen_path)?;
         }
 
         // Re-create essential files
-        dbg!("Recreating gen path", &self.gen_path);
         if !self.gen_path.exists() {
+            dbg!("Creating gen path", &self.gen_path);
             fs::create_dir_all(&self.gen_path)?;
         }
-        dbg!("Recreating temp files");
         let temp_dir = self.create_temp_files()?;
         // Generate Rust protos
         self.gen_rust_protos(temp_dir)
@@ -259,7 +258,6 @@ impl GenProtos {
     /// we recreate these in a temp directory `/tmp/codegen` that is cleaned up after.
     fn create_temp_files(&self) -> std::io::Result<TempDir> {
         let temp_dir = TempDir::new("codegen")?;
-        dbg!(temp_dir.path());
 
         fn create_temp_files_helper(dir: &Dir, temp_dir: &TempDir) -> std::io::Result<()> {
             for file in dir.files() {

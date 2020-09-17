@@ -65,17 +65,30 @@ pb-jelly = "0.0.1"
 ```
 
 ##### `pb-jelly-gen` 
-A framework for generating Rust structs and implementations for `proto2` and `proto3` files. Include this as a `build-dependency`, e.g.
+
+A framework for generating Rust structs and implementations for `proto2` and `proto3` files.
+In order to use pb-jelly, you need to add the pb-jelly-gen/codegen/codegen.py as a plugin to your protoc invocation.
+
+We added some code here to handle the protoc invocation if you choose to use it.
+You'll need to add a generation crate (see `examples_gen` for an example)
+Include `pb-jelly-gen` as a dependency of your generation crate, and `cargo run` to invoke protoc for you.
 ```
-[build-dependencies]
+[dependencies]
 pb-jelly-gen = "0.0.1"
 ```
 
+Eventually, we hope to eliminate the need for a generation crate, and simply have generation occur
+inside a build.rs with `pb-jelly-gen` as a build dependency. However https://github.com/rust-lang/cargo/issues/8709
+must be resolved first.
+
+Note that you can always invoke protoc on your own (for example if you are already doing so to generate for multiple languages)
+with `--rust_out=codegen.py` as a plugin for rust.
+
 ### Generating Rust Code
 In order to generate Rust code from your proto definitions you'll need three things
-1. `pb-jelly-gen`
-2. `protoc` - The protobuf compiler, this can be built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed via `brew install protobuf`.
-3. `python` - The codegen plugin used with `protoc` is written in Python (compatible with both py2 and py3). Before running it, you'll need to install some packages, a requirements.txt is pending [#18](https://github.com/dropbox/pb-rs/issues/18).
+1. `protoc` - The protobuf compiler, this can be built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed via `brew install protobuf`.
+2. `python` - The codegen plugin used with `protoc` is written in Python (compatible with both py2 and py3). Before running it, you'll need to install some packages, via `python -m pip install -r pb-jelly-gen/requirements.txt`
+3. `pb-jelly-gen` [optional - you may always invoke protoc on your own]
 
 Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
 
@@ -83,7 +96,7 @@ Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/master/
 
 #### Non-essential Crates
 - `pb-test` contains integration tests and benchmarks. You don't need to worry about this one unless you want to contribute to this repository!
-- `pb-types` contains generated Rust types for [well known proto types](https://developers.google.com/protocol-buffers/docs/reference/csharp/namespace/google/protobuf/well-known-types) [TODO]: Might deprecate this?
+- `examples` contains some examples to help you get started
 
 <br />
 
@@ -140,15 +153,12 @@ Service Generation
     - Install [gogoproto](https://github.com/gogo/protobuf)
         - `go get github.com/gogo/protobuf/proto`	
     - Install Python & dependencies
-        - `brew install python3`
-        - `pip install six`
-        - `pip install protobuf`
-    - Generate test protos
-        - On OSX: you'll have to install coreutils for realpath `brew install coreutils`
-        - `./gen_protos.sh`
+        - [if necessary] `brew install python3`
+        - `python3 -m pip install -r pb-jelly-gen/requirements.txt`
 3. **pb-jelly** currently uses an experimental test framework that requires a nightly build of rust.
 	-  `rustup default nightly`
-4. `cargo test`
+4. `cd pb-test/pb_test_gen ; cargo run`
+5. `cd pb-test/; cargo test`
 
 
 ## Contributors

@@ -1,5 +1,11 @@
 # examples
 
+In order to run examples, first you must generate protos.
+```
+cd examples_gen
+cargo run
+```
+
 ### basic
 How to use `protobuf-rs` in the most basic sense. Creating, serializing, and de-serializing a message.
 
