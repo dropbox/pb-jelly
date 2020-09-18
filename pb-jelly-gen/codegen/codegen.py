@@ -1372,8 +1372,8 @@ Impls = namedtuple("Impls", ["Eq", "Copy"])
 
 
 class Context(object):
-    def __init__(self, crate_per_dir):
-        # type: (bool) -> None
+    def __init__(self, crate_per_dir, prefix_to_clear):
+        # type: (bool, Text) -> None
         self.proto_types = {}  # type: Dict[Text, ProtoType]
 
         # Set iteration order is nondeterministic, but this is ok, because we can
@@ -1387,6 +1387,10 @@ class Context(object):
 
         # Indiciator if every directory should be their own crate.
         self.crate_per_dir = crate_per_dir
+
+        # Prefix of the crate path which should be cleared before making a determination
+        # of how to split the crates apart.
+        self.prefix_to_clear = prefix_to_clear
 
     def calc_impls(self, proto_file, crate, msg_type, fq_msg):
         # type: (FileDescriptorProto, Text, DescriptorProto, Tuple[Text, Text]) -> None
@@ -1635,7 +1639,7 @@ class Context(object):
 
     def crate_from_proto_filename(self, proto_filename):
         # type: (Text) -> Tuple[Text, List[Text]]
-        filename = proto_filename.replace(".proto", "")
+        filename = proto_filename.replace(self.prefix_to_clear, "").replace(".proto", "")
         mod_parts_unsanitized = filename.split("/")
         mod_parts = [
             mod + "_" if mod in RESERVED_KEYWORDS else mod
@@ -1663,6 +1667,7 @@ SPEC_TOML_TEMPLATE = (
     """# @"""
     + """generated, do not edit
 name = "{crate}"
+edition = "2018"
 
 [dependencies]
 {deps}
@@ -1798,6 +1803,10 @@ def generate_code(request, response):
     # type: (plugin.CodeGeneratorRequest, plugin.CodeGeneratorResponse) -> None
     to_generate = list(request.file_to_generate)
 
+    prefix_to_clear = ""
+    if "prefix_to_clear" in request.parameter:
+        prefix_to_clear = [arg for arg in request.parameter.split() if "prefix_to_clear" in arg][0].split("=")[1]
+
     if "crate_per_dir" in request.parameter:
         files_by_dir = defaultdict(list)  # type: Dict[Text, List[Text]]
         for file_path in to_generate:
@@ -1805,13 +1814,13 @@ def generate_code(request, response):
             files_by_dir[dir_path].append(file_path)
 
         for dir_path, to_generate in sorted(files_by_dir.items()):
-            file_prefix = dir_path.split("/")[0] + "/"
-            ctx = Context(crate_per_dir=True)
+            file_prefix = dir_path.replace(prefix_to_clear, "").split("/")[0] + "/"
+            ctx = Context(crate_per_dir=True, prefix_to_clear=prefix_to_clear)
             for proto_file in request.proto_file:
                 ctx.feed(proto_file, to_generate)
             generate_single_crate(ctx, file_prefix, to_generate, response)
     else:
-        ctx = Context(crate_per_dir=False)
+        ctx = Context(crate_per_dir=False, prefix_to_clear=prefix_to_clear)
         for proto_file in request.proto_file:
             ctx.feed(proto_file, to_generate)
         generate_single_crate(ctx, "", to_generate, response)

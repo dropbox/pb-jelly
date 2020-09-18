@@ -159,8 +159,7 @@ impl GenProtos {
 
     /// Consumes the builder and generates Rust bindings to your proto files.
     pub fn gen_protos(self) {
-        let output = self.gen_protos_helper()
-            .expect("something went wrong in generating Rust bindings 🤮");
+        let output = self.gen_protos_helper();
         
         if !output.status.success() {
             dbg!(output.status.code());
@@ -175,24 +174,24 @@ impl GenProtos {
 
 // Private functions
 impl GenProtos {
-    fn gen_protos_helper(self) -> std::io::Result<Output> {
+    fn gen_protos_helper(self) -> Output {
         // Clean up root generated directory
         if self.cleanup_out_path && self.gen_path.exists() && self.gen_path.is_dir() {
             dbg!("Cleaning up existing gen path", &self.gen_path);
-            fs::remove_dir_all(&self.gen_path)?;
+            fs::remove_dir_all(&self.gen_path).expect("Failed to clean");
         }
 
         // Re-create essential files
         if !self.gen_path.exists() {
             dbg!("Creating gen path", &self.gen_path);
-            fs::create_dir_all(&self.gen_path)?;
+            fs::create_dir_all(&self.gen_path).expect("Failed to create dir");
         }
-        let temp_dir = self.create_temp_files()?;
+        let temp_dir = self.create_temp_files().expect("Failed to package codegen script");
         // Generate Rust protos
         self.gen_rust_protos(temp_dir)
     }
 
-    fn gen_rust_protos(&self, temp_dir: TempDir) -> std::io::Result<Output> {
+    fn gen_rust_protos(&self, temp_dir: TempDir) -> Output {
         // Temp path to the codegen script
         let codegen_path = temp_dir.path().join("codegen.py");
 
@@ -255,6 +254,7 @@ impl GenProtos {
 
         dbg!(&protoc_cmd);
         protoc_cmd.output()
+            .expect("something went wrong in running protoc to generate Rust bindings 🤮")
     }
 
     /// We bundle all non-Rust, but necessary files into a static CODEGEN blob. When we run the codegen script,
