@@ -2,7 +2,7 @@
 ###### It's working! It's working! - Anakin Skywalker
 [![Crates.io](https://img.shields.io/crates/v/pb-jelly-gen)](https://crates.io/crates/pb-jelly-gen) [![Documentation](https://docs.rs/pb-jelly-gen/badge.svg)](https://docs.rs/pb-jelly-gen) [![Crates.io](https://img.shields.io/crates/l/pb-jelly-gen)](LICENSE)
 
-This crate provides a tool to generate [`Rust`](https://www.rust-lang.org/) code from `proto2` or `proto3` files. 
+This crate provides a tool to generate [`Rust`](https://www.rust-lang.org/) code from `proto2` or `proto3` files.
 
 ### How To Use
 
@@ -21,7 +21,7 @@ Once you've completed the above steps, you should include this crate as a build-
 ##### `Cargo.toml`
 ```
 [build-dependencies]
-pb-jelly-gen = "0.0.1"
+pb-jelly-gen = "0.0.3"
 ```
 
 ##### `build.rs`

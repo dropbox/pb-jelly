@@ -57,14 +57,14 @@ Multiple crates, multiple languages, my oh my!
 ### Essential Crates
 There are only two crates you'll need if you want to use this with you project `pb-jelly` and `pb-jelly-gen`. <br />
 
-##### `pb-jelly` 
+##### `pb-jelly`
 Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
 ```
 [dependencies]
-pb-jelly = "0.0.1"
+pb-jelly = "0.0.3"
 ```
 
-##### `pb-jelly-gen` 
+##### `pb-jelly-gen`
 
 A framework for generating Rust structs and implementations for `proto2` and `proto3` files.
 In order to use pb-jelly, you need to add the pb-jelly-gen/codegen/codegen.py as a plugin to your protoc invocation.
@@ -74,7 +74,7 @@ You'll need to add a generation crate (see `examples_gen` for an example)
 Include `pb-jelly-gen` as a dependency of your generation crate, and `cargo run` to invoke protoc for you.
 ```
 [dependencies]
-pb-jelly-gen = "0.0.1"
+pb-jelly-gen = "0.0.3"
 ```
 
 Eventually, we hope to eliminate the need for a generation crate, and simply have generation occur
@@ -116,7 +116,7 @@ We also like [the popular sandwich](https://en.wikipedia.org/wiki/Peanut_butter_
 
 # Contributing
 
-First, contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside 
+First, contributions are __greatly__ appreciated and highly encouraged. For legal reasons all outside
 contributors must agree to [Dropbox's CLA](https://opensource.dropbox.com/cla/). Thank you for
 your understanding.
 
@@ -146,12 +146,12 @@ Service Generation
 1. Clone Repo.
 2. Install Dependencies / Testing Dependencies. These instructions are for OSX using the brew
    package manager. Use the appropriate package manager for your system.
-    - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)	
+    - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
         - `brew install protobuf`
     - Install Go
         - `brew install go`
     - Install [gogoproto](https://github.com/gogo/protobuf)
-        - `go get github.com/gogo/protobuf/proto`	
+        - `go get github.com/gogo/protobuf/proto`
     - Install Python & dependencies
         - [if necessary] `brew install python3`
         - `python3 -m pip install -r pb-jelly-gen/requirements.txt`
