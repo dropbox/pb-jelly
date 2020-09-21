@@ -10,7 +10,7 @@ include this crate as a dependency in your `Cargo.toml`.
 ##### `Cargo.toml`
 ```
 [dependencies]
-pb-jelly = "0.0.1"
+pb-jelly = "0.0.3"
 ```
 
 Then in the general case, all you'll need to use in your code is the `Message` trait this crate defines, e.g.
@@ -18,5 +18,5 @@ Then in the general case, all you'll need to use in your code is the `Message` t
 use pb_jelly::Message;
 ```
 
-More complete examples can be found in the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate, or 
+More complete examples can be found in the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate, or
 the [`pb-test`](https://github.com/dropbox/pb-rs/tree/master/pb-test) crate itself.
