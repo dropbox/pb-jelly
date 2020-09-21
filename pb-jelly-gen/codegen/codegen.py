@@ -1661,6 +1661,12 @@ rust_library(
     name = "{crate}",
     crate_type = "lib",
 )
+
+
+rust_doc(
+    name = "{crate}_doc",
+    crate = ":{crate}",
+)
 """
 
 SPEC_TOML_TEMPLATE = (
