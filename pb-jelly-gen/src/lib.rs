@@ -41,7 +41,6 @@ use std::{
     process::{Command, Output},
     str::from_utf8,
 };
-use tempdir::TempDir;
 use walkdir::WalkDir;
 
 // We statically include the `/codegen` directory as a way to include our codegen.py and
@@ -191,7 +190,7 @@ impl GenProtos {
         self.gen_rust_protos(temp_dir)
     }
 
-    fn gen_rust_protos(&self, temp_dir: TempDir) -> Output {
+    fn gen_rust_protos(&self, temp_dir: tempfile::TempDir) -> Output {
         // Temp path to the codegen script
         let codegen_path = temp_dir.path().join("codegen.py");
 
@@ -259,10 +258,10 @@ impl GenProtos {
 
     /// We bundle all non-Rust, but necessary files into a static CODEGEN blob. When we run the codegen script,
     /// we recreate these in a temp directory `/tmp/codegen` that is cleaned up after.
-    fn create_temp_files(&self) -> std::io::Result<TempDir> {
-        let temp_dir = TempDir::new("codegen")?;
+    fn create_temp_files(&self) -> std::io::Result<tempfile::TempDir> {
+        let temp_dir = tempfile::Builder::new().prefix("codegen").tempdir()?;
 
-        fn create_temp_files_helper(dir: &Dir, temp_dir: &TempDir) -> std::io::Result<()> {
+        fn create_temp_files_helper(dir: &Dir, temp_dir: &tempfile::TempDir) -> std::io::Result<()> {
             for file in dir.files() {
                 let blob_path = file.path();
                 let abs_path = temp_dir.path().join(blob_path);
