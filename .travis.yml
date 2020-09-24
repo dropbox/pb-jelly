@@ -8,6 +8,11 @@ before_install:
     - go get github.com/gogo/protobuf/proto
 script:
     - set -e
+    # unit tests
+    - cd pb-jelly
+    - cargo test --verbose
+    - cd ../pb-jelly-gen
+    - cargo test --verbose
     # pbtest
     - cd ../pb-test/pb_test_gen
     - cargo run
@@ -17,9 +22,4 @@ script:
     - cd ../examples/examples_gen
     - cargo run
     - cd ..
-    - cargo test --verbose
-    # unit tests
-    - cd pb-jelly
-    - cargo test --verbose
-    - cd ../pb-jelly-gen
     - cargo test --verbose
