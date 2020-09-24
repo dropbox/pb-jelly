@@ -1,0 +1,22 @@
+language: rust
+rust:
+    - stable
+before_install:
+    - sudo add-apt-repository ppa:maarten-fonville/protobuf -y
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq protobuf-compiler
+script:
+    - cd pb-jelly
+    - cargo test --verbose
+    - cd ../pb-jelly-gen
+    - cargo test --verbose
+    # pbtest
+    - cd ../pb-test/pb_test_gen
+    - cargo run
+    - cd ..
+    - cargo test --verbose
+    # examples
+    - cd ../examples/examples_gen
+    - cargo run
+    - cd ..
+    - cargo test --verbose
