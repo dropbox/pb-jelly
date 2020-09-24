@@ -1660,7 +1660,7 @@ package(default_visibility = ["//visibility:public"])
 rust_library(
     name = "{crate}",
     crate_type = "lib",
-    edition = "2018"
+    edition = "2018",
 )
 
 
