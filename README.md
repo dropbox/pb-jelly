@@ -163,7 +163,7 @@ Service Generation
 
 ## Contributors
 
-### Dropboxers
+### Dropboxers [incl former]
 - [@nipunn1313](https://github.com/nipunn1313)
 - [@rajatgoel](https://github.com/rajatgoel)
 - [@ParkMyCar](https://github.com/ParkMyCar)
@@ -179,6 +179,8 @@ Service Generation
 - [@ddeville](https://github.com/ddeville)
 - [@isho](https://github.com/isho)
 - [@benjaminp](https://github.com/benjaminp)
+### Non-Dropbox
+- [@RSMuthu](https://github.com/RSMuthu)
 
 ## Similar Projects
 [`rust-protobuf`](https://github.com/stepancheg/rust-protobuf) - Rust implementation of Google protocol buffers <br />
