@@ -1,15 +1,13 @@
 language: rust
 rust:
-    - stable
+    - nightly
 before_install:
     - sudo add-apt-repository ppa:maarten-fonville/protobuf -y
     - sudo apt-get update -qq
-    - sudo apt-get install -qq protobuf-compiler
+    - sudo apt-get install -qq protobuf-compiler golang-go
+    - go get github.com/gogo/protobuf/proto
 script:
-    - cd pb-jelly
-    - cargo test --verbose
-    - cd ../pb-jelly-gen
-    - cargo test --verbose
+    - set -e
     # pbtest
     - cd ../pb-test/pb_test_gen
     - cargo run
@@ -19,4 +17,9 @@ script:
     - cd ../examples/examples_gen
     - cargo run
     - cd ..
+    - cargo test --verbose
+    # unit tests
+    - cd pb-jelly
+    - cargo test --verbose
+    - cd ../pb-jelly-gen
     - cargo test --verbose
