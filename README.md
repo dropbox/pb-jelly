@@ -21,7 +21,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 <br />
 
-[![Crates.io](https://img.shields.io/crates/v/pb-jelly)](https://crates.io/crates/pb-jelly) [![Documentation](https://docs.rs/pb-jelly/badge.svg)](https://docs.rs/pb-jelly) [![Crates.io](https://img.shields.io/crates/l/pb-jelly)](LICENSE)
+[![Crates.io](https://img.shields.io/crates/v/pb-jelly)](https://crates.io/crates/pb-jelly) [![Documentation](https://docs.rs/pb-jelly/badge.svg)](https://docs.rs/pb-jelly) [![Crates.io](https://img.shields.io/crates/l/pb-jelly)](LICENSE) [![Build Status](https://travis-ci.org/dropbox/pb-jelly.svg?branch=master)](https://travis-ci.org/dropbox/pb-jelly)
 
 
 ## Features
