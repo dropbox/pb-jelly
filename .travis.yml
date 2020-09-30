@@ -1,8 +1,13 @@
 language: rust
 rust:
     - nightly
+addons:
+    apt:
+        packages:
+            - "python3-pip"
 before_install:
     - sudo pip install -r pb-jelly-gen/requirements.txt
+    - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
     - PROTOBUF_VERSION=3.7.1
     - PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
     - mkdir /tmp/protoc_install
@@ -16,17 +21,24 @@ before_install:
 script:
     - set -e
     - protoc --version
+
+    # Run mypy on codegen.py
+    - cd pb-jelly-gen/codegen
+    - protoc --mypy_out=proto rust/extensions.proto
+    - mypy .
+    - cd ../..
+
     # unit tests
     - cd pb-jelly
     - cargo test --verbose
     - cd ../pb-jelly-gen
     - cargo test --verbose
-     pbtest
+    # pbtest
     - cd ../pb-test/pb_test_gen
     - cargo run
     - cd ..
     - cargo test --verbose
-     examples
+    # examples
     - cd ../examples/examples_gen
     - cargo run
     - cd ..

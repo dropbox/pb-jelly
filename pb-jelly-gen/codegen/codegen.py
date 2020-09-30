@@ -1606,7 +1606,7 @@ class Context(object):
             yield crate, targets
 
     def get_cargo_toml_file(self, derive_serde):
-        # type: (Text, bool) -> Iterator[Tuple[Text, Text]]
+        # type: (bool) -> Iterator[Tuple[Text, Text]]
         for crate, deps in six.iteritems(self.deps_map):
             all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
