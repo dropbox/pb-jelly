@@ -17,11 +17,11 @@ use super::{
     ensure_split,
     ensure_wire_format,
     skip,
+    Lazy,
+    Message,
     PbBuffer,
     PbBufferReader,
     PbBufferWriter,
-    Lazy,
-    Message,
 };
 
 /// A wrapper around a `Vec` which owns its contents.

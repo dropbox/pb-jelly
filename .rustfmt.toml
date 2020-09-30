@@ -1,0 +1,24 @@
+comment_width = 120
+max_width = 120
+edition = "2018"
+
+# Disabled while rustfmt chokes on non-code code blocks in comments
+wrap_comments = true
+
+# Some lines are just over 120 chars... deal with it.
+error_on_line_overflow = false
+
+# Always format imports like this:
+# use foo::{
+#     Bar,
+#     Baz,
+# };
+imports_indent = "Block"
+imports_layout = "Vertical"
+reorder_imports = true
+
+match_block_trailing_comma = true
+
+# We prefer it already so just do it here
+use_try_shorthand = true
+use_field_init_shorthand = true

@@ -1,4 +1,8 @@
-use proto_non_optional::basic::{City, PlaneTicket, PlaneTicket_Airport};
+use proto_non_optional::basic::{
+    City,
+    PlaneTicket,
+    PlaneTicket_Airport,
+};
 
 fn main() {
     // Make our ticket, which has required fields!

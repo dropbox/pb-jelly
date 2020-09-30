@@ -8,14 +8,12 @@ fn main() -> std::io::Result<()> {
         {
             "num_windows": 42
         }"#;
-    
+
     // Parse the data from our JSON formatted string, into our struct
     let msg_json: NewYorkCity = serde_json::from_str(json_str).unwrap();
 
     // Create the struct via Rust
-    let msg = NewYorkCity {
-        num_windows: 42
-    };
+    let msg = NewYorkCity { num_windows: 42 };
 
     // Serialize both messages to bytes
     let msg_json_bytes = msg_json.serialize_to_vec();

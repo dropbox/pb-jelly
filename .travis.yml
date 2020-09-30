@@ -8,6 +8,7 @@ addons:
 before_install:
     - sudo pip install -r pb-jelly-gen/requirements.txt
     - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
+    - rustup component add rustfmt
     - PROTOBUF_VERSION=3.7.1
     - PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
     - mkdir /tmp/protoc_install
@@ -27,6 +28,9 @@ script:
     - protoc --mypy_out=proto rust/extensions.proto
     - mypy .
     - cd ../..
+
+    # Rustfmt
+    - for d in examples pb-jelly pb-jelly-gen pb-test; do cd $d ; cargo fmt -- --check ; cd .. ; done
 
     # unit tests
     - cd pb-jelly
