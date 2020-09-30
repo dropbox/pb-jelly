@@ -1,5 +1,3 @@
-#![warn(rust_2018_idioms)]
-
 #[cfg(test)]
 mod benches {
     use bytes::Bytes;

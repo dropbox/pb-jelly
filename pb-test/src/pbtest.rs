@@ -1,5 +1,3 @@
-#![warn(rust_2018_idioms)]
-
 use std::fs::metadata;
 use std::fs::File;
 use std::io::Cursor;
@@ -10,6 +8,10 @@ use pb_jelly::{
     ClosedProtoEnum,
     Message,
     OpenProtoEnum,
+};
+use pretty_assertions::{
+    assert_eq,
+    assert_ne,
 };
 use proto_pbtest::pbtest2::*;
 use proto_pbtest::pbtest3::*;
