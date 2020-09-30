@@ -34,16 +34,21 @@ script:
 
     # unit tests
     - cd pb-jelly
-    - cargo test --verbose
+    - cargo test
     - cd ../pb-jelly-gen
-    - cargo test --verbose
+    - cargo test
     # pbtest
     - cd ../pb-test/pb_test_gen
     - cargo run
     - cd ..
-    - cargo test --verbose
+    - cargo test
     # examples
     - cd ../examples/examples_gen
     - cargo run
     - cd ..
-    - cargo test --verbose
+    - cargo test
+    # benchmarks
+    - cd ../pb-test/pb_test_gen
+    - cargo run --features=bench_prost,bench_rust_protobuf
+    - cd ..
+    - cargo bench bench --features=bench_prost,bench_rust_protobuf
