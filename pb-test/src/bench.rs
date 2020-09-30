@@ -1,11 +1,18 @@
 #![warn(rust_2018_idioms)]
 
-
 #[cfg(test)]
 mod benches {
     use bytes::Bytes;
-    use pb_jelly::{Lazy, Message, PbBuffer};
-    use proto_pbtest::bench::{BytesData, StringMessage, VecData};
+    use pb_jelly::{
+        Lazy,
+        Message,
+        PbBuffer,
+    };
+    use proto_pbtest::bench::{
+        BytesData,
+        StringMessage,
+        VecData,
+    };
     use test::Bencher;
 
     #[bench]
@@ -109,9 +116,7 @@ mod prost {
         // Serialize the proto
         let csz = proto.encoded_len();
         let mut ser_bytes = Vec::with_capacity(csz);
-        proto
-            .encode(&mut ser_bytes)
-            .expect("failed to encode PROST proto!");
+        proto.encode(&mut ser_bytes).expect("failed to encode PROST proto!");
 
         // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
 
@@ -120,8 +125,7 @@ mod prost {
 
         b.iter(|| {
             // Deserialize our proto
-            let de_proto =
-                gen::BytesData::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
+            let de_proto = gen::BytesData::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
             assert!(de_proto.data.is_some());
         });
     }
@@ -137,9 +141,7 @@ mod prost {
         // Serialize the proto
         let csz = proto.encoded_len();
         let mut ser_bytes = Vec::with_capacity(csz);
-        proto
-            .encode(&mut ser_bytes)
-            .expect("failed to encode PROST proto!");
+        proto.encode(&mut ser_bytes).expect("failed to encode PROST proto!");
 
         // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
 
@@ -148,8 +150,7 @@ mod prost {
 
         b.iter(|| {
             // Deserialize our proto
-            let de_proto = gen::StringMessage::decode(bytes_buf.clone())
-                .expect("failed to decode PROST proto!");
+            let de_proto = gen::StringMessage::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
             assert!(de_proto.data.is_some());
         });
     }
@@ -157,9 +158,15 @@ mod prost {
 
 #[cfg(all(test, feature = "bench_rust_protobuf"))]
 mod rust_protobuf {
-    use crate::gen::rust_protobuf::bench::{BytesData, StringMessage};
+    use crate::gen::rust_protobuf::bench::{
+        BytesData,
+        StringMessage,
+    };
     use bytes::Bytes;
-    use protobuf::{CodedInputStream, Message};
+    use protobuf::{
+        CodedInputStream,
+        Message,
+    };
     use test::Bencher;
 
     #[bench]

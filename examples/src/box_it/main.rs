@@ -22,7 +22,7 @@ fn main() -> std::io::Result<()> {
 
     // Grab our inner box
     let de_box_msg: Box<BoxedMessage> = de_msg.msg.unwrap();
-    
+
     // Print our message!
     println!("{} {}", de_msg.other, de_box_msg.name);
 

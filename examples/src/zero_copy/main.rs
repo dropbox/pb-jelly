@@ -1,8 +1,8 @@
 use bytes::Bytes;
 use pb_jelly::{
-    PbBuffer,
     Lazy,
     Message,
+    PbBuffer,
 };
 use proto_zero_copy::basic::BytesMessage;
 
@@ -18,9 +18,7 @@ fn main() -> std::io::Result<()> {
     // Serialize our proto
     let ser_bytes: Vec<u8> = proto.serialize_to_vec();
 
-
     // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
-
 
     // To achieve zero copy deserialization, we need to our serialized bytes to be in a container
     // that implements the `pb::PbBufferReader` trait, `bytes::Bytes` implements this trait.

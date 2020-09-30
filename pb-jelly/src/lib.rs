@@ -30,11 +30,11 @@ pub mod wire_format;
 mod buffer;
 pub use crate::buffer::{
     cast_buffer,
+    CopyWriter,
+    Lazy,
     PbBuffer,
     PbBufferReader,
     PbBufferWriter,
-    CopyWriter,
-    Lazy,
 };
 
 mod base_types;
@@ -52,7 +52,6 @@ pub use crate::base_types::{
 
 mod descriptor;
 pub use crate::descriptor::MessageDescriptor;
-
 
 #[cfg(test)]
 mod tests;

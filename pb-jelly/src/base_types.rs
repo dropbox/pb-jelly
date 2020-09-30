@@ -2,17 +2,37 @@
 
 use std::convert::TryFrom;
 use std::fmt::Debug;
-use std::io::{Error, ErrorKind, Result};
-use std::ops::{Deref, DerefMut};
+use std::io::{
+    Error,
+    ErrorKind,
+    Result,
+};
+use std::ops::{
+    Deref,
+    DerefMut,
+};
 
-use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+use byteorder::{
+    LittleEndian,
+    ReadBytesExt,
+    WriteBytesExt,
+};
 use bytes::{
-    buf::{ext::BufExt, BufMut},
+    buf::{
+        ext::BufExt,
+        BufMut,
+    },
     Buf,
 };
 
-use super::{unexpected_eof, Message};
-use crate::buffer::{PbBufferReader, PbBufferWriter};
+use super::{
+    unexpected_eof,
+    Message,
+};
+use crate::buffer::{
+    PbBufferReader,
+    PbBufferWriter,
+};
 use crate::varint;
 
 /// Trait implemented by enums which are generated with the `err_if_default` option. Note that
@@ -58,9 +78,7 @@ where
         let mut v: i32 = 0;
         v.deserialize(buf)?;
 
-        *self = T::try_from(v).map_err(|u| {
-            Error::new(ErrorKind::Other, format!("invalid value for enum: {:?}", u))
-        })?;
+        *self = T::try_from(v).map_err(|u| Error::new(ErrorKind::Other, format!("invalid value for enum: {:?}", u)))?;
         Ok(())
     }
 }
@@ -171,9 +189,7 @@ impl Message for i64 {
     }
 }
 
-#[derive(
-    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
-)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Signed64(pub i64);
 
 impl Signed64 {
@@ -218,9 +234,7 @@ impl DerefMut for Signed64 {
     }
 }
 
-#[derive(
-    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
-)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Signed32(pub i32);
 
 impl Signed32 {
@@ -265,9 +279,7 @@ impl DerefMut for Signed32 {
     }
 }
 
-#[derive(
-    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
-)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Fixed64(pub u64);
 
 impl Message for Fixed64 {
@@ -301,9 +313,7 @@ impl DerefMut for Fixed64 {
     }
 }
 
-#[derive(
-    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
-)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Fixed32(pub u32);
 
 impl Message for Fixed32 {
@@ -337,9 +347,7 @@ impl DerefMut for Fixed32 {
     }
 }
 
-#[derive(
-    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
-)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Sfixed64(pub i64);
 
 impl Message for Sfixed64 {
@@ -373,9 +381,7 @@ impl DerefMut for Sfixed64 {
     }
 }
 
-#[derive(
-    Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
-)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Sfixed32(pub i32);
 
 impl Message for Sfixed32 {
@@ -509,15 +515,13 @@ impl Message for String {
     fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
         // To make this more performant we write to our underlying buffer directly. Rust Strings
         // are guaranteed to be valid UTF-8, so to make sure we don't leak a String that has
-        // invalid data, we use an RAII Guard. This guard holds a reference to our underlying 
-        // buffer, and if the guard is dropped (e.g. in the case of a panic), then we clear the 
+        // invalid data, we use an RAII Guard. This guard holds a reference to our underlying
+        // buffer, and if the guard is dropped (e.g. in the case of a panic), then we clear the
         // buffer. Once we validate our buffer contains valid UTF-8, we forget the guard.
 
         // Get a reference to the underlying bytes of the String. This is technically unsafe, but
         // we uphold the UTF-8 constraint with our guard.
-        let self_bytes = unsafe {
-            self.as_mut_vec()
-        };
+        let self_bytes = unsafe { self.as_mut_vec() };
 
         // If our String isn't empty, clear it.
         if !self_bytes.is_empty() {
@@ -537,7 +541,7 @@ impl Message for String {
             // Success! We have valid UTF-8, we can forget our guard.
             Ok(_) => Ok(std::mem::forget(guard)),
             // Error! Our guard will be dropped, and the buffer will be cleared.
-            Err(_) => Err(std::io::ErrorKind::InvalidData.into())
+            Err(_) => Err(std::io::ErrorKind::InvalidData.into()),
         }
     }
 }

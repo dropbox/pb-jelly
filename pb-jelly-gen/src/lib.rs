@@ -1,21 +1,21 @@
 //! `pb_gen` generates Rust bindings for `proto2` and `proto3` files. It's intended to be used with [`pb_rs`](https://github.com/dropbox/pb-rs).
-//! 
+//!
 //! ## Examples
-//! Complete examples can be found in the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate, 
+//! Complete examples can be found in the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate,
 //! or the [`pb-test`](https://github.com/dropbox/pb-rs/tree/master/pb-test) crate of the [`protobuf_rs`](https://github.com/dropbox/pb-rs) workspace.
-//! 
+//!
 //! ## In a nutshell 🥜
 //! You can include `pb_gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
 //! ```toml
 //! [build-dependencies]
 //! pb-gen = "0.1"
 //! ```
-//! 
-//! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct, 
-//! or the `gen_protos` convience function to specify where your protos live, and where the generated code should be put.
-//! ```no_run
+//!
+//! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct,
+//! or the `gen_protos` convience function to specify where your protos live, and where the generated code should be
+//! put. ```no_run
 //! use pb_jelly_gen::GenProtos;
-//! 
+//!
 //! fn main() -> std::io::Result<()> {
 //!    GenProtos::builder()
 //!        // output path for our generated code
@@ -30,15 +30,24 @@
 //! }
 //! ```
 
-use include_dir::{include_dir, Dir};
+use include_dir::{
+    include_dir,
+    Dir,
+};
 use std::{
     convert::AsRef,
     fs,
     io::Write,
     iter::IntoIterator,
     os::unix::fs::PermissionsExt,
-    path::{Path, PathBuf},
-    process::{Command, Output},
+    path::{
+        Path,
+        PathBuf,
+    },
+    process::{
+        Command,
+        Output,
+    },
     str::from_utf8,
 };
 use walkdir::WalkDir;
@@ -66,8 +75,8 @@ pub struct GenProtos {
 
 impl std::default::Default for GenProtos {
     fn default() -> Self {
-        let gen_path = get_cargo_manifest_path()
-            .expect("couldn't get `CARGO_MANIFEST_DIR` when building default GenProtos");
+        let gen_path =
+            get_cargo_manifest_path().expect("couldn't get `CARGO_MANIFEST_DIR` when building default GenProtos");
         let gen_path = gen_path.join(PathBuf::from("./gen"));
 
         let src_paths = vec![];
@@ -116,8 +125,7 @@ impl GenProtos {
 
     /// Add a list of paths to `.proto` files, or to directories containing your proto files.
     pub fn src_paths<P: AsRef<Path>, I: IntoIterator<Item = P>>(mut self, paths: I) -> GenProtos {
-        self.src_paths
-            .extend(paths.into_iter().map(|p| p.as_ref().to_owned()));
+        self.src_paths.extend(paths.into_iter().map(|p| p.as_ref().to_owned()));
         self
     }
 
@@ -132,10 +140,7 @@ impl GenProtos {
     /// Paths to a protobuf files, or directories containing protobuf files, that get included in
     /// the proto compilation. Rust bindings will *not* be generated for these files, but the proto
     /// compiler will look at included paths for proto dependencies.
-    pub fn include_paths<P: AsRef<Path>, I: IntoIterator<Item = P>>(
-        mut self,
-        paths: I,
-    ) -> GenProtos {
+    pub fn include_paths<P: AsRef<Path>, I: IntoIterator<Item = P>>(mut self, paths: I) -> GenProtos {
         self.include_paths
             .extend(paths.into_iter().map(|p| p.as_ref().to_owned()));
         self
@@ -159,7 +164,7 @@ impl GenProtos {
     /// Consumes the builder and generates Rust bindings to your proto files.
     pub fn gen_protos(self) {
         let output = self.gen_protos_helper();
-        
+
         if !output.status.success() {
             dbg!(output.status.code());
             eprintln!("stdout={}", from_utf8(&output.stdout).unwrap_or("cant decode stdout"));
@@ -220,16 +225,10 @@ impl GenProtos {
         }
 
         // Set the rust plugin
-        protoc_cmd.arg(format!(
-            "--plugin=protoc-gen-rust={}",
-            codegen_path.to_str().unwrap()
-        ));
+        protoc_cmd.arg(format!("--plugin=protoc-gen-rust={}", codegen_path.to_str().unwrap()));
 
         // Set the Rust out path
-        protoc_cmd.arg(format!(
-            "--rust_out={}",
-            self.gen_path.to_str().unwrap()
-        ));
+        protoc_cmd.arg(format!("--rust_out={}", self.gen_path.to_str().unwrap()));
 
         // Get paths of our Protos
         let proto_paths = self
@@ -252,7 +251,8 @@ impl GenProtos {
         }
 
         dbg!(&protoc_cmd);
-        protoc_cmd.output()
+        protoc_cmd
+            .output()
             .expect("something went wrong in running protoc to generate Rust bindings 🤮")
     }
 
@@ -266,10 +266,7 @@ impl GenProtos {
                 let blob_path = file.path();
                 let abs_path = temp_dir.path().join(blob_path);
 
-                let mut abs_file = fs::OpenOptions::new()
-                    .write(true)
-                    .create_new(true)
-                    .open(&abs_path)?;
+                let mut abs_file = fs::OpenOptions::new().write(true).create_new(true).open(&abs_path)?;
                 abs_file.write_all(file.contents())?;
 
                 let mut permissions = abs_file.metadata()?.permissions();
