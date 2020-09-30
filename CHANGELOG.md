@@ -1,3 +1,6 @@
+# Upcoming
+* Only generate crate level attributes in lib.rs (vs every module)
+
 # 0.0.3
 ### September 21, 2020
 * Forgot to bump the version of `pb-jelly` that the codegen script uses
