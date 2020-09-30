@@ -1580,7 +1580,7 @@ class Context(object):
                     yield res
 
             filename = crate + "/src/lib.rs"
-            content = RS_HEADER + librs.content.getvalue()
+            content = RS_HEADER + LIB_RS_HEADER + librs.content.getvalue()
             yield filename, content
 
     def get_build_file(self):
@@ -1694,9 +1694,9 @@ edition = "2018"
 """
 )
 
-RS_HEADER = (
-    """// @"""
-    + """generated, do not edit
+RS_HEADER = "// @" + "generated, do not edit\n"
+
+LIB_RS_HEADER = """
 #![warn(rust_2018_idioms)]
 #![allow(clippy::float_cmp)]
 #![allow(irrefutable_let_patterns)]
@@ -1708,7 +1708,6 @@ RS_HEADER = (
 #![allow(irrefutable_let_patterns)]
 
 """
-)
 
 ModTree = DefaultDict[Text, DefaultDict]
 
