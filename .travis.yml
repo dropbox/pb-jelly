@@ -1,3 +1,4 @@
+dist: bionic
 language: rust
 rust:
     - nightly
@@ -7,6 +8,7 @@ addons:
             - "python3-pip"
 before_install:
     - sudo pip install -r pb-jelly-gen/requirements.txt
+    - python3 --version
     - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
     - rustup component add rustfmt
     - PROTOBUF_VERSION=3.7.1
