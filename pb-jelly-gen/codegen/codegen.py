@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # mypy: allow-any-generics
 
@@ -8,6 +8,9 @@ import itertools
 import os
 import re
 import sys
+
+import google.protobuf
+assert str(google.protobuf.__version__).split(".") >= "3.12.4".split(".")
 
 from collections import defaultdict, namedtuple, OrderedDict
 from contextlib import contextmanager
@@ -123,29 +126,34 @@ RESERVED_KEYWORDS = {
     "yield",
 }
 
+# SourceCodeLocation is defined by `message Location` here
+# https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
+SourceCodeLocation = List[int]
+ProtoTypes = Union[FileDescriptorProto, EnumDescriptorProto, DescriptorProto]
+WalkRet = Tuple[
+    List[Tuple[List[Text], EnumDescriptorProto, SourceCodeLocation]],
+    List[Tuple[List[Text], DescriptorProto, SourceCodeLocation]],
+]
+ModTree = DefaultDict[Text, DefaultDict]
 
-def camelcase(underscored):
-    # type: (Text) -> Text
+
+def camelcase(underscored: Text) -> Text:
     return "".join(s.capitalize() for s in underscored.split("_"))
 
 
 class StringIO(object):
-    def __init__(self):
-        # type: () -> None
-        self.contents = []  # type: List[Text]
+    def __init__(self) -> None:
+        self.contents: List[Text] = []
 
-    def write(self, s):
-        # type: (Text) -> None
+    def write(self, s: Text) -> None:
         self.contents.append(s)
 
-    def getvalue(self):
-        # type: () -> Text
+    def getvalue(self) -> Text:
         return "".join(self.contents)
 
 
 class RustType(object):
-    def __init__(self, ctx, proto_file, msg_type, field):
-        # type: (Context, FileDescriptorProto, DescriptorProto, FieldDescriptorProto) -> None
+    def __init__(self, ctx: 'Context', proto_file: FileDescriptorProto, msg_type: DescriptorProto, field: FieldDescriptorProto) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.field = field
@@ -154,8 +162,7 @@ class RustType(object):
             field.HasField("oneof_index") and msg_type.oneof_decl[field.oneof_index]
         )
 
-    def default(self, msg_name):
-        # type: (Text) -> Text
+    def default(self, msg_name: Text) -> Text:
         if self.oneof:
             if oneof_nullable(self.oneof):
                 return "None"
@@ -199,8 +206,7 @@ class RustType(object):
 
         return "::std::default::Default::default()"
 
-    def is_length_delimited(self):
-        # type: () -> bool
+    def is_length_delimited(self) -> bool:
         length_delimited_types = [
             FieldDescriptorProto.TYPE_MESSAGE,
             FieldDescriptorProto.TYPE_STRING,
@@ -209,8 +215,7 @@ class RustType(object):
 
         return self.field.type in length_delimited_types
 
-    def wire_format(self):
-        # type: () -> Text
+    def wire_format(self) -> Text:
         if self.is_length_delimited():
             return "LengthDelimited"
 
@@ -234,44 +239,37 @@ class RustType(object):
 
         return "Varint"
 
-    def is_grpc_slices(self):
-        # type: () -> bool
+    def is_grpc_slices(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_BYTES
             and self.field.options.Extensions[extensions_pb2.grpc_slices]
         )
 
-    def is_blob(self):
-        # type: () -> bool
+    def is_blob(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_BYTES
             and self.field.options.ctype == FieldOptions.CORD
         )
 
-    def is_lazy_bytes(self):
-        # type: () -> bool
+    def is_lazy_bytes(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_BYTES
             and self.field.options.Extensions[extensions_pb2.zero_copy]
         )
 
-    def is_boxed(self):
-        # type: () -> bool
+    def is_boxed(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_MESSAGE
             and self.field.options.Extensions[extensions_pb2.box_it]
         )
 
-    def has_custom_type(self):
-        # type: () -> bool
+    def has_custom_type(self) -> bool:
         return self.field.options.HasExtension(extensions_pb2.type)
 
-    def custom_type(self):
-        # type: () -> Text
+    def custom_type(self) -> Text:
         return self.field.options.Extensions[extensions_pb2.type]
 
-    def is_nullable(self):
-        # type: () -> bool
+    def is_nullable(self) -> bool:
         if self.field.type in PRIMITIVE_TYPES and self.is_proto3:
             # Primitive types in proto3 are never nullable on the wire - as
             # they cannot actually be represented on the wire as null
@@ -283,13 +281,11 @@ class RustType(object):
             not self.is_proto3 or self.field.type == FieldDescriptorProto.TYPE_MESSAGE
         )
 
-    def is_empty_oneof_field(self):
-        # type: () -> bool
+    def is_empty_oneof_field(self) -> bool:
         assert self.oneof
         return self.field.type_name == ".google.protobuf.Empty"
 
-    def can_be_packed(self):
-        # type: () -> bool
+    def can_be_packed(self) -> bool:
         # Return true if incoming messages could be packed on the wire
         return self.field.label == FieldDescriptorProto.LABEL_REPEATED and self.wire_format() in (
             "Varint",
@@ -297,16 +293,13 @@ class RustType(object):
             "Fixed32",
         )
 
-    def should_serialize_packed(self):
-        # type: () -> bool
+    def should_serialize_packed(self) -> bool:
         return self.can_be_packed() and (self.field.options.packed or self.is_proto3)
 
-    def is_repeated(self):
-        # type: () -> bool
+    def is_repeated(self) -> bool:
         return self.field.label == FieldDescriptorProto.LABEL_REPEATED
 
-    def set_method(self):
-        # type: () -> Tuple[Text, Text]
+    def set_method(self) -> Tuple[Text, Text]:
         assert not self.is_repeated()
         if self.field.type == FieldDescriptorProto.TYPE_FLOAT:
             return "f32", "v"
@@ -354,8 +347,7 @@ class RustType(object):
                 return self.rust_type(), "v"
         raise AssertionError("Unexpected field type")
 
-    def take_method(self):
-        # type: () -> Tuple[Optional[Text], Optional[Text]]
+    def take_method(self) -> Tuple[Optional[Text], Optional[Text]]:
         assert not self.is_repeated()
         has_take_method = [
             FieldDescriptorProto.TYPE_STRING,
@@ -388,8 +380,7 @@ class RustType(object):
                 return self.rust_type(), expr
         raise AssertionError("Unexpected field type")
 
-    def get_method(self):
-        # type: () -> Tuple[Text, Text]
+    def get_method(self) -> Tuple[Text, Text]:
         assert not self.is_repeated()
         name = self.field.name
 
@@ -442,8 +433,7 @@ class RustType(object):
             )
         raise AssertionError("Unexpected field type")
 
-    def rust_type(self):
-        # type: () -> Text
+    def rust_type(self) -> Text:
         typ = self.field.type
 
         if self.has_custom_type():
@@ -476,8 +466,7 @@ class RustType(object):
             "Unsupported type: {!r}".format(FieldDescriptorProto.Type.Name(typ))
         )
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         rust_type = self.rust_type()
 
         if self.is_repeated():
@@ -491,15 +480,13 @@ class RustType(object):
         else:
             return str(rust_type)
 
-    def oneof_field_match(self, var):
-        # type: (Text) -> Text
+    def oneof_field_match(self, var: Text) -> Text:
         if self.is_empty_oneof_field():
             return camelcase(self.field.name)
         else:
             return "%s(%s)" % (camelcase(self.field.name), var)
 
-    def oneof_val(self, msg_name, var):
-        # type: (Text, Text) -> Text
+    def oneof_val(self, msg_name: Text, var: Text) -> Text:
         assert self.oneof
         oneofv = "%s::%s" % (
             oneof_msg_name(msg_name, self.oneof),
@@ -512,21 +499,18 @@ class RustType(object):
         return oneofv
 
 
-def oneof_msg_name(parent_msg_name, oneof):
-    # type: (Text, OneofDescriptorProto) -> Text
+def oneof_msg_name(parent_msg_name: Text, oneof: OneofDescriptorProto) -> Text:
     return "%s_%s" % (parent_msg_name, camelcase(oneof.name))
 
 
-def oneof_nullable(oneof):
-    # type: (OneofDescriptorProto) -> bool
+def oneof_nullable(oneof: OneofDescriptorProto) -> bool:
     return (
         not oneof.options.HasExtension(extensions_pb2.nullable)
         or oneof.options.Extensions[extensions_pb2.nullable]
     )
 
 
-def enum_err_if_default_or_unknown(enum):
-    # type: (EnumDescriptorProto) -> bool
+def enum_err_if_default_or_unknown(enum: EnumDescriptorProto) -> bool:
     return (
         enum.options.HasExtension(extensions_pb2.err_if_default_or_unknown)
         and enum.options.Extensions[extensions_pb2.err_if_default_or_unknown]
@@ -534,8 +518,7 @@ def enum_err_if_default_or_unknown(enum):
 
 
 @contextmanager
-def block(ctx, header):
-    # type: (CodeWriter, Text) -> Iterator[None]
+def block(ctx: 'CodeWriter', header: Text) -> Iterator[None]:
     ctx.write("%s {" % header)
     ctx.indentation += 1
     yield
@@ -544,8 +527,7 @@ def block(ctx, header):
 
 
 @contextmanager
-def field_iter(ctx, var, msg_name, msg_type, field):
-    # type: (CodeWriter, Text, Text, DescriptorProto, FieldDescriptorProto) -> Iterator[None]
+def field_iter(ctx: 'CodeWriter', var: Text, msg_name: Text, msg_type: DescriptorProto, field: FieldDescriptorProto) -> Iterator[None]:
     typ = ctx.rust_type(msg_type, field)
 
     if typ.oneof:
@@ -604,8 +586,7 @@ def field_iter(ctx, var, msg_name, msg_type, field):
 
 
 class CodeWriter(object):
-    def __init__(self, ctx, proto_file, crate, mod_parts):
-        # type: (Context, FileDescriptorProto, Text, List[Text]) -> None
+    def __init__(self, ctx: 'Context', proto_file: FileDescriptorProto, crate: Text, mod_parts: List[Text]) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.crate = crate
@@ -626,8 +607,7 @@ class CodeWriter(object):
                 for location in proto_file.source_code_info.location
             }
 
-    def write(self, s):
-        # type: (Text) -> None
+    def write(self, s: Text) -> None:
         if s == "":
             self.content.write("\n")
             return
@@ -637,8 +617,7 @@ class CodeWriter(object):
         self.content.write(s)
         self.content.write("\n")
 
-    def write_line_broken_text_with_prefix(self, text_block, prefix):
-        # type: (Text, Text) -> None
+    def write_line_broken_text_with_prefix(self, text_block: Text, prefix: Text) -> None:
         if not text_block:
             return
         for l in text_block.rstrip().split("\n"):
@@ -647,8 +626,7 @@ class CodeWriter(object):
             else:
                 self.write("")
 
-    def write_comments(self, sci_loc):
-        # type: (Optional[SourceCodeInfo.Location]) -> None
+    def write_comments(self, sci_loc: Optional[SourceCodeInfo.Location]) -> None:
         if sci_loc is None:
             return
         for leading_detached_comment in sci_loc.leading_detached_comments:
@@ -660,12 +638,10 @@ class CodeWriter(object):
         if sci_loc.trailing_comments is not None:
             self.write_line_broken_text_with_prefix(sci_loc.trailing_comments, "///")
 
-    def rust_type(self, msg_type, field):
-        # type: (DescriptorProto, FieldDescriptorProto) -> RustType
+    def rust_type(self, msg_type: DescriptorProto, field: FieldDescriptorProto) -> RustType:
         return RustType(self.ctx, self.proto_file, msg_type, field)
 
-    def gen_closed_enum(self, name, enum_variants, scl):
-        # type: (Text, List[Tuple[int, EnumValueDescriptorProto]], SourceCodeLocation) -> None
+    def gen_closed_enum(self, name: Text, enum_variants: List[Tuple[int, EnumValueDescriptorProto]], scl: SourceCodeLocation) -> None:
 
         # Generate a closed enum
         self.write_comments(self.source_code_info_by_scl.get(tuple(scl)))
@@ -731,8 +707,7 @@ class CodeWriter(object):
                     for _, value in enum_variants:
                         self.write('%s::%s => "%s",' % (name, value.name, value.name))
 
-    def gen_open_enum(self, name, enum_variants, scl):
-        # type: (Text, List[Tuple[int, EnumValueDescriptorProto]], SourceCodeLocation) -> None
+    def gen_open_enum(self, name: Text, enum_variants: List[Tuple[int, EnumValueDescriptorProto]], scl: SourceCodeLocation) -> None:
 
         closed_name = name + "_Closed"
 
@@ -831,8 +806,7 @@ class CodeWriter(object):
 
         self.gen_closed_enum(closed_name, enum_variants, scl)
 
-    def gen_enum(self, path, enum_type, scl):
-        # type: (List[Text], EnumDescriptorProto, SourceCodeLocation) -> None
+    def gen_enum(self, path: List[Text], enum_type: EnumDescriptorProto, scl: SourceCodeLocation) -> None:
         assert self.indentation == 0
         name = "_".join(path + [enum_type.name])
         if enum_err_if_default_or_unknown(enum_type):
@@ -842,8 +816,7 @@ class CodeWriter(object):
         else:
             self.gen_open_enum(name, list(enumerate(enum_type.value)), scl)
 
-    def gen_msg(self, path, msg_type, scl):
-        # type: (List[Text], DescriptorProto, SourceCodeLocation) -> None
+    def gen_msg(self, path: List[Text], msg_type: DescriptorProto, scl: SourceCodeLocation) -> None:
         assert self.indentation == 0
         name = "_".join(path + [msg_type.name])
 
@@ -855,9 +828,9 @@ class CodeWriter(object):
             if oneof.name in RESERVED_KEYWORDS:
                 oneof.name = oneof.name + "_"
 
-        oneof_fields = defaultdict(
+        oneof_fields: DefaultDict[Text, List[FieldDescriptorProto]] = defaultdict(
             list
-        )  # type: DefaultDict[Text, List[FieldDescriptorProto]]
+        )
 
         derives = ["Clone", "Debug", "PartialEq"]
         if self.derive_serde:
@@ -1102,9 +1075,9 @@ class CodeWriter(object):
                             "let mut oneof_%s: ::std::option::Option<%s> = None;"
                             % (oneof.name, oneof_typ)
                         )
-                err_if_default_field_names = (
+                err_if_default_field_names: OrderedDict[Text, None] = (
                     OrderedDict()
-                )  # type: OrderedDict[Text, None]
+                )
                 for field in msg_type.field:
                     if (
                         field.type == FieldDescriptorProto.TYPE_ENUM
@@ -1270,8 +1243,7 @@ class CodeWriter(object):
                     self.write("unrecognized.serialize(&mut self._unrecognized)?;")
                 self.write("Ok(())")
 
-    def gen_msg_descriptor(self, path, desc_proto, package, scl):
-        # type: (List[Text], DescriptorProto, Optional[Text], SourceCodeLocation) -> None
+    def gen_msg_descriptor(self, path: List[Text], desc_proto: DescriptorProto, package: Optional[Text], scl: SourceCodeLocation) -> None:
         assert self.indentation == 0
 
         name = "_".join(path + [desc_proto.name])
@@ -1282,22 +1254,10 @@ class CodeWriter(object):
             self.write('const FULL_NAME: &\'static str = "%s";' % full_name)
 
 
-# SourceCodeLocation is defined by `message Location` here
-# https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
-SourceCodeLocation = List[int]
-ProtoTypes = Union[FileDescriptorProto, EnumDescriptorProto, DescriptorProto]
-WalkRet = Tuple[
-    List[Tuple[List[Text], EnumDescriptorProto, SourceCodeLocation]],
-    List[Tuple[List[Text], DescriptorProto, SourceCodeLocation]],
-]
-
-
-def walk(proto):
-    # type: (FileDescriptorProto) -> WalkRet
+def walk(proto: FileDescriptorProto) -> WalkRet:
     enums, messages = [], []
 
-    def _walk(proto, parents, scl_prefix):
-        # type: (ProtoTypes, List[Text], SourceCodeLocation) -> None
+    def _walk(proto: ProtoTypes, parents: List[Text], scl_prefix: SourceCodeLocation) -> None:
         if isinstance(proto, EnumDescriptorProto):
             enums.append((parents, proto, scl_prefix))
         elif isinstance(proto, DescriptorProto):
@@ -1324,30 +1284,26 @@ def walk(proto):
 
 
 class ProtoType(object):
-    def __init__(self, ctx, proto_file, path, typ):
-        # type: (Context, FileDescriptorProto, List[Text], Message) -> None
+    def __init__(self, ctx: 'Context', proto_file: FileDescriptorProto, path: List[Text], typ: Message) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.path = path  # inside proto file
-        self.typ = typ  # type: Any
+        self.typ: Any = typ
         self.crate, self.mod_parts = ctx.crate_from_proto_filename(proto_file.name)
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return "{} {} {} {}".format(
             self.proto_file.package, self.proto_file.name, self.path, self.typ.name
         )
 
-    def proto_name(self):
-        # type: () -> Text
+    def proto_name(self) -> Text:
         """Name as used by proto eg. .mp.BlockMetadata.CompressionFormat"""
         r = "." + ".".join(self.path + [self.typ.name])
         if self.proto_file.package != "":
             r = "." + self.proto_file.package + r
         return r
 
-    def rust_name(self, other_crate, other_mod_parts):
-        # type: (Text, List[Text]) -> Text
+    def rust_name(self, other_crate: Text, other_mod_parts: List[Text]) -> Text:
         """Name as used in rust code for proto_file"""
         if self.ctx.crate_from_proto_filename(self.proto_file.name) == (
             other_crate,
@@ -1372,18 +1328,17 @@ Impls = namedtuple("Impls", ["Eq", "Copy"])
 
 
 class Context(object):
-    def __init__(self, crate_per_dir, prefix_to_clear):
-        # type: (bool, Text) -> None
-        self.proto_types = {}  # type: Dict[Text, ProtoType]
+    def __init__(self, crate_per_dir: bool, prefix_to_clear: Text) -> None:
+        self.proto_types: Dict[Text, ProtoType] = {}
 
         # Set iteration order is nondeterministic, but this is ok, because we can
         # emit crates in any order
-        self.deps_map = defaultdict(set)  # type: DefaultDict[Text, Set[Text]]
-        self.extra_crates = defaultdict(set)  # type: DefaultDict[Text, Set[Text]]
+        self.deps_map: DefaultDict[Text, Set[Text]] = defaultdict(set)
+        self.extra_crates: DefaultDict[Text, Set[Text]] = defaultdict(set)
 
         # Map from msg.type_name => whether it impls Eq / Copy
         # We have to build this on the fly as we process the types.
-        self.impls_by_msg = {}  # type: Dict[Tuple[Text, Text], Impls]
+        self.impls_by_msg: Dict[Tuple[Text, Text], Impls] = {}
 
         # Indiciator if every directory should be their own crate.
         self.crate_per_dir = crate_per_dir
@@ -1392,8 +1347,7 @@ class Context(object):
         # of how to split the crates apart.
         self.prefix_to_clear = prefix_to_clear
 
-    def calc_impls(self, proto_file, crate, msg_type, fq_msg):
-        # type: (FileDescriptorProto, Text, DescriptorProto, Tuple[Text, Text]) -> None
+    def calc_impls(self, proto_file: FileDescriptorProto, crate: Text, msg_type: DescriptorProto, fq_msg: Tuple[Text, Text]) -> None:
         # Determine if each message can implement Eq / Ord Copy traits. Using Dynamic Programming.
         # See if it's cached
         if fq_msg in self.impls_by_msg:
@@ -1475,8 +1429,7 @@ class Context(object):
 
         self.impls_by_msg[fq_msg] = Impls(Eq=msg_impls_eq, Copy=msg_impls_copy)
 
-    def feed(self, proto_file, to_generate):
-        # type: (FileDescriptorProto, List[Text]) -> None
+    def feed(self, proto_file: FileDescriptorProto, to_generate: List[Text]) -> None:
         enums, messages = walk(proto_file)
 
         for name in to_generate:
@@ -1492,15 +1445,13 @@ class Context(object):
             crate, _ = self.crate_from_proto_filename(proto_file.name)
             self.calc_impls(proto_file, crate, typ, fq_msg)
 
-    def find(self, typename):
-        # type: (Text) -> ProtoType
+    def find(self, typename: Text) -> ProtoType:
         if typename in self.proto_types:
             return self.proto_types[typename]
 
         raise RuntimeError("Could not find type by proto name: {}".format(typename))
 
-    def _set_boxed_if_recursive(self, visited, looking_for, pt):
-        # type: (Set[Text], Text, ProtoType) -> bool
+    def _set_boxed_if_recursive(self, visited: Set[Text], looking_for: Text, pt: ProtoType) -> bool:
         visited.add(pt.proto_name())
         any_field_boxed = False
         for field in pt.typ.field:
@@ -1533,13 +1484,11 @@ class Context(object):
 
     # This will recursively descend through a message and see if there any
     # recursive nesting.  In those cases, it will automatically box the fields.
-    def set_boxed_if_recursive(self, pt):
-        # type: (ProtoType) -> None
-        visited = set()  # type: Set[Text]
+    def set_boxed_if_recursive(self, pt: ProtoType) -> None:
+        visited: Set[Text] = set()
         self._set_boxed_if_recursive(visited, pt.proto_name(), pt)
 
-    def get_lib_and_mod_rs(self, mod_tree, derive_serde):
-        # type: (ModTree, bool) -> Iterator[Tuple[Text, Text]]
+    def get_lib_and_mod_rs(self, mod_tree: ModTree, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in six.iteritems(self.deps_map):
             librs = CodeWriter(None, None, None, None)  # type: ignore
             librs.write("#[macro_use]")
@@ -1549,8 +1498,7 @@ class Context(object):
                 librs.write("extern crate serde;")
             librs.write("")
 
-            def mod_tree_dfs(mod_prefix_path, sub_mod_tree):
-                # type: (Text, ModTree) -> Iterator[Tuple[Text, Text]]
+            def mod_tree_dfs(mod_prefix_path: Text, sub_mod_tree: ModTree) -> Iterator[Tuple[Text, Text]]:
                 if not sub_mod_tree:
                     return
 
@@ -1583,14 +1531,12 @@ class Context(object):
             content = RS_HEADER + LIB_RS_HEADER + librs.content.getvalue()
             yield filename, content
 
-    def get_build_file(self):
-        # type: () -> Iterator[Tuple[Text, Text]]
+    def get_build_file(self) -> Iterator[Tuple[Text, Text]]:
         for crate in six.iterkeys(self.deps_map):
             build_file = BUILD_TEMPLATE.format(crate=crate)
             yield crate, build_file
 
-    def get_spec_toml_file(self, derive_serde):
-        # type: (bool) -> Iterator[Tuple[Text, Text]]
+    def get_spec_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in six.iteritems(self.deps_map):
             all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
@@ -1605,8 +1551,7 @@ class Context(object):
             targets = SPEC_TOML_TEMPLATE.format(crate=crate, deps=deps_str)
             yield crate, targets
 
-    def get_cargo_toml_file(self, derive_serde):
-        # type: (bool) -> Iterator[Tuple[Text, Text]]
+    def get_cargo_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in six.iteritems(self.deps_map):
             all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
@@ -1637,8 +1582,7 @@ class Context(object):
             targets = CARGO_TOML_TEMPLATE.format(crate=crate, deps="\n".join(deps_lines))
             yield crate, targets
 
-    def crate_from_proto_filename(self, proto_filename):
-        # type: (Text) -> Tuple[Text, List[Text]]
+    def crate_from_proto_filename(self, proto_filename: Text) -> Tuple[Text, List[Text]]:
         filename = proto_filename.replace(self.prefix_to_clear, "").replace(".proto", "")
         mod_parts_unsanitized = filename.split("/")
         mod_parts = [
@@ -1709,19 +1653,14 @@ LIB_RS_HEADER = """
 
 """
 
-ModTree = DefaultDict[Text, DefaultDict]
-
-
-def generate_single_crate(ctx, file_prefix, file_to_generate, response):
-    # type: (Context, Text, List[Text], plugin.CodeGeneratorResponse) -> None
-    def new_mod_tree():
-        # type: () -> ModTree
+def generate_single_crate(ctx: Context, file_prefix: Text, file_to_generate: List[Text], response: plugin.CodeGeneratorResponse) -> None:
+    def new_mod_tree() -> ModTree:
         return defaultdict(new_mod_tree)
 
     mod_tree = new_mod_tree()
 
     # Set iteration order is nondeterministic, but this is ok, because we never iterate through this
-    processed_files = set()  # type: Set[Text]
+    processed_files: Set[Text] = set()
     derive_serde = False
 
     for proto_file_name in file_to_generate:
@@ -1744,8 +1683,7 @@ def generate_single_crate(ctx, file_prefix, file_to_generate, response):
         parent_mods = mod_parts[:-1]
         mod_name = mod_parts[-1]
 
-        def add_mod(writer):
-            # type: (CodeWriter) -> None
+        def add_mod(writer: CodeWriter) -> None:
             rs_file_name = (
                 file_prefix + "/".join([crate_name, "src"] + writer.mod_parts) + ".rs"
             )
@@ -1805,8 +1743,7 @@ def generate_single_crate(ctx, file_prefix, file_to_generate, response):
             output.content = cargo_toml_file
 
 
-def generate_code(request, response):
-    # type: (plugin.CodeGeneratorRequest, plugin.CodeGeneratorResponse) -> None
+def generate_code(request: plugin.CodeGeneratorRequest, response: plugin.CodeGeneratorResponse) -> None:
     to_generate = list(request.file_to_generate)
 
     prefix_to_clear = ""
@@ -1814,7 +1751,7 @@ def generate_code(request, response):
         prefix_to_clear = [arg for arg in request.parameter.split() if "prefix_to_clear" in arg][0].split("=")[1]
 
     if "crate_per_dir" in request.parameter:
-        files_by_dir = defaultdict(list)  # type: Dict[Text, List[Text]]
+        files_by_dir: DefaultDict[Text, List[Text]] = defaultdict(list)
         for file_path in to_generate:
             dir_path, file_name = os.path.split(file_path)
             files_by_dir[dir_path].append(file_path)
