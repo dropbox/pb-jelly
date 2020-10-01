@@ -27,8 +27,6 @@ from typing import (
     Union,
 )
 
-import six
-
 from google.protobuf.compiler import plugin_pb2 as plugin
 from google.protobuf.descriptor_pb2 import (
     DescriptorProto,
@@ -1489,7 +1487,7 @@ class Context(object):
         self._set_boxed_if_recursive(visited, pt.proto_name(), pt)
 
     def get_lib_and_mod_rs(self, mod_tree: ModTree, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
-        for crate, deps in six.iteritems(self.deps_map):
+        for crate, deps in self.deps_map.items():
             librs = CodeWriter(None, None, None, None)  # type: ignore
             librs.write("#[macro_use]")
             librs.write("extern crate lazy_static;")
@@ -1508,20 +1506,20 @@ class Context(object):
                     + [
                         # TODO(ilevkivskyi): mypy reports a str/bytes issue.
                         "pub mod %s;" % mod  # type: ignore[misc]
-                        for mod in sorted(six.iterkeys(sub_mod_tree))
+                        for mod in sorted(sub_mod_tree.keys())
                     ]
                     + [""]
                 )
                 yield filename, content
 
-                for child_mod_name, child_mod_tree in six.iteritems(sub_mod_tree):
+                for child_mod_name, child_mod_tree in sub_mod_tree.items():
                     for res in mod_tree_dfs(
                         mod_prefix_path + "/" + child_mod_name, child_mod_tree
                     ):
                         yield res
 
             crate_mod_tree = mod_tree[crate]
-            for mod_name, child_mod_tree in sorted(six.iteritems(crate_mod_tree)):
+            for mod_name, child_mod_tree in sorted(crate_mod_tree.items()):
                 librs.write("pub mod %s;" % mod_name)
 
                 for res in mod_tree_dfs(crate + "/src/" + mod_name, child_mod_tree):
@@ -1532,12 +1530,12 @@ class Context(object):
             yield filename, content
 
     def get_build_file(self) -> Iterator[Tuple[Text, Text]]:
-        for crate in six.iterkeys(self.deps_map):
+        for crate in self.deps_map:
             build_file = BUILD_TEMPLATE.format(crate=crate)
             yield crate, build_file
 
     def get_spec_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
-        for crate, deps in six.iteritems(self.deps_map):
+        for crate, deps in self.deps_map.items():
             all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
             }
@@ -1552,7 +1550,7 @@ class Context(object):
             yield crate, targets
 
     def get_cargo_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
-        for crate, deps in six.iteritems(self.deps_map):
+        for crate, deps in self.deps_map.items():
             all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
                 "std"
             }
@@ -1771,10 +1769,7 @@ def generate_code(request: plugin.CodeGeneratorRequest, response: plugin.CodeGen
 
 if __name__ == "__main__":
     # Read request message from stdin
-    if six.PY3:
-        data = sys.stdin.buffer.read()
-    else:
-        data = sys.stdin.read()
+    data = sys.stdin.buffer.read()
 
     # Parse request
     request = plugin.CodeGeneratorRequest()
@@ -1790,7 +1785,4 @@ if __name__ == "__main__":
     output = response.SerializeToString()
 
     # Write to stdout
-    if six.PY3:
-        sys.stdout.buffer.write(output)
-    else:
-        sys.stdout.write(output)
+    sys.stdout.buffer.write(output)
