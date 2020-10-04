@@ -1,6 +1,8 @@
 # Upcoming
 * Only generate crate level attributes in lib.rs (vs every module)
 * Drop python2 support (remove six and inline type annotations)
+* Better error message if python-protobuf version is too low for codegen plugin
+* Bump protobuf in requirements to 3.13.0
 
 # 0.0.3
 ### September 21, 2020

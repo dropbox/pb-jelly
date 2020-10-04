@@ -2,27 +2,54 @@ dist: bionic
 language: rust
 rust: nightly
 cache: cargo
-env: RUSTC_WRAPPER=$HOME/.local/bin/sccache
+env: RUSTC_WRAPPER=sccache
+os:
+  - linux
+  - osx
+  # Coming soon to a CI near you
+  # - windows
 addons:
-    apt:
-        packages:
-            - "python3-pip"
+  apt:
+    packages:
+      - "python3-pip"
+      - "python3-setuptools"
 before_install:
-    - pip install --user -r pb-jelly-gen/requirements.txt
+    - PROTOBUF_VERSION=3.13.0
+    - SCCACHE_VERSION=0.2.13
+
+    # OS specific installations
+    - |
+      if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+        PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-win64.zip
+      else
+        if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+          # Brew seems to have an older version installed - and for some reason, python3
+          # seems to prefer this older version over the pip installed version from requirements.txt
+          # so lets get it out of the way
+          brew uninstall --ignore-dependencies protobuf
+          PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-osx-x86_64.zip
+          SCCACHE_FILENAME=sccache-${SCCACHE_VERSION}-x86_64-apple-darwin
+        elif [ "$TRAVIS_OS_NAME" = "linux" ]; then
+          PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
+          SCCACHE_FILENAME=sccache-${SCCACHE_VERSION}-x86_64-unknown-linux-musl
+        else
+          exit 1  # OH NO - unknown OS
+        fi
+
+        wget https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/${PROTOC_FILENAME}
+        unzip $PROTOC_FILENAME -d $HOME/.local
+
+        wget https://github.com/mozilla/sccache/releases/download/${SCCACHE_VERSION}/${SCCACHE_FILENAME}.tar.gz
+        tar -xvf ${SCCACHE_FILENAME}.tar.gz
+        mv ${SCCACHE_FILENAME}/sccache ~/.local/bin
+      fi
+
     - python3 --version
+    - python3 -m pip install -r pb-jelly-gen/requirements.txt
+    - python3 -c "import google.protobuf ; print(google.protobuf.__version__)"
     - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
     - rustup component add rustfmt
-    - PROTOBUF_VERSION=3.13.0
-    - PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
-    - wget https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/${PROTOC_FILENAME}
-    - unzip $PROTOC_FILENAME -d $HOME/.local
-    - SCCACHE_VERSION=0.2.13
-    - SCCACHE_FILENAME=sccache-${SCCACHE_VERSION}-x86_64-unknown-linux-musl
-    - wget https://github.com/mozilla/sccache/releases/download/${SCCACHE_VERSION}/${SCCACHE_FILENAME}.tar.gz
-    - tar -xvf ${SCCACHE_FILENAME}.tar.gz
-    - cp ${SCCACHE_FILENAME}/sccache ~/.local/bin
 script:
-    - set -e
     - protoc --version
 
     # Run mypy on codegen.py
