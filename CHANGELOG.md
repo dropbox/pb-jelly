@@ -1,5 +1,6 @@
 # Upcoming
 * Only generate crate level attributes in lib.rs (vs every module)
+* Drop python2 support (remove six and inline type annotations)
 
 # 0.0.3
 ### September 21, 2020
