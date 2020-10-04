@@ -1,56 +1,71 @@
 dist: bionic
 language: rust
-rust:
-    - nightly
+rust: nightly
+cache: cargo
 addons:
-    apt:
-        packages:
-            - "python3-pip"
+  apt:
+    packages:
+      - "python3-pip"
 before_install:
-    - sudo pip install -r pb-jelly-gen/requirements.txt
-    - python3 --version
-    - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
-    - rustup component add rustfmt
-    - PROTOBUF_VERSION=3.7.1
-    - PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
-    - mkdir /tmp/protoc_install
-    - pushd /tmp/protoc_install
-    - wget https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/${PROTOC_FILENAME}
-    - unzip ${PROTOC_FILENAME}
-    - bin/protoc --version
-    - sudo cp bin/* /usr/local/bin/
-    - sudo cp -r include/* /usr/local/include/
-    - popd
-script:
-    - set -e
-    - protoc --version
+  - PROTOBUF_VERSION=3.7.1
+  - PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
+  - mkdir /tmp/protoc_install
+  - pushd /tmp/protoc_install
+  - wget https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/${PROTOC_FILENAME}
+  - unzip ${PROTOC_FILENAME}
+  - bin/protoc --version
+  - sudo cp bin/* /usr/local/bin/
+  - sudo cp -r include/* /usr/local/include/
+  - popd
 
-    # Run mypy on codegen.py
-    - cd pb-jelly-gen/codegen
-    - protoc --mypy_out=proto rust/extensions.proto
-    - mypy .
-    - cd ../..
+jobs:
+  include:
+    - name: mypy
+      before_install:
+        - sudo pip install -r pb-jelly-gen/requirements.txt
+        - python3 --version
+        - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
+      script:
+        # Run mypy on codegen.py
+        - set -e
+        - cd pb-jelly-gen/codegen
+        - protoc --mypy_out=proto rust/extensions.proto
+        - mypy .
 
-    # Rustfmt
-    - for d in examples pb-jelly pb-jelly-gen pb-test; do cd $d ; cargo fmt -- --check ; cd .. ; done
+    - name: rustfmt
+      before_install:
+        - rustup component add rustfmt
+      script:
+        - set -e
+        - for d in examples pb-jelly pb-jelly-gen pb-test; do cd $d ; cargo fmt -- --check ; cd .. ; done
 
-    # unit tests
-    - cd pb-jelly
-    - cargo test
-    - cd ../pb-jelly-gen
-    - cargo test
-    # pbtest
-    - cd ../pb-test/pb_test_gen
-    - cargo run
-    - cd ..
-    - VALIDATE=1 cargo test
-    # examples
-    - cd ../examples/examples_gen
-    - cargo run
-    - cd ..
-    - cargo test
-    # benchmarks
-    - cd ../pb-test/pb_test_gen
-    - cargo run --features=bench_prost,bench_rust_protobuf
-    - cd ..
-    - cargo bench bench --features=bench_prost,bench_rust_protobuf
+    - name: tests
+      script:
+        - set -e
+        - protoc --version
+        # unit tests
+        - cd pb-jelly
+        - cargo test
+        - cd ../pb-jelly-gen
+        - cargo test
+        # pbtest
+        - cd ../pb-test/pb_test_gen
+        - cargo run
+        - cd ..
+        - VALIDATE=1 cargo test
+
+    - name: examples
+      script:
+        - set -e
+        - cd examples/examples_gen
+        - cargo run
+        - cd ..
+        - cargo test
+
+    - name: benchmarks
+      script:
+        - set -e
+        - cd pb-test/pb_test_gen
+        - cargo run --features=bench_prost,bench_rust_protobuf
+        - cd ..
+        - cargo bench bench --features=bench_prost,bench_rust_protobuf
