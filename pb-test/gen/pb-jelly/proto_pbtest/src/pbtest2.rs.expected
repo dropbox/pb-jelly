@@ -1,0 +1,3645 @@
+// @generated, do not edit
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(transparent)]
+pub struct ForeignEnum(i32);
+impl ForeignEnum {
+  pub const FOREIGN_FOO: ForeignEnum = ForeignEnum(0);
+  pub const FOREIGN_BAR: ForeignEnum = ForeignEnum(1);
+  pub const FOREIGN_BAZ: ForeignEnum = ForeignEnum(2);
+  pub const KNOWN_VARIANTS: [ForeignEnum; 3] = [ForeignEnum::FOREIGN_FOO, ForeignEnum::FOREIGN_BAR, ForeignEnum::FOREIGN_BAZ];
+  pub const fn value(self) -> i32 {
+    self.0
+  }
+  pub fn into_known(self) -> ::std::option::Option<ForeignEnum_Closed> {
+    match self {
+      ForeignEnum::FOREIGN_FOO => Some(ForeignEnum_Closed::FOREIGN_FOO),
+      ForeignEnum::FOREIGN_BAR => Some(ForeignEnum_Closed::FOREIGN_BAR),
+      ForeignEnum::FOREIGN_BAZ => Some(ForeignEnum_Closed::FOREIGN_BAZ),
+      _ => None,
+    }
+  }
+}
+impl ::std::default::Default for ForeignEnum {
+  fn default() -> Self {
+    ForeignEnum::FOREIGN_FOO
+  }
+}
+impl From<ForeignEnum> for i32 {
+  fn from(v: ForeignEnum) -> i32 {
+    v.0
+  }
+}
+impl From<i32> for ForeignEnum {
+  fn from(v: i32) -> ForeignEnum {
+    ForeignEnum(v)
+  }
+}
+impl From<ForeignEnum_Closed> for ForeignEnum {
+  fn from(v: ForeignEnum_Closed) -> ForeignEnum {
+    ForeignEnum(v as i32)
+  }
+}
+impl ::pb_jelly::ProtoEnum for ForeignEnum {
+}
+impl ::pb_jelly::OpenProtoEnum for ForeignEnum {
+  fn name(self) -> ::std::option::Option<&'static str> {
+    match self {
+      ForeignEnum::FOREIGN_FOO => Some("FOREIGN_FOO"),
+      ForeignEnum::FOREIGN_BAR => Some("FOREIGN_BAR"),
+      ForeignEnum::FOREIGN_BAZ => Some("FOREIGN_BAZ"),
+      _ => None,
+    }
+  }
+  fn is_known(self) -> bool {
+    match self {
+      ForeignEnum::FOREIGN_FOO => true,
+      ForeignEnum::FOREIGN_BAR => true,
+      ForeignEnum::FOREIGN_BAZ => true,
+      _ => false,
+    }
+  }
+}
+impl ::std::fmt::Debug for ForeignEnum {
+  fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+    use ::pb_jelly::OpenProtoEnum;
+    match self.name() {
+      Some(s) => write!(f, "{}", s),
+      None => write!(f, "Unknown({})", self.0),
+    }
+  }
+}
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+#[repr(i32)]
+pub enum ForeignEnum_Closed {
+  FOREIGN_FOO = 0,
+  FOREIGN_BAR = 1,
+  FOREIGN_BAZ = 2,
+}
+impl ForeignEnum_Closed {
+  pub const KNOWN_VARIANTS: [ForeignEnum_Closed; 3] = [ForeignEnum_Closed::FOREIGN_FOO, ForeignEnum_Closed::FOREIGN_BAR, ForeignEnum_Closed::FOREIGN_BAZ];
+}
+impl ::std::default::Default for ForeignEnum_Closed {
+  fn default() -> Self {
+    ForeignEnum_Closed::FOREIGN_FOO
+  }
+}
+impl From<ForeignEnum_Closed> for i32 {
+  fn from(v: ForeignEnum_Closed) -> i32 {
+    match v {
+      ForeignEnum_Closed::FOREIGN_FOO => 0,
+      ForeignEnum_Closed::FOREIGN_BAR => 1,
+      ForeignEnum_Closed::FOREIGN_BAZ => 2,
+    }
+  }
+}
+impl ::std::convert::TryFrom<i32> for ForeignEnum_Closed {
+  type Error = i32;
+  fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+    match v {
+      0 => Ok(ForeignEnum_Closed::FOREIGN_FOO),
+      1 => Ok(ForeignEnum_Closed::FOREIGN_BAR),
+      2 => Ok(ForeignEnum_Closed::FOREIGN_BAZ),
+      _ => Err(v),
+    }
+  }
+}
+impl ::pb_jelly::ProtoEnum for ForeignEnum_Closed {
+}
+impl ::pb_jelly::ClosedProtoEnum for ForeignEnum_Closed {
+  fn name(self) -> &'static str {
+    match self {
+      ForeignEnum_Closed::FOREIGN_FOO => "FOREIGN_FOO",
+      ForeignEnum_Closed::FOREIGN_BAR => "FOREIGN_BAR",
+      ForeignEnum_Closed::FOREIGN_BAZ => "FOREIGN_BAZ",
+    }
+  }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(transparent)]
+pub struct Version1Enum_TestEnum(i32);
+impl Version1Enum_TestEnum {
+  pub const ENUM0: Version1Enum_TestEnum = Version1Enum_TestEnum(0);
+  pub const KNOWN_VARIANTS: [Version1Enum_TestEnum; 1] = [Version1Enum_TestEnum::ENUM0];
+  pub const fn value(self) -> i32 {
+    self.0
+  }
+  pub fn into_known(self) -> ::std::option::Option<Version1Enum_TestEnum_Closed> {
+    match self {
+      Version1Enum_TestEnum::ENUM0 => Some(Version1Enum_TestEnum_Closed::ENUM0),
+      _ => None,
+    }
+  }
+}
+impl ::std::default::Default for Version1Enum_TestEnum {
+  fn default() -> Self {
+    Version1Enum_TestEnum::ENUM0
+  }
+}
+impl From<Version1Enum_TestEnum> for i32 {
+  fn from(v: Version1Enum_TestEnum) -> i32 {
+    v.0
+  }
+}
+impl From<i32> for Version1Enum_TestEnum {
+  fn from(v: i32) -> Version1Enum_TestEnum {
+    Version1Enum_TestEnum(v)
+  }
+}
+impl From<Version1Enum_TestEnum_Closed> for Version1Enum_TestEnum {
+  fn from(v: Version1Enum_TestEnum_Closed) -> Version1Enum_TestEnum {
+    Version1Enum_TestEnum(v as i32)
+  }
+}
+impl ::pb_jelly::ProtoEnum for Version1Enum_TestEnum {
+}
+impl ::pb_jelly::OpenProtoEnum for Version1Enum_TestEnum {
+  fn name(self) -> ::std::option::Option<&'static str> {
+    match self {
+      Version1Enum_TestEnum::ENUM0 => Some("ENUM0"),
+      _ => None,
+    }
+  }
+  fn is_known(self) -> bool {
+    match self {
+      Version1Enum_TestEnum::ENUM0 => true,
+      _ => false,
+    }
+  }
+}
+impl ::std::fmt::Debug for Version1Enum_TestEnum {
+  fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+    use ::pb_jelly::OpenProtoEnum;
+    match self.name() {
+      Some(s) => write!(f, "{}", s),
+      None => write!(f, "Unknown({})", self.0),
+    }
+  }
+}
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+#[repr(i32)]
+pub enum Version1Enum_TestEnum_Closed {
+  ENUM0 = 0,
+}
+impl Version1Enum_TestEnum_Closed {
+  pub const KNOWN_VARIANTS: [Version1Enum_TestEnum_Closed; 1] = [Version1Enum_TestEnum_Closed::ENUM0];
+}
+impl ::std::default::Default for Version1Enum_TestEnum_Closed {
+  fn default() -> Self {
+    Version1Enum_TestEnum_Closed::ENUM0
+  }
+}
+impl From<Version1Enum_TestEnum_Closed> for i32 {
+  fn from(v: Version1Enum_TestEnum_Closed) -> i32 {
+    match v {
+      Version1Enum_TestEnum_Closed::ENUM0 => 0,
+    }
+  }
+}
+impl ::std::convert::TryFrom<i32> for Version1Enum_TestEnum_Closed {
+  type Error = i32;
+  fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+    match v {
+      0 => Ok(Version1Enum_TestEnum_Closed::ENUM0),
+      _ => Err(v),
+    }
+  }
+}
+impl ::pb_jelly::ProtoEnum for Version1Enum_TestEnum_Closed {
+}
+impl ::pb_jelly::ClosedProtoEnum for Version1Enum_TestEnum_Closed {
+  fn name(self) -> &'static str {
+    match self {
+      Version1Enum_TestEnum_Closed::ENUM0 => "ENUM0",
+    }
+  }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(transparent)]
+pub struct Version2Enum_TestEnum(i32);
+impl Version2Enum_TestEnum {
+  pub const ENUM0: Version2Enum_TestEnum = Version2Enum_TestEnum(0);
+  pub const ENUM1: Version2Enum_TestEnum = Version2Enum_TestEnum(1);
+  pub const KNOWN_VARIANTS: [Version2Enum_TestEnum; 2] = [Version2Enum_TestEnum::ENUM0, Version2Enum_TestEnum::ENUM1];
+  pub const fn value(self) -> i32 {
+    self.0
+  }
+  pub fn into_known(self) -> ::std::option::Option<Version2Enum_TestEnum_Closed> {
+    match self {
+      Version2Enum_TestEnum::ENUM0 => Some(Version2Enum_TestEnum_Closed::ENUM0),
+      Version2Enum_TestEnum::ENUM1 => Some(Version2Enum_TestEnum_Closed::ENUM1),
+      _ => None,
+    }
+  }
+}
+impl ::std::default::Default for Version2Enum_TestEnum {
+  fn default() -> Self {
+    Version2Enum_TestEnum::ENUM0
+  }
+}
+impl From<Version2Enum_TestEnum> for i32 {
+  fn from(v: Version2Enum_TestEnum) -> i32 {
+    v.0
+  }
+}
+impl From<i32> for Version2Enum_TestEnum {
+  fn from(v: i32) -> Version2Enum_TestEnum {
+    Version2Enum_TestEnum(v)
+  }
+}
+impl From<Version2Enum_TestEnum_Closed> for Version2Enum_TestEnum {
+  fn from(v: Version2Enum_TestEnum_Closed) -> Version2Enum_TestEnum {
+    Version2Enum_TestEnum(v as i32)
+  }
+}
+impl ::pb_jelly::ProtoEnum for Version2Enum_TestEnum {
+}
+impl ::pb_jelly::OpenProtoEnum for Version2Enum_TestEnum {
+  fn name(self) -> ::std::option::Option<&'static str> {
+    match self {
+      Version2Enum_TestEnum::ENUM0 => Some("ENUM0"),
+      Version2Enum_TestEnum::ENUM1 => Some("ENUM1"),
+      _ => None,
+    }
+  }
+  fn is_known(self) -> bool {
+    match self {
+      Version2Enum_TestEnum::ENUM0 => true,
+      Version2Enum_TestEnum::ENUM1 => true,
+      _ => false,
+    }
+  }
+}
+impl ::std::fmt::Debug for Version2Enum_TestEnum {
+  fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+    use ::pb_jelly::OpenProtoEnum;
+    match self.name() {
+      Some(s) => write!(f, "{}", s),
+      None => write!(f, "Unknown({})", self.0),
+    }
+  }
+}
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+#[repr(i32)]
+pub enum Version2Enum_TestEnum_Closed {
+  ENUM0 = 0,
+  ENUM1 = 1,
+}
+impl Version2Enum_TestEnum_Closed {
+  pub const KNOWN_VARIANTS: [Version2Enum_TestEnum_Closed; 2] = [Version2Enum_TestEnum_Closed::ENUM0, Version2Enum_TestEnum_Closed::ENUM1];
+}
+impl ::std::default::Default for Version2Enum_TestEnum_Closed {
+  fn default() -> Self {
+    Version2Enum_TestEnum_Closed::ENUM0
+  }
+}
+impl From<Version2Enum_TestEnum_Closed> for i32 {
+  fn from(v: Version2Enum_TestEnum_Closed) -> i32 {
+    match v {
+      Version2Enum_TestEnum_Closed::ENUM0 => 0,
+      Version2Enum_TestEnum_Closed::ENUM1 => 1,
+    }
+  }
+}
+impl ::std::convert::TryFrom<i32> for Version2Enum_TestEnum_Closed {
+  type Error = i32;
+  fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+    match v {
+      0 => Ok(Version2Enum_TestEnum_Closed::ENUM0),
+      1 => Ok(Version2Enum_TestEnum_Closed::ENUM1),
+      _ => Err(v),
+    }
+  }
+}
+impl ::pb_jelly::ProtoEnum for Version2Enum_TestEnum_Closed {
+}
+impl ::pb_jelly::ClosedProtoEnum for Version2Enum_TestEnum_Closed {
+  fn name(self) -> &'static str {
+    match self {
+      Version2Enum_TestEnum_Closed::ENUM0 => "ENUM0",
+      Version2Enum_TestEnum_Closed::ENUM1 => "ENUM1",
+    }
+  }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(transparent)]
+pub struct TestMessage_NestedEnum(i32);
+impl TestMessage_NestedEnum {
+  pub const FOO: TestMessage_NestedEnum = TestMessage_NestedEnum(0);
+  pub const BAR: TestMessage_NestedEnum = TestMessage_NestedEnum(1);
+  pub const BAZ: TestMessage_NestedEnum = TestMessage_NestedEnum(2);
+  /// Intentionally negative.
+  pub const NEG: TestMessage_NestedEnum = TestMessage_NestedEnum(-1);
+  pub const KNOWN_VARIANTS: [TestMessage_NestedEnum; 4] = [TestMessage_NestedEnum::FOO, TestMessage_NestedEnum::BAR, TestMessage_NestedEnum::BAZ, TestMessage_NestedEnum::NEG];
+  pub const fn value(self) -> i32 {
+    self.0
+  }
+  pub fn into_known(self) -> ::std::option::Option<TestMessage_NestedEnum_Closed> {
+    match self {
+      TestMessage_NestedEnum::FOO => Some(TestMessage_NestedEnum_Closed::FOO),
+      TestMessage_NestedEnum::BAR => Some(TestMessage_NestedEnum_Closed::BAR),
+      TestMessage_NestedEnum::BAZ => Some(TestMessage_NestedEnum_Closed::BAZ),
+      TestMessage_NestedEnum::NEG => Some(TestMessage_NestedEnum_Closed::NEG),
+      _ => None,
+    }
+  }
+}
+impl ::std::default::Default for TestMessage_NestedEnum {
+  fn default() -> Self {
+    TestMessage_NestedEnum::FOO
+  }
+}
+impl From<TestMessage_NestedEnum> for i32 {
+  fn from(v: TestMessage_NestedEnum) -> i32 {
+    v.0
+  }
+}
+impl From<i32> for TestMessage_NestedEnum {
+  fn from(v: i32) -> TestMessage_NestedEnum {
+    TestMessage_NestedEnum(v)
+  }
+}
+impl From<TestMessage_NestedEnum_Closed> for TestMessage_NestedEnum {
+  fn from(v: TestMessage_NestedEnum_Closed) -> TestMessage_NestedEnum {
+    TestMessage_NestedEnum(v as i32)
+  }
+}
+impl ::pb_jelly::ProtoEnum for TestMessage_NestedEnum {
+}
+impl ::pb_jelly::OpenProtoEnum for TestMessage_NestedEnum {
+  fn name(self) -> ::std::option::Option<&'static str> {
+    match self {
+      TestMessage_NestedEnum::FOO => Some("FOO"),
+      TestMessage_NestedEnum::BAR => Some("BAR"),
+      TestMessage_NestedEnum::BAZ => Some("BAZ"),
+      TestMessage_NestedEnum::NEG => Some("NEG"),
+      _ => None,
+    }
+  }
+  fn is_known(self) -> bool {
+    match self {
+      TestMessage_NestedEnum::FOO => true,
+      TestMessage_NestedEnum::BAR => true,
+      TestMessage_NestedEnum::BAZ => true,
+      TestMessage_NestedEnum::NEG => true,
+      _ => false,
+    }
+  }
+}
+impl ::std::fmt::Debug for TestMessage_NestedEnum {
+  fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+    use ::pb_jelly::OpenProtoEnum;
+    match self.name() {
+      Some(s) => write!(f, "{}", s),
+      None => write!(f, "Unknown({})", self.0),
+    }
+  }
+}
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+#[repr(i32)]
+pub enum TestMessage_NestedEnum_Closed {
+  FOO = 0,
+  BAR = 1,
+  BAZ = 2,
+  /// Intentionally negative.
+  NEG = -1,
+}
+impl TestMessage_NestedEnum_Closed {
+  pub const KNOWN_VARIANTS: [TestMessage_NestedEnum_Closed; 4] = [TestMessage_NestedEnum_Closed::FOO, TestMessage_NestedEnum_Closed::BAR, TestMessage_NestedEnum_Closed::BAZ, TestMessage_NestedEnum_Closed::NEG];
+}
+impl ::std::default::Default for TestMessage_NestedEnum_Closed {
+  fn default() -> Self {
+    TestMessage_NestedEnum_Closed::FOO
+  }
+}
+impl From<TestMessage_NestedEnum_Closed> for i32 {
+  fn from(v: TestMessage_NestedEnum_Closed) -> i32 {
+    match v {
+      TestMessage_NestedEnum_Closed::FOO => 0,
+      TestMessage_NestedEnum_Closed::BAR => 1,
+      TestMessage_NestedEnum_Closed::BAZ => 2,
+      TestMessage_NestedEnum_Closed::NEG => -1,
+    }
+  }
+}
+impl ::std::convert::TryFrom<i32> for TestMessage_NestedEnum_Closed {
+  type Error = i32;
+  fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+    match v {
+      0 => Ok(TestMessage_NestedEnum_Closed::FOO),
+      1 => Ok(TestMessage_NestedEnum_Closed::BAR),
+      2 => Ok(TestMessage_NestedEnum_Closed::BAZ),
+      -1 => Ok(TestMessage_NestedEnum_Closed::NEG),
+      _ => Err(v),
+    }
+  }
+}
+impl ::pb_jelly::ProtoEnum for TestMessage_NestedEnum_Closed {
+}
+impl ::pb_jelly::ClosedProtoEnum for TestMessage_NestedEnum_Closed {
+  fn name(self) -> &'static str {
+    match self {
+      TestMessage_NestedEnum_Closed::FOO => "FOO",
+      TestMessage_NestedEnum_Closed::BAR => "BAR",
+      TestMessage_NestedEnum_Closed::BAZ => "BAZ",
+      TestMessage_NestedEnum_Closed::NEG => "NEG",
+    }
+  }
+}
+
+/// Test message names which collide with rust primitive names
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Option {
+}
+impl Option {
+}
+impl ::std::default::Default for Option {
+  fn default() -> Self {
+    Option {
+    }
+  }
+}
+lazy_static! {
+  pub static ref Option_default: Option = Option::default();
+}
+impl ::pb_jelly::Message for Option {
+  fn compute_size(&self) -> usize  {
+    0
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    0
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Option {
+  const NAME: &'static str = "Option";
+  const FULL_NAME: &'static str = "pbtest.Option";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Vec {
+}
+impl Vec {
+}
+impl ::std::default::Default for Vec {
+  fn default() -> Self {
+    Vec {
+    }
+  }
+}
+lazy_static! {
+  pub static ref Vec_default: Vec = Vec::default();
+}
+impl ::pb_jelly::Message for Vec {
+  fn compute_size(&self) -> usize  {
+    0
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    0
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Vec {
+  const NAME: &'static str = "Vec";
+  const FULL_NAME: &'static str = "pbtest.Vec";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Default {
+}
+impl Default {
+}
+impl ::std::default::Default for Default {
+  fn default() -> Self {
+    Default {
+    }
+  }
+}
+lazy_static! {
+  pub static ref Default_default: Default = Default::default();
+}
+impl ::pb_jelly::Message for Default {
+  fn compute_size(&self) -> usize  {
+    0
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    0
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Default {
+  const NAME: &'static str = "Default";
+  const FULL_NAME: &'static str = "pbtest.Default";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct String {
+}
+impl String {
+}
+impl ::std::default::Default for String {
+  fn default() -> Self {
+    String {
+    }
+  }
+}
+lazy_static! {
+  pub static ref String_default: String = String::default();
+}
+impl ::pb_jelly::Message for String {
+  fn compute_size(&self) -> usize  {
+    0
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    0
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for String {
+  const NAME: &'static str = "String";
+  const FULL_NAME: &'static str = "pbtest.String";
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version1OneOfNoneNullable {
+  pub test_oneof: Version1OneOfNoneNullable_TestOneof,
+}
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum Version1OneOfNoneNullable_TestOneof {
+  StringOneOf(::std::string::String),
+  StringTwoOf(::std::string::String),
+}
+impl Version1OneOfNoneNullable {
+}
+impl ::std::default::Default for Version1OneOfNoneNullable {
+  fn default() -> Self {
+    Version1OneOfNoneNullable {
+      test_oneof: Version1OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default()),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version1OneOfNoneNullable_default: Version1OneOfNoneNullable = Version1OneOfNoneNullable::default();
+}
+impl ::pb_jelly::Message for Version1OneOfNoneNullable {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut string_one_of_size = 0;
+    if let Version1OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_one_of_size += ::pb_jelly::wire_format::serialized_length(1);
+      string_one_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_one_of_size += l;
+    }
+    size += string_one_of_size;
+    let mut string_two_of_size = 0;
+    if let Version1OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_two_of_size += ::pb_jelly::wire_format::serialized_length(2);
+      string_two_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_two_of_size += l;
+    }
+    size += string_two_of_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if let Version1OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Version1OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if let Version1OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Version1OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    let mut oneof_test_oneof: ::std::option::Option<Version1OneOfNoneNullable_TestOneof> = None;
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1OneOfNoneNullable", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_test_oneof = Some(Version1OneOfNoneNullable_TestOneof::StringOneOf(val));
+        }
+        2 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1OneOfNoneNullable", 2)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_test_oneof = Some(Version1OneOfNoneNullable_TestOneof::StringTwoOf(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    match oneof_test_oneof {
+      Some(v) => self.test_oneof = v,
+      None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, "missing value for non-nullable oneof 'test_oneof' while parsing message pbtest.Version1OneOfNoneNullable")),
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version1OneOfNoneNullable {
+  const NAME: &'static str = "Version1OneOfNoneNullable";
+  const FULL_NAME: &'static str = "pbtest.Version1OneOfNoneNullable";
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version2OneOfNoneNullable {
+  pub test_oneof: Version2OneOfNoneNullable_TestOneof,
+}
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum Version2OneOfNoneNullable_TestOneof {
+  StringOneOf(::std::string::String),
+  StringTwoOf(::std::string::String),
+  IntOneOf(i32),
+}
+impl Version2OneOfNoneNullable {
+}
+impl ::std::default::Default for Version2OneOfNoneNullable {
+  fn default() -> Self {
+    Version2OneOfNoneNullable {
+      test_oneof: Version2OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default()),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version2OneOfNoneNullable_default: Version2OneOfNoneNullable = Version2OneOfNoneNullable::default();
+}
+impl ::pb_jelly::Message for Version2OneOfNoneNullable {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut string_one_of_size = 0;
+    if let Version2OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_one_of_size += ::pb_jelly::wire_format::serialized_length(1);
+      string_one_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_one_of_size += l;
+    }
+    size += string_one_of_size;
+    let mut string_two_of_size = 0;
+    if let Version2OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_two_of_size += ::pb_jelly::wire_format::serialized_length(2);
+      string_two_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_two_of_size += l;
+    }
+    size += string_two_of_size;
+    let mut int_one_Of_size = 0;
+    if let Version2OneOfNoneNullable_TestOneof::IntOneOf(ref val) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int_one_Of_size += ::pb_jelly::wire_format::serialized_length(3);
+      int_one_Of_size += l;
+    }
+    size += int_one_Of_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if let Version2OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Version2OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Version2OneOfNoneNullable_TestOneof::IntOneOf(ref val) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if let Version2OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Version2OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Version2OneOfNoneNullable_TestOneof::IntOneOf(ref val) = self.test_oneof {
+      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    let mut oneof_test_oneof: ::std::option::Option<Version2OneOfNoneNullable_TestOneof> = None;
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2OneOfNoneNullable", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_test_oneof = Some(Version2OneOfNoneNullable_TestOneof::StringOneOf(val));
+        }
+        2 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2OneOfNoneNullable", 2)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_test_oneof = Some(Version2OneOfNoneNullable_TestOneof::StringTwoOf(val));
+        }
+        3 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2OneOfNoneNullable", 3)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          oneof_test_oneof = Some(Version2OneOfNoneNullable_TestOneof::IntOneOf(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    match oneof_test_oneof {
+      Some(v) => self.test_oneof = v,
+      None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, "missing value for non-nullable oneof 'test_oneof' while parsing message pbtest.Version2OneOfNoneNullable")),
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version2OneOfNoneNullable {
+  const NAME: &'static str = "Version2OneOfNoneNullable";
+  const FULL_NAME: &'static str = "pbtest.Version2OneOfNoneNullable";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version1Enum {
+  pub enum_field: ::std::option::Option<Version1Enum_TestEnum>,
+}
+impl Version1Enum {
+  pub fn has_enum_field(&self) -> bool {
+    self.enum_field.is_some()
+  }
+  pub fn set_enum_field(&mut self, v: Version1Enum_TestEnum) {
+    self.enum_field = Some(v);
+  }
+  pub fn get_enum_field(&self) -> Version1Enum_TestEnum {
+    self.enum_field.unwrap_or_default()
+  }
+}
+impl ::std::default::Default for Version1Enum {
+  fn default() -> Self {
+    Version1Enum {
+      enum_field: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version1Enum_default: Version1Enum = Version1Enum::default();
+}
+impl ::pb_jelly::Message for Version1Enum {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut enum_field_size = 0;
+    for val in &self.enum_field {
+      let l = ::pb_jelly::Message::compute_size(val);
+      enum_field_size += ::pb_jelly::wire_format::serialized_length(1);
+      enum_field_size += l;
+    }
+    size += enum_field_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    for val in &self.enum_field {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.enum_field {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version1Enum", 1)?;
+          let mut val: Version1Enum_TestEnum = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.enum_field = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version1Enum {
+  const NAME: &'static str = "Version1Enum";
+  const FULL_NAME: &'static str = "pbtest.Version1Enum";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version2Enum {
+  pub enum_field: ::std::option::Option<Version2Enum_TestEnum>,
+}
+impl Version2Enum {
+  pub fn has_enum_field(&self) -> bool {
+    self.enum_field.is_some()
+  }
+  pub fn set_enum_field(&mut self, v: Version2Enum_TestEnum) {
+    self.enum_field = Some(v);
+  }
+  pub fn get_enum_field(&self) -> Version2Enum_TestEnum {
+    self.enum_field.unwrap_or_default()
+  }
+}
+impl ::std::default::Default for Version2Enum {
+  fn default() -> Self {
+    Version2Enum {
+      enum_field: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version2Enum_default: Version2Enum = Version2Enum::default();
+}
+impl ::pb_jelly::Message for Version2Enum {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut enum_field_size = 0;
+    for val in &self.enum_field {
+      let l = ::pb_jelly::Message::compute_size(val);
+      enum_field_size += ::pb_jelly::wire_format::serialized_length(1);
+      enum_field_size += l;
+    }
+    size += enum_field_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    for val in &self.enum_field {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.enum_field {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2Enum", 1)?;
+          let mut val: Version2Enum_TestEnum = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.enum_field = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version2Enum {
+  const NAME: &'static str = "Version2Enum";
+  const FULL_NAME: &'static str = "pbtest.Version2Enum";
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version1OneOf {
+  pub test_oneof: ::std::option::Option<Version1OneOf_TestOneof>,
+}
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum Version1OneOf_TestOneof {
+  StringOneOf(::std::string::String),
+}
+impl Version1OneOf {
+}
+impl ::std::default::Default for Version1OneOf {
+  fn default() -> Self {
+    Version1OneOf {
+      test_oneof: None,
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version1OneOf_default: Version1OneOf = Version1OneOf::default();
+}
+impl ::pb_jelly::Message for Version1OneOf {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut string_one_of_size = 0;
+    if let Some(Version1OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_one_of_size += ::pb_jelly::wire_format::serialized_length(1);
+      string_one_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_one_of_size += l;
+    }
+    size += string_one_of_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if let Some(Version1OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if let Some(Version1OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1OneOf", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.test_oneof = Some(Version1OneOf_TestOneof::StringOneOf(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version1OneOf {
+  const NAME: &'static str = "Version1OneOf";
+  const FULL_NAME: &'static str = "pbtest.Version1OneOf";
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version2OneOf {
+  pub test_oneof: ::std::option::Option<Version2OneOf_TestOneof>,
+}
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum Version2OneOf_TestOneof {
+  StringOneOf(::std::string::String),
+  IntOneOf(i32),
+}
+impl Version2OneOf {
+}
+impl ::std::default::Default for Version2OneOf {
+  fn default() -> Self {
+    Version2OneOf {
+      test_oneof: None,
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version2OneOf_default: Version2OneOf = Version2OneOf::default();
+}
+impl ::pb_jelly::Message for Version2OneOf {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut string_one_of_size = 0;
+    if let Some(Version2OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_one_of_size += ::pb_jelly::wire_format::serialized_length(1);
+      string_one_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_one_of_size += l;
+    }
+    size += string_one_of_size;
+    let mut int_one_of_size = 0;
+    if let Some(Version2OneOf_TestOneof::IntOneOf(ref val)) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int_one_of_size += ::pb_jelly::wire_format::serialized_length(2);
+      int_one_of_size += l;
+    }
+    size += int_one_of_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if let Some(Version2OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(Version2OneOf_TestOneof::IntOneOf(ref val)) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if let Some(Version2OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(Version2OneOf_TestOneof::IntOneOf(ref val)) = self.test_oneof {
+      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2OneOf", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.test_oneof = Some(Version2OneOf_TestOneof::StringOneOf(val));
+        }
+        2 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2OneOf", 2)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.test_oneof = Some(Version2OneOf_TestOneof::IntOneOf(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version2OneOf {
+  const NAME: &'static str = "Version2OneOf";
+  const FULL_NAME: &'static str = "pbtest.Version2OneOf";
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version1 {
+  pub required_string: ::std::option::Option<::std::string::String>,
+}
+impl Version1 {
+  pub fn has_required_string(&self) -> bool {
+    self.required_string.is_some()
+  }
+  pub fn set_required_string(&mut self, v: ::std::string::String) {
+    self.required_string = Some(v);
+  }
+  pub fn take_required_string(&mut self) -> ::std::string::String {
+    self.required_string.take().unwrap_or_default()
+  }
+  pub fn get_required_string(&self) -> &str {
+    self.required_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+  }
+}
+impl ::std::default::Default for Version1 {
+  fn default() -> Self {
+    Version1 {
+      required_string: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version1_default: Version1 = Version1::default();
+}
+impl ::pb_jelly::Message for Version1 {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut required_string_size = 0;
+    for val in &self.required_string {
+      let l = ::pb_jelly::Message::compute_size(val);
+      required_string_size += ::pb_jelly::wire_format::serialized_length(1);
+      required_string_size += ::pb_jelly::varint::serialized_length(l as u64);
+      required_string_size += l;
+    }
+    size += required_string_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    for val in &self.required_string {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.required_string {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.required_string = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version1 {
+  const NAME: &'static str = "Version1";
+  const FULL_NAME: &'static str = "pbtest.Version1";
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct Version2 {
+  pub required_string: ::std::option::Option<::std::string::String>,
+  pub optional_int32: ::std::option::Option<i32>,
+  pub optional_int64: ::std::option::Option<i64>,
+  pub optional_uint32: ::std::option::Option<u32>,
+  pub optional_uint64: ::std::option::Option<u64>,
+  pub optional_fixed64: ::std::option::Option<::pb_jelly::Fixed64>,
+  pub optional_fixed32: ::std::option::Option<::pb_jelly::Fixed32>,
+  pub optional_sfixed64: ::std::option::Option<::pb_jelly::Sfixed64>,
+  pub optional_sfixed32: ::std::option::Option<::pb_jelly::Sfixed32>,
+  pub optional_double: ::std::option::Option<f64>,
+  pub optional_bool: ::std::option::Option<bool>,
+  pub optional_string: ::std::option::Option<::std::string::String>,
+  pub optional_bytes: ::std::option::Option<::std::vec::Vec<u8>>,
+  pub optional_float: ::std::option::Option<f32>,
+}
+impl Version2 {
+  pub fn has_required_string(&self) -> bool {
+    self.required_string.is_some()
+  }
+  pub fn set_required_string(&mut self, v: ::std::string::String) {
+    self.required_string = Some(v);
+  }
+  pub fn take_required_string(&mut self) -> ::std::string::String {
+    self.required_string.take().unwrap_or_default()
+  }
+  pub fn get_required_string(&self) -> &str {
+    self.required_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+  }
+  pub fn has_optional_int32(&self) -> bool {
+    self.optional_int32.is_some()
+  }
+  pub fn set_optional_int32(&mut self, v: i32) {
+    self.optional_int32 = Some(v);
+  }
+  pub fn get_optional_int32(&self) -> i32 {
+    self.optional_int32.unwrap_or(0)
+  }
+  pub fn has_optional_int64(&self) -> bool {
+    self.optional_int64.is_some()
+  }
+  pub fn set_optional_int64(&mut self, v: i64) {
+    self.optional_int64 = Some(v);
+  }
+  pub fn get_optional_int64(&self) -> i64 {
+    self.optional_int64.unwrap_or(0)
+  }
+  pub fn has_optional_uint32(&self) -> bool {
+    self.optional_uint32.is_some()
+  }
+  pub fn set_optional_uint32(&mut self, v: u32) {
+    self.optional_uint32 = Some(v);
+  }
+  pub fn get_optional_uint32(&self) -> u32 {
+    self.optional_uint32.unwrap_or(0)
+  }
+  pub fn has_optional_uint64(&self) -> bool {
+    self.optional_uint64.is_some()
+  }
+  pub fn set_optional_uint64(&mut self, v: u64) {
+    self.optional_uint64 = Some(v);
+  }
+  pub fn get_optional_uint64(&self) -> u64 {
+    self.optional_uint64.unwrap_or(0)
+  }
+  pub fn has_optional_fixed64(&self) -> bool {
+    self.optional_fixed64.is_some()
+  }
+  pub fn set_optional_fixed64(&mut self, v: u64) {
+    self.optional_fixed64 = Some(::pb_jelly::Fixed64(v));
+  }
+  pub fn get_optional_fixed64(&self) -> u64 {
+    self.optional_fixed64.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_fixed32(&self) -> bool {
+    self.optional_fixed32.is_some()
+  }
+  pub fn set_optional_fixed32(&mut self, v: u32) {
+    self.optional_fixed32 = Some(::pb_jelly::Fixed32(v));
+  }
+  pub fn get_optional_fixed32(&self) -> u32 {
+    self.optional_fixed32.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_sfixed64(&self) -> bool {
+    self.optional_sfixed64.is_some()
+  }
+  pub fn set_optional_sfixed64(&mut self, v: i64) {
+    self.optional_sfixed64 = Some(::pb_jelly::Sfixed64(v));
+  }
+  pub fn get_optional_sfixed64(&self) -> i64 {
+    self.optional_sfixed64.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_sfixed32(&self) -> bool {
+    self.optional_sfixed32.is_some()
+  }
+  pub fn set_optional_sfixed32(&mut self, v: i32) {
+    self.optional_sfixed32 = Some(::pb_jelly::Sfixed32(v));
+  }
+  pub fn get_optional_sfixed32(&self) -> i32 {
+    self.optional_sfixed32.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_double(&self) -> bool {
+    self.optional_double.is_some()
+  }
+  pub fn set_optional_double(&mut self, v: f64) {
+    self.optional_double = Some(v);
+  }
+  pub fn get_optional_double(&self) -> f64 {
+    self.optional_double.unwrap_or(0.)
+  }
+  pub fn has_optional_bool(&self) -> bool {
+    self.optional_bool.is_some()
+  }
+  pub fn set_optional_bool(&mut self, v: bool) {
+    self.optional_bool = Some(v);
+  }
+  pub fn get_optional_bool(&self) -> bool {
+    self.optional_bool.unwrap_or(false)
+  }
+  pub fn has_optional_string(&self) -> bool {
+    self.optional_string.is_some()
+  }
+  pub fn set_optional_string(&mut self, v: ::std::string::String) {
+    self.optional_string = Some(v);
+  }
+  pub fn take_optional_string(&mut self) -> ::std::string::String {
+    self.optional_string.take().unwrap_or_default()
+  }
+  pub fn get_optional_string(&self) -> &str {
+    self.optional_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+  }
+  pub fn has_optional_bytes(&self) -> bool {
+    self.optional_bytes.is_some()
+  }
+  pub fn set_optional_bytes(&mut self, v: ::std::vec::Vec<u8>) {
+    self.optional_bytes = Some(v);
+  }
+  pub fn take_optional_bytes(&mut self) -> ::std::vec::Vec<u8> {
+    self.optional_bytes.take().unwrap_or_default()
+  }
+  pub fn get_optional_bytes(&self) -> &[u8] {
+    self.optional_bytes.as_ref().map(|v| &**v).unwrap_or(&[])
+  }
+  pub fn has_optional_float(&self) -> bool {
+    self.optional_float.is_some()
+  }
+  pub fn set_optional_float(&mut self, v: f32) {
+    self.optional_float = Some(v);
+  }
+  pub fn get_optional_float(&self) -> f32 {
+    self.optional_float.unwrap_or(0.)
+  }
+}
+impl ::std::default::Default for Version2 {
+  fn default() -> Self {
+    Version2 {
+      required_string: ::std::default::Default::default(),
+      optional_int32: ::std::default::Default::default(),
+      optional_int64: ::std::default::Default::default(),
+      optional_uint32: ::std::default::Default::default(),
+      optional_uint64: ::std::default::Default::default(),
+      optional_fixed64: ::std::default::Default::default(),
+      optional_fixed32: ::std::default::Default::default(),
+      optional_sfixed64: ::std::default::Default::default(),
+      optional_sfixed32: ::std::default::Default::default(),
+      optional_double: ::std::default::Default::default(),
+      optional_bool: ::std::default::Default::default(),
+      optional_string: ::std::default::Default::default(),
+      optional_bytes: ::std::default::Default::default(),
+      optional_float: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version2_default: Version2 = Version2::default();
+}
+impl ::pb_jelly::Message for Version2 {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut required_string_size = 0;
+    for val in &self.required_string {
+      let l = ::pb_jelly::Message::compute_size(val);
+      required_string_size += ::pb_jelly::wire_format::serialized_length(1);
+      required_string_size += ::pb_jelly::varint::serialized_length(l as u64);
+      required_string_size += l;
+    }
+    size += required_string_size;
+    let mut optional_int32_size = 0;
+    for val in &self.optional_int32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_int32_size += ::pb_jelly::wire_format::serialized_length(2);
+      optional_int32_size += l;
+    }
+    size += optional_int32_size;
+    let mut optional_int64_size = 0;
+    for val in &self.optional_int64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_int64_size += ::pb_jelly::wire_format::serialized_length(3);
+      optional_int64_size += l;
+    }
+    size += optional_int64_size;
+    let mut optional_uint32_size = 0;
+    for val in &self.optional_uint32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_uint32_size += ::pb_jelly::wire_format::serialized_length(4);
+      optional_uint32_size += l;
+    }
+    size += optional_uint32_size;
+    let mut optional_uint64_size = 0;
+    for val in &self.optional_uint64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_uint64_size += ::pb_jelly::wire_format::serialized_length(5);
+      optional_uint64_size += l;
+    }
+    size += optional_uint64_size;
+    let mut optional_fixed64_size = 0;
+    for val in &self.optional_fixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_fixed64_size += ::pb_jelly::wire_format::serialized_length(6);
+      optional_fixed64_size += l;
+    }
+    size += optional_fixed64_size;
+    let mut optional_fixed32_size = 0;
+    for val in &self.optional_fixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_fixed32_size += ::pb_jelly::wire_format::serialized_length(7);
+      optional_fixed32_size += l;
+    }
+    size += optional_fixed32_size;
+    let mut optional_sfixed64_size = 0;
+    for val in &self.optional_sfixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_sfixed64_size += ::pb_jelly::wire_format::serialized_length(8);
+      optional_sfixed64_size += l;
+    }
+    size += optional_sfixed64_size;
+    let mut optional_sfixed32_size = 0;
+    for val in &self.optional_sfixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_sfixed32_size += ::pb_jelly::wire_format::serialized_length(9);
+      optional_sfixed32_size += l;
+    }
+    size += optional_sfixed32_size;
+    let mut optional_double_size = 0;
+    for val in &self.optional_double {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_double_size += ::pb_jelly::wire_format::serialized_length(10);
+      optional_double_size += l;
+    }
+    size += optional_double_size;
+    let mut optional_bool_size = 0;
+    for val in &self.optional_bool {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_bool_size += ::pb_jelly::wire_format::serialized_length(11);
+      optional_bool_size += l;
+    }
+    size += optional_bool_size;
+    let mut optional_string_size = 0;
+    for val in &self.optional_string {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_string_size += ::pb_jelly::wire_format::serialized_length(12);
+      optional_string_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_string_size += l;
+    }
+    size += optional_string_size;
+    let mut optional_bytes_size = 0;
+    for val in &self.optional_bytes {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_bytes_size += ::pb_jelly::wire_format::serialized_length(13);
+      optional_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_bytes_size += l;
+    }
+    size += optional_bytes_size;
+    let mut optional_float_size = 0;
+    for val in &self.optional_float {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_float_size += ::pb_jelly::wire_format::serialized_length(14);
+      optional_float_size += l;
+    }
+    size += optional_float_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    for val in &self.required_string {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_int32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_int64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_uint32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_uint64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_fixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_fixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_sfixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_sfixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_double {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_bool {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_string {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_bytes {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_float {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.required_string {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_int32 {
+      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_int64 {
+      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_uint32 {
+      ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_uint64 {
+      ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_fixed64 {
+      ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_fixed32 {
+      ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_sfixed64 {
+      ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_sfixed32 {
+      ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_double {
+      ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_bool {
+      ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_string {
+      ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_bytes {
+      ::pb_jelly::wire_format::write(13, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_float {
+      ::pb_jelly::wire_format::write(14, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.required_string = Some(val);
+        }
+        2 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 2)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_int32 = Some(val);
+        }
+        3 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 3)?;
+          let mut val: i64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_int64 = Some(val);
+        }
+        4 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 4)?;
+          let mut val: u32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_uint32 = Some(val);
+        }
+        5 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 5)?;
+          let mut val: u64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_uint64 = Some(val);
+        }
+        6 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 6)?;
+          let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_fixed64 = Some(val);
+        }
+        7 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 7)?;
+          let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_fixed32 = Some(val);
+        }
+        8 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 8)?;
+          let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_sfixed64 = Some(val);
+        }
+        9 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 9)?;
+          let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_sfixed32 = Some(val);
+        }
+        10 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 10)?;
+          let mut val: f64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_double = Some(val);
+        }
+        11 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 11)?;
+          let mut val: bool = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_bool = Some(val);
+        }
+        12 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2", 12)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_string = Some(val);
+        }
+        13 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2", 13)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_bytes = Some(val);
+        }
+        14 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 14)?;
+          let mut val: f32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_float = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for Version2 {
+  const NAME: &'static str = "Version2";
+  const FULL_NAME: &'static str = "pbtest.Version2";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct ForeignMessage {
+  pub c: ::std::option::Option<i32>,
+}
+impl ForeignMessage {
+  pub fn has_c(&self) -> bool {
+    self.c.is_some()
+  }
+  pub fn set_c(&mut self, v: i32) {
+    self.c = Some(v);
+  }
+  pub fn get_c(&self) -> i32 {
+    self.c.unwrap_or(0)
+  }
+}
+impl ::std::default::Default for ForeignMessage {
+  fn default() -> Self {
+    ForeignMessage {
+      c: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref ForeignMessage_default: ForeignMessage = ForeignMessage::default();
+}
+impl ::pb_jelly::Message for ForeignMessage {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut c_size = 0;
+    for val in &self.c {
+      let l = ::pb_jelly::Message::compute_size(val);
+      c_size += ::pb_jelly::wire_format::serialized_length(1);
+      c_size += l;
+    }
+    size += c_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    for val in &self.c {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.c {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "ForeignMessage", 1)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.c = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for ForeignMessage {
+  const NAME: &'static str = "ForeignMessage";
+  const FULL_NAME: &'static str = "pbtest.ForeignMessage";
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct TestMessage {
+  pub optional_int32: ::std::option::Option<i32>,
+  pub optional_int64: ::std::option::Option<i64>,
+  pub optional_uint32: ::std::option::Option<u32>,
+  pub optional_uint64: ::std::option::Option<u64>,
+  pub optional_fixed64: ::std::option::Option<::pb_jelly::Fixed64>,
+  pub optional_fixed32: ::std::option::Option<::pb_jelly::Fixed32>,
+  pub optional_sfixed64: ::std::option::Option<::pb_jelly::Sfixed64>,
+  pub optional_sfixed32: ::std::option::Option<::pb_jelly::Sfixed32>,
+  pub optional_double: ::std::option::Option<f64>,
+  pub optional_bool: ::std::option::Option<bool>,
+  pub optional_string: ::std::option::Option<::std::string::String>,
+  pub optional_bytes: ::std::option::Option<::std::vec::Vec<u8>>,
+  pub optional_float: ::std::option::Option<f32>,
+  pub optional_foreign_message: ::std::option::Option<ForeignMessage>,
+  pub optional_nested_enum: ::std::option::Option<TestMessage_NestedEnum>,
+  pub optional_foreign_enum: ::std::option::Option<ForeignEnum>,
+  pub repeated_int32: ::std::vec::Vec<i32>,
+  pub repeated_int64: ::std::vec::Vec<i64>,
+  pub repeated_uint32: ::std::vec::Vec<u32>,
+  pub repeated_uint64: ::std::vec::Vec<u64>,
+  pub repeated_fixed64: ::std::vec::Vec<::pb_jelly::Fixed64>,
+  pub repeated_fixed32: ::std::vec::Vec<::pb_jelly::Fixed32>,
+  pub repeated_sfixed64: ::std::vec::Vec<::pb_jelly::Sfixed64>,
+  pub repeated_sfixed32: ::std::vec::Vec<::pb_jelly::Sfixed32>,
+  pub repeated_double: ::std::vec::Vec<f64>,
+  pub repeated_bool: ::std::vec::Vec<bool>,
+  pub repeated_string: ::std::vec::Vec<::std::string::String>,
+  pub repeated_bytes: ::std::vec::Vec<::std::vec::Vec<u8>>,
+  pub repeated_float: ::std::vec::Vec<f32>,
+  pub repeated_foreign_message: ::std::vec::Vec<ForeignMessage>,
+  pub repeated_nested_enum: ::std::vec::Vec<TestMessage_NestedEnum>,
+  pub repeated_foreign_enum: ::std::vec::Vec<ForeignEnum>,
+  pub optional_foreign_message_boxed: ::std::option::Option<::std::boxed::Box<ForeignMessage>>,
+  pub optional_foreign_message_nonnullable: ForeignMessage,
+  /// Use some rust reserved keywords
+  pub type_: ::std::option::Option<bool>,
+  pub oneof_int: ::std::option::Option<TestMessage_OneofInt>,
+  pub oneof_foreign: ::std::option::Option<TestMessage_OneofForeign>,
+  pub oneof_zero: ::std::option::Option<TestMessage_OneofZero>,
+  pub oneof_null: ::std::option::Option<TestMessage_OneofNull>,
+  pub oneof_unset: ::std::option::Option<TestMessage_OneofUnset>,
+  pub oneof_primitives: ::std::option::Option<TestMessage_OneofPrimitives>,
+  pub oneof_empty_field: TestMessage_OneofEmptyField,
+  pub mod_: ::std::option::Option<TestMessage_Mod>,
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofInt {
+  Int1(i32),
+  Foreign1(ForeignMessage),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofForeign {
+  Int2(i32),
+  Foreign2(ForeignMessage),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofZero {
+  Int3(i32),
+  Foreign3(ForeignMessage),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofNull {
+  Int4(i32),
+  Foreign4(ForeignMessage),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofUnset {
+  Int5(i32),
+  Foreign5(ForeignMessage),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofPrimitives {
+  Int6(i32),
+  Bool6(bool),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_OneofEmptyField {
+  A,
+  B,
+  C(i32),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestMessage_Mod {
+  Loop(i32),
+  Unsafe(i32),
+}
+impl TestMessage {
+  pub fn has_optional_int32(&self) -> bool {
+    self.optional_int32.is_some()
+  }
+  pub fn set_optional_int32(&mut self, v: i32) {
+    self.optional_int32 = Some(v);
+  }
+  pub fn get_optional_int32(&self) -> i32 {
+    self.optional_int32.unwrap_or(0)
+  }
+  pub fn has_optional_int64(&self) -> bool {
+    self.optional_int64.is_some()
+  }
+  pub fn set_optional_int64(&mut self, v: i64) {
+    self.optional_int64 = Some(v);
+  }
+  pub fn get_optional_int64(&self) -> i64 {
+    self.optional_int64.unwrap_or(0)
+  }
+  pub fn has_optional_uint32(&self) -> bool {
+    self.optional_uint32.is_some()
+  }
+  pub fn set_optional_uint32(&mut self, v: u32) {
+    self.optional_uint32 = Some(v);
+  }
+  pub fn get_optional_uint32(&self) -> u32 {
+    self.optional_uint32.unwrap_or(0)
+  }
+  pub fn has_optional_uint64(&self) -> bool {
+    self.optional_uint64.is_some()
+  }
+  pub fn set_optional_uint64(&mut self, v: u64) {
+    self.optional_uint64 = Some(v);
+  }
+  pub fn get_optional_uint64(&self) -> u64 {
+    self.optional_uint64.unwrap_or(0)
+  }
+  pub fn has_optional_fixed64(&self) -> bool {
+    self.optional_fixed64.is_some()
+  }
+  pub fn set_optional_fixed64(&mut self, v: u64) {
+    self.optional_fixed64 = Some(::pb_jelly::Fixed64(v));
+  }
+  pub fn get_optional_fixed64(&self) -> u64 {
+    self.optional_fixed64.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_fixed32(&self) -> bool {
+    self.optional_fixed32.is_some()
+  }
+  pub fn set_optional_fixed32(&mut self, v: u32) {
+    self.optional_fixed32 = Some(::pb_jelly::Fixed32(v));
+  }
+  pub fn get_optional_fixed32(&self) -> u32 {
+    self.optional_fixed32.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_sfixed64(&self) -> bool {
+    self.optional_sfixed64.is_some()
+  }
+  pub fn set_optional_sfixed64(&mut self, v: i64) {
+    self.optional_sfixed64 = Some(::pb_jelly::Sfixed64(v));
+  }
+  pub fn get_optional_sfixed64(&self) -> i64 {
+    self.optional_sfixed64.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_sfixed32(&self) -> bool {
+    self.optional_sfixed32.is_some()
+  }
+  pub fn set_optional_sfixed32(&mut self, v: i32) {
+    self.optional_sfixed32 = Some(::pb_jelly::Sfixed32(v));
+  }
+  pub fn get_optional_sfixed32(&self) -> i32 {
+    self.optional_sfixed32.map(|v| v.0).unwrap_or(0)
+  }
+  pub fn has_optional_double(&self) -> bool {
+    self.optional_double.is_some()
+  }
+  pub fn set_optional_double(&mut self, v: f64) {
+    self.optional_double = Some(v);
+  }
+  pub fn get_optional_double(&self) -> f64 {
+    self.optional_double.unwrap_or(0.)
+  }
+  pub fn has_optional_bool(&self) -> bool {
+    self.optional_bool.is_some()
+  }
+  pub fn set_optional_bool(&mut self, v: bool) {
+    self.optional_bool = Some(v);
+  }
+  pub fn get_optional_bool(&self) -> bool {
+    self.optional_bool.unwrap_or(false)
+  }
+  pub fn has_optional_string(&self) -> bool {
+    self.optional_string.is_some()
+  }
+  pub fn set_optional_string(&mut self, v: ::std::string::String) {
+    self.optional_string = Some(v);
+  }
+  pub fn take_optional_string(&mut self) -> ::std::string::String {
+    self.optional_string.take().unwrap_or_default()
+  }
+  pub fn get_optional_string(&self) -> &str {
+    self.optional_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+  }
+  pub fn has_optional_bytes(&self) -> bool {
+    self.optional_bytes.is_some()
+  }
+  pub fn set_optional_bytes(&mut self, v: ::std::vec::Vec<u8>) {
+    self.optional_bytes = Some(v);
+  }
+  pub fn take_optional_bytes(&mut self) -> ::std::vec::Vec<u8> {
+    self.optional_bytes.take().unwrap_or_default()
+  }
+  pub fn get_optional_bytes(&self) -> &[u8] {
+    self.optional_bytes.as_ref().map(|v| &**v).unwrap_or(&[])
+  }
+  pub fn has_optional_float(&self) -> bool {
+    self.optional_float.is_some()
+  }
+  pub fn set_optional_float(&mut self, v: f32) {
+    self.optional_float = Some(v);
+  }
+  pub fn get_optional_float(&self) -> f32 {
+    self.optional_float.unwrap_or(0.)
+  }
+  pub fn has_optional_foreign_message(&self) -> bool {
+    self.optional_foreign_message.is_some()
+  }
+  pub fn set_optional_foreign_message(&mut self, v: ForeignMessage) {
+    self.optional_foreign_message = Some(v);
+  }
+  pub fn take_optional_foreign_message(&mut self) -> ForeignMessage {
+    self.optional_foreign_message.take().unwrap_or_default()
+  }
+  pub fn get_optional_foreign_message(&self) -> &ForeignMessage {
+    self.optional_foreign_message.as_ref().unwrap_or(&ForeignMessage_default)
+  }
+  pub fn has_optional_nested_enum(&self) -> bool {
+    self.optional_nested_enum.is_some()
+  }
+  pub fn set_optional_nested_enum(&mut self, v: TestMessage_NestedEnum) {
+    self.optional_nested_enum = Some(v);
+  }
+  pub fn get_optional_nested_enum(&self) -> TestMessage_NestedEnum {
+    self.optional_nested_enum.unwrap_or_default()
+  }
+  pub fn has_optional_foreign_enum(&self) -> bool {
+    self.optional_foreign_enum.is_some()
+  }
+  pub fn set_optional_foreign_enum(&mut self, v: ForeignEnum) {
+    self.optional_foreign_enum = Some(v);
+  }
+  pub fn get_optional_foreign_enum(&self) -> ForeignEnum {
+    self.optional_foreign_enum.unwrap_or_default()
+  }
+  pub fn set_repeated_int32(&mut self, v: ::std::vec::Vec<i32>) {
+    self.repeated_int32 = v;
+  }
+  pub fn take_repeated_int32(&mut self) -> ::std::vec::Vec<i32> {
+    ::std::mem::replace(&mut self.repeated_int32, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_int32(&self) -> &[i32] {
+    &self.repeated_int32
+  }
+  pub fn mut_repeated_int32(&mut self) -> &mut ::std::vec::Vec<i32> {
+    &mut self.repeated_int32
+  }
+  pub fn set_repeated_int64(&mut self, v: ::std::vec::Vec<i64>) {
+    self.repeated_int64 = v;
+  }
+  pub fn take_repeated_int64(&mut self) -> ::std::vec::Vec<i64> {
+    ::std::mem::replace(&mut self.repeated_int64, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_int64(&self) -> &[i64] {
+    &self.repeated_int64
+  }
+  pub fn mut_repeated_int64(&mut self) -> &mut ::std::vec::Vec<i64> {
+    &mut self.repeated_int64
+  }
+  pub fn set_repeated_uint32(&mut self, v: ::std::vec::Vec<u32>) {
+    self.repeated_uint32 = v;
+  }
+  pub fn take_repeated_uint32(&mut self) -> ::std::vec::Vec<u32> {
+    ::std::mem::replace(&mut self.repeated_uint32, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_uint32(&self) -> &[u32] {
+    &self.repeated_uint32
+  }
+  pub fn mut_repeated_uint32(&mut self) -> &mut ::std::vec::Vec<u32> {
+    &mut self.repeated_uint32
+  }
+  pub fn set_repeated_uint64(&mut self, v: ::std::vec::Vec<u64>) {
+    self.repeated_uint64 = v;
+  }
+  pub fn take_repeated_uint64(&mut self) -> ::std::vec::Vec<u64> {
+    ::std::mem::replace(&mut self.repeated_uint64, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_uint64(&self) -> &[u64] {
+    &self.repeated_uint64
+  }
+  pub fn mut_repeated_uint64(&mut self) -> &mut ::std::vec::Vec<u64> {
+    &mut self.repeated_uint64
+  }
+  pub fn set_repeated_fixed64(&mut self, v: ::std::vec::Vec<::pb_jelly::Fixed64>) {
+    self.repeated_fixed64 = v;
+  }
+  pub fn take_repeated_fixed64(&mut self) -> ::std::vec::Vec<::pb_jelly::Fixed64> {
+    ::std::mem::replace(&mut self.repeated_fixed64, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_fixed64(&self) -> &[::pb_jelly::Fixed64] {
+    &self.repeated_fixed64
+  }
+  pub fn mut_repeated_fixed64(&mut self) -> &mut ::std::vec::Vec<::pb_jelly::Fixed64> {
+    &mut self.repeated_fixed64
+  }
+  pub fn set_repeated_fixed32(&mut self, v: ::std::vec::Vec<::pb_jelly::Fixed32>) {
+    self.repeated_fixed32 = v;
+  }
+  pub fn take_repeated_fixed32(&mut self) -> ::std::vec::Vec<::pb_jelly::Fixed32> {
+    ::std::mem::replace(&mut self.repeated_fixed32, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_fixed32(&self) -> &[::pb_jelly::Fixed32] {
+    &self.repeated_fixed32
+  }
+  pub fn mut_repeated_fixed32(&mut self) -> &mut ::std::vec::Vec<::pb_jelly::Fixed32> {
+    &mut self.repeated_fixed32
+  }
+  pub fn set_repeated_sfixed64(&mut self, v: ::std::vec::Vec<::pb_jelly::Sfixed64>) {
+    self.repeated_sfixed64 = v;
+  }
+  pub fn take_repeated_sfixed64(&mut self) -> ::std::vec::Vec<::pb_jelly::Sfixed64> {
+    ::std::mem::replace(&mut self.repeated_sfixed64, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_sfixed64(&self) -> &[::pb_jelly::Sfixed64] {
+    &self.repeated_sfixed64
+  }
+  pub fn mut_repeated_sfixed64(&mut self) -> &mut ::std::vec::Vec<::pb_jelly::Sfixed64> {
+    &mut self.repeated_sfixed64
+  }
+  pub fn set_repeated_sfixed32(&mut self, v: ::std::vec::Vec<::pb_jelly::Sfixed32>) {
+    self.repeated_sfixed32 = v;
+  }
+  pub fn take_repeated_sfixed32(&mut self) -> ::std::vec::Vec<::pb_jelly::Sfixed32> {
+    ::std::mem::replace(&mut self.repeated_sfixed32, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_sfixed32(&self) -> &[::pb_jelly::Sfixed32] {
+    &self.repeated_sfixed32
+  }
+  pub fn mut_repeated_sfixed32(&mut self) -> &mut ::std::vec::Vec<::pb_jelly::Sfixed32> {
+    &mut self.repeated_sfixed32
+  }
+  pub fn set_repeated_double(&mut self, v: ::std::vec::Vec<f64>) {
+    self.repeated_double = v;
+  }
+  pub fn take_repeated_double(&mut self) -> ::std::vec::Vec<f64> {
+    ::std::mem::replace(&mut self.repeated_double, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_double(&self) -> &[f64] {
+    &self.repeated_double
+  }
+  pub fn mut_repeated_double(&mut self) -> &mut ::std::vec::Vec<f64> {
+    &mut self.repeated_double
+  }
+  pub fn set_repeated_bool(&mut self, v: ::std::vec::Vec<bool>) {
+    self.repeated_bool = v;
+  }
+  pub fn take_repeated_bool(&mut self) -> ::std::vec::Vec<bool> {
+    ::std::mem::replace(&mut self.repeated_bool, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_bool(&self) -> &[bool] {
+    &self.repeated_bool
+  }
+  pub fn mut_repeated_bool(&mut self) -> &mut ::std::vec::Vec<bool> {
+    &mut self.repeated_bool
+  }
+  pub fn set_repeated_string(&mut self, v: ::std::vec::Vec<::std::string::String>) {
+    self.repeated_string = v;
+  }
+  pub fn take_repeated_string(&mut self) -> ::std::vec::Vec<::std::string::String> {
+    ::std::mem::replace(&mut self.repeated_string, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_string(&self) -> &[::std::string::String] {
+    &self.repeated_string
+  }
+  pub fn mut_repeated_string(&mut self) -> &mut ::std::vec::Vec<::std::string::String> {
+    &mut self.repeated_string
+  }
+  pub fn set_repeated_bytes(&mut self, v: ::std::vec::Vec<::std::vec::Vec<u8>>) {
+    self.repeated_bytes = v;
+  }
+  pub fn take_repeated_bytes(&mut self) -> ::std::vec::Vec<::std::vec::Vec<u8>> {
+    ::std::mem::replace(&mut self.repeated_bytes, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_bytes(&self) -> &[::std::vec::Vec<u8>] {
+    &self.repeated_bytes
+  }
+  pub fn mut_repeated_bytes(&mut self) -> &mut ::std::vec::Vec<::std::vec::Vec<u8>> {
+    &mut self.repeated_bytes
+  }
+  pub fn set_repeated_float(&mut self, v: ::std::vec::Vec<f32>) {
+    self.repeated_float = v;
+  }
+  pub fn take_repeated_float(&mut self) -> ::std::vec::Vec<f32> {
+    ::std::mem::replace(&mut self.repeated_float, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_float(&self) -> &[f32] {
+    &self.repeated_float
+  }
+  pub fn mut_repeated_float(&mut self) -> &mut ::std::vec::Vec<f32> {
+    &mut self.repeated_float
+  }
+  pub fn set_repeated_foreign_message(&mut self, v: ::std::vec::Vec<ForeignMessage>) {
+    self.repeated_foreign_message = v;
+  }
+  pub fn take_repeated_foreign_message(&mut self) -> ::std::vec::Vec<ForeignMessage> {
+    ::std::mem::replace(&mut self.repeated_foreign_message, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_foreign_message(&self) -> &[ForeignMessage] {
+    &self.repeated_foreign_message
+  }
+  pub fn mut_repeated_foreign_message(&mut self) -> &mut ::std::vec::Vec<ForeignMessage> {
+    &mut self.repeated_foreign_message
+  }
+  pub fn set_repeated_nested_enum(&mut self, v: ::std::vec::Vec<TestMessage_NestedEnum>) {
+    self.repeated_nested_enum = v;
+  }
+  pub fn take_repeated_nested_enum(&mut self) -> ::std::vec::Vec<TestMessage_NestedEnum> {
+    ::std::mem::replace(&mut self.repeated_nested_enum, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_nested_enum(&self) -> &[TestMessage_NestedEnum] {
+    &self.repeated_nested_enum
+  }
+  pub fn mut_repeated_nested_enum(&mut self) -> &mut ::std::vec::Vec<TestMessage_NestedEnum> {
+    &mut self.repeated_nested_enum
+  }
+  pub fn set_repeated_foreign_enum(&mut self, v: ::std::vec::Vec<ForeignEnum>) {
+    self.repeated_foreign_enum = v;
+  }
+  pub fn take_repeated_foreign_enum(&mut self) -> ::std::vec::Vec<ForeignEnum> {
+    ::std::mem::replace(&mut self.repeated_foreign_enum, ::std::vec::Vec::new())
+  }
+  pub fn get_repeated_foreign_enum(&self) -> &[ForeignEnum] {
+    &self.repeated_foreign_enum
+  }
+  pub fn mut_repeated_foreign_enum(&mut self) -> &mut ::std::vec::Vec<ForeignEnum> {
+    &mut self.repeated_foreign_enum
+  }
+  pub fn has_optional_foreign_message_boxed(&self) -> bool {
+    self.optional_foreign_message_boxed.is_some()
+  }
+  pub fn set_optional_foreign_message_boxed(&mut self, v: Box<ForeignMessage>) {
+    self.optional_foreign_message_boxed = Some(v);
+  }
+  pub fn take_optional_foreign_message_boxed(&mut self) -> Box<ForeignMessage> {
+    self.optional_foreign_message_boxed.take().unwrap_or_default()
+  }
+  pub fn get_optional_foreign_message_boxed(&self) -> &ForeignMessage {
+    self.optional_foreign_message_boxed.as_ref().map(|v| ::std::ops::Deref::deref(v)).unwrap_or(&ForeignMessage_default)
+  }
+  pub fn has_type_(&self) -> bool {
+    self.type_.is_some()
+  }
+  pub fn set_type_(&mut self, v: bool) {
+    self.type_ = Some(v);
+  }
+  pub fn get_type_(&self) -> bool {
+    self.type_.unwrap_or(false)
+  }
+}
+impl ::std::default::Default for TestMessage {
+  fn default() -> Self {
+    TestMessage {
+      optional_int32: ::std::default::Default::default(),
+      optional_int64: ::std::default::Default::default(),
+      optional_uint32: ::std::default::Default::default(),
+      optional_uint64: ::std::default::Default::default(),
+      optional_fixed64: ::std::default::Default::default(),
+      optional_fixed32: ::std::default::Default::default(),
+      optional_sfixed64: ::std::default::Default::default(),
+      optional_sfixed32: ::std::default::Default::default(),
+      optional_double: ::std::default::Default::default(),
+      optional_bool: ::std::default::Default::default(),
+      optional_string: ::std::default::Default::default(),
+      optional_bytes: ::std::default::Default::default(),
+      optional_float: ::std::default::Default::default(),
+      optional_foreign_message: ::std::default::Default::default(),
+      optional_nested_enum: ::std::default::Default::default(),
+      optional_foreign_enum: ::std::default::Default::default(),
+      repeated_int32: ::std::default::Default::default(),
+      repeated_int64: ::std::default::Default::default(),
+      repeated_uint32: ::std::default::Default::default(),
+      repeated_uint64: ::std::default::Default::default(),
+      repeated_fixed64: ::std::default::Default::default(),
+      repeated_fixed32: ::std::default::Default::default(),
+      repeated_sfixed64: ::std::default::Default::default(),
+      repeated_sfixed32: ::std::default::Default::default(),
+      repeated_double: ::std::default::Default::default(),
+      repeated_bool: ::std::default::Default::default(),
+      repeated_string: ::std::default::Default::default(),
+      repeated_bytes: ::std::default::Default::default(),
+      repeated_float: ::std::default::Default::default(),
+      repeated_foreign_message: ::std::default::Default::default(),
+      repeated_nested_enum: ::std::default::Default::default(),
+      repeated_foreign_enum: ::std::default::Default::default(),
+      optional_foreign_message_boxed: ::std::default::Default::default(),
+      optional_foreign_message_nonnullable: ::std::default::Default::default(),
+      type_: ::std::default::Default::default(),
+      oneof_int: None,
+      oneof_foreign: None,
+      oneof_zero: None,
+      oneof_null: None,
+      oneof_unset: None,
+      oneof_primitives: None,
+      oneof_empty_field: TestMessage_OneofEmptyField::A,
+      mod_: None,
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestMessage_default: TestMessage = TestMessage::default();
+}
+impl ::pb_jelly::Message for TestMessage {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut optional_int32_size = 0;
+    for val in &self.optional_int32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_int32_size += ::pb_jelly::wire_format::serialized_length(1);
+      optional_int32_size += l;
+    }
+    size += optional_int32_size;
+    let mut optional_int64_size = 0;
+    for val in &self.optional_int64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_int64_size += ::pb_jelly::wire_format::serialized_length(2);
+      optional_int64_size += l;
+    }
+    size += optional_int64_size;
+    let mut optional_uint32_size = 0;
+    for val in &self.optional_uint32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_uint32_size += ::pb_jelly::wire_format::serialized_length(3);
+      optional_uint32_size += l;
+    }
+    size += optional_uint32_size;
+    let mut optional_uint64_size = 0;
+    for val in &self.optional_uint64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_uint64_size += ::pb_jelly::wire_format::serialized_length(4);
+      optional_uint64_size += l;
+    }
+    size += optional_uint64_size;
+    let mut optional_fixed64_size = 0;
+    for val in &self.optional_fixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_fixed64_size += ::pb_jelly::wire_format::serialized_length(8);
+      optional_fixed64_size += l;
+    }
+    size += optional_fixed64_size;
+    let mut optional_fixed32_size = 0;
+    for val in &self.optional_fixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_fixed32_size += ::pb_jelly::wire_format::serialized_length(9);
+      optional_fixed32_size += l;
+    }
+    size += optional_fixed32_size;
+    let mut optional_sfixed64_size = 0;
+    for val in &self.optional_sfixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_sfixed64_size += ::pb_jelly::wire_format::serialized_length(10);
+      optional_sfixed64_size += l;
+    }
+    size += optional_sfixed64_size;
+    let mut optional_sfixed32_size = 0;
+    for val in &self.optional_sfixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_sfixed32_size += ::pb_jelly::wire_format::serialized_length(11);
+      optional_sfixed32_size += l;
+    }
+    size += optional_sfixed32_size;
+    let mut optional_double_size = 0;
+    for val in &self.optional_double {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_double_size += ::pb_jelly::wire_format::serialized_length(12);
+      optional_double_size += l;
+    }
+    size += optional_double_size;
+    let mut optional_bool_size = 0;
+    for val in &self.optional_bool {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_bool_size += ::pb_jelly::wire_format::serialized_length(13);
+      optional_bool_size += l;
+    }
+    size += optional_bool_size;
+    let mut optional_string_size = 0;
+    for val in &self.optional_string {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_string_size += ::pb_jelly::wire_format::serialized_length(14);
+      optional_string_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_string_size += l;
+    }
+    size += optional_string_size;
+    let mut optional_bytes_size = 0;
+    for val in &self.optional_bytes {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_bytes_size += ::pb_jelly::wire_format::serialized_length(15);
+      optional_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_bytes_size += l;
+    }
+    size += optional_bytes_size;
+    let mut optional_float_size = 0;
+    for val in &self.optional_float {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_float_size += ::pb_jelly::wire_format::serialized_length(16);
+      optional_float_size += l;
+    }
+    size += optional_float_size;
+    let mut optional_foreign_message_size = 0;
+    for val in &self.optional_foreign_message {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_foreign_message_size += ::pb_jelly::wire_format::serialized_length(19);
+      optional_foreign_message_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_foreign_message_size += l;
+    }
+    size += optional_foreign_message_size;
+    let mut optional_nested_enum_size = 0;
+    for val in &self.optional_nested_enum {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_nested_enum_size += ::pb_jelly::wire_format::serialized_length(21);
+      optional_nested_enum_size += l;
+    }
+    size += optional_nested_enum_size;
+    let mut optional_foreign_enum_size = 0;
+    for val in &self.optional_foreign_enum {
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_foreign_enum_size += ::pb_jelly::wire_format::serialized_length(22);
+      optional_foreign_enum_size += l;
+    }
+    size += optional_foreign_enum_size;
+    let mut repeated_int32_size = 0;
+    for val in &self.repeated_int32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_int32_size += ::pb_jelly::wire_format::serialized_length(31);
+      repeated_int32_size += l;
+    }
+    size += repeated_int32_size;
+    let mut repeated_int64_size = 0;
+    for val in &self.repeated_int64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_int64_size += ::pb_jelly::wire_format::serialized_length(32);
+      repeated_int64_size += l;
+    }
+    size += repeated_int64_size;
+    let mut repeated_uint32_size = 0;
+    for val in &self.repeated_uint32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_uint32_size += ::pb_jelly::wire_format::serialized_length(33);
+      repeated_uint32_size += l;
+    }
+    size += repeated_uint32_size;
+    let mut repeated_uint64_size = 0;
+    for val in &self.repeated_uint64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_uint64_size += ::pb_jelly::wire_format::serialized_length(34);
+      repeated_uint64_size += l;
+    }
+    size += repeated_uint64_size;
+    let mut repeated_fixed64_size = 0;
+    for val in &self.repeated_fixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_fixed64_size += ::pb_jelly::wire_format::serialized_length(38);
+      repeated_fixed64_size += l;
+    }
+    size += repeated_fixed64_size;
+    let mut repeated_fixed32_size = 0;
+    for val in &self.repeated_fixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_fixed32_size += ::pb_jelly::wire_format::serialized_length(39);
+      repeated_fixed32_size += l;
+    }
+    size += repeated_fixed32_size;
+    let mut repeated_sfixed64_size = 0;
+    for val in &self.repeated_sfixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_sfixed64_size += ::pb_jelly::wire_format::serialized_length(40);
+      repeated_sfixed64_size += l;
+    }
+    size += repeated_sfixed64_size;
+    let mut repeated_sfixed32_size = 0;
+    for val in &self.repeated_sfixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_sfixed32_size += ::pb_jelly::wire_format::serialized_length(41);
+      repeated_sfixed32_size += l;
+    }
+    size += repeated_sfixed32_size;
+    let mut repeated_double_size = 0;
+    for val in &self.repeated_double {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_double_size += ::pb_jelly::wire_format::serialized_length(42);
+      repeated_double_size += l;
+    }
+    size += repeated_double_size;
+    let mut repeated_bool_size = 0;
+    for val in &self.repeated_bool {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_bool_size += ::pb_jelly::wire_format::serialized_length(43);
+      repeated_bool_size += l;
+    }
+    size += repeated_bool_size;
+    let mut repeated_string_size = 0;
+    for val in &self.repeated_string {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_string_size += ::pb_jelly::wire_format::serialized_length(44);
+      repeated_string_size += ::pb_jelly::varint::serialized_length(l as u64);
+      repeated_string_size += l;
+    }
+    size += repeated_string_size;
+    let mut repeated_bytes_size = 0;
+    for val in &self.repeated_bytes {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_bytes_size += ::pb_jelly::wire_format::serialized_length(45);
+      repeated_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
+      repeated_bytes_size += l;
+    }
+    size += repeated_bytes_size;
+    let mut repeated_float_size = 0;
+    for val in &self.repeated_float {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_float_size += ::pb_jelly::wire_format::serialized_length(46);
+      repeated_float_size += l;
+    }
+    size += repeated_float_size;
+    let mut repeated_foreign_message_size = 0;
+    for val in &self.repeated_foreign_message {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_foreign_message_size += ::pb_jelly::wire_format::serialized_length(49);
+      repeated_foreign_message_size += ::pb_jelly::varint::serialized_length(l as u64);
+      repeated_foreign_message_size += l;
+    }
+    size += repeated_foreign_message_size;
+    let mut repeated_nested_enum_size = 0;
+    for val in &self.repeated_nested_enum {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_nested_enum_size += ::pb_jelly::wire_format::serialized_length(51);
+      repeated_nested_enum_size += l;
+    }
+    size += repeated_nested_enum_size;
+    let mut repeated_foreign_enum_size = 0;
+    for val in &self.repeated_foreign_enum {
+      let l = ::pb_jelly::Message::compute_size(val);
+      repeated_foreign_enum_size += ::pb_jelly::wire_format::serialized_length(52);
+      repeated_foreign_enum_size += l;
+    }
+    size += repeated_foreign_enum_size;
+    let mut optional_foreign_message_boxed_size = 0;
+    for val in &self.optional_foreign_message_boxed {
+      let val = &**val;
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_foreign_message_boxed_size += ::pb_jelly::wire_format::serialized_length(53);
+      optional_foreign_message_boxed_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_foreign_message_boxed_size += l;
+    }
+    size += optional_foreign_message_boxed_size;
+    let mut optional_foreign_message_nonnullable_size = 0;
+     {
+      let val = &self.optional_foreign_message_nonnullable;
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_foreign_message_nonnullable_size += ::pb_jelly::wire_format::serialized_length(54);
+      optional_foreign_message_nonnullable_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_foreign_message_nonnullable_size += l;
+    }
+    size += optional_foreign_message_nonnullable_size;
+    let mut int1_size = 0;
+    if let Some(TestMessage_OneofInt::Int1(ref val)) = self.oneof_int {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int1_size += ::pb_jelly::wire_format::serialized_length(57);
+      int1_size += l;
+    }
+    size += int1_size;
+    let mut foreign1_size = 0;
+    if let Some(TestMessage_OneofInt::Foreign1(ref val)) = self.oneof_int {
+      let l = ::pb_jelly::Message::compute_size(val);
+      foreign1_size += ::pb_jelly::wire_format::serialized_length(58);
+      foreign1_size += ::pb_jelly::varint::serialized_length(l as u64);
+      foreign1_size += l;
+    }
+    size += foreign1_size;
+    let mut int2_size = 0;
+    if let Some(TestMessage_OneofForeign::Int2(ref val)) = self.oneof_foreign {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int2_size += ::pb_jelly::wire_format::serialized_length(59);
+      int2_size += l;
+    }
+    size += int2_size;
+    let mut foreign2_size = 0;
+    if let Some(TestMessage_OneofForeign::Foreign2(ref val)) = self.oneof_foreign {
+      let l = ::pb_jelly::Message::compute_size(val);
+      foreign2_size += ::pb_jelly::wire_format::serialized_length(60);
+      foreign2_size += ::pb_jelly::varint::serialized_length(l as u64);
+      foreign2_size += l;
+    }
+    size += foreign2_size;
+    let mut int3_size = 0;
+    if let Some(TestMessage_OneofZero::Int3(ref val)) = self.oneof_zero {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int3_size += ::pb_jelly::wire_format::serialized_length(61);
+      int3_size += l;
+    }
+    size += int3_size;
+    let mut foreign3_size = 0;
+    if let Some(TestMessage_OneofZero::Foreign3(ref val)) = self.oneof_zero {
+      let l = ::pb_jelly::Message::compute_size(val);
+      foreign3_size += ::pb_jelly::wire_format::serialized_length(62);
+      foreign3_size += ::pb_jelly::varint::serialized_length(l as u64);
+      foreign3_size += l;
+    }
+    size += foreign3_size;
+    let mut int4_size = 0;
+    if let Some(TestMessage_OneofNull::Int4(ref val)) = self.oneof_null {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int4_size += ::pb_jelly::wire_format::serialized_length(63);
+      int4_size += l;
+    }
+    size += int4_size;
+    let mut foreign4_size = 0;
+    if let Some(TestMessage_OneofNull::Foreign4(ref val)) = self.oneof_null {
+      let l = ::pb_jelly::Message::compute_size(val);
+      foreign4_size += ::pb_jelly::wire_format::serialized_length(64);
+      foreign4_size += ::pb_jelly::varint::serialized_length(l as u64);
+      foreign4_size += l;
+    }
+    size += foreign4_size;
+    let mut int5_size = 0;
+    if let Some(TestMessage_OneofUnset::Int5(ref val)) = self.oneof_unset {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int5_size += ::pb_jelly::wire_format::serialized_length(65);
+      int5_size += l;
+    }
+    size += int5_size;
+    let mut foreign5_size = 0;
+    if let Some(TestMessage_OneofUnset::Foreign5(ref val)) = self.oneof_unset {
+      let l = ::pb_jelly::Message::compute_size(val);
+      foreign5_size += ::pb_jelly::wire_format::serialized_length(66);
+      foreign5_size += ::pb_jelly::varint::serialized_length(l as u64);
+      foreign5_size += l;
+    }
+    size += foreign5_size;
+    let mut int6_size = 0;
+    if let Some(TestMessage_OneofPrimitives::Int6(ref val)) = self.oneof_primitives {
+      let l = ::pb_jelly::Message::compute_size(val);
+      int6_size += ::pb_jelly::wire_format::serialized_length(67);
+      int6_size += l;
+    }
+    size += int6_size;
+    let mut bool6_size = 0;
+    if let Some(TestMessage_OneofPrimitives::Bool6(ref val)) = self.oneof_primitives {
+      let l = ::pb_jelly::Message::compute_size(val);
+      bool6_size += ::pb_jelly::wire_format::serialized_length(68);
+      bool6_size += l;
+    }
+    size += bool6_size;
+    let mut a_size = 0;
+    if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
+      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_size += ::pb_jelly::wire_format::serialized_length(70);
+      a_size += ::pb_jelly::varint::serialized_length(l as u64);
+      a_size += l;
+    }
+    size += a_size;
+    let mut b_size = 0;
+    if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
+      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let l = ::pb_jelly::Message::compute_size(val);
+      b_size += ::pb_jelly::wire_format::serialized_length(71);
+      b_size += ::pb_jelly::varint::serialized_length(l as u64);
+      b_size += l;
+    }
+    size += b_size;
+    let mut c_size = 0;
+    if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
+      let l = ::pb_jelly::Message::compute_size(val);
+      c_size += ::pb_jelly::wire_format::serialized_length(72);
+      c_size += l;
+    }
+    size += c_size;
+    let mut type__size = 0;
+    for val in &self.type_ {
+      let l = ::pb_jelly::Message::compute_size(val);
+      type__size += ::pb_jelly::wire_format::serialized_length(73);
+      type__size += l;
+    }
+    size += type__size;
+    let mut loop__size = 0;
+    if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
+      let l = ::pb_jelly::Message::compute_size(val);
+      loop__size += ::pb_jelly::wire_format::serialized_length(74);
+      loop__size += l;
+    }
+    size += loop__size;
+    let mut unsafe__size = 0;
+    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
+      let l = ::pb_jelly::Message::compute_size(val);
+      unsafe__size += ::pb_jelly::wire_format::serialized_length(75);
+      unsafe__size += l;
+    }
+    size += unsafe__size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    for val in &self.optional_int32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_int64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_uint32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_uint64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_fixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_fixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_sfixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_sfixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_double {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_bool {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_string {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_bytes {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_float {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_foreign_message {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_nested_enum {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_foreign_enum {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_int32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_int64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_uint32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_uint64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_fixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_fixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_sfixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_sfixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_double {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_bool {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_string {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_bytes {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_float {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_foreign_message {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_nested_enum {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.repeated_foreign_enum {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.optional_foreign_message_boxed {
+      let val = &**val;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+     {
+      let val = &self.optional_foreign_message_nonnullable;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofInt::Int1(ref val)) = self.oneof_int {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofInt::Foreign1(ref val)) = self.oneof_int {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofForeign::Int2(ref val)) = self.oneof_foreign {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofForeign::Foreign2(ref val)) = self.oneof_foreign {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofZero::Int3(ref val)) = self.oneof_zero {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofZero::Foreign3(ref val)) = self.oneof_zero {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofNull::Int4(ref val)) = self.oneof_null {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofNull::Foreign4(ref val)) = self.oneof_null {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofUnset::Int5(ref val)) = self.oneof_unset {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofUnset::Foreign5(ref val)) = self.oneof_unset {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofPrimitives::Int6(ref val)) = self.oneof_primitives {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_OneofPrimitives::Bool6(ref val)) = self.oneof_primitives {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
+      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
+      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.type_ {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.optional_int32 {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_int64 {
+      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_uint32 {
+      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_uint64 {
+      ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_fixed64 {
+      ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_fixed32 {
+      ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_sfixed64 {
+      ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_sfixed32 {
+      ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_double {
+      ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_bool {
+      ::pb_jelly::wire_format::write(13, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_string {
+      ::pb_jelly::wire_format::write(14, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_bytes {
+      ::pb_jelly::wire_format::write(15, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_float {
+      ::pb_jelly::wire_format::write(16, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_foreign_message {
+      ::pb_jelly::wire_format::write(19, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_nested_enum {
+      ::pb_jelly::wire_format::write(21, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_foreign_enum {
+      ::pb_jelly::wire_format::write(22, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_int32 {
+      ::pb_jelly::wire_format::write(31, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_int64 {
+      ::pb_jelly::wire_format::write(32, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_uint32 {
+      ::pb_jelly::wire_format::write(33, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_uint64 {
+      ::pb_jelly::wire_format::write(34, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_fixed64 {
+      ::pb_jelly::wire_format::write(38, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_fixed32 {
+      ::pb_jelly::wire_format::write(39, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_sfixed64 {
+      ::pb_jelly::wire_format::write(40, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_sfixed32 {
+      ::pb_jelly::wire_format::write(41, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_double {
+      ::pb_jelly::wire_format::write(42, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_bool {
+      ::pb_jelly::wire_format::write(43, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_string {
+      ::pb_jelly::wire_format::write(44, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_bytes {
+      ::pb_jelly::wire_format::write(45, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_float {
+      ::pb_jelly::wire_format::write(46, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_foreign_message {
+      ::pb_jelly::wire_format::write(49, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_nested_enum {
+      ::pb_jelly::wire_format::write(51, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.repeated_foreign_enum {
+      ::pb_jelly::wire_format::write(52, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.optional_foreign_message_boxed {
+      let val = &**val;
+      ::pb_jelly::wire_format::write(53, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+     {
+      let val = &self.optional_foreign_message_nonnullable;
+      ::pb_jelly::wire_format::write(54, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofInt::Int1(ref val)) = self.oneof_int {
+      ::pb_jelly::wire_format::write(57, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofInt::Foreign1(ref val)) = self.oneof_int {
+      ::pb_jelly::wire_format::write(58, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofForeign::Int2(ref val)) = self.oneof_foreign {
+      ::pb_jelly::wire_format::write(59, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofForeign::Foreign2(ref val)) = self.oneof_foreign {
+      ::pb_jelly::wire_format::write(60, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofZero::Int3(ref val)) = self.oneof_zero {
+      ::pb_jelly::wire_format::write(61, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofZero::Foreign3(ref val)) = self.oneof_zero {
+      ::pb_jelly::wire_format::write(62, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofNull::Int4(ref val)) = self.oneof_null {
+      ::pb_jelly::wire_format::write(63, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofNull::Foreign4(ref val)) = self.oneof_null {
+      ::pb_jelly::wire_format::write(64, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofUnset::Int5(ref val)) = self.oneof_unset {
+      ::pb_jelly::wire_format::write(65, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofUnset::Foreign5(ref val)) = self.oneof_unset {
+      ::pb_jelly::wire_format::write(66, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofPrimitives::Int6(ref val)) = self.oneof_primitives {
+      ::pb_jelly::wire_format::write(67, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_OneofPrimitives::Bool6(ref val)) = self.oneof_primitives {
+      ::pb_jelly::wire_format::write(68, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
+      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      ::pb_jelly::wire_format::write(70, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
+      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      ::pb_jelly::wire_format::write(71, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
+      ::pb_jelly::wire_format::write(72, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.type_ {
+      ::pb_jelly::wire_format::write(73, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
+      ::pb_jelly::wire_format::write(74, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
+      ::pb_jelly::wire_format::write(75, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    let mut oneof_oneof_empty_field: ::std::option::Option<TestMessage_OneofEmptyField> = None;
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 1)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_int32 = Some(val);
+        }
+        2 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 2)?;
+          let mut val: i64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_int64 = Some(val);
+        }
+        3 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 3)?;
+          let mut val: u32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_uint32 = Some(val);
+        }
+        4 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 4)?;
+          let mut val: u64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_uint64 = Some(val);
+        }
+        8 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 8)?;
+          let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_fixed64 = Some(val);
+        }
+        9 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 9)?;
+          let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_fixed32 = Some(val);
+        }
+        10 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 10)?;
+          let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_sfixed64 = Some(val);
+        }
+        11 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 11)?;
+          let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_sfixed32 = Some(val);
+        }
+        12 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 12)?;
+          let mut val: f64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_double = Some(val);
+        }
+        13 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 13)?;
+          let mut val: bool = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_bool = Some(val);
+        }
+        14 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 14)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_string = Some(val);
+        }
+        15 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 15)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_bytes = Some(val);
+        }
+        16 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 16)?;
+          let mut val: f32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_float = Some(val);
+        }
+        19 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 19)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_foreign_message = Some(val);
+        }
+        21 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 21)?;
+          let mut val: TestMessage_NestedEnum = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_nested_enum = Some(val);
+        }
+        22 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 22)?;
+          let mut val: ForeignEnum = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.optional_foreign_enum = Some(val);
+        }
+        31 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: i32 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_int32.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 31)?;
+              let mut val: i32 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_int32.push(val);
+            }
+          }
+        }
+        32 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: i64 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_int64.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 32)?;
+              let mut val: i64 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_int64.push(val);
+            }
+          }
+        }
+        33 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: u32 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_uint32.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 33)?;
+              let mut val: u32 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_uint32.push(val);
+            }
+          }
+        }
+        34 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: u64 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_uint64.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 34)?;
+              let mut val: u64 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_uint64.push(val);
+            }
+          }
+        }
+        38 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_fixed64.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 38)?;
+              let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_fixed64.push(val);
+            }
+          }
+        }
+        39 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_fixed32.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 39)?;
+              let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_fixed32.push(val);
+            }
+          }
+        }
+        40 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_sfixed64.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 40)?;
+              let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_sfixed64.push(val);
+            }
+          }
+        }
+        41 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_sfixed32.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 41)?;
+              let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_sfixed32.push(val);
+            }
+          }
+        }
+        42 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: f64 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_double.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 42)?;
+              let mut val: f64 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_double.push(val);
+            }
+          }
+        }
+        43 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: bool = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_bool.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 43)?;
+              let mut val: bool = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_bool.push(val);
+            }
+          }
+        }
+        44 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 44)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.repeated_string.push(val);
+        }
+        45 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 45)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.repeated_bytes.push(val);
+        }
+        46 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: f32 = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_float.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 46)?;
+              let mut val: f32 = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_float.push(val);
+            }
+          }
+        }
+        49 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 49)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.repeated_foreign_message.push(val);
+        }
+        51 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: TestMessage_NestedEnum = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_nested_enum.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 51)?;
+              let mut val: TestMessage_NestedEnum = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_nested_enum.push(val);
+            }
+          }
+        }
+        52 => {
+          match typ {
+            ::pb_jelly::wire_format::Type::LengthDelimited => {
+              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
+              while vals.has_remaining() {
+                let mut val: ForeignEnum = ::std::default::Default::default();
+                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
+                self.repeated_foreign_enum.push(val);
+              }
+            }
+            _ => {
+              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 52)?;
+              let mut val: ForeignEnum = ::std::default::Default::default();
+              ::pb_jelly::Message::deserialize(&mut val, buf)?;
+              self.repeated_foreign_enum.push(val);
+            }
+          }
+        }
+        53 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 53)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_foreign_message_boxed = Some(Box::new(val));
+        }
+        54 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 54)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_foreign_message_nonnullable = val;
+        }
+        57 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 57)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_int = Some(TestMessage_OneofInt::Int1(val));
+        }
+        58 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 58)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.oneof_int = Some(TestMessage_OneofInt::Foreign1(val));
+        }
+        59 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 59)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_foreign = Some(TestMessage_OneofForeign::Int2(val));
+        }
+        60 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 60)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.oneof_foreign = Some(TestMessage_OneofForeign::Foreign2(val));
+        }
+        61 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 61)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_zero = Some(TestMessage_OneofZero::Int3(val));
+        }
+        62 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 62)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.oneof_zero = Some(TestMessage_OneofZero::Foreign3(val));
+        }
+        63 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 63)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_null = Some(TestMessage_OneofNull::Int4(val));
+        }
+        64 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 64)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.oneof_null = Some(TestMessage_OneofNull::Foreign4(val));
+        }
+        65 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 65)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_unset = Some(TestMessage_OneofUnset::Int5(val));
+        }
+        66 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 66)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.oneof_unset = Some(TestMessage_OneofUnset::Foreign5(val));
+        }
+        67 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 67)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_primitives = Some(TestMessage_OneofPrimitives::Int6(val));
+        }
+        68 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 68)?;
+          let mut val: bool = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.oneof_primitives = Some(TestMessage_OneofPrimitives::Bool6(val));
+        }
+        70 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 70)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::proto_google::empty::Empty = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::A);
+        }
+        71 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 71)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::proto_google::empty::Empty = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::B);
+        }
+        72 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 72)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::C(val));
+        }
+        73 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 73)?;
+          let mut val: bool = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.type_ = Some(val);
+        }
+        74 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 74)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.mod_ = Some(TestMessage_Mod::Loop(val));
+        }
+        75 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 75)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.mod_ = Some(TestMessage_Mod::Unsafe(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    match oneof_oneof_empty_field {
+      Some(v) => self.oneof_empty_field = v,
+      None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, "missing value for non-nullable oneof 'oneof_empty_field' while parsing message pbtest.TestMessage")),
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for TestMessage {
+  const NAME: &'static str = "TestMessage";
+  const FULL_NAME: &'static str = "pbtest.TestMessage";
+}
+

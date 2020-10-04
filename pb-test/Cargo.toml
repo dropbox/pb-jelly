@@ -11,6 +11,7 @@ bytes = "0.5.6"
 pb-jelly = "0.0.3"
 pretty_assertions = "0.6.1"
 proto_pbtest = { path = "gen/pb-jelly/proto_pbtest" }
+walkdir = "2.3.1"
 
 # only used when benchmarking PROST!
 prost = { version = "0.6", optional = true }

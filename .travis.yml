@@ -43,7 +43,7 @@ script:
     - cd ../pb-test/pb_test_gen
     - cargo run
     - cd ..
-    - cargo test
+    - VALIDATE=1 cargo test
     # examples
     - cd ../examples/examples_gen
     - cargo run
