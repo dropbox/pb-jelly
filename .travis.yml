@@ -2,6 +2,7 @@ dist: bionic
 language: rust
 rust:
     - nightly
+cache: cargo
 addons:
     apt:
         packages:
