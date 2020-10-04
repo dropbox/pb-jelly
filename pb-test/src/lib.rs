@@ -10,3 +10,5 @@ mod bench;
 mod gen;
 #[cfg(test)]
 mod pbtest;
+#[cfg(test)]
+mod verify_generated_files;
