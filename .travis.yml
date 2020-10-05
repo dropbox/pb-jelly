@@ -8,20 +8,14 @@ addons:
         packages:
             - "python3-pip"
 before_install:
-    - sudo pip install -r pb-jelly-gen/requirements.txt
+    - pip install --user -r pb-jelly-gen/requirements.txt
     - python3 --version
     - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
     - rustup component add rustfmt
-    - PROTOBUF_VERSION=3.7.1
+    - PROTOBUF_VERSION=3.13.0
     - PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-linux-x86_64.zip
-    - mkdir /tmp/protoc_install
-    - pushd /tmp/protoc_install
     - wget https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/${PROTOC_FILENAME}
-    - unzip ${PROTOC_FILENAME}
-    - bin/protoc --version
-    - sudo cp bin/* /usr/local/bin/
-    - sudo cp -r include/* /usr/local/include/
-    - popd
+    - unzip $PROTOC_FILENAME -d $HOME/.local
 script:
     - set -e
     - protoc --version
