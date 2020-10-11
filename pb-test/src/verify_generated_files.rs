@@ -1,5 +1,7 @@
 use std::env;
 use std::fs;
+
+use pretty_assertions::assert_eq;
 use walkdir::WalkDir;
 
 /// Ensure that generated files match .expected
@@ -35,8 +37,7 @@ fn verify_generated_files() {
 
         let contents = fs::read_to_string(proto_file).unwrap();
         let expected_contents = fs::read_to_string(&expected).unwrap();
-        if contents != expected_contents {
-            panic!(".expected files don't match - Please run `cd pb-test ; cargo test` to generate");
-        }
+        assert_eq!(contents.lines().collect::<Vec<_>>(), expected_contents.lines().collect::<Vec<_>>(),
+                   ".expected files don't match - Please run `cd pb-test ; cargo test` to generate");
     }
 }

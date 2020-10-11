@@ -34,12 +34,13 @@ use include_dir::{
     include_dir,
     Dir,
 };
+#[cfg(not(windows))]
+use std::os::unix::fs::PermissionsExt;
 use std::{
     convert::AsRef,
     fs,
     io::Write,
     iter::IntoIterator,
-    os::unix::fs::PermissionsExt,
     path::{
         Path,
         PathBuf,
@@ -197,7 +198,9 @@ impl GenProtos {
 
     fn gen_rust_protos(&self, temp_dir: tempfile::TempDir) -> Output {
         // Temp path to the codegen script
-        let codegen_path = temp_dir.path().join("codegen.py");
+        let codegen_path = temp_dir
+            .path()
+            .join(if cfg!(windows) { "codegen.bat" } else { "codegen.py" });
 
         let mut protoc_cmd = Command::new("protoc");
 
@@ -269,12 +272,15 @@ impl GenProtos {
                 let mut abs_file = fs::OpenOptions::new().write(true).create_new(true).open(&abs_path)?;
                 abs_file.write_all(file.contents())?;
 
-                let mut permissions = abs_file.metadata()?.permissions();
-                permissions.set_mode(0o777);
-                drop(abs_file);
+                #[cfg(not(windows))]
+                {
+                    let mut permissions = abs_file.metadata()?.permissions();
+                    permissions.set_mode(0o777);
+                    drop(abs_file);
 
-                // Set permissions of the file so it is executable
-                fs::set_permissions(&abs_path, permissions)?;
+                    // Set permissions of the file so it is executable
+                    fs::set_permissions(&abs_path, permissions)?;
+                }
             }
 
             for dir in dir.dirs() {

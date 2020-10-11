@@ -6,8 +6,7 @@ env: RUSTC_WRAPPER=sccache
 os:
   - linux
   - osx
-  # Coming soon to a CI near you
-  # - windows
+  - windows
 addons:
   apt:
     packages:
@@ -21,6 +20,16 @@ before_install:
     - |
       if [ "$TRAVIS_OS_NAME" = "windows" ]; then
         PROTOC_FILENAME=protoc-${PROTOBUF_VERSION}-win64.zip
+        choco install python --version=3.8.6
+        choco install protoc --version=3.12.3
+        choco install sccache --version=0.2.12
+        export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+        echo $PATH
+        cp /c/Python38/python.exe /c/Python38/python3.exe
+        ls /c/Python38
+        ls /c/Python38/Scripts
+        python3.exe --version
+        python3 --version
       else
         if [ "$TRAVIS_OS_NAME" = "osx" ]; then
           # Brew seems to have an older version installed - and for some reason, python3
@@ -48,6 +57,7 @@ before_install:
     - python3 -m pip install -r pb-jelly-gen/requirements.txt
     - python3 -c "import google.protobuf ; print(google.protobuf.__version__)"
     - python3 -m pip install mypy==0.782 mypy-protobuf==1.23
+    - rustup default nightly-2020-10-24
     - rustup component add rustfmt
 script:
     - protoc --version
