@@ -226,6 +226,19 @@ message TestMessage3ErrIfDefaultEnum {
     ErrIfDefaultEnum field = 1;
 }
 
+message TestMessage3ErrIfDefaultEnumOneof {
+    enum ErrIfDefaultEnum {
+        option (rust.err_if_default_or_unknown) = true;
+
+        UNKNOWN_INVALID_VALUE = 0;
+        THE_OTHER_ONE = 1;
+    }
+    oneof maybe {
+        ErrIfDefaultEnum something = 1;
+    }
+    google.protobuf.Empty nothing = 2;
+}
+
 message TestMessage3RepeatedErrIfDefaultEnum {
     repeated TestMessage3ErrIfDefaultEnum.ErrIfDefaultEnum field = 1;
 }
