@@ -4098,7 +4098,6 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
-    let mut something: ::std::option::Option<TestMessage3ErrIfDefaultEnumOneof_ErrIfDefaultEnum> = None;
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
@@ -4119,10 +4118,6 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
           ::pb_jelly::skip(typ, &mut buf)?;
         }
       }
-    }
-    match something {
-      Some(v) => self.something = v,
-      None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, "err_if_default_or_unknown 'something' had no value while parsing message pbtest.TestMessage3ErrIfDefaultEnumOneof")),
     }
     Ok(())
   }
