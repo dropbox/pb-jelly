@@ -21,7 +21,7 @@ Once you've completed the above steps, you should include this crate as a build-
 ##### `Cargo.toml`
 ```
 [build-dependencies]
-pb-jelly-gen = "0.0.3"
+pb-jelly-gen = "0.0.4"
 ```
 
 ##### `build.rs`

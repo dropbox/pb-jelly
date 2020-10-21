@@ -5,3 +5,4 @@ generated/
 **/gen/**/*.rs
 **/gen/**/*.toml
 .DS_Store
+__pycache__/
