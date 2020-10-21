@@ -21,7 +21,7 @@ fn verify_generated_files() {
 
     // Assert the correct number of pb-test generated files
     // Developers - please change this number if the change is intentional
-    assert_eq!(proto_files.len(), 10);
+    assert_eq!(proto_files.len(), 9);
 
     // Assert contents of the generated files
     for proto_file in proto_files {
