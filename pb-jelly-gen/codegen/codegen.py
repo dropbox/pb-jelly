@@ -1078,13 +1078,13 @@ class CodeWriter(object):
                     OrderedDict()
                 )
                 for field in msg_type.field:
+                    typ = self.rust_type(msg_type, field)
                     if (
                         field.type == FieldDescriptorProto.TYPE_ENUM
                         and not typ.is_repeated()
                     ):
                         enum_type = self.ctx.find(field.type_name).typ
                         if enum_err_if_default_or_unknown(enum_type) and not typ.oneof:
-                            typ = self.rust_type(msg_type, field)
                             self.write(
                                 "let mut %s: ::std::option::Option<%s> = None;"
                                 % (field.name, typ.rust_type())
