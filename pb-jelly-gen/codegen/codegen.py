@@ -1680,7 +1680,7 @@ def generate_single_crate(ctx: Context, file_prefix: Text, file_to_generate: Lis
 
         crate_name, mod_parts = ctx.crate_from_proto_filename(proto_file_name)
         parent_mods = mod_parts[:-1]
-        mod_name = mod_parts[-1]
+        mod_name = mod_parts[-1] if mod_parts else crate_name
 
         def add_mod(writer: CodeWriter) -> None:
             rs_file_name = (
