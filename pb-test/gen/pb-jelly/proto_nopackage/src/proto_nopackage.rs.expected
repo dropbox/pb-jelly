@@ -1,0 +1,71 @@
+// @generated, do not edit
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct NoPackage {
+  pub field: ::std::string::String,
+}
+impl ::std::default::Default for NoPackage {
+  fn default() -> Self {
+    NoPackage {
+      field: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref NoPackage_default: NoPackage = NoPackage::default();
+}
+impl ::pb_jelly::Message for NoPackage {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut field_size = 0;
+    if self.field != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.field;
+      let l = ::pb_jelly::Message::compute_size(val);
+      field_size += ::pb_jelly::wire_format::serialized_length(1);
+      field_size += ::pb_jelly::varint::serialized_length(l as u64);
+      field_size += l;
+    }
+    size += field_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if self.field != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.field;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.field != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.field;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "NoPackage", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.field = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for NoPackage {
+  const NAME: &'static str = "NoPackage";
+  const FULL_NAME: &'static str = "NoPackage";
+}
+
