@@ -1,3 +1,7 @@
+# Upcoming
+* Add windows support to pb_jelly_gen
+* Add windows support to our CI
+
 # 0.0.4
 ### October 21, 2020
 * Drop python2 support (remove six and inline type annotations)
