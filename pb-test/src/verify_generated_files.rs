@@ -37,7 +37,10 @@ fn verify_generated_files() {
 
         let contents = fs::read_to_string(proto_file).unwrap();
         let expected_contents = fs::read_to_string(&expected).unwrap();
-        assert_eq!(contents.lines().collect::<Vec<_>>(), expected_contents.lines().collect::<Vec<_>>(),
-                   ".expected files don't match - Please run `cd pb-test ; cargo test` to generate");
+        assert_eq!(
+            contents.lines().collect::<Vec<_>>(),
+            expected_contents.lines().collect::<Vec<_>>(),
+            ".expected files don't match - Please run `cd pb-test ; cargo test` to generate"
+        );
     }
 }

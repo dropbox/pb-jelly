@@ -69,7 +69,7 @@ script:
     - cd ../..
 
     # Rustfmt
-    - for d in examples pb-jelly pb-jelly-gen pb-test; do cd $d ; cargo fmt -- --check ; cd .. ; done
+    - for d in examples pb-jelly pb-jelly-gen pb-test; do cd $d ; cargo fmt -- --check || exit ; cd .. ; done
 
     # unit tests
     - cd pb-jelly
