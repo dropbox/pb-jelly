@@ -68,6 +68,12 @@ script:
     - mypy .
     - cd ../..
 
+    # Run mypy on generate_services.py
+    - cd pb-jelly-svc/codegen
+    - protoc --mypy_out=proto rust/service_extensions.proto
+    - mypy .
+    - cd ../..
+
     # Rustfmt
     - for d in examples pb-jelly pb-jelly-gen pb-test; do cd $d ; cargo fmt -- --check ; cd .. ; done
 
