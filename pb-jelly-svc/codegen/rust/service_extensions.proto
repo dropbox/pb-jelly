@@ -1,0 +1,18 @@
+syntax = "proto3";
+package rust;
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.ServiceOptions {
+    // Service-wide default deadline which is applied to all rpc
+    // methods (unless the method has its own default deadline).
+    // For streaming methods, the default deadline is the deadline on the
+    // entire stream.
+    int32 service_default_deadline_ms = 50002;
+}
+
+extend google.protobuf.MethodOptions {
+    // Method-specific default deadline. For streaming methods, the default
+    // deadline is the deadline on the entire stream.
+    int32 method_default_deadline_ms = 50003;
+}

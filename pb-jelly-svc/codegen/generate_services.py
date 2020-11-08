@@ -23,7 +23,7 @@ import google.protobuf.descriptor_pb2 as d_typed
 import six
 from google.protobuf.compiler import plugin_pb2 as plugin
 
-from dropbox.proto.rpc_core import service_extensions_pb2
+from proto.rust import service_extensions_pb2
 
 d = d_typed  # type: Any
 
