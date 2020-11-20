@@ -6,11 +6,15 @@ use proto_box_it::basic::{
 
 fn main() -> std::io::Result<()> {
     // Create our messages
-    let box_msg = BoxedMessage {
+    let maybe_msg = BoxedMessage {
         name: "Paper".to_owned(),
     };
+    let msg = BoxedMessage {
+        name: "Passwords".to_owned(),
+    };
     let msg = OuterMessage {
-        msg: Some(Box::new(box_msg)),
+        optional_msg: Some(Box::new(maybe_msg)),
+        msg: Box::new(msg),
         other: "Dropbox".to_owned(),
     };
 
@@ -21,7 +25,7 @@ fn main() -> std::io::Result<()> {
     let de_msg: OuterMessage = Message::deserialize_from_slice(&se_msg[..])?;
 
     // Grab our inner box
-    let de_box_msg: Box<BoxedMessage> = de_msg.msg.unwrap();
+    let de_box_msg: Box<BoxedMessage> = de_msg.optional_msg.unwrap();
 
     // Print our message!
     println!("{} {}", de_msg.other, de_box_msg.name);

@@ -549,8 +549,9 @@ def field_iter(ctx: 'CodeWriter', var: Text, msg_name: Text, msg_type: Descripto
         and not typ.is_repeated()
     ):
         # Always emit messages explicitly marked as non-nullable
+        deref = "*" if typ.is_boxed() else ""
         with block(ctx, ""):
-            ctx.write("let %s = &self.%s;" % (var, field.name))
+            ctx.write("let %s = &%sself.%s;" % (var, deref, field.name))
             yield
     elif (
         field.type == FieldDescriptorProto.TYPE_ENUM
