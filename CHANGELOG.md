@@ -1,6 +1,14 @@
 # Upcoming
-* Add windows support to pb_jelly_gen
-* Add windows support to our CI
+
+
+# 0.0.5
+### November 20, 2020
+* Add Windows support to `pb-jelly-gen`
+* Add Windows support to our CI
+* Allows proto files at the root of proto path
+
+#### Bugs
+* Fixed a bug around non-optional boxed messages
 
 # 0.0.4
 ### October 21, 2020
