@@ -243,6 +243,14 @@ message TestMessage3RepeatedErrIfDefaultEnum {
     repeated TestMessage3ErrIfDefaultEnum.ErrIfDefaultEnum field = 1;
 }
 
+message TestMessage3NonOptionalBoxedMessage {
+    message InnerMessage {
+        string name = 1;
+    }
+
+    InnerMessage msg = 1 [(rust.box_it)=true, (gogoproto.nullable)=false];
+}
+
 message TestPreserveUnrecognized1 {
     option (rust.preserve_unrecognized) = true;
     string string1 = 1;
