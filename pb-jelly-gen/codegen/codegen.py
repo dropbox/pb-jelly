@@ -1611,6 +1611,7 @@ rust_library(
 rust_doc(
     name = "{crate}_doc",
     crate = ":{crate}",
+    edition = "2018",
 )
 """
 
@@ -1650,6 +1651,7 @@ LIB_RS_HEADER = """
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(irrefutable_let_patterns)]
+#![allow(broken_intra_doc_links)]
 
 """
 
