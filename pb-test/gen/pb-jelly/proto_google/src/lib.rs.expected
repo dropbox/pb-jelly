@@ -9,6 +9,7 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(irrefutable_let_patterns)]
+#![allow(broken_intra_doc_links)]
 
 #[macro_use]
 extern crate lazy_static;
