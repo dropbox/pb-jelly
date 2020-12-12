@@ -47,6 +47,7 @@ fn main() -> std::io::Result<()> {
             .include("../proto/packages")
             .customize(Customize {
                 carllerche_bytes_for_bytes: Some(true),
+                carllerche_bytes_for_string: Some(true),
                 ..Default::default()
             })
             .run()

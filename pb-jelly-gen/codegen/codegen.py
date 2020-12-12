@@ -66,6 +66,7 @@ PRIMITIVE_TYPES = {
 BLOB_TYPE = "::pb_jelly::Lazy<::blob_pb::WrappedBlob>"
 VEC_SLICE_TYPE = "::pb_jelly::Lazy<::blob_pb::VecSlice>"
 LAZY_BYTES_TYPE = "::pb_jelly::Lazy<::bytes::Bytes>"
+ZERO_COPY_STRING_TYPE = "::pb_jelly::StrBytes"
 # pull out `x` from every instance of `::x::y::z`, but not `y` or `z`
 CRATE_NAME_REGEX = re.compile(r"(?:^|\W)::(\w+)(?:::\w+)*")
 
@@ -256,6 +257,12 @@ class RustType(object):
             and self.field.options.Extensions[extensions_pb2.zero_copy]
         )
 
+    def is_zero_copy_string(self) -> bool:
+        return (
+            self.field.type == FieldDescriptorProto.TYPE_STRING
+            and self.field.options.Extensions[extensions_pb2.zero_copy]
+        )
+
     def is_boxed(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_MESSAGE
@@ -327,7 +334,10 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_BOOL:
             return "bool", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_STRING:
-            return "::std::string::String", "v"
+            if self.is_zero_copy_string():
+                return ZERO_COPY_STRING_TYPE, "v"
+            else:
+                return "::std::string::String", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             if self.is_blob():
                 return BLOB_TYPE, "v"
@@ -360,7 +370,10 @@ class RustType(object):
         expr = "self.%s.take().unwrap_or_default()" % self.field.name
 
         if self.field.type == FieldDescriptorProto.TYPE_STRING:
-            return "::std::string::String", expr
+            if self.is_zero_copy_string():
+                return ZERO_COPY_STRING_TYPE, expr
+            else:
+                return "::std::string::String", expr
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             if self.is_blob():
                 return BLOB_TYPE, expr
@@ -410,10 +423,12 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_BOOL:
             return "bool", "self.%s.unwrap_or(false)" % name
         elif self.field.type == FieldDescriptorProto.TYPE_STRING:
-            return (
-                "&str",
-                'self.%s.as_ref().map(|ref s| s.as_str()).unwrap_or("")' % name,
-            )
+            return_type = "&str"
+            if self.is_zero_copy_string():
+                return_expr = 'self.%s.as_ref().map(|s| &**s).unwrap_or("")' % name
+            else:
+                return_expr = 'self.%s.as_ref().map(|ref s| s.as_str()).unwrap_or("")' % name
+            return (return_type, return_expr)
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             assert not (
                 self.is_blob() or self.is_grpc_slices() or self.is_lazy_bytes()
@@ -446,6 +461,9 @@ class RustType(object):
 
         if self.is_lazy_bytes():
             return LAZY_BYTES_TYPE
+        
+        if self.is_zero_copy_string():
+            return ZERO_COPY_STRING_TYPE
 
         if typ in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[typ][0]
@@ -1561,7 +1579,7 @@ class Context(object):
             features = {u"serde": u' features = ["serde_derive"]'}
             versions = {
                 u"lazy_static": u' version = "1.4.0" ',
-                u"pb-jelly": u' version = "0.0.5" ',
+                u"pb-jelly": u' path = "../../../../../pb-jelly" ',
                 u"serde": u' version = "1.0.114" ',
                 u"bytes": u' version = "0.5.6" '
             }

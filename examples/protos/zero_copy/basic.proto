@@ -6,5 +6,5 @@ import "rust/extensions.proto";
 
 message BytesMessage {
     optional bytes data = 1 [(rust.zero_copy)=true];
-    optional string name = 2;
+    optional string name = 2 [(rust.zero_copy)=true];
 }

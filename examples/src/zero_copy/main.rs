@@ -13,7 +13,7 @@ fn main() -> std::io::Result<()> {
     // Create our Proto Struct
     let mut proto = BytesMessage::default();
     proto.set_data(data);
-    proto.set_name("Parker".to_owned());
+    proto.set_name("Parker".into());
 
     // Serialize our proto
     let ser_bytes: Vec<u8> = proto.serialize_to_vec();
