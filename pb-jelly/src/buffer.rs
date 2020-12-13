@@ -69,6 +69,7 @@ use std::any::{
     type_name,
     Any,
 };
+use std::convert::TryFrom;
 use std::default::Default;
 use std::fmt::{
     self,
@@ -87,7 +88,10 @@ use bytes::{
     Bytes,
 };
 
-use super::Message;
+use super::{
+    Message,
+    StrBytes,
+};
 
 /// A stand-in trait for any backing buffer store. Required to be object-safe for lazy evaluation.
 /// PbBuffers are expected to own references to the data they reference, and should be cheap
@@ -196,6 +200,32 @@ impl<B: PbBuffer + PartialEq> Message for Lazy<B> {
     }
 }
 
+impl Message for StrBytes {
+    fn compute_size(&self) -> usize {
+        match self.bytes() {
+            None => 0,
+            Some(bytes) => bytes.len(),
+        }
+    }
+
+    fn compute_grpc_slices_size(&self) -> usize {
+        self.compute_size()
+    }
+
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> std::io::Result<()> {
+        if let Some(bytes) = self.bytes() {
+            w.write_buffer(bytes)?;
+        }
+        Ok(())
+    }
+
+    fn deserialize<R: PbBufferReader>(&mut self, r: &mut R) -> std::io::Result<()> {
+        self.replace_bytes(Bytes::from_reader(r)?)
+            .map_err(|e| Error::new(ErrorKind::InvalidData, e.to_string()))?;
+        Ok(())
+    }
+}
+
 impl<'a> PbBufferReader for Cursor<&'a [u8]> {
     fn split(&mut self, at: usize) -> Self {
         let pos = self.position() as usize;
@@ -226,6 +256,23 @@ impl PbBufferReader for Cursor<Bytes> {
         self.advance(at);
         let new_slice = self.get_ref().slice(pos..(pos + at));
         Self::new(new_slice)
+    }
+}
+
+impl PbBuffer for StrBytes {
+    type Reader = Cursor<Bytes>;
+
+    fn len(&self) -> usize {
+        self.len()
+    }
+
+    fn into_reader(self) -> Self::Reader {
+        Cursor::new(self.into_bytes())
+    }
+
+    fn from_reader<R: PbBufferReader>(reader: &mut R) -> Result<Self> {
+        let bytes: Bytes = reader.as_buffer()?;
+        StrBytes::try_from(bytes).map_err(|e| Error::new(ErrorKind::InvalidData, e.to_string()))
     }
 }
 

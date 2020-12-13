@@ -53,6 +53,9 @@ pub use crate::base_types::{
 mod descriptor;
 pub use crate::descriptor::MessageDescriptor;
 
+mod str_bytes;
+pub use crate::str_bytes::StrBytes;
+
 #[cfg(test)]
 mod tests;
 

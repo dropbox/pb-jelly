@@ -10,6 +10,7 @@ mod benches {
         BytesData,
         StringMessage,
         VecData,
+        ZeroCopyStringMessage,
     };
     use test::Bencher;
 
@@ -64,6 +65,28 @@ mod benches {
 
             // Deserialize our proto
             let mut de_proto = VecData::default();
+            de_proto.deserialize(&mut bytes_reader).unwrap();
+            assert!(de_proto.has_data());
+        });
+    }
+
+    #[bench]
+    fn bench_deserialize_zero_copy_string(b: &mut Bencher) {
+        let data = String::from(include_str!("../data/moby_dick.txt"));
+
+        let mut proto = ZeroCopyStringMessage::default();
+        proto.set_data(data.into());
+
+        let ser_bytes: Vec<u8> = proto.serialize_to_vec();
+
+        let bytes_buf = Bytes::from(ser_bytes);
+
+        b.iter(|| {
+            // Convert our bytes::Bytes into a pb::PbBufferReader
+            let mut bytes_reader = bytes_buf.clone().into_reader();
+
+            // Deserialize our proto
+            let mut de_proto = ZeroCopyStringMessage::default();
             de_proto.deserialize(&mut bytes_reader).unwrap();
             assert!(de_proto.has_data());
         });
@@ -158,17 +181,18 @@ mod prost {
 mod rust_protobuf {
     use crate::gen::rust_protobuf::bench::{
         BytesData,
-        StringMessage,
+        ZeroCopyStringMessage,
     };
     use bytes::Bytes;
     use protobuf::{
+        Chars,
         CodedInputStream,
         Message,
     };
     use test::Bencher;
 
     #[bench]
-    fn bench_deserialize_rust_protobuf_bytes(b: &mut Bencher) {
+    fn bench_deserialize_rust_protobuf_zero_copy_bytes(b: &mut Bencher) {
         // Generate 4MB of data
         let data = Bytes::from(vec![42 as u8; 4 * 1024 * 1024]);
 
@@ -200,12 +224,12 @@ mod rust_protobuf {
     }
 
     #[bench]
-    fn bench_deserialize_rust_protobuf_string(b: &mut Bencher) {
+    fn bench_deserialize_rust_protobuf_zero_copy_string(b: &mut Bencher) {
         let data = String::from(include_str!("../data/moby_dick.txt"));
 
         // Create our proto struct
-        let mut proto = StringMessage::new();
-        proto.set_data(data);
+        let mut proto = ZeroCopyStringMessage::new();
+        proto.set_data(Chars::from(data));
 
         // Serialize the proto
         let csz = proto.compute_size();
@@ -222,7 +246,7 @@ mod rust_protobuf {
         b.iter(|| {
             // Deserialize our proto
             let mut input_stream = CodedInputStream::from_carllerche_bytes(&bytes_buf);
-            let mut de_proto = StringMessage::default();
+            let mut de_proto = ZeroCopyStringMessage::default();
             de_proto
                 .merge_from(&mut input_stream)
                 .expect("failed to decode rust_protobuf proto!");

@@ -14,6 +14,11 @@ message VecData {
     optional bytes data = 1;
 }
 
+message ZeroCopyStringMessage {
+    // Using the `zero_copy` option, the `string` type maps to `pb_jelly::StrBytes`
+    optional string data = 1 [(rust.zero_copy)=true];
+}
+
 message StringMessage {
     optional string data = 1;
 }
