@@ -1,5 +1,5 @@
 # Upcoming
-
+* When bumping to v0.0.6, also bump `bytes` to `1.0`
 
 # 0.0.5
 ### November 20, 2020
