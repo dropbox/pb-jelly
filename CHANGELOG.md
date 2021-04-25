@@ -1,5 +1,7 @@
-# Upcoming
+# 0.0.6
+### April 25, 2021
 * Bump `bytes` to `1.0`
+* Bump `byteorder` to `1.4`
 
 # 0.0.5
 ### November 20, 2020
