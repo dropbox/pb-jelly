@@ -20,7 +20,6 @@ use std::io::{
 
 use bytes::buf::{
     Buf,
-    BufExt,
     BufMut,
 };
 

@@ -1,5 +1,5 @@
 # Upcoming
-
+* Bump `bytes` to `1.0`
 
 # 0.0.5
 ### November 20, 2020

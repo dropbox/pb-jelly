@@ -236,7 +236,7 @@ impl<'a> PbBufferWriter for Cursor<&'a mut Vec<u8>> {
         let mut reader = buf.clone().into_reader();
         while reader.has_remaining() {
             let n = {
-                let bytes = reader.bytes();
+                let bytes = reader.chunk();
                 self.write_all(bytes)?;
                 bytes.len()
             };
@@ -253,7 +253,7 @@ impl<'a> PbBufferWriter for Cursor<&'a mut [u8]> {
         let mut reader = buf.clone().into_reader();
         while reader.has_remaining() {
             let n = {
-                let bytes = reader.bytes();
+                let bytes = reader.chunk();
                 self.write_all(bytes)?;
                 bytes.len()
             };
@@ -287,7 +287,7 @@ impl<'a, W: Write + 'a> PbBufferWriter for CopyWriter<'a, W> {
         let mut reader = buf.clone().into_reader();
         while reader.has_remaining() {
             let n = {
-                let bytes = reader.bytes();
+                let bytes = reader.chunk();
                 self.write_all(bytes)?;
                 bytes.len()
             };
