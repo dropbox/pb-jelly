@@ -666,6 +666,96 @@ impl ::pb_jelly::ClosedProtoEnum for TestMessage3ErrIfDefaultEnumOneof_ErrIfDefa
   }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+#[repr(i32)]
+pub enum TestMessage3ClosedEnum_ClosedEnum {
+  DEFAULT = 0,
+  ONE = 1,
+}
+impl TestMessage3ClosedEnum_ClosedEnum {
+  pub const KNOWN_VARIANTS: [TestMessage3ClosedEnum_ClosedEnum; 2] = [TestMessage3ClosedEnum_ClosedEnum::DEFAULT, TestMessage3ClosedEnum_ClosedEnum::ONE];
+}
+impl ::std::default::Default for TestMessage3ClosedEnum_ClosedEnum {
+  fn default() -> Self {
+    TestMessage3ClosedEnum_ClosedEnum::DEFAULT
+  }
+}
+impl From<TestMessage3ClosedEnum_ClosedEnum> for i32 {
+  fn from(v: TestMessage3ClosedEnum_ClosedEnum) -> i32 {
+    match v {
+      TestMessage3ClosedEnum_ClosedEnum::DEFAULT => 0,
+      TestMessage3ClosedEnum_ClosedEnum::ONE => 1,
+    }
+  }
+}
+impl ::std::convert::TryFrom<i32> for TestMessage3ClosedEnum_ClosedEnum {
+  type Error = i32;
+  fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+    match v {
+      0 => Ok(TestMessage3ClosedEnum_ClosedEnum::DEFAULT),
+      1 => Ok(TestMessage3ClosedEnum_ClosedEnum::ONE),
+      _ => Err(v),
+    }
+  }
+}
+impl ::pb_jelly::ProtoEnum for TestMessage3ClosedEnum_ClosedEnum {
+}
+impl ::pb_jelly::ClosedProtoEnum for TestMessage3ClosedEnum_ClosedEnum {
+  fn name(self) -> &'static str {
+    match self {
+      TestMessage3ClosedEnum_ClosedEnum::DEFAULT => "DEFAULT",
+      TestMessage3ClosedEnum_ClosedEnum::ONE => "ONE",
+    }
+  }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+#[repr(i32)]
+pub enum TestMessage3ClosedEnum2_ClosedEnum {
+  DEFAULT = 0,
+  ONE = 1,
+  TWO = 2,
+}
+impl TestMessage3ClosedEnum2_ClosedEnum {
+  pub const KNOWN_VARIANTS: [TestMessage3ClosedEnum2_ClosedEnum; 3] = [TestMessage3ClosedEnum2_ClosedEnum::DEFAULT, TestMessage3ClosedEnum2_ClosedEnum::ONE, TestMessage3ClosedEnum2_ClosedEnum::TWO];
+}
+impl ::std::default::Default for TestMessage3ClosedEnum2_ClosedEnum {
+  fn default() -> Self {
+    TestMessage3ClosedEnum2_ClosedEnum::DEFAULT
+  }
+}
+impl From<TestMessage3ClosedEnum2_ClosedEnum> for i32 {
+  fn from(v: TestMessage3ClosedEnum2_ClosedEnum) -> i32 {
+    match v {
+      TestMessage3ClosedEnum2_ClosedEnum::DEFAULT => 0,
+      TestMessage3ClosedEnum2_ClosedEnum::ONE => 1,
+      TestMessage3ClosedEnum2_ClosedEnum::TWO => 2,
+    }
+  }
+}
+impl ::std::convert::TryFrom<i32> for TestMessage3ClosedEnum2_ClosedEnum {
+  type Error = i32;
+  fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+    match v {
+      0 => Ok(TestMessage3ClosedEnum2_ClosedEnum::DEFAULT),
+      1 => Ok(TestMessage3ClosedEnum2_ClosedEnum::ONE),
+      2 => Ok(TestMessage3ClosedEnum2_ClosedEnum::TWO),
+      _ => Err(v),
+    }
+  }
+}
+impl ::pb_jelly::ProtoEnum for TestMessage3ClosedEnum2_ClosedEnum {
+}
+impl ::pb_jelly::ClosedProtoEnum for TestMessage3ClosedEnum2_ClosedEnum {
+  fn name(self) -> &'static str {
+    match self {
+      TestMessage3ClosedEnum2_ClosedEnum::DEFAULT => "DEFAULT",
+      TestMessage3ClosedEnum2_ClosedEnum::ONE => "ONE",
+      TestMessage3ClosedEnum2_ClosedEnum::TWO => "TWO",
+    }
+  }
+}
+
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct ForeignMessage3 {
   pub c: i32,
@@ -4210,6 +4300,136 @@ impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
 impl ::pb_jelly::MessageDescriptor for TestMessage3RepeatedErrIfDefaultEnum {
   const NAME: &'static str = "TestMessage3RepeatedErrIfDefaultEnum";
   const FULL_NAME: &'static str = "pbtest.TestMessage3RepeatedErrIfDefaultEnum";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct TestMessage3ClosedEnum {
+  pub value: TestMessage3ClosedEnum_ClosedEnum,
+}
+impl ::std::default::Default for TestMessage3ClosedEnum {
+  fn default() -> Self {
+    TestMessage3ClosedEnum {
+      value: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestMessage3ClosedEnum_default: TestMessage3ClosedEnum = TestMessage3ClosedEnum::default();
+}
+impl ::pb_jelly::Message for TestMessage3ClosedEnum {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut value_size = 0;
+    if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
+      let val = &self.value;
+      let l = ::pb_jelly::Message::compute_size(val);
+      value_size += ::pb_jelly::wire_format::serialized_length(1);
+      value_size += l;
+    }
+    size += value_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
+      let val = &self.value;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
+      let val = &self.value;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage3ClosedEnum", 1)?;
+          let mut val: TestMessage3ClosedEnum_ClosedEnum = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.value = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for TestMessage3ClosedEnum {
+  const NAME: &'static str = "TestMessage3ClosedEnum";
+  const FULL_NAME: &'static str = "pbtest.TestMessage3ClosedEnum";
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct TestMessage3ClosedEnum2 {
+  pub value: TestMessage3ClosedEnum2_ClosedEnum,
+}
+impl ::std::default::Default for TestMessage3ClosedEnum2 {
+  fn default() -> Self {
+    TestMessage3ClosedEnum2 {
+      value: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestMessage3ClosedEnum2_default: TestMessage3ClosedEnum2 = TestMessage3ClosedEnum2::default();
+}
+impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
+  fn compute_size(&self) -> usize  {
+    let mut size = 0;
+    let mut value_size = 0;
+    if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
+      let val = &self.value;
+      let l = ::pb_jelly::Message::compute_size(val);
+      value_size += ::pb_jelly::wire_format::serialized_length(1);
+      value_size += l;
+    }
+    size += value_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize  {
+    let mut size = 0;
+    if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
+      let val = &self.value;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
+      let val = &self.value;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage3ClosedEnum2", 1)?;
+          let mut val: TestMessage3ClosedEnum2_ClosedEnum = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.value = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::MessageDescriptor for TestMessage3ClosedEnum2 {
+  const NAME: &'static str = "TestMessage3ClosedEnum2";
+  const FULL_NAME: &'static str = "pbtest.TestMessage3ClosedEnum2";
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

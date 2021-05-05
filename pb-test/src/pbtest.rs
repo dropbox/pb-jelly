@@ -538,6 +538,48 @@ fn repeated_err_if_default_non_default_succeeds() {
     succeeds(&buf[..], expected);
 }
 
+#[test]
+fn closed_enum() {
+    succeeds(
+        &[],
+        TestMessage3ClosedEnum {
+            value: TestMessage3ClosedEnum_ClosedEnum::DEFAULT,
+        },
+    );
+    succeeds(
+        &TestMessage3ClosedEnum2 {
+            value: TestMessage3ClosedEnum2_ClosedEnum::DEFAULT,
+        }
+        .serialize_to_vec(),
+        TestMessage3ClosedEnum {
+            value: TestMessage3ClosedEnum_ClosedEnum::DEFAULT,
+        },
+    );
+    succeeds(
+        &TestMessage3ClosedEnum2 {
+            value: TestMessage3ClosedEnum2_ClosedEnum::ONE,
+        }
+        .serialize_to_vec(),
+        TestMessage3ClosedEnum {
+            value: TestMessage3ClosedEnum_ClosedEnum::ONE,
+        },
+    );
+    TestMessage3ClosedEnum::deserialize_from_slice(
+        &TestMessage3ClosedEnum2 {
+            value: TestMessage3ClosedEnum2_ClosedEnum::TWO,
+        }
+        .serialize_to_vec(),
+    )
+    .expect_err("should fail");
+
+    // Check that the codegen is actually generating a closed enum
+    match TestMessage3ClosedEnum2_ClosedEnum::DEFAULT {
+        TestMessage3ClosedEnum2_ClosedEnum::DEFAULT
+        | TestMessage3ClosedEnum2_ClosedEnum::ONE
+        | TestMessage3ClosedEnum2_ClosedEnum::TWO => (),
+    }
+}
+
 //TODO: Add blob crate so we can bring this test back.
 /*
 #[test]

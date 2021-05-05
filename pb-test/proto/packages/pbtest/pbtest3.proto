@@ -243,6 +243,27 @@ message TestMessage3RepeatedErrIfDefaultEnum {
     repeated TestMessage3ErrIfDefaultEnum.ErrIfDefaultEnum field = 1;
 }
 
+message TestMessage3ClosedEnum {
+    enum ClosedEnum {
+        option (rust.closed_enum) = true;
+
+        DEFAULT = 0;
+        ONE = 1;
+    }
+    ClosedEnum value = 1;
+}
+
+message TestMessage3ClosedEnum2 {
+    enum ClosedEnum {
+        option (rust.closed_enum) = true;
+
+        DEFAULT = 0;
+        ONE = 1;
+        TWO = 2;
+    }
+    ClosedEnum value = 1;
+}
+
 message TestMessage3NonOptionalBoxedMessage {
     message InnerMessage {
         string name = 1;
