@@ -44,9 +44,10 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 | `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
-| `(gogoproto.nullable)=false`            | Generates non-nullable fields types									       | Field | `TODO` |
+| `(gogoproto.nullable)=false`            | Generates non-nullable fields types									                                       | Field | `TODO` |
 | `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.closed_enum)=true`               | Generates only a "closed" enum which will fail deserialization for unknown values, but is easier to work with in Rust | Enum | `TODO` |
 | `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 
 <br />
@@ -61,7 +62,7 @@ There are only two crates you'll need if you want to use this with you project `
 Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a `dependency`, e.g.
 ```
 [dependencies]
-pb-jelly = "0.0.6"
+pb-jelly = "0.0.7"
 ```
 
 ##### `pb-jelly-gen`
