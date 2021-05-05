@@ -75,7 +75,7 @@ You'll need to add a generation crate (see `examples_gen` for an example)
 Include `pb-jelly-gen` as a dependency of your generation crate, and `cargo run` to invoke protoc for you.
 ```
 [dependencies]
-pb-jelly-gen = "0.0.6"
+pb-jelly-gen = "0.0.7"
 ```
 
 Eventually, we hope to eliminate the need for a generation crate, and simply have generation occur
