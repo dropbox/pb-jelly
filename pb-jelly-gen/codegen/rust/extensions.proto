@@ -36,6 +36,18 @@ extend google.protobuf.EnumOptions {
     // more desirable to just fail at parse time. If the client has updated *past* the server, it may
     // send a value that the server does not know how to handle. We *also* fail this at parse time.
     optional bool err_if_default_or_unknown = 50002;
+
+    // Setting this to true means that an enum's variants are considered exhaustive.
+    // A Rust `enum` will be generated, rather than a wrapper around `i32`. This
+    // makes matching against the enum simpler as there is no need to match
+    // unknown variants. Instead, deserialization will fail if an unknown
+    // variant is found over the wire. That makes adding or removing variants
+    // potentially unsafe when it comes to version skew.
+    //
+    // This option differs from `err_if_default_or_unknown` because default
+    // values are still allowed. The two options are incompatible, as
+    // `err_if_default_or_unknown` is strictly stronger.
+    optional bool closed_enum = 50008;
 }
 
 extend google.protobuf.MessageOptions {

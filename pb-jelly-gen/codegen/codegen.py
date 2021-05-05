@@ -515,6 +515,12 @@ def enum_err_if_default_or_unknown(enum: EnumDescriptorProto) -> bool:
         and enum.options.Extensions[extensions_pb2.err_if_default_or_unknown]
     )
 
+def enum_closed(enum: EnumDescriptorProto) -> bool:
+    return (
+        enum.options.HasExtension(extensions_pb2.closed_enum)
+        and enum.options.Extensions[extensions_pb2.closed_enum]
+    )
+
 
 @contextmanager
 def block(ctx: 'CodeWriter', header: Text) -> Iterator[None]:
@@ -810,9 +816,12 @@ class CodeWriter(object):
         assert self.indentation == 0
         name = "_".join(path + [enum_type.name])
         if enum_err_if_default_or_unknown(enum_type):
+            assert not enum_closed(enum_type)
             self.gen_closed_enum(
                 name, [x for x in enumerate(enum_type.value) if x[1].number != 0], scl
             )
+        elif enum_closed(enum_type):
+            self.gen_closed_enum(name, list(enumerate(enum_type.value)), scl)
         else:
             self.gen_open_enum(name, list(enumerate(enum_type.value)), scl)
 
