@@ -1,3 +1,7 @@
+# 0.0.7
+### May 5, 2021
+* Add `(rust.closed_enum)` option to only generate closed enums
+
 # 0.0.6
 ### April 25, 2021
 * Bump `bytes` to `1.0`
