@@ -1,6 +1,5 @@
 syntax="proto3";
 
-import "gogo/gogo.proto";
 import "google/empty.proto";
 import "pbtest/pbtest2.proto";
 import "rust/extensions.proto";
@@ -135,7 +134,7 @@ message TestMessage3 {
  ForeignMessage proto2_msg_empty = 54;
  ForeignMessage proto2_msg_missing = 55;
  ForeignMessage3 optional_foreign_message_boxed = 56 [(rust.box_it)=true];
- ForeignMessage3 optional_foreign_message_nonnullable = 69 [(gogoproto.nullable)=false];
+ ForeignMessage3 optional_foreign_message_nonnullable = 69 [(rust.nullable_field)=false];
 
  oneof oneof_int {
    int32 int1 = 57;
@@ -195,9 +194,9 @@ message TestMessage3 {
    }
  }
 
- NestedMessage nested = 73 [(gogoproto.nullable)=false];
+ NestedMessage nested = 73 [(rust.nullable_field)=false];
  NestedMessage nested_nullable = 74;
- repeated NestedMessage nested_repeated = 75 [(gogoproto.nullable)=false];
+ repeated NestedMessage nested_repeated = 75 [(rust.nullable_field)=false];
 
  bytes fixed_length = 76 [(rust.type)="[u8; 4]"];
  repeated bytes fixed_length_repeated = 77 [(rust.type)="[u8; 4]"];
@@ -269,7 +268,7 @@ message TestMessage3NonOptionalBoxedMessage {
         string name = 1;
     }
 
-    InnerMessage msg = 1 [(rust.box_it)=true, (gogoproto.nullable)=false];
+    InnerMessage msg = 1 [(rust.box_it)=true, (rust.nullable_field)=false];
 }
 
 message TestPreserveUnrecognized1 {

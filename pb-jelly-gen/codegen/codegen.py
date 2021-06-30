@@ -41,7 +41,6 @@ from google.protobuf.descriptor_pb2 import (
 )
 from google.protobuf.message import Message
 
-from proto.github.com.gogo.protobuf.gogoproto import gogo_pb2
 from proto.rust import extensions_pb2
 
 # Proto type -> (RustType, ImplsEq, ImplsCopy))
@@ -274,8 +273,8 @@ class RustType(object):
             # they cannot actually be represented on the wire as null
             # rather they are represented as 0-value ("" or 0)
             return False
-        if self.field.options.HasExtension(gogo_pb2.nullable):
-            return self.field.options.Extensions[gogo_pb2.nullable]
+        if self.field.options.HasExtension(extensions_pb2.nullable_field):
+            return self.field.options.Extensions[extensions_pb2.nullable_field]
         return (
             not self.is_proto3 or self.field.type == FieldDescriptorProto.TYPE_MESSAGE
         )
