@@ -88,7 +88,6 @@ pub fn ensure_read<B: Buf>(buf: &mut B) -> io::Result<u64> {
 #[test]
 fn test_basic() {
     use crate::Message;
-    use bytes::buf::ext::BufExt;
     use std::io::Cursor;
 
     let from_vec = |vec| read(&mut Cursor::new(vec)).unwrap().unwrap();

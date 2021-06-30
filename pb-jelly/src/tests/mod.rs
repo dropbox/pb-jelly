@@ -32,6 +32,12 @@ struct VecReader {
     end: usize,
 }
 
+impl AsRef<[u8]> for VecReader {
+    fn as_ref(&self) -> &[u8] {
+        &self.contents[self.position..self.end]
+    }
+}
+
 impl PbBuffer for VecReader {
     type Reader = VecReader;
     fn len(&self) -> usize {
@@ -58,8 +64,8 @@ impl Buf for VecReader {
         self.end - self.position
     }
 
-    fn bytes(&self) -> &[u8] {
-        &self.contents[self.position..self.end]
+    fn chunk(&self) -> &[u8] {
+        self.as_ref()
     }
 
     fn advance(&mut self, cnt: usize) {
@@ -97,9 +103,7 @@ impl VecWriter {
     fn serialized(&self) -> Vec<u8> {
         let mut out = vec![];
         for content in &self.contents {
-            for b in content.bytes() {
-                out.push(*b);
-            }
+            out.extend_from_slice(content.as_ref());
         }
         out
     }
@@ -216,8 +220,8 @@ fn test_serialize_message_into_slice() {
 
     assert_eq!(deserialized.normal_data, message.normal_data);
     assert_eq!(
-        deserialized.payload.into_buffer().bytes(),
-        message.payload.into_buffer().bytes()
+        deserialized.payload.into_buffer().as_ref(),
+        message.payload.into_buffer().as_ref()
     );
 
     assert_eq!(serialized, vec![10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
@@ -247,8 +251,8 @@ fn test_serialize_message_into_vec_writer() {
 
     assert_eq!(deserialized.normal_data, message.normal_data);
     assert_eq!(
-        deserialized.payload.into_buffer().bytes(),
-        message.payload.into_buffer().bytes()
+        deserialized.payload.into_buffer().as_ref(),
+        message.payload.into_buffer().as_ref()
     );
 
     assert_eq!(serialized, vec![10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
