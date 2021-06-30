@@ -1,7 +1,6 @@
 syntax = "proto3";
 package basic;
 
-import "gogo/gogo.proto";
 import "rust/extensions.proto";
 
 message BoxedMessage {
@@ -10,6 +9,6 @@ message BoxedMessage {
 
 message OuterMessage {
     BoxedMessage optional_msg = 1 [(rust.box_it)=true];
-    BoxedMessage msg = 2 [(rust.box_it)=true, (gogoproto.nullable)=false];
+    BoxedMessage msg = 2 [(rust.box_it)=true, (rust.nullable_field)=false];
     string other = 3;
 }

@@ -44,7 +44,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 | `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
-| `(gogoproto.nullable)=false`            | Generates non-nullable fields types									                                       | Field | `TODO` |
+| `(rust.nullable_field)=false`           | Generates non-nullable fields types									                                       | Field | `TODO` |
 | `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
 | `(rust.closed_enum)=true`               | Generates only a "closed" enum which will fail deserialization for unknown values, but is easier to work with in Rust | Enum | `TODO` |
@@ -149,10 +149,6 @@ Service Generation
    package manager. Use the appropriate package manager for your system.
     - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
         - `brew install protobuf`
-    - Install Go
-        - `brew install go`
-    - Install [gogoproto](https://github.com/gogo/protobuf)
-        - `go get github.com/gogo/protobuf/proto`
     - Install Python & dependencies
         - [if necessary] `brew install python3`
         - `python3 -m pip install -r pb-jelly-gen/requirements.txt`

@@ -1,6 +1,5 @@
 syntax="proto2";
 
-import "gogo/gogo.proto";
 import "google/empty.proto";
 import "rust/extensions.proto";
 
@@ -135,7 +134,7 @@ message TestMessage {
  repeated ForeignEnum    repeated_foreign_enum    = 52;
 
  optional ForeignMessage optional_foreign_message_boxed = 53 [(rust.box_it)=true];
- optional ForeignMessage optional_foreign_message_nonnullable = 54 [(gogoproto.nullable) = false];
+ optional ForeignMessage optional_foreign_message_nonnullable = 54 [(rust.nullable_field) = false];
 
  oneof oneof_int {
    int32 int1 = 57;

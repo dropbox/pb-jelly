@@ -3,7 +3,7 @@
 // Note: While proto3 still supports extensions for custom fields (https://github.com/protocolbuffers/protobuf/issues/1460)
 // it does not support default values. Unfortunately the OneOfOptions::nullable field has a default value of true, while
 // in proto3 booleans have a default value of false. We can't migrate this file to proto3 without deprecating nullable
-// and changing its semantics. gogoproto extensions still use proto2 as well (https://github.com/gogo/protobuf/blob/master/gogoproto/gogo.proto)
+// and changing its semantics.
 
 syntax = "proto2";
 package rust;
@@ -21,6 +21,22 @@ extend google.protobuf.FieldOptions {
 
     // Generate this `bytes` field using a Lazy<bytes::Bytes> to enable zero-copy deserialization.
     optional bool zero_copy = 50007;
+
+    // If false, make this field's Rust type non-Optional. If the field is
+    // missing on the wire during deserialization, it will remain as
+    // Default::default().
+    //
+    // It doesn't make sense to specify this option for a repeating field, as a
+    // missing field always deserializes as an empty Vec.
+    // In proto3, this option is also ignored for primitive types, which are
+    // always non-nullable
+    //
+    // Beware that Default may not make sense for all message types. In
+    // particular, fields using `OneofOptions.nullable=false` or
+    // `EnumOptions.err_if_default_or_unknown=true` will simply default to their
+    // first variant, and will _not_ trigger a deserialization error. That
+    // behaviour may change in the future (TODO).
+    optional bool nullable_field = 50008;
 }
 
 extend google.protobuf.EnumOptions {
@@ -62,7 +78,7 @@ extend google.protobuf.MessageOptions {
 }
 
 extend google.protobuf.OneofOptions {
-    // If unset, this oneof must have a field set. Parse error if no variant (or unrecognized
+    // If false, this oneof must have a field set. Parse error if no variant (or unrecognized
     // variant) is set.
     optional bool nullable = 50001 [default=true];
 }
