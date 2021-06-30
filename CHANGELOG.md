@@ -1,3 +1,6 @@
+# Unreleased
+* Move `(gogoproto.nullable)` option to `(rust.nullable_field)`, removing the dependency on gogoproto
+
 # 0.0.7
 ### May 5, 2021
 * Add `(rust.closed_enum)` option to only generate closed enums
