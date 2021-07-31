@@ -22,16 +22,7 @@ jobs:
           override: true
           components: rustfmt
       - name: Run rustfmt
-        run: |
-          set -x
-          cargo --version
-          cargo fmt --version
-          for d in examples pb-jelly pb-jelly-gen pb-test
-          do
-            pushd $d
-            cargo fmt -- --check
-            popd
-          done
+        run: ci/run_rustfmt.sh
   mypy:
     name: Run mypy on codegen.py
     runs-on: ubuntu-latest
