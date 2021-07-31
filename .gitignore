@@ -6,6 +6,7 @@ generated/
 **/gen/**/*.toml
 .DS_Store
 __pycache__/
+*~
 
 pb-jelly-gen/codegen/.mypy_venv
 pb-jelly-gen/codegen/proto/rust/extensions_pb2.pyi

@@ -208,21 +208,21 @@ impl GenProtos {
         protoc_cmd.arg(temp_dir.path().join("proto"));
         protoc_cmd.arg(temp_dir.path().join("rust").join("extensions.proto"));
         dbg!(&protoc_cmd);
-        protoc_cmd
+        let status = protoc_cmd
             .status()
             .expect("Unable to generate extensions.proto into extensions_pb2.py 🤮");
+        assert!(status.success());
     }
 
     fn create_venv(&self, temp_dir: &tempfile::TempDir) -> PathBuf {
         // parse protoc --version
         let protoc_version = {
-            let protoc_version_out = Command::new("protoc")
+            let output = Command::new("protoc")
                 .arg("--version")
                 .output()
-                .expect("Failed to get protoc version (is protoc installed?)")
-                .stdout;
-            let version =
-                String::from_utf8(protoc_version_out).expect("Unable to parse protoc --version output in utf8");
+                .expect("Failed to get protoc version (is protoc installed?)");
+            assert!(output.status.success());
+            let version = String::from_utf8(output.stdout).expect("Unable to parse protoc --version output in utf8");
             let mut version_parts = version.split_whitespace();
             assert_eq!(version_parts.next(), Some("libprotoc"));
             version_parts
@@ -233,28 +233,32 @@ impl GenProtos {
 
         // Create venv
         let venv = temp_dir.path().join(".codegen_venv");
-        Command::new("python3")
+        let status = Command::new(if cfg!(windows) { "python.exe" } else { "python3" })
             .args(&["-m", "venv"])
             .arg(&venv)
             .status()
             .expect("Failed to create venv");
+        assert!(status.success(), "Failed to create venv");
 
         // pip install protobuf=={version}
-        Command::new(venv.join("bin").join("pip").as_os_str())
-            .args(&["install", &format!("protobuf=={}", protoc_version)])
-            .status()
-            .expect("Failed to pip install protobuf");
+        let bin_dir = venv.join(if cfg!(windows) { "Scripts" } else { "bin" });
+        let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "pip.exe" } else { "pip" }));
+        cmd.args(&["install", &format!("protobuf=={}", protoc_version)]);
+        dbg!(&cmd);
+        let status = cmd.status().expect("Failed to pip install protobuf");
+        assert!(status.success(), "Failed to create venv");
 
-        venv
+        bin_dir
     }
 
     fn gen_rust_protos(&self, temp_dir: tempfile::TempDir) -> Output {
-        let venv = self.create_venv(&temp_dir);
         let new_path = {
+            let venv_bin = self.create_venv(&temp_dir);
             let mut path: Vec<_> = std::env::split_paths(&std::env::var_os("PATH").unwrap()).collect();
-            path.insert(0, venv.join("bin"));
+            path.insert(0, venv_bin);
             std::env::join_paths(path).unwrap()
         };
+        dbg!(&new_path);
 
         // Temp path to the codegen script
         let codegen_path = temp_dir
