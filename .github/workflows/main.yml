@@ -34,3 +34,103 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: actions/checkout@v2
       - run: ci/run_mypy.sh
+  pb-jelly-unit:
+    name: pb-jelly unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Run unit tests
+        run: |
+          cd pb-jelly
+          cargo test
+  pb-jelly-gen-unit:
+    name: pb-jelly-gen unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Run unit tests
+        run: |
+          cd pb-jelly-gen
+          cargo test
+  pbtest:
+    name: pbtest integration test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: '3.17.3'
+      - uses: BSFishy/pip-action@v1
+        with:
+          packages: protobuf==3.17.3
+      - name: Run integration test
+        run: |
+          cd pb-test/pb_test_gen
+          cargo run
+          cd ..
+          VALIDATE=1 cargo test
+  examples:
+    name: examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: '3.17.3'
+      - uses: BSFishy/pip-action@v1
+        with:
+          packages: protobuf==3.17.3
+      - name: Run tests
+        run: |
+          cd examples/examples_gen
+          cargo run
+          cd ..
+          cargo test
+  benchmarks:
+    name: benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: '3.17.3'
+      - uses: BSFishy/pip-action@v1
+        with:
+          packages: protobuf==3.17.3
+      - name: Run benchmark
+        run: |
+          cd pb-test/pb_test_gen
+          cargo run --features=bench_prost,bench_rust_protobuf
+          cd ..
+          cargo bench bench --features=bench_prost,bench_rust_protobuf

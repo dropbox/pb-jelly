@@ -94,7 +94,7 @@ mod benches {
 
 #[cfg(all(test, feature = "bench_prost"))]
 mod prost {
-    use bytes::Bytes;
+    use prost::bytes::Bytes;
     use prost::Message;
     use test::Bencher;
 

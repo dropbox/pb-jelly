@@ -4,10 +4,7 @@
 // https://github.com/rust-lang/rust-clippy/issues/702
 #![allow(unknown_lints)]
 #![allow(clippy::all)]
-
 #![allow(unused_attributes)]
-#![rustfmt::skip]
-
 #![allow(box_pointers)]
 #![allow(dead_code)]
 #![allow(missing_docs)]
@@ -188,7 +185,7 @@ impl ::std::fmt::Debug for BytesData {
 }
 
 impl ::protobuf::reflect::ProtobufValue for BytesData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef<'_> {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
 }
@@ -354,7 +351,7 @@ impl ::std::fmt::Debug for VecData {
 }
 
 impl ::protobuf::reflect::ProtobufValue for VecData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef<'_> {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
 }
@@ -526,7 +523,7 @@ impl ::std::fmt::Debug for StringMessage {
 }
 
 impl ::protobuf::reflect::ProtobufValue for StringMessage {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef<'_> {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
 }
@@ -542,7 +539,7 @@ static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor
     ::protobuf::rt::LazyV2::INIT;
 
 fn parse_descriptor_proto() -> ::protobuf::descriptor::FileDescriptorProto {
-    ::protobuf::parse_from_bytes(file_descriptor_proto_data).unwrap()
+    ::protobuf::Message::parse_from_bytes(file_descriptor_proto_data).unwrap()
 }
 
 pub fn file_descriptor_proto() -> &'static ::protobuf::descriptor::FileDescriptorProto {
