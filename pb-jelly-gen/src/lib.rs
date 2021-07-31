@@ -38,6 +38,7 @@ use include_dir::{
 use std::os::unix::fs::PermissionsExt;
 use std::{
     convert::AsRef,
+    ffi::OsString,
     fs,
     io::Write,
     iter::IntoIterator,
@@ -203,10 +204,8 @@ impl GenProtos {
         let mut protoc_cmd = Command::new("protoc");
         protoc_cmd.arg("-I");
         protoc_cmd.arg(temp_dir.path());
-        protoc_cmd.arg(format!(
-            "--python_out={}",
-            temp_dir.path().join("proto").to_str().unwrap()
-        ));
+        protoc_cmd.arg("--python_out");
+        protoc_cmd.arg(temp_dir.path().join("proto"));
         protoc_cmd.arg(temp_dir.path().join("rust").join("extensions.proto"));
         dbg!(&protoc_cmd);
         protoc_cmd
@@ -235,7 +234,8 @@ impl GenProtos {
         // Create venv
         let venv = temp_dir.path().join(".codegen_venv");
         Command::new("python3")
-            .args(&["-m", "venv", venv.to_str().unwrap()])
+            .args(&["-m", "venv"])
+            .arg(&venv)
             .status()
             .expect("Failed to create venv");
 
@@ -289,10 +289,16 @@ impl GenProtos {
         }
 
         // Set the rust plugin
-        protoc_cmd.arg(format!("--plugin=protoc-gen-rust={}", codegen_path.to_str().unwrap()));
+        let rust_plugin_arg = {
+            let mut arg: OsString = "--plugin=protoc-gen-rust=".into();
+            arg.push(codegen_path);
+            arg
+        };
+        protoc_cmd.arg(rust_plugin_arg);
 
         // Set the Rust out path
-        protoc_cmd.arg(format!("--rust_out={}", self.gen_path.to_str().unwrap()));
+        protoc_cmd.arg("--rust_out");
+        protoc_cmd.arg(&self.gen_path);
 
         // Get paths of our Protos
         let proto_paths = self
