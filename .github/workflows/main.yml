@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  PROTOBUF_VER: 3.17.3
+
 on:
   push:
     branches: [ master ]
@@ -30,7 +33,7 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
-          version: '3.17.3'
+          version: ${{env.PROTOBUF_VER}}
       - uses: actions/setup-python@v2
       - uses: actions/checkout@v2
       - run: ci/run_mypy.sh
@@ -76,10 +79,7 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
-          version: '3.17.3'
-      - uses: BSFishy/pip-action@v1
-        with:
-          packages: protobuf==3.17.3
+          version: ${{env.PROTOBUF_VER}}
       - name: Run integration test
         run: |
           cd pb-test/pb_test_gen
@@ -100,10 +100,7 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
-          version: '3.17.3'
-      - uses: BSFishy/pip-action@v1
-        with:
-          packages: protobuf==3.17.3
+          version: ${{env.PROTOBUF_VER}}
       - name: Run tests
         run: |
           cd examples/examples_gen
@@ -124,10 +121,7 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
-          version: '3.17.3'
-      - uses: BSFishy/pip-action@v1
-        with:
-          packages: protobuf==3.17.3
+          version: ${{env.PROTOBUF_VER}}
       - name: Run benchmark
         run: |
           cd pb-test/pb_test_gen
