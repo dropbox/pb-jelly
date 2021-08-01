@@ -149,7 +149,13 @@ class StringIO(object):
 
 
 class RustType(object):
-    def __init__(self, ctx: 'Context', proto_file: FileDescriptorProto, msg_type: DescriptorProto, field: FieldDescriptorProto) -> None:
+    def __init__(
+        self,
+        ctx: "Context",
+        proto_file: FileDescriptorProto,
+        msg_type: DescriptorProto,
+        field: FieldDescriptorProto,
+    ) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.field = field
@@ -283,10 +289,14 @@ class RustType(object):
 
     def can_be_packed(self) -> bool:
         # Return true if incoming messages could be packed on the wire
-        return self.field.label == FieldDescriptorProto.LABEL_REPEATED and self.wire_format() in (
-            "Varint",
-            "Fixed64",
-            "Fixed32",
+        return (
+            self.field.label == FieldDescriptorProto.LABEL_REPEATED
+            and self.wire_format()
+            in (
+                "Varint",
+                "Fixed64",
+                "Fixed32",
+            )
         )
 
     def should_serialize_packed(self) -> bool:
@@ -512,6 +522,7 @@ def enum_err_if_default_or_unknown(enum: EnumDescriptorProto) -> bool:
         and enum.options.Extensions[extensions_pb2.err_if_default_or_unknown]
     )
 
+
 def enum_closed(enum: EnumDescriptorProto) -> bool:
     return (
         enum.options.HasExtension(extensions_pb2.closed_enum)
@@ -520,7 +531,7 @@ def enum_closed(enum: EnumDescriptorProto) -> bool:
 
 
 @contextmanager
-def block(ctx: 'CodeWriter', header: Text) -> Iterator[None]:
+def block(ctx: "CodeWriter", header: Text) -> Iterator[None]:
     ctx.write("%s {" % header)
     ctx.indentation += 1
     yield
@@ -529,7 +540,13 @@ def block(ctx: 'CodeWriter', header: Text) -> Iterator[None]:
 
 
 @contextmanager
-def field_iter(ctx: 'CodeWriter', var: Text, msg_name: Text, msg_type: DescriptorProto, field: FieldDescriptorProto) -> Iterator[None]:
+def field_iter(
+    ctx: "CodeWriter",
+    var: Text,
+    msg_name: Text,
+    msg_type: DescriptorProto,
+    field: FieldDescriptorProto,
+) -> Iterator[None]:
     typ = ctx.rust_type(msg_type, field)
 
     if typ.oneof:
@@ -589,7 +606,13 @@ def field_iter(ctx: 'CodeWriter', var: Text, msg_name: Text, msg_type: Descripto
 
 
 class CodeWriter(object):
-    def __init__(self, ctx: 'Context', proto_file: FileDescriptorProto, crate: Text, mod_parts: List[Text]) -> None:
+    def __init__(
+        self,
+        ctx: "Context",
+        proto_file: FileDescriptorProto,
+        crate: Text,
+        mod_parts: List[Text],
+    ) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.crate = crate
@@ -620,7 +643,9 @@ class CodeWriter(object):
         self.content.write(s)
         self.content.write("\n")
 
-    def write_line_broken_text_with_prefix(self, text_block: Text, prefix: Text) -> None:
+    def write_line_broken_text_with_prefix(
+        self, text_block: Text, prefix: Text
+    ) -> None:
         if not text_block:
             return
         for l in text_block.rstrip().split("\n"):
@@ -641,10 +666,17 @@ class CodeWriter(object):
         if sci_loc.trailing_comments is not None:
             self.write_line_broken_text_with_prefix(sci_loc.trailing_comments, "///")
 
-    def rust_type(self, msg_type: DescriptorProto, field: FieldDescriptorProto) -> RustType:
+    def rust_type(
+        self, msg_type: DescriptorProto, field: FieldDescriptorProto
+    ) -> RustType:
         return RustType(self.ctx, self.proto_file, msg_type, field)
 
-    def gen_closed_enum(self, name: Text, enum_variants: List[Tuple[int, EnumValueDescriptorProto]], scl: SourceCodeLocation) -> None:
+    def gen_closed_enum(
+        self,
+        name: Text,
+        enum_variants: List[Tuple[int, EnumValueDescriptorProto]],
+        scl: SourceCodeLocation,
+    ) -> None:
 
         # Generate a closed enum
         self.write_comments(self.source_code_info_by_scl.get(tuple(scl)))
@@ -710,7 +742,12 @@ class CodeWriter(object):
                     for _, value in enum_variants:
                         self.write('%s::%s => "%s",' % (name, value.name, value.name))
 
-    def gen_open_enum(self, name: Text, enum_variants: List[Tuple[int, EnumValueDescriptorProto]], scl: SourceCodeLocation) -> None:
+    def gen_open_enum(
+        self,
+        name: Text,
+        enum_variants: List[Tuple[int, EnumValueDescriptorProto]],
+        scl: SourceCodeLocation,
+    ) -> None:
 
         closed_name = name + "_Closed"
 
@@ -809,7 +846,9 @@ class CodeWriter(object):
 
         self.gen_closed_enum(closed_name, enum_variants, scl)
 
-    def gen_enum(self, path: List[Text], enum_type: EnumDescriptorProto, scl: SourceCodeLocation) -> None:
+    def gen_enum(
+        self, path: List[Text], enum_type: EnumDescriptorProto, scl: SourceCodeLocation
+    ) -> None:
         assert self.indentation == 0
         name = "_".join(path + [enum_type.name])
         if enum_err_if_default_or_unknown(enum_type):
@@ -822,7 +861,9 @@ class CodeWriter(object):
         else:
             self.gen_open_enum(name, list(enumerate(enum_type.value)), scl)
 
-    def gen_msg(self, path: List[Text], msg_type: DescriptorProto, scl: SourceCodeLocation) -> None:
+    def gen_msg(
+        self, path: List[Text], msg_type: DescriptorProto, scl: SourceCodeLocation
+    ) -> None:
         assert self.indentation == 0
         name = "_".join(path + [msg_type.name])
 
@@ -834,9 +875,7 @@ class CodeWriter(object):
             if oneof.name in RESERVED_KEYWORDS:
                 oneof.name = oneof.name + "_"
 
-        oneof_fields: DefaultDict[Text, List[FieldDescriptorProto]] = defaultdict(
-            list
-        )
+        oneof_fields: DefaultDict[Text, List[FieldDescriptorProto]] = defaultdict(list)
 
         derives = ["Clone", "Debug", "PartialEq"]
         if self.derive_serde:
@@ -945,7 +984,9 @@ class CodeWriter(object):
                             ):
                                 self.write(return_expr)
 
-                        if not (typ.is_blob() or typ.is_grpc_slices() or typ.is_lazy_bytes()):
+                        if not (
+                            typ.is_blob() or typ.is_grpc_slices() or typ.is_lazy_bytes()
+                        ):
                             # It's hard to make this make sense, so let's not generate `get` method for lazy things.
                             return_type, return_expr = typ.get_method()
                             with block(
@@ -988,7 +1029,9 @@ class CodeWriter(object):
 
                         self.write("let mut %s_size = 0;" % field.name)
                         with field_iter(self, "val", name, msg_type, field):
-                            self.write("let l = ::pb_jelly::Message::compute_size(val);")
+                            self.write(
+                                "let l = ::pb_jelly::Message::compute_size(val);"
+                            )
                             if not typ.should_serialize_packed():
                                 self.write(
                                     "%s_size += ::pb_jelly::wire_format::serialized_length(%s);"
@@ -1043,7 +1086,9 @@ class CodeWriter(object):
                         with block(self, "if !self.%s.is_empty()" % field.name):
                             self.write("let mut size = 0;")
                             with field_iter(self, "val", name, msg_type, field):
-                                self.write("size += ::pb_jelly::Message::compute_size(val);")
+                                self.write(
+                                    "size += ::pb_jelly::Message::compute_size(val);"
+                                )
                             self.write(
                                 "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;"
                                 % field.number
@@ -1057,7 +1102,9 @@ class CodeWriter(object):
                                 % (field.number, typ.wire_format())
                             )
                         if typ.is_length_delimited():
-                            self.write("let l = ::pb_jelly::Message::compute_size(val);")
+                            self.write(
+                                "let l = ::pb_jelly::Message::compute_size(val);"
+                            )
                             self.write("::pb_jelly::varint::write(l as u64, w)?;")
                         self.write("::pb_jelly::Message::serialize(val, w)?;")
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
@@ -1072,7 +1119,9 @@ class CodeWriter(object):
                     extensions_pb2.preserve_unrecognized
                 ]
                 if preserve_unrecognized:
-                    self.write("let mut unrecognized = ::pb_jelly::Unrecognized::default();")
+                    self.write(
+                        "let mut unrecognized = ::pb_jelly::Unrecognized::default();"
+                    )
 
                 for oneof in msg_type.oneof_decl:
                     if not oneof_nullable(oneof):
@@ -1081,9 +1130,7 @@ class CodeWriter(object):
                             "let mut oneof_%s: ::std::option::Option<%s> = None;"
                             % (oneof.name, oneof_typ)
                         )
-                err_if_default_field_names: OrderedDict[Text, None] = (
-                    OrderedDict()
-                )
+                err_if_default_field_names: OrderedDict[Text, None] = OrderedDict()
                 for field in msg_type.field:
                     typ = self.rust_type(msg_type, field)
                     if (
@@ -1249,7 +1296,13 @@ class CodeWriter(object):
                     self.write("unrecognized.serialize(&mut self._unrecognized)?;")
                 self.write("Ok(())")
 
-    def gen_msg_descriptor(self, path: List[Text], desc_proto: DescriptorProto, package: Optional[Text], scl: SourceCodeLocation) -> None:
+    def gen_msg_descriptor(
+        self,
+        path: List[Text],
+        desc_proto: DescriptorProto,
+        package: Optional[Text],
+        scl: SourceCodeLocation,
+    ) -> None:
         assert self.indentation == 0
 
         name = "_".join(path + [desc_proto.name])
@@ -1263,7 +1316,9 @@ class CodeWriter(object):
 def walk(proto: FileDescriptorProto) -> WalkRet:
     enums, messages = [], []
 
-    def _walk(proto: ProtoTypes, parents: List[Text], scl_prefix: SourceCodeLocation) -> None:
+    def _walk(
+        proto: ProtoTypes, parents: List[Text], scl_prefix: SourceCodeLocation
+    ) -> None:
         if isinstance(proto, EnumDescriptorProto):
             enums.append((parents, proto, scl_prefix))
         elif isinstance(proto, DescriptorProto):
@@ -1290,7 +1345,13 @@ def walk(proto: FileDescriptorProto) -> WalkRet:
 
 
 class ProtoType(object):
-    def __init__(self, ctx: 'Context', proto_file: FileDescriptorProto, path: List[Text], typ: Message) -> None:
+    def __init__(
+        self,
+        ctx: "Context",
+        proto_file: FileDescriptorProto,
+        path: List[Text],
+        typ: Message,
+    ) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.path = path  # inside proto file
@@ -1353,7 +1414,13 @@ class Context(object):
         # of how to split the crates apart.
         self.prefix_to_clear = prefix_to_clear
 
-    def calc_impls(self, proto_file: FileDescriptorProto, crate: Text, msg_type: DescriptorProto, fq_msg: Tuple[Text, Text]) -> None:
+    def calc_impls(
+        self,
+        proto_file: FileDescriptorProto,
+        crate: Text,
+        msg_type: DescriptorProto,
+        fq_msg: Tuple[Text, Text],
+    ) -> None:
         # Determine if each message can implement Eq / Ord Copy traits. Using Dynamic Programming.
         # See if it's cached
         if fq_msg in self.impls_by_msg:
@@ -1396,7 +1463,10 @@ class Context(object):
                 (msg_impls_eq, msg_impls_copy) = (False, False)  # Blob is not eq/copy
                 self.extra_crates[crate].add("blob_pb")
             # If we use a Bytes type
-            elif typ == FieldDescriptorProto.TYPE_BYTES and field.options.Extensions[extensions_pb2.zero_copy]:
+            elif (
+                typ == FieldDescriptorProto.TYPE_BYTES
+                and field.options.Extensions[extensions_pb2.zero_copy]
+            ):
                 (msg_impls_eq, msg_impls_copy) = (False, False)
                 self.extra_crates[crate].add("bytes")
             elif typ in PRIMITIVE_TYPES:
@@ -1457,7 +1527,9 @@ class Context(object):
 
         raise RuntimeError("Could not find type by proto name: {}".format(typename))
 
-    def _set_boxed_if_recursive(self, visited: Set[Text], looking_for: Text, pt: ProtoType) -> bool:
+    def _set_boxed_if_recursive(
+        self, visited: Set[Text], looking_for: Text, pt: ProtoType
+    ) -> bool:
         visited.add(pt.proto_name())
         any_field_boxed = False
         for field in pt.typ.field:
@@ -1494,7 +1566,9 @@ class Context(object):
         visited: Set[Text] = set()
         self._set_boxed_if_recursive(visited, pt.proto_name(), pt)
 
-    def get_lib_and_mod_rs(self, mod_tree: ModTree, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
+    def get_lib_and_mod_rs(
+        self, mod_tree: ModTree, derive_serde: bool
+    ) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             librs = CodeWriter(None, None, None, None)  # type: ignore
             librs.write("#[macro_use]")
@@ -1504,17 +1578,16 @@ class Context(object):
                 librs.write("extern crate serde;")
             librs.write("")
 
-            def mod_tree_dfs(mod_prefix_path: Text, sub_mod_tree: ModTree) -> Iterator[Tuple[Text, Text]]:
+            def mod_tree_dfs(
+                mod_prefix_path: Text, sub_mod_tree: ModTree
+            ) -> Iterator[Tuple[Text, Text]]:
                 if not sub_mod_tree:
                     return
 
                 filename = mod_prefix_path + "/mod.rs"
                 content = "\n".join(
                     ["// @" + "generated, do not edit", ""]
-                    + [
-                        "pub mod %s;" % mod
-                        for mod in sorted(sub_mod_tree.keys())
-                    ]
+                    + ["pub mod %s;" % mod for mod in sorted(sub_mod_tree.keys())]
                     + [""]
                 )
                 yield filename, content
@@ -1543,9 +1616,9 @@ class Context(object):
 
     def get_spec_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
-            all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
-                "std"
-            }
+            all_deps = (
+                {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
+            ) - {"std"}
             if derive_serde:
                 all_deps.update({"serde"})
             features = {u"serde": u'features=["serde_derive"]'}
@@ -1558,9 +1631,9 @@ class Context(object):
 
     def get_cargo_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
-            all_deps = ({"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]) - {
-                "std"
-            }
+            all_deps = (
+                {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
+            ) - {"std"}
             if derive_serde:
                 all_deps.update({"serde"})
             features = {u"serde": u' features = ["serde_derive"]'}
@@ -1568,7 +1641,7 @@ class Context(object):
                 u"lazy_static": u' version = "1.4.0" ',
                 u"pb-jelly": u' version = "0.0.7" ',
                 u"serde": u' version = "1.0" ',
-                u"bytes": u' version = "1.0" '
+                u"bytes": u' version = "1.0" ',
             }
 
             deps_lines = []
@@ -1584,11 +1657,17 @@ class Context(object):
                     "{dep} = {{{fields}}}".format(dep=dep, fields=",".join(fields))
                 )
 
-            targets = CARGO_TOML_TEMPLATE.format(crate=crate, deps="\n".join(deps_lines))
+            targets = CARGO_TOML_TEMPLATE.format(
+                crate=crate, deps="\n".join(deps_lines)
+            )
             yield crate, targets
 
-    def crate_from_proto_filename(self, proto_filename: Text) -> Tuple[Text, List[Text]]:
-        filename = proto_filename.replace(self.prefix_to_clear, "").replace(".proto", "")
+    def crate_from_proto_filename(
+        self, proto_filename: Text
+    ) -> Tuple[Text, List[Text]]:
+        filename = proto_filename.replace(self.prefix_to_clear, "").replace(
+            ".proto", ""
+        )
         mod_parts_unsanitized = filename.split("/")
         mod_parts = [
             mod + "_" if mod in RESERVED_KEYWORDS else mod
@@ -1660,7 +1739,13 @@ LIB_RS_HEADER = """
 
 """
 
-def generate_single_crate(ctx: Context, file_prefix: Text, file_to_generate: List[Text], response: plugin.CodeGeneratorResponse) -> None:
+
+def generate_single_crate(
+    ctx: Context,
+    file_prefix: Text,
+    file_to_generate: List[Text],
+    response: plugin.CodeGeneratorResponse,
+) -> None:
     def new_mod_tree() -> ModTree:
         return defaultdict(new_mod_tree)
 
@@ -1750,12 +1835,16 @@ def generate_single_crate(ctx: Context, file_prefix: Text, file_to_generate: Lis
             output.content = cargo_toml_file
 
 
-def generate_code(request: plugin.CodeGeneratorRequest, response: plugin.CodeGeneratorResponse) -> None:
+def generate_code(
+    request: plugin.CodeGeneratorRequest, response: plugin.CodeGeneratorResponse
+) -> None:
     to_generate = list(request.file_to_generate)
 
     prefix_to_clear = ""
     if "prefix_to_clear" in request.parameter:
-        prefix_to_clear = [arg for arg in request.parameter.split() if "prefix_to_clear" in arg][0].split("=")[1]
+        prefix_to_clear = [
+            arg for arg in request.parameter.split() if "prefix_to_clear" in arg
+        ][0].split("=")[1]
 
     if "crate_per_dir" in request.parameter:
         files_by_dir: DefaultDict[Text, List[Text]] = defaultdict(list)
