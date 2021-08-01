@@ -34,6 +34,7 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v2
       - uses: actions/checkout@v2
       - run: ci/run_mypy.sh
@@ -66,8 +67,11 @@ jobs:
           cd pb-jelly-gen
           cargo test
   pbtest:
-    name: pbtest integration test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plat: [ubuntu-latest, macos-latest, windows-latest]
+    name: pbtest integration test (${{matrix.plat}})
+    runs-on: ${{matrix.plat}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -80,12 +84,15 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run integration test
+        env:
+          VALIDATE: 1
         run: |
           cd pb-test/pb_test_gen
           cargo run
           cd ..
-          VALIDATE=1 cargo test
+          cargo test
   examples:
     name: examples
     runs-on: ubuntu-latest
@@ -101,6 +108,7 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run tests
         run: |
           cd examples/examples_gen
@@ -122,6 +130,7 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run benchmark
         run: |
           cd pb-test/pb_test_gen
