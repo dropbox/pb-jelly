@@ -8,5 +8,6 @@ generated/
 __pycache__/
 *~
 
+pb-jelly-gen/codegen/.black_venv
 pb-jelly-gen/codegen/.mypy_venv
 pb-jelly-gen/codegen/proto/rust/extensions_pb2.pyi

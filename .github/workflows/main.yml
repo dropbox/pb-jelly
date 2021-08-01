@@ -26,6 +26,13 @@ jobs:
           components: rustfmt
       - name: Run rustfmt
         run: ci/run_rustfmt.sh
+  black:
+    name: Run black formatter on codegen.py
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - run: ci/run_black.sh
   mypy:
     name: Run mypy on codegen.py
     runs-on: ubuntu-latest
