@@ -1,5 +1,8 @@
 # Unreleased
 * Move `(gogoproto.nullable)` option to `(rust.nullable_field)`, removing the dependency on gogoproto
+* Support running with any version of protoc (by dynamically generating `extensions_pb2.py` in a venv)
+* Use github CI
+* Support windows for codegen
 
 # 0.0.7
 ### May 5, 2021

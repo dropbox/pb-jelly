@@ -10,8 +10,6 @@ import re
 import sys
 
 import google.protobuf
-PR_V = str(google.protobuf.__version__)
-assert PR_V.split(".") >= "3.13.0".split("."), "python %s:%s: protobuf %s version not supported" % (sys.version, sys.executable, PR_V)
 
 from collections import defaultdict, namedtuple, OrderedDict
 from contextlib import contextmanager
