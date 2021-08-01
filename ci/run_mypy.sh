@@ -8,4 +8,4 @@ source .mypy_venv/bin/activate
 pip3 install mypy mypy-protobuf
 protoc --mypy_out=proto rust/extensions.proto
 
-mypy .
+mypy --strict .

@@ -466,13 +466,13 @@ class RustType(object):
         rust_type = self.rust_type()
 
         if self.is_repeated():
-            return "::std::vec::Vec<%s>" % rust_type  # type: ignore[return-value]
+            return "::std::vec::Vec<%s>" % rust_type
         elif self.is_nullable() and self.is_boxed():
             return "::std::option::Option<::std::boxed::Box<%s>>" % str(rust_type)
         elif self.is_boxed():
-            return "::std::boxed::Box<%s>" % rust_type  # type: ignore[return-value]
+            return "::std::boxed::Box<%s>" % rust_type
         elif self.is_nullable():
-            return "::std::option::Option<%s>" % rust_type  # type: ignore[return-value]
+            return "::std::option::Option<%s>" % rust_type
         else:
             return str(rust_type)
 
@@ -659,7 +659,7 @@ class CodeWriter(object):
         self.write("#[repr(i32)]")
         with block(self, "pub enum " + name):
             for idx, value in enum_variants:
-                vfn = EnumDescriptorProto.VALUE_FIELD_NUMBER  # type: ignore
+                vfn = EnumDescriptorProto.VALUE_FIELD_NUMBER
                 self.write_comments(
                     self.source_code_info_by_scl.get(tuple(scl + [vfn, idx]))
                 )
@@ -726,7 +726,7 @@ class CodeWriter(object):
         self.write("pub struct %s(i32);" % name)
         with block(self, "impl " + name):
             for idx, value in enum_variants:
-                vfn = EnumDescriptorProto.VALUE_FIELD_NUMBER  # type: ignore
+                vfn = EnumDescriptorProto.VALUE_FIELD_NUMBER
                 self.write_comments(
                     self.source_code_info_by_scl.get(tuple(scl + [vfn, idx]))
                 )
@@ -853,7 +853,7 @@ class CodeWriter(object):
         self.write("#[derive(%s)]" % ", ".join(sorted(derives)))
         with block(self, "pub struct " + name):
             for idx, field in enumerate(msg_type.field):
-                ffn = DescriptorProto.FIELD_FIELD_NUMBER  # type: ignore
+                ffn = DescriptorProto.FIELD_FIELD_NUMBER
                 self.write_comments(
                     self.source_code_info_by_scl.get(tuple(scl + [ffn, idx]))
                 )
@@ -1270,19 +1270,19 @@ def walk(proto: FileDescriptorProto) -> WalkRet:
             messages.append((parents, proto, scl_prefix))
 
             for i, nested_enum in enumerate(proto.enum_type):
-                etfn = DescriptorProto.ENUM_TYPE_FIELD_NUMBER  # type: ignore
+                etfn = DescriptorProto.ENUM_TYPE_FIELD_NUMBER
                 _walk(nested_enum, parents + [proto.name], scl_prefix + [etfn, i])
 
             for i, nested_message in enumerate(proto.nested_type):
-                ntfn = DescriptorProto.NESTED_TYPE_FIELD_NUMBER  # type: ignore
+                ntfn = DescriptorProto.NESTED_TYPE_FIELD_NUMBER
                 _walk(nested_message, parents + [proto.name], scl_prefix + [ntfn, i])
         elif isinstance(proto, FileDescriptorProto):
             for i, enum_type in enumerate(proto.enum_type):
-                etfn = FileDescriptorProto.ENUM_TYPE_FIELD_NUMBER  # type: ignore
+                etfn = FileDescriptorProto.ENUM_TYPE_FIELD_NUMBER
                 _walk(enum_type, parents, scl_prefix + [etfn, i])
 
             for i, message_type in enumerate(proto.message_type):
-                mtfn = FileDescriptorProto.MESSAGE_TYPE_FIELD_NUMBER  # type: ignore
+                mtfn = FileDescriptorProto.MESSAGE_TYPE_FIELD_NUMBER
                 _walk(message_type, parents, scl_prefix + [mtfn, i])
 
     _walk(proto, [], [])
@@ -1512,8 +1512,7 @@ class Context(object):
                 content = "\n".join(
                     ["// @" + "generated, do not edit", ""]
                     + [
-                        # TODO(ilevkivskyi): mypy reports a str/bytes issue.
-                        "pub mod %s;" % mod  # type: ignore[misc]
+                        "pub mod %s;" % mod
                         for mod in sorted(sub_mod_tree.keys())
                     ]
                     + [""]
