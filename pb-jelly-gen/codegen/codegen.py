@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# mypy: allow-any-generics
-
-from __future__ import print_function
-
 import itertools
 import os
 import re
@@ -130,7 +126,7 @@ WalkRet = Tuple[
     List[Tuple[List[Text], EnumDescriptorProto, SourceCodeLocation]],
     List[Tuple[List[Text], DescriptorProto, SourceCodeLocation]],
 ]
-ModTree = DefaultDict[Text, DefaultDict]
+ModTree = DefaultDict[Text, DefaultDict[Text, Any]]
 
 
 def camelcase(underscored: Text) -> Text:
@@ -1598,7 +1594,7 @@ class Context(object):
                     ):
                         yield res
 
-            crate_mod_tree = mod_tree[crate]
+            crate_mod_tree: ModTree = mod_tree[crate]
             for mod_name, child_mod_tree in sorted(crate_mod_tree.items()):
                 librs.write("pub mod %s;" % mod_name)
 
