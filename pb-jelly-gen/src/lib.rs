@@ -1,8 +1,8 @@
 //! `pb_gen` generates Rust bindings for `proto2` and `proto3` files. It's intended to be used with [`pb_rs`](https://github.com/dropbox/pb-rs).
 //!
 //! ## Examples
-//! Complete examples can be found in the [`examples`](https://github.com/dropbox/pb-rs/tree/master/examples) crate,
-//! or the [`pb-test`](https://github.com/dropbox/pb-rs/tree/master/pb-test) crate of the [`protobuf_rs`](https://github.com/dropbox/pb-rs) workspace.
+//! Complete examples can be found in the [`examples`](https://github.com/dropbox/pb-jelly/tree/main/examples) crate,
+//! or the [`pb-test`](https://github.com/dropbox/pb-jelly/tree/main/pb-test) crate of the [`protobuf_rs`](https://github.com/dropbox/pb-rs) workspace.
 //!
 //! ## In a nutshell 🥜
 //! You can include `pb_gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
