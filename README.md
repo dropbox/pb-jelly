@@ -86,10 +86,20 @@ Note that you can always invoke protoc on your own (for example if you are alrea
 with `--rust_out=codegen.py` as a plugin for rust.
 
 ### Generating Rust Code
-In order to generate Rust code from your proto definitions you'll need three things
-1. `protoc` - The protobuf compiler, this can be built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed via `brew install protobuf`.
-2. `python` - The codegen plugin used with `protoc` is written in Python (compatible with both py2 and py3). Before running it, you'll need to install some packages, via `python -m pip install -r pb-jelly-gen/requirements.txt`
-3. `pb-jelly-gen` [optional - you may always invoke protoc on your own]
+1. Install `protoc` - The protobuf compiler, this can be downloaded or built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed (mac) via `brew install protobuf`.
+2. `python3` - The codegen plugin used with `protoc` is written in Python3.
+
+#### To generate with pb-jelly-gen
+3. Create an inner (build-step) crate which depends on pb-jelly-gen. [Example](https://github.com/dropbox/pb-jelly/tree/master/examples/examples_gen)
+4. `cargo run` in the directory of the inner generation crate
+
+#### To generate manually with protoc
+3. Create venv [optional] `python3 -m venv .pb_jelly_venv ; source .pb_jelly_venv/bin/activate`
+4. [Recommended] `python3 -m pip install protobuf==[same_version_as_your protoc]`
+5. Install `python3 -m pip install -e pb-jelly-gen/codegen`  (installs protoc-gen-rust into the venv)
+6. `protoc --rust_out=generated/ input.proto`
+
+## Example
 
 Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
 
@@ -149,9 +159,8 @@ Service Generation
    package manager. Use the appropriate package manager for your system.
     - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
         - `brew install protobuf`
-    - Install Python & dependencies
+    - Install Python
         - [if necessary] `brew install python3`
-        - `python3 -m pip install -r pb-jelly-gen/requirements.txt`
 3. **pb-jelly** currently uses an experimental test framework that requires a nightly build of rust.
 	-  `rustup default nightly`
 4. `cd pb-test`

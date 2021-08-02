@@ -38,7 +38,6 @@ use include_dir::{
 use std::os::unix::fs::PermissionsExt;
 use std::{
     convert::AsRef,
-    ffi::OsString,
     fs,
     io::Write,
     iter::IntoIterator,
@@ -239,14 +238,29 @@ impl GenProtos {
             .status()
             .expect("Failed to create venv");
         assert!(status.success(), "Failed to create venv");
-
-        // pip install protobuf=={version}
         let bin_dir = venv.join(if cfg!(windows) { "Scripts" } else { "bin" });
-        let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "pip.exe" } else { "pip" }));
-        cmd.args(&["install", &format!("protobuf=={}", protoc_version)]);
+
+        // pip install --upgrade pip protobuf=={version}
+        let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "python.exe" } else { "python" }));
+        cmd.args(&[
+            "-m",
+            "pip",
+            "install",
+            "--upgrade",
+            "pip",
+            &format!("protobuf=={}", protoc_version),
+        ]);
         dbg!(&cmd);
         let status = cmd.status().expect("Failed to pip install protobuf");
-        assert!(status.success(), "Failed to create venv");
+        assert!(status.success(), "Failed to pip install protobuf");
+
+        // pip install -e .
+        let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "pip.exe" } else { "pip" }));
+        cmd.args(&["install", "-e"]);
+        cmd.arg(temp_dir.path());
+        dbg!(&cmd);
+        let status = cmd.status().expect("Failed to pip install pb-jelly");
+        assert!(status.success(), "Failed to pip install pb-jelly");
 
         bin_dir
     }
@@ -259,11 +273,6 @@ impl GenProtos {
             std::env::join_paths(path).unwrap()
         };
         dbg!(&new_path);
-
-        // Temp path to the codegen script
-        let codegen_path = temp_dir
-            .path()
-            .join(if cfg!(windows) { "codegen.bat" } else { "codegen.py" });
 
         // Create protoc cmd in the venv
         let mut protoc_cmd = Command::new("protoc");
@@ -291,14 +300,6 @@ impl GenProtos {
             protoc_cmd.arg(path);
             dbg!(path);
         }
-
-        // Set the rust plugin
-        let rust_plugin_arg = {
-            let mut arg: OsString = "--plugin=protoc-gen-rust=".into();
-            arg.push(codegen_path);
-            arg
-        };
-        protoc_cmd.arg(rust_plugin_arg);
 
         // Set the Rust out path
         protoc_cmd.arg("--rust_out");
