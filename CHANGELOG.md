@@ -3,6 +3,7 @@
 * Support running with any version of protoc (by dynamically generating `extensions_pb2.py` in a venv)
 * Use github CI for tests, rustfmt, black, mypy --strict
 * Support windows for codegen
+* Rename master branch to main
 
 # 0.0.7
 ### May 5, 2021
