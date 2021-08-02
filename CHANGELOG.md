@@ -4,6 +4,8 @@
 * Use github CI for tests, rustfmt, black, mypy --strict
 * Support windows for codegen
 * Rename master branch to main
+* Use a setup.cfg to install protoc-gen-rust to avoid need for --plugin flag. Simplifies manual usage process, especially on windows (no need for codegen.bat)
+* Remove need for requirements.txt - by using setup.cfg `install_requires`
 
 # 0.0.7
 ### May 5, 2021
