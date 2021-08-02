@@ -1764,6 +1764,7 @@ def generate_single_crate(
     ctx: Context,
     file_prefix: Text,
     file_to_generate: List[Text],
+    request: plugin.CodeGeneratorRequest,
     response: plugin.CodeGeneratorResponse,
 ) -> None:
     def new_mod_tree() -> ModTree:
@@ -1877,15 +1878,15 @@ def generate_code(
             ctx = Context(crate_per_dir=True, prefix_to_clear=prefix_to_clear)
             for proto_file in request.proto_file:
                 ctx.feed(proto_file, to_generate)
-            generate_single_crate(ctx, file_prefix, to_generate, response)
+            generate_single_crate(ctx, file_prefix, to_generate, request, response)
     else:
         ctx = Context(crate_per_dir=False, prefix_to_clear=prefix_to_clear)
         for proto_file in request.proto_file:
             ctx.feed(proto_file, to_generate)
-        generate_single_crate(ctx, "", to_generate, response)
+        generate_single_crate(ctx, "", to_generate, request, response)
 
 
-if __name__ == "__main__":
+def main() -> None:
     # Read request message from stdin
     data = sys.stdin.buffer.read()
 
@@ -1904,3 +1905,7 @@ if __name__ == "__main__":
 
     # Write to stdout
     sys.stdout.buffer.write(output)
+
+
+if __name__ == "__main__":
+    main()
