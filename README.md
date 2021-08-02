@@ -21,7 +21,7 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 <br />
 
-[![Crates.io](https://img.shields.io/crates/v/pb-jelly)](https://crates.io/crates/pb-jelly) [![Documentation](https://docs.rs/pb-jelly/badge.svg)](https://docs.rs/pb-jelly) [![Crates.io](https://img.shields.io/crates/l/pb-jelly)](LICENSE) [![Build Status](https://github.com/dropbox/pb-jelly/workflows/CI/badge.svg)](https://github.com/dropbox/pb-jelly/actions?query=branch%3Amaster)
+[![Crates.io](https://img.shields.io/crates/v/pb-jelly)](https://crates.io/crates/pb-jelly) [![Documentation](https://docs.rs/pb-jelly/badge.svg)](https://docs.rs/pb-jelly) [![Crates.io](https://img.shields.io/crates/l/pb-jelly)](LICENSE) [![Build Status](https://github.com/dropbox/pb-jelly/workflows/CI/badge.svg)](https://github.com/dropbox/pb-jelly/actions?query=branch%3Amain)
 
 
 ## Features
@@ -40,15 +40,15 @@ Other implementations exist in the Rust ecosystem (e.g. [`prost`](https://github
 
 |                Extension                |                                                 Description                                                | Type  | Example |
 |:---------------------------------------:|:----------------------------------------------------------------------------------------------------------:|-------|:-------:|
-| `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field | [`zero_copy`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
-| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
-| `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.zero_copy)=true`                 | Generates field type of `Lazy<bytes::Bytes>` for proto `bytes` fields to support zero-copy deserialization | Field | [`zero_copy`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) |
+| `(rust.box_it)=true`                    | Generates a `Box<Message>` field type                                                                      | Field | [`box_it`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) |
+| `(rust.type)="type"`                    | Generates a custom field type                                                                              | Field | [`custom_type`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) |
 | `(rust.preserve_unrecognized)=true`     | Preserves unrecognized proto fields into an `_unrecognized` struct field                                   | Field | `TODO` |
 | `(rust.nullable_field)=false`           | Generates non-nullable fields types									                                       | Field | `TODO` |
-| `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
-| `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.nullable)=false`                 | Generates oneofs as non-nullable (fail on deserialization)                                                 | Oneof | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) |
+| `(rust.err_if_default_or_unknown)=true` | Generates enums as non-zeroable (fail on deserialization)                                                  | Enum  | [`non_optional`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) |
 | `(rust.closed_enum)=true`               | Generates only a "closed" enum which will fail deserialization for unknown values, but is easier to work with in Rust | Enum | `TODO` |
-| `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) |
+| `(rust.serde_derive)=true`              | Generates serde serializable/deserializable messages                                                       | File  | [`serde`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) |
 
 <br />
 
@@ -91,7 +91,7 @@ In order to generate Rust code from your proto definitions you'll need three thi
 2. `python` - The codegen plugin used with `protoc` is written in Python (compatible with both py2 and py3). Before running it, you'll need to install some packages, via `python -m pip install -r pb-jelly-gen/requirements.txt`
 3. `pb-jelly-gen` [optional - you may always invoke protoc on your own]
 
-Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/master/examples/src) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
+Take a look at the [`examples`](https://github.com/dropbox/pb-jelly/tree/main/examples/src) crate to see how we leverage `pb-jelly-gen` and `build.rs` to get started using protobufs in Rust!
 
 <br />
 
