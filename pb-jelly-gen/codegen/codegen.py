@@ -13,12 +13,14 @@ from typing import (
     Any,
     DefaultDict,
     Dict,
+    Generic,
     Iterator,
     List,
     Optional,
     Set,
     Text,
     Tuple,
+    TypeVar,
     Union,
 )
 
@@ -572,7 +574,7 @@ def field_iter(
     elif (
         field.type == FieldDescriptorProto.TYPE_ENUM
         and not typ.is_repeated()
-        and enum_err_if_default_or_unknown(ctx.ctx.find(field.type_name).typ)
+        and enum_err_if_default_or_unknown(ctx.ctx.find_enum(field.type_name).typ)
     ):
         # The default value (as considered by proto) doesn't appear in the generated enum and
         # doesn't map to .default(). All of the values that actually get generated need to get
@@ -1133,7 +1135,7 @@ class CodeWriter(object):
                         field.type == FieldDescriptorProto.TYPE_ENUM
                         and not typ.is_repeated()
                     ):
-                        enum_type = self.ctx.find(field.type_name).typ
+                        enum_type = self.ctx.find_enum(field.type_name).typ
                         if enum_err_if_default_or_unknown(enum_type) and not typ.oneof:
                             self.write(
                                 "let mut %s: ::std::option::Option<%s> = None;"
@@ -1340,18 +1342,21 @@ def walk(proto: FileDescriptorProto) -> WalkRet:
     return enums, messages
 
 
-class ProtoType(object):
+M = TypeVar("M", DescriptorProto, EnumDescriptorProto)
+
+
+class ProtoType(Generic[M]):
     def __init__(
         self,
         ctx: "Context",
         proto_file: FileDescriptorProto,
         path: List[Text],
-        typ: Message,
+        typ: M,
     ) -> None:
         self.ctx = ctx
         self.proto_file = proto_file
         self.path = path  # inside proto file
-        self.typ: Any = typ
+        self.typ: M = typ
         self.crate, self.mod_parts = ctx.crate_from_proto_filename(proto_file.name)
 
     def __repr__(self) -> str:
@@ -1392,7 +1397,9 @@ Impls = namedtuple("Impls", ["Eq", "Copy"])
 
 class Context(object):
     def __init__(self, crate_per_dir: bool, prefix_to_clear: Text) -> None:
-        self.proto_types: Dict[Text, ProtoType] = {}
+        self.proto_types: Dict[
+            Text, Union[ProtoType[DescriptorProto], ProtoType[EnumDescriptorProto]]
+        ] = {}
 
         # Set iteration order is nondeterministic, but this is ok, because we can
         # emit crates in any order
@@ -1473,6 +1480,7 @@ class Context(object):
             elif typ == FieldDescriptorProto.TYPE_ENUM:
                 pass  # Enums are Eq / Copy
             elif typ == FieldDescriptorProto.TYPE_MESSAGE:
+                assert isinstance(field_type.typ, DescriptorProto)
                 field_fq_msg = (
                     field_type.proto_file.name,
                     "_".join(field_type.path + [field_type.typ.name]),
@@ -1508,23 +1516,39 @@ class Context(object):
             crate, _ = self.crate_from_proto_filename(name)
             self.deps_map[crate]
 
-        for path, typ, _ in itertools.chain(enums, messages):
-            pt = ProtoType(self, proto_file, path, typ)
-            self.proto_types[pt.proto_name()] = pt
+        for enum_path, enum_typ, _ in enums:
+            enum_pt = ProtoType(self, proto_file, enum_path, enum_typ)
+            self.proto_types[enum_pt.proto_name()] = enum_pt
+
+        for path, typ, _ in messages:
+            msg_pt = ProtoType(self, proto_file, path, typ)
+            self.proto_types[msg_pt.proto_name()] = msg_pt
 
         for path, typ, _ in messages:
             fq_msg = (proto_file.name, "_".join(path + [typ.name]))
             crate, _ = self.crate_from_proto_filename(proto_file.name)
             self.calc_impls(proto_file, crate, typ, fq_msg)
 
-    def find(self, typename: Text) -> ProtoType:
+    def find_enum(self, typename: Text) -> ProtoType[EnumDescriptorProto]:
+        pt = self.find(typename)
+        assert isinstance(pt.typ, EnumDescriptorProto)
+        return pt
+
+    def find_msg(self, typename: Text) -> ProtoType[DescriptorProto]:
+        pt = self.find(typename)
+        assert isinstance(pt.typ, DescriptorProto)
+        return pt
+
+    def find(
+        self, typename: Text
+    ) -> Union[ProtoType[DescriptorProto], ProtoType[EnumDescriptorProto]]:
         if typename in self.proto_types:
             return self.proto_types[typename]
 
         raise RuntimeError("Could not find type by proto name: {}".format(typename))
 
     def _set_boxed_if_recursive(
-        self, visited: Set[Text], looking_for: Text, pt: ProtoType
+        self, visited: Set[Text], looking_for: Text, pt: ProtoType[DescriptorProto]
     ) -> bool:
         visited.add(pt.proto_name())
         any_field_boxed = False
@@ -1536,7 +1560,7 @@ class Context(object):
                 need_box = False
                 if field.type_name not in visited:
                     need_box = self._set_boxed_if_recursive(
-                        visited, looking_for, self.find(field.type_name)
+                        visited, looking_for, self.find_msg(field.type_name)
                     )
                 if need_box or field.type_name == looking_for:
                     # We only box normal fields, not oneof variants
@@ -1558,7 +1582,7 @@ class Context(object):
 
     # This will recursively descend through a message and see if there any
     # recursive nesting.  In those cases, it will automatically box the fields.
-    def set_boxed_if_recursive(self, pt: ProtoType) -> None:
+    def set_boxed_if_recursive(self, pt: ProtoType[DescriptorProto]) -> None:
         visited: Set[Text] = set()
         self._set_boxed_if_recursive(visited, pt.proto_name(), pt)
 
