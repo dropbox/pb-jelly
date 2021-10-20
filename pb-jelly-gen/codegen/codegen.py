@@ -417,7 +417,7 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_STRING:
             return (
                 "&str",
-                'self.%s.as_ref().map(|ref s| s.as_str()).unwrap_or("")' % name,
+                'self.%s.as_ref().map(|s| s.as_str()).unwrap_or("")' % name,
             )
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             assert not (
@@ -942,10 +942,7 @@ class CodeWriter(object):
                             "pub fn take_%s(&mut self) -> ::std::vec::Vec<%s>"
                             % (field.name, typ.rust_type()),
                         ):
-                            self.write(
-                                "::std::mem::replace(&mut self.%s, ::std::vec::Vec::new())"
-                                % field.name
-                            )
+                            self.write("::std::mem::take(&mut self.%s)" % field.name)
 
                         with block(
                             self,
