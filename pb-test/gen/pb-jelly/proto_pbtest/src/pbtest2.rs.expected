@@ -1167,7 +1167,7 @@ impl Version1 {
     self.required_string.take().unwrap_or_default()
   }
   pub fn get_required_string(&self) -> &str {
-    self.required_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+    self.required_string.as_ref().map(|s| s.as_str()).unwrap_or("")
   }
 }
 impl ::std::default::Default for Version1 {
@@ -1261,7 +1261,7 @@ impl Version2 {
     self.required_string.take().unwrap_or_default()
   }
   pub fn get_required_string(&self) -> &str {
-    self.required_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+    self.required_string.as_ref().map(|s| s.as_str()).unwrap_or("")
   }
   pub fn has_optional_int32(&self) -> bool {
     self.optional_int32.is_some()
@@ -1363,7 +1363,7 @@ impl Version2 {
     self.optional_string.take().unwrap_or_default()
   }
   pub fn get_optional_string(&self) -> &str {
-    self.optional_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+    self.optional_string.as_ref().map(|s| s.as_str()).unwrap_or("")
   }
   pub fn has_optional_bytes(&self) -> bool {
     self.optional_bytes.is_some()
@@ -1995,7 +1995,7 @@ impl TestMessage {
     self.optional_string.take().unwrap_or_default()
   }
   pub fn get_optional_string(&self) -> &str {
-    self.optional_string.as_ref().map(|ref s| s.as_str()).unwrap_or("")
+    self.optional_string.as_ref().map(|s| s.as_str()).unwrap_or("")
   }
   pub fn has_optional_bytes(&self) -> bool {
     self.optional_bytes.is_some()
@@ -2052,7 +2052,7 @@ impl TestMessage {
     self.repeated_int32 = v;
   }
   pub fn take_repeated_int32(&mut self) -> ::std::vec::Vec<i32> {
-    ::std::mem::replace(&mut self.repeated_int32, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_int32)
   }
   pub fn get_repeated_int32(&self) -> &[i32] {
     &self.repeated_int32
@@ -2064,7 +2064,7 @@ impl TestMessage {
     self.repeated_int64 = v;
   }
   pub fn take_repeated_int64(&mut self) -> ::std::vec::Vec<i64> {
-    ::std::mem::replace(&mut self.repeated_int64, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_int64)
   }
   pub fn get_repeated_int64(&self) -> &[i64] {
     &self.repeated_int64
@@ -2076,7 +2076,7 @@ impl TestMessage {
     self.repeated_uint32 = v;
   }
   pub fn take_repeated_uint32(&mut self) -> ::std::vec::Vec<u32> {
-    ::std::mem::replace(&mut self.repeated_uint32, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_uint32)
   }
   pub fn get_repeated_uint32(&self) -> &[u32] {
     &self.repeated_uint32
@@ -2088,7 +2088,7 @@ impl TestMessage {
     self.repeated_uint64 = v;
   }
   pub fn take_repeated_uint64(&mut self) -> ::std::vec::Vec<u64> {
-    ::std::mem::replace(&mut self.repeated_uint64, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_uint64)
   }
   pub fn get_repeated_uint64(&self) -> &[u64] {
     &self.repeated_uint64
@@ -2100,7 +2100,7 @@ impl TestMessage {
     self.repeated_fixed64 = v;
   }
   pub fn take_repeated_fixed64(&mut self) -> ::std::vec::Vec<::pb_jelly::Fixed64> {
-    ::std::mem::replace(&mut self.repeated_fixed64, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_fixed64)
   }
   pub fn get_repeated_fixed64(&self) -> &[::pb_jelly::Fixed64] {
     &self.repeated_fixed64
@@ -2112,7 +2112,7 @@ impl TestMessage {
     self.repeated_fixed32 = v;
   }
   pub fn take_repeated_fixed32(&mut self) -> ::std::vec::Vec<::pb_jelly::Fixed32> {
-    ::std::mem::replace(&mut self.repeated_fixed32, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_fixed32)
   }
   pub fn get_repeated_fixed32(&self) -> &[::pb_jelly::Fixed32] {
     &self.repeated_fixed32
@@ -2124,7 +2124,7 @@ impl TestMessage {
     self.repeated_sfixed64 = v;
   }
   pub fn take_repeated_sfixed64(&mut self) -> ::std::vec::Vec<::pb_jelly::Sfixed64> {
-    ::std::mem::replace(&mut self.repeated_sfixed64, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_sfixed64)
   }
   pub fn get_repeated_sfixed64(&self) -> &[::pb_jelly::Sfixed64] {
     &self.repeated_sfixed64
@@ -2136,7 +2136,7 @@ impl TestMessage {
     self.repeated_sfixed32 = v;
   }
   pub fn take_repeated_sfixed32(&mut self) -> ::std::vec::Vec<::pb_jelly::Sfixed32> {
-    ::std::mem::replace(&mut self.repeated_sfixed32, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_sfixed32)
   }
   pub fn get_repeated_sfixed32(&self) -> &[::pb_jelly::Sfixed32] {
     &self.repeated_sfixed32
@@ -2148,7 +2148,7 @@ impl TestMessage {
     self.repeated_double = v;
   }
   pub fn take_repeated_double(&mut self) -> ::std::vec::Vec<f64> {
-    ::std::mem::replace(&mut self.repeated_double, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_double)
   }
   pub fn get_repeated_double(&self) -> &[f64] {
     &self.repeated_double
@@ -2160,7 +2160,7 @@ impl TestMessage {
     self.repeated_bool = v;
   }
   pub fn take_repeated_bool(&mut self) -> ::std::vec::Vec<bool> {
-    ::std::mem::replace(&mut self.repeated_bool, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_bool)
   }
   pub fn get_repeated_bool(&self) -> &[bool] {
     &self.repeated_bool
@@ -2172,7 +2172,7 @@ impl TestMessage {
     self.repeated_string = v;
   }
   pub fn take_repeated_string(&mut self) -> ::std::vec::Vec<::std::string::String> {
-    ::std::mem::replace(&mut self.repeated_string, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_string)
   }
   pub fn get_repeated_string(&self) -> &[::std::string::String] {
     &self.repeated_string
@@ -2184,7 +2184,7 @@ impl TestMessage {
     self.repeated_bytes = v;
   }
   pub fn take_repeated_bytes(&mut self) -> ::std::vec::Vec<::std::vec::Vec<u8>> {
-    ::std::mem::replace(&mut self.repeated_bytes, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_bytes)
   }
   pub fn get_repeated_bytes(&self) -> &[::std::vec::Vec<u8>] {
     &self.repeated_bytes
@@ -2196,7 +2196,7 @@ impl TestMessage {
     self.repeated_float = v;
   }
   pub fn take_repeated_float(&mut self) -> ::std::vec::Vec<f32> {
-    ::std::mem::replace(&mut self.repeated_float, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_float)
   }
   pub fn get_repeated_float(&self) -> &[f32] {
     &self.repeated_float
@@ -2208,7 +2208,7 @@ impl TestMessage {
     self.repeated_foreign_message = v;
   }
   pub fn take_repeated_foreign_message(&mut self) -> ::std::vec::Vec<ForeignMessage> {
-    ::std::mem::replace(&mut self.repeated_foreign_message, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_foreign_message)
   }
   pub fn get_repeated_foreign_message(&self) -> &[ForeignMessage] {
     &self.repeated_foreign_message
@@ -2220,7 +2220,7 @@ impl TestMessage {
     self.repeated_nested_enum = v;
   }
   pub fn take_repeated_nested_enum(&mut self) -> ::std::vec::Vec<TestMessage_NestedEnum> {
-    ::std::mem::replace(&mut self.repeated_nested_enum, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_nested_enum)
   }
   pub fn get_repeated_nested_enum(&self) -> &[TestMessage_NestedEnum] {
     &self.repeated_nested_enum
@@ -2232,7 +2232,7 @@ impl TestMessage {
     self.repeated_foreign_enum = v;
   }
   pub fn take_repeated_foreign_enum(&mut self) -> ::std::vec::Vec<ForeignEnum> {
-    ::std::mem::replace(&mut self.repeated_foreign_enum, ::std::vec::Vec::new())
+    ::std::mem::take(&mut self.repeated_foreign_enum)
   }
   pub fn get_repeated_foreign_enum(&self) -> &[ForeignEnum] {
     &self.repeated_foreign_enum
