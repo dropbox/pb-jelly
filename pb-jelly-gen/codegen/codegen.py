@@ -942,10 +942,7 @@ class CodeWriter(object):
                             "pub fn take_%s(&mut self) -> ::std::vec::Vec<%s>"
                             % (field.name, typ.rust_type()),
                         ):
-                            self.write(
-                                "::std::mem::take(&mut self.%s)"
-                                % field.name
-                            )
+                            self.write("::std::mem::take(&mut self.%s)" % field.name)
 
                         with block(
                             self,
