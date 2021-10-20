@@ -157,10 +157,10 @@ Service Generation
 1. Clone Repo.
 2. Install Dependencies / Testing Dependencies. Use the appropriate package manager for your system.
     - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
-        - OSX: `brew install protobuf`
-        - Linux: `dnf install protobuf protobuf-devel`
+        - macos: `brew install protobuf`
+        - Linux (Fedora/CentOS/RHEL): `dnf install protobuf protobuf-devel`
     - Install Python
-        - [if necessary] OSX: `brew install python3`
+        - [if necessary] macos: `brew install python3`
 3. **pb-jelly** currently uses an experimental test framework that requires a nightly build of rust.
 	-  `rustup default nightly`
 4. `cd pb-test`
