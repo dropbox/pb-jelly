@@ -423,7 +423,7 @@ class RustType(object):
             assert not (
                 self.is_blob() or self.is_grpc_slices() or self.is_lazy_bytes()
             ), "Can't generate get method for lazy field"
-            return "&[u8]", "self.%s.as_ref().map(|v| &**v).unwrap_or(&[])" % name
+            return "&[u8]", "self.%s.as_deref().unwrap_or(&[])" % name
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
             return self.rust_type(), "self.%s.unwrap_or_default()" % name
         elif self.field.type == FieldDescriptorProto.TYPE_MESSAGE:

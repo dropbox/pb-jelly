@@ -1375,7 +1375,7 @@ impl Version2 {
     self.optional_bytes.take().unwrap_or_default()
   }
   pub fn get_optional_bytes(&self) -> &[u8] {
-    self.optional_bytes.as_ref().map(|v| &**v).unwrap_or(&[])
+    self.optional_bytes.as_deref().unwrap_or(&[])
   }
   pub fn has_optional_float(&self) -> bool {
     self.optional_float.is_some()
@@ -2007,7 +2007,7 @@ impl TestMessage {
     self.optional_bytes.take().unwrap_or_default()
   }
   pub fn get_optional_bytes(&self) -> &[u8] {
-    self.optional_bytes.as_ref().map(|v| &**v).unwrap_or(&[])
+    self.optional_bytes.as_deref().unwrap_or(&[])
   }
   pub fn has_optional_float(&self) -> bool {
     self.optional_float.is_some()
