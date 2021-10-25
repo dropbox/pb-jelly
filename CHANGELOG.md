@@ -1,4 +1,8 @@
 # Unreleased
+
+
+# 0.0.8
+### October 25, 2021
 * Move `(gogoproto.nullable)` option to `(rust.nullable_field)`, removing the dependency on gogoproto
 * Support running with any version of protoc (by dynamically generating `extensions_pb2.py` in a venv)
 * Use github CI for tests, rustfmt, black, mypy --strict
