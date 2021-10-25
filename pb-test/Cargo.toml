@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 bytes = "1.0"
-pb-jelly = "0.0.7"
+pb-jelly = "0.0.8"
 pretty_assertions = "0.6.1"
 proto_pbtest = { path = "gen/pb-jelly/proto_pbtest" }
 walkdir = "2.3.1"

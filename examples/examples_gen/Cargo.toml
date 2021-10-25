@@ -6,5 +6,5 @@ edition = "2018"
 publish = false
 
 [dependencies]
-#pb-jelly-gen = "0.0.7"  # If copying this example - use this
+#pb-jelly-gen = "0.0.8"  # If copying this example - use this
 pb-jelly-gen = { path = "../../pb-jelly-gen" }
