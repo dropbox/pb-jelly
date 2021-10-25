@@ -1745,6 +1745,7 @@ RS_HEADER = "// @" + "generated, do not edit\n"
 LIB_RS_HEADER = """
 #![warn(rust_2018_idioms)]
 #![allow(clippy::float_cmp)]
+#![allow(clippy::module_inception)]
 #![allow(irrefutable_let_patterns)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
