@@ -3,11 +3,14 @@ use std::fs::File;
 use std::io::Cursor;
 use std::io::Read;
 
+use pb_jelly::reflection::FieldMut;
 use pb_jelly::wire_format::Type;
 use pb_jelly::{
     ClosedProtoEnum,
+    Label,
     Message,
     OpenProtoEnum,
+    Reflection,
 };
 use pretty_assertions::{
     assert_eq,
@@ -285,6 +288,111 @@ fn all_fields_default3() {
     expected.zero_or_fixed_length_repeated = vec![None, Some([0, 1, 2, 3]), None, Some([4, 5, 6, 7])];
 
     succeeds(&buf[..], expected);
+}
+
+#[test]
+fn all_fields_reflection3() {
+    let p2_msg = ForeignMessage { c: Some(77) };
+
+    let mut expected = TestMessage3::default();
+    expected.optional_int32 = -1;
+    expected.optional_uint32 = 7;
+    expected.optional_fixed64 = pb_jelly::Fixed64(33);
+    expected.optional_fixed32 = pb_jelly::Fixed32(12);
+    expected.optional_sfixed64 = pb_jelly::Sfixed64(500);
+    expected.optional_sfixed32 = pb_jelly::Sfixed32(22);
+    expected.optional_float = 1.3;
+    expected.optional_bool = false;
+    expected.proto2_msg = Some(p2_msg);
+    expected.proto2_msg_empty = Some(ForeignMessage::default());
+    expected.repeated_fixed64 = vec![pb_jelly::Fixed64(std::u64::MIN), pb_jelly::Fixed64(std::u64::MAX)];
+    expected.repeated_fixed32 = vec![pb_jelly::Fixed32(std::u32::MIN), pb_jelly::Fixed32(std::u32::MAX)];
+    expected.repeated_sfixed64 = vec![pb_jelly::Sfixed64(std::i64::MIN), pb_jelly::Sfixed64(std::i64::MAX)];
+    expected.repeated_sfixed32 = vec![pb_jelly::Sfixed32(std::i32::MIN), pb_jelly::Sfixed32(std::i32::MAX)];
+    expected.optional_foreign_message_boxed = Some(Box::new(ForeignMessage3 { c: 78 }));
+    expected.optional_foreign_message_nonnullable = ForeignMessage3 { c: 78 };
+    expected.oneof_int = Some(TestMessage3_OneofInt::Int1(34));
+    expected.oneof_foreign = Some(TestMessage3_OneofForeign::Foreign2(ForeignMessage3 { c: 79 }));
+    expected.oneof_zero = Some(TestMessage3_OneofZero::Int3(0)); // Caller set the int to 0 explicitly
+    expected.oneof_null = None as ::std::option::Option<TestMessage3_OneofNull>; // Caller set the message to None
+    expected.oneof_unset = None as ::std::option::Option<TestMessage3_OneofUnset>; // Caller never set the field
+    expected.oneof_primitives = Some(TestMessage3_OneofPrimitives::Bool6(false));
+    // Ensure that a, b don't have variants, but c does
+    expected.oneof_empty_field = TestMessage3_OneofEmptyField::C(33);
+    expected.oneof_empty_field = TestMessage3_OneofEmptyField::B;
+    expected.oneof_empty_field = TestMessage3_OneofEmptyField::A;
+    expected.nested = TestMessage3_NestedMessage {
+        nested_oneof: TestMessage3_NestedMessage_NestedOneof::F(TestMessage3_NestedMessage_File {
+            blocklist: vec![],
+            size: 0,
+        }),
+    };
+    expected.nested_nullable = Some(TestMessage3_NestedMessage {
+        nested_oneof: TestMessage3_NestedMessage_NestedOneof::F(TestMessage3_NestedMessage_File {
+            blocklist: vec![],
+            size: 0,
+        }),
+    });
+    expected.nested_repeated = vec![];
+    expected.fixed_length = [0, 1, 2, 3];
+    expected.fixed_length_repeated = vec![[0, 1, 2, 3], [4, 5, 6, 7]];
+    expected.zero_or_fixed_length = None;
+    expected.zero_or_fixed_length_repeated = vec![None, Some([0, 1, 2, 3]), None, Some([4, 5, 6, 7])];
+
+    let mut serialized: ::std::collections::HashMap<u32, ::std::vec::Vec<u8>> = ::std::collections::HashMap::new();
+    let oneofs = expected.descriptor().unwrap().oneofs;
+    for f in expected.descriptor().unwrap().fields {
+        if f.label == Label::Repeated {
+            // Skip, repeated fields aren't currently supported.
+            continue;
+        }
+
+        if let Some(oneof_index) = f.oneof_index {
+            if expected.which_one_of(oneofs[oneof_index as usize].name) != Some(f.name) {
+                // Not set to this oneof variant, skip this field.
+                continue;
+            }
+        }
+
+        match expected.get_field_mut(f.name) {
+            FieldMut::Value(field) => {
+                serialized.insert(f.number, field.erased_serialize());
+            },
+            _ => (),
+        };
+    }
+
+    let mut deserialized = TestMessage3::default();
+    // Repeated fields aren't currently supported, manually set them to the correct values.
+    deserialized.repeated_fixed64 = expected.repeated_fixed64.clone();
+    deserialized.repeated_fixed32 = expected.repeated_fixed32.clone();
+    deserialized.repeated_sfixed64 = expected.repeated_sfixed64.clone();
+    deserialized.repeated_sfixed32 = expected.repeated_sfixed32.clone();
+    deserialized.nested_repeated = expected.nested_repeated.clone();
+    deserialized.fixed_length_repeated = expected.fixed_length_repeated.clone();
+    deserialized.zero_or_fixed_length_repeated = expected.zero_or_fixed_length_repeated.clone();
+    for f in deserialized.descriptor().unwrap().fields {
+        if f.label == Label::Repeated {
+            // Skip, repeated fields aren't currently supported.
+            continue;
+        }
+
+        if f.oneof_index.is_some() {
+            if !serialized.contains_key(&f.number) {
+                // Not set to this oneof variant, skip this field.
+                continue;
+            }
+        }
+
+        match deserialized.get_field_mut(f.name) {
+            FieldMut::Value(field) => {
+                field.erased_deserialize(serialized.get(&f.number).unwrap()).unwrap();
+            },
+            _ => (),
+        };
+    }
+
+    assert_eq!(deserialized, expected);
 }
 
 #[test]

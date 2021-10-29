@@ -30,6 +30,7 @@ use crate::buffer::{
     PbBufferReader,
     PbBufferWriter,
 };
+use crate::reflection::Reflection;
 use crate::varint;
 
 /// Trait implemented by enums which are generated with the `err_if_default` option. Note that
@@ -80,6 +81,13 @@ where
     }
 }
 
+impl<T, E> Reflection for T
+where
+    T: TryFrom<i32, Error = E> + Into<i32> + ProtoEnum,
+    E: Debug,
+{
+}
+
 impl<T: Message> Message for Option<T> {
     fn compute_size(&self) -> usize {
         if let Some(ref inner) = *self {
@@ -110,6 +118,8 @@ impl<T: Message> Message for Option<T> {
     }
 }
 
+impl<T: Message> Reflection for Option<T> {}
+
 impl Message for u32 {
     fn compute_size(&self) -> usize {
         varint::serialized_length(u64::from(*self))
@@ -128,6 +138,8 @@ impl Message for u32 {
         Ok(())
     }
 }
+
+impl Reflection for u32 {}
 
 impl Message for i32 {
     fn compute_size(&self) -> usize {
@@ -148,6 +160,8 @@ impl Message for i32 {
     }
 }
 
+impl Reflection for i32 {}
+
 impl Message for u64 {
     fn compute_size(&self) -> usize {
         varint::serialized_length(*self)
@@ -167,6 +181,8 @@ impl Message for u64 {
     }
 }
 
+impl Reflection for u64 {}
+
 impl Message for i64 {
     fn compute_size(&self) -> usize {
         varint::serialized_length(*self as u64)
@@ -185,6 +201,8 @@ impl Message for i64 {
         Ok(())
     }
 }
+
+impl Reflection for i64 {}
 
 #[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct Signed64(pub i64);
@@ -216,6 +234,8 @@ impl Message for Signed64 {
         Ok(())
     }
 }
+
+impl Reflection for Signed64 {}
 
 impl Deref for Signed64 {
     type Target = i64;
@@ -262,6 +282,8 @@ impl Message for Signed32 {
     }
 }
 
+impl Reflection for Signed32 {}
+
 impl Deref for Signed32 {
     type Target = i32;
 
@@ -295,6 +317,8 @@ impl Message for Fixed64 {
         Ok(())
     }
 }
+
+impl Reflection for Fixed64 {}
 
 impl Deref for Fixed64 {
     type Target = u64;
@@ -330,6 +354,8 @@ impl Message for Fixed32 {
     }
 }
 
+impl Reflection for Fixed32 {}
+
 impl Deref for Fixed32 {
     type Target = u32;
 
@@ -363,6 +389,8 @@ impl Message for Sfixed64 {
         Ok(())
     }
 }
+
+impl Reflection for Sfixed64 {}
 
 impl Deref for Sfixed64 {
     type Target = i64;
@@ -398,6 +426,8 @@ impl Message for Sfixed32 {
     }
 }
 
+impl Reflection for Sfixed32 {}
+
 impl Deref for Sfixed32 {
     type Target = i32;
 
@@ -429,6 +459,8 @@ impl Message for f32 {
     }
 }
 
+impl Reflection for f32 {}
+
 impl Message for f64 {
     fn compute_size(&self) -> usize {
         8
@@ -445,6 +477,8 @@ impl Message for f64 {
         Ok(())
     }
 }
+
+impl Reflection for f64 {}
 
 impl Message for bool {
     fn compute_size(&self) -> usize {
@@ -464,6 +498,8 @@ impl Message for bool {
         Ok(())
     }
 }
+
+impl Reflection for bool {}
 
 impl Message for Vec<u8> {
     fn compute_size(&self) -> usize {
@@ -485,6 +521,8 @@ impl Message for Vec<u8> {
         Ok(())
     }
 }
+
+impl Reflection for Vec<u8> {}
 
 /// A guard used to enforce the contract that all Rust Strings are valid UTF-8.
 /// Used in implementation of `trait Message` for `String`.
@@ -543,6 +581,8 @@ impl Message for String {
     }
 }
 
+impl Reflection for String {}
+
 impl Message for () {
     fn compute_size(&self) -> usize {
         0
@@ -557,6 +597,8 @@ impl Message for () {
     }
 }
 
+impl Reflection for () {}
+
 macro_rules! fixed_length_impls {
     ($($len: tt)*) => ($(
         impl Message for [u8; $len] {
@@ -567,6 +609,7 @@ macro_rules! fixed_length_impls {
                 w.write_all(self)?;
                 Ok(())
             }
+
             fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
                 if buf.remaining() != $len {
                     return Err(Error::new(ErrorKind::InvalidData, concat!("not of length ", stringify!($len))));
@@ -575,6 +618,8 @@ macro_rules! fixed_length_impls {
                 Ok(())
             }
         }
+
+        impl Reflection for [u8; $len] {}
     )*);
 }
 

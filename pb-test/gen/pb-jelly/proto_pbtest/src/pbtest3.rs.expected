@@ -771,7 +771,26 @@ lazy_static! {
   pub static ref ForeignMessage3_default: ForeignMessage3 = ForeignMessage3::default();
 }
 impl ::pb_jelly::Message for ForeignMessage3 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "ForeignMessage3",
+      full_name: "pbtest.ForeignMessage3",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "c",
+          full_name: "pbtest.ForeignMessage3.c",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut c_size = 0;
     if self.c != <i32 as ::std::default::Default>::default() {
@@ -783,7 +802,7 @@ impl ::pb_jelly::Message for ForeignMessage3 {
     size += c_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.c != <i32 as ::std::default::Default>::default() {
       let val = &self.c;
@@ -816,9 +835,24 @@ impl ::pb_jelly::Message for ForeignMessage3 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for ForeignMessage3 {
-  const NAME: &'static str = "ForeignMessage3";
-  const FULL_NAME: &'static str = "pbtest.ForeignMessage3";
+impl ::pb_jelly::Reflection for ForeignMessage3 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "c" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.c);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -841,7 +875,38 @@ lazy_static! {
   pub static ref Version31OneOfNoneNullable_default: Version31OneOfNoneNullable = Version31OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version31OneOfNoneNullable {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version31OneOfNoneNullable",
+      full_name: "pbtest.Version31OneOfNoneNullable",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "string_one_of",
+          full_name: "pbtest.Version31OneOfNoneNullable.string_one_of",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "string_two_of",
+          full_name: "pbtest.Version31OneOfNoneNullable.string_two_of",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "test_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
     if let Version31OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
@@ -861,7 +926,7 @@ impl ::pb_jelly::Message for Version31OneOfNoneNullable {
     size += string_two_of_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let Version31OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -918,9 +983,54 @@ impl ::pb_jelly::Message for Version31OneOfNoneNullable {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version31OneOfNoneNullable {
-  const NAME: &'static str = "Version31OneOfNoneNullable";
-  const FULL_NAME: &'static str = "pbtest.Version31OneOfNoneNullable";
+impl ::pb_jelly::Reflection for Version31OneOfNoneNullable {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "test_oneof" => {
+        if let Version31OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+          return Some("string_one_of");
+        }
+        if let Version31OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+          return Some("string_two_of");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "string_one_of" => {
+        match self.test_oneof {
+          Version31OneOfNoneNullable_TestOneof::StringOneOf(_) => (),
+          _ => {
+            self.test_oneof = Version31OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default());
+          },
+        }
+        if let Version31OneOfNoneNullable_TestOneof::StringOneOf(ref mut val) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "string_two_of" => {
+        match self.test_oneof {
+          Version31OneOfNoneNullable_TestOneof::StringTwoOf(_) => (),
+          _ => {
+            self.test_oneof = Version31OneOfNoneNullable_TestOneof::StringTwoOf(::std::default::Default::default());
+          },
+        }
+        if let Version31OneOfNoneNullable_TestOneof::StringTwoOf(ref mut val) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -944,7 +1054,47 @@ lazy_static! {
   pub static ref Version32OneOfNoneNullable_default: Version32OneOfNoneNullable = Version32OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version32OneOfNoneNullable {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version32OneOfNoneNullable",
+      full_name: "pbtest.Version32OneOfNoneNullable",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "string_one_of",
+          full_name: "pbtest.Version32OneOfNoneNullable.string_one_of",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "string_two_of",
+          full_name: "pbtest.Version32OneOfNoneNullable.string_two_of",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int_one_Of",
+          full_name: "pbtest.Version32OneOfNoneNullable.int_one_Of",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "test_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
     if let Version32OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
@@ -971,7 +1121,7 @@ impl ::pb_jelly::Message for Version32OneOfNoneNullable {
     size += int_one_Of_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let Version32OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -1041,9 +1191,69 @@ impl ::pb_jelly::Message for Version32OneOfNoneNullable {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version32OneOfNoneNullable {
-  const NAME: &'static str = "Version32OneOfNoneNullable";
-  const FULL_NAME: &'static str = "pbtest.Version32OneOfNoneNullable";
+impl ::pb_jelly::Reflection for Version32OneOfNoneNullable {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "test_oneof" => {
+        if let Version32OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+          return Some("string_one_of");
+        }
+        if let Version32OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
+          return Some("string_two_of");
+        }
+        if let Version32OneOfNoneNullable_TestOneof::IntOneOf(ref val) = self.test_oneof {
+          return Some("int_one_Of");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "string_one_of" => {
+        match self.test_oneof {
+          Version32OneOfNoneNullable_TestOneof::StringOneOf(_) => (),
+          _ => {
+            self.test_oneof = Version32OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default());
+          },
+        }
+        if let Version32OneOfNoneNullable_TestOneof::StringOneOf(ref mut val) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "string_two_of" => {
+        match self.test_oneof {
+          Version32OneOfNoneNullable_TestOneof::StringTwoOf(_) => (),
+          _ => {
+            self.test_oneof = Version32OneOfNoneNullable_TestOneof::StringTwoOf(::std::default::Default::default());
+          },
+        }
+        if let Version32OneOfNoneNullable_TestOneof::StringTwoOf(ref mut val) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int_one_Of" => {
+        match self.test_oneof {
+          Version32OneOfNoneNullable_TestOneof::IntOneOf(_) => (),
+          _ => {
+            self.test_oneof = Version32OneOfNoneNullable_TestOneof::IntOneOf(::std::default::Default::default());
+          },
+        }
+        if let Version32OneOfNoneNullable_TestOneof::IntOneOf(ref mut val) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -1061,7 +1271,26 @@ lazy_static! {
   pub static ref Version31Enum_default: Version31Enum = Version31Enum::default();
 }
 impl ::pb_jelly::Message for Version31Enum {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version31Enum",
+      full_name: "pbtest.Version31Enum",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "enum_field",
+          full_name: "pbtest.Version31Enum.enum_field",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut enum_field_size = 0;
     if self.enum_field != <Version31Enum_TestEnum as ::std::default::Default>::default() {
@@ -1073,7 +1302,7 @@ impl ::pb_jelly::Message for Version31Enum {
     size += enum_field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.enum_field != <Version31Enum_TestEnum as ::std::default::Default>::default() {
       let val = &self.enum_field;
@@ -1106,9 +1335,24 @@ impl ::pb_jelly::Message for Version31Enum {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version31Enum {
-  const NAME: &'static str = "Version31Enum";
-  const FULL_NAME: &'static str = "pbtest.Version31Enum";
+impl ::pb_jelly::Reflection for Version31Enum {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "enum_field" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.enum_field);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -1126,7 +1370,26 @@ lazy_static! {
   pub static ref Version32Enum_default: Version32Enum = Version32Enum::default();
 }
 impl ::pb_jelly::Message for Version32Enum {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version32Enum",
+      full_name: "pbtest.Version32Enum",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "enum_field",
+          full_name: "pbtest.Version32Enum.enum_field",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut enum_field_size = 0;
     if self.enum_field != <Version32Enum_TestEnum as ::std::default::Default>::default() {
@@ -1138,7 +1401,7 @@ impl ::pb_jelly::Message for Version32Enum {
     size += enum_field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.enum_field != <Version32Enum_TestEnum as ::std::default::Default>::default() {
       let val = &self.enum_field;
@@ -1171,9 +1434,24 @@ impl ::pb_jelly::Message for Version32Enum {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version32Enum {
-  const NAME: &'static str = "Version32Enum";
-  const FULL_NAME: &'static str = "pbtest.Version32Enum";
+impl ::pb_jelly::Reflection for Version32Enum {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "enum_field" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.enum_field);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -1195,7 +1473,29 @@ lazy_static! {
   pub static ref Version31OneOf_default: Version31OneOf = Version31OneOf::default();
 }
 impl ::pb_jelly::Message for Version31OneOf {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version31OneOf",
+      full_name: "pbtest.Version31OneOf",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "string_one_of",
+          full_name: "pbtest.Version31OneOf.string_one_of",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "test_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
     if let Some(Version31OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
@@ -1207,7 +1507,7 @@ impl ::pb_jelly::Message for Version31OneOf {
     size += string_one_of_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let Some(Version31OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -1242,9 +1542,39 @@ impl ::pb_jelly::Message for Version31OneOf {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version31OneOf {
-  const NAME: &'static str = "Version31OneOf";
-  const FULL_NAME: &'static str = "pbtest.Version31OneOf";
+impl ::pb_jelly::Reflection for Version31OneOf {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "test_oneof" => {
+        if let Some(Version31OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+          return Some("string_one_of");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "string_one_of" => {
+        match self.test_oneof {
+          Some(Version31OneOf_TestOneof::StringOneOf(_)) => (),
+          _ => {
+            self.test_oneof = Some(Version31OneOf_TestOneof::StringOneOf(::std::default::Default::default()));
+          },
+        }
+        if let Some(Version31OneOf_TestOneof::StringOneOf(ref mut val)) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -1267,7 +1597,38 @@ lazy_static! {
   pub static ref Version32OneOf_default: Version32OneOf = Version32OneOf::default();
 }
 impl ::pb_jelly::Message for Version32OneOf {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version32OneOf",
+      full_name: "pbtest.Version32OneOf",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "string_one_of",
+          full_name: "pbtest.Version32OneOf.string_one_of",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int_one_of",
+          full_name: "pbtest.Version32OneOf.int_one_of",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "test_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
     if let Some(Version32OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
@@ -1286,7 +1647,7 @@ impl ::pb_jelly::Message for Version32OneOf {
     size += int_one_of_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let Some(Version32OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -1334,9 +1695,54 @@ impl ::pb_jelly::Message for Version32OneOf {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version32OneOf {
-  const NAME: &'static str = "Version32OneOf";
-  const FULL_NAME: &'static str = "pbtest.Version32OneOf";
+impl ::pb_jelly::Reflection for Version32OneOf {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "test_oneof" => {
+        if let Some(Version32OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
+          return Some("string_one_of");
+        }
+        if let Some(Version32OneOf_TestOneof::IntOneOf(ref val)) = self.test_oneof {
+          return Some("int_one_of");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "string_one_of" => {
+        match self.test_oneof {
+          Some(Version32OneOf_TestOneof::StringOneOf(_)) => (),
+          _ => {
+            self.test_oneof = Some(Version32OneOf_TestOneof::StringOneOf(::std::default::Default::default()));
+          },
+        }
+        if let Some(Version32OneOf_TestOneof::StringOneOf(ref mut val)) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int_one_of" => {
+        match self.test_oneof {
+          Some(Version32OneOf_TestOneof::IntOneOf(_)) => (),
+          _ => {
+            self.test_oneof = Some(Version32OneOf_TestOneof::IntOneOf(::std::default::Default::default()));
+          },
+        }
+        if let Some(Version32OneOf_TestOneof::IntOneOf(ref mut val)) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -1354,7 +1760,26 @@ lazy_static! {
   pub static ref Version31_default: Version31 = Version31::default();
 }
 impl ::pb_jelly::Message for Version31 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version31",
+      full_name: "pbtest.Version31",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_string1",
+          full_name: "pbtest.Version31.optional_string1",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut optional_string1_size = 0;
     if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
@@ -1367,7 +1792,7 @@ impl ::pb_jelly::Message for Version31 {
     size += optional_string1_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
       let val = &self.optional_string1;
@@ -1404,9 +1829,24 @@ impl ::pb_jelly::Message for Version31 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version31 {
-  const NAME: &'static str = "Version31";
-  const FULL_NAME: &'static str = "pbtest.Version31";
+impl ::pb_jelly::Reflection for Version31 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "optional_string1" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_string1);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -1450,7 +1890,143 @@ lazy_static! {
   pub static ref Version32_default: Version32 = Version32::default();
 }
 impl ::pb_jelly::Message for Version32 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version32",
+      full_name: "pbtest.Version32",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_string1",
+          full_name: "pbtest.Version32.optional_string1",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_int32",
+          full_name: "pbtest.Version32.optional_int32",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_int64",
+          full_name: "pbtest.Version32.optional_int64",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_uint32",
+          full_name: "pbtest.Version32.optional_uint32",
+          index: 3,
+          number: 4,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_uint64",
+          full_name: "pbtest.Version32.optional_uint64",
+          index: 4,
+          number: 5,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_fixed64",
+          full_name: "pbtest.Version32.optional_fixed64",
+          index: 5,
+          number: 6,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_fixed32",
+          full_name: "pbtest.Version32.optional_fixed32",
+          index: 6,
+          number: 7,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_sfixed64",
+          full_name: "pbtest.Version32.optional_sfixed64",
+          index: 7,
+          number: 8,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_sfixed32",
+          full_name: "pbtest.Version32.optional_sfixed32",
+          index: 8,
+          number: 9,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_double",
+          full_name: "pbtest.Version32.optional_double",
+          index: 9,
+          number: 10,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_bool",
+          full_name: "pbtest.Version32.optional_bool",
+          index: 10,
+          number: 11,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_string",
+          full_name: "pbtest.Version32.optional_string",
+          index: 11,
+          number: 12,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_bytes",
+          full_name: "pbtest.Version32.optional_bytes",
+          index: 12,
+          number: 13,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_float",
+          full_name: "pbtest.Version32.optional_float",
+          index: 13,
+          number: 14,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut optional_string1_size = 0;
     if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
@@ -1569,7 +2145,7 @@ impl ::pb_jelly::Message for Version32 {
     size += optional_float_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
       let val = &self.optional_string1;
@@ -1809,9 +2385,63 @@ impl ::pb_jelly::Message for Version32 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Version32 {
-  const NAME: &'static str = "Version32";
-  const FULL_NAME: &'static str = "pbtest.Version32";
+impl ::pb_jelly::Reflection for Version32 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "optional_string1" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_string1);
+      }
+      "optional_int32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_int32);
+      }
+      "optional_int64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_int64);
+      }
+      "optional_uint32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_uint32);
+      }
+      "optional_uint64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_uint64);
+      }
+      "optional_fixed64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_fixed64);
+      }
+      "optional_fixed32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_fixed32);
+      }
+      "optional_sfixed64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_sfixed64);
+      }
+      "optional_sfixed32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_sfixed32);
+      }
+      "optional_double" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_double);
+      }
+      "optional_bool" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_bool);
+      }
+      "optional_string" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_string);
+      }
+      "optional_bytes" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_bytes);
+      }
+      "optional_float" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_float);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -1967,7 +2597,569 @@ lazy_static! {
   pub static ref TestMessage3_default: TestMessage3 = TestMessage3::default();
 }
 impl ::pb_jelly::Message for TestMessage3 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3",
+      full_name: "pbtest.TestMessage3",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_int32",
+          full_name: "pbtest.TestMessage3.optional_int32",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_int64",
+          full_name: "pbtest.TestMessage3.optional_int64",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_uint32",
+          full_name: "pbtest.TestMessage3.optional_uint32",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_uint64",
+          full_name: "pbtest.TestMessage3.optional_uint64",
+          index: 3,
+          number: 4,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_fixed64",
+          full_name: "pbtest.TestMessage3.optional_fixed64",
+          index: 4,
+          number: 8,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_fixed32",
+          full_name: "pbtest.TestMessage3.optional_fixed32",
+          index: 5,
+          number: 9,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_sfixed64",
+          full_name: "pbtest.TestMessage3.optional_sfixed64",
+          index: 6,
+          number: 10,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_sfixed32",
+          full_name: "pbtest.TestMessage3.optional_sfixed32",
+          index: 7,
+          number: 11,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_double",
+          full_name: "pbtest.TestMessage3.optional_double",
+          index: 8,
+          number: 12,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_bool",
+          full_name: "pbtest.TestMessage3.optional_bool",
+          index: 9,
+          number: 13,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_string",
+          full_name: "pbtest.TestMessage3.optional_string",
+          index: 10,
+          number: 14,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_bytes",
+          full_name: "pbtest.TestMessage3.optional_bytes",
+          index: 11,
+          number: 15,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_float",
+          full_name: "pbtest.TestMessage3.optional_float",
+          index: 12,
+          number: 16,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_foreign_message",
+          full_name: "pbtest.TestMessage3.optional_foreign_message",
+          index: 13,
+          number: 19,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_nested_enum",
+          full_name: "pbtest.TestMessage3.optional_nested_enum",
+          index: 14,
+          number: 21,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_foreign_enum",
+          full_name: "pbtest.TestMessage3.optional_foreign_enum",
+          index: 15,
+          number: 22,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_int32",
+          full_name: "pbtest.TestMessage3.repeated_int32",
+          index: 16,
+          number: 31,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_int64",
+          full_name: "pbtest.TestMessage3.repeated_int64",
+          index: 17,
+          number: 32,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_uint32",
+          full_name: "pbtest.TestMessage3.repeated_uint32",
+          index: 18,
+          number: 33,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_uint64",
+          full_name: "pbtest.TestMessage3.repeated_uint64",
+          index: 19,
+          number: 34,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_fixed64",
+          full_name: "pbtest.TestMessage3.repeated_fixed64",
+          index: 20,
+          number: 38,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_fixed32",
+          full_name: "pbtest.TestMessage3.repeated_fixed32",
+          index: 21,
+          number: 39,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_sfixed64",
+          full_name: "pbtest.TestMessage3.repeated_sfixed64",
+          index: 22,
+          number: 40,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_sfixed32",
+          full_name: "pbtest.TestMessage3.repeated_sfixed32",
+          index: 23,
+          number: 41,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_double",
+          full_name: "pbtest.TestMessage3.repeated_double",
+          index: 24,
+          number: 42,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_bool",
+          full_name: "pbtest.TestMessage3.repeated_bool",
+          index: 25,
+          number: 43,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_string",
+          full_name: "pbtest.TestMessage3.repeated_string",
+          index: 26,
+          number: 44,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_bytes",
+          full_name: "pbtest.TestMessage3.repeated_bytes",
+          index: 27,
+          number: 45,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_float",
+          full_name: "pbtest.TestMessage3.repeated_float",
+          index: 28,
+          number: 46,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_foreign_message",
+          full_name: "pbtest.TestMessage3.repeated_foreign_message",
+          index: 29,
+          number: 49,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_nested_enum",
+          full_name: "pbtest.TestMessage3.repeated_nested_enum",
+          index: 30,
+          number: 51,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "repeated_foreign_enum",
+          full_name: "pbtest.TestMessage3.repeated_foreign_enum",
+          index: 31,
+          number: 52,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "proto2_msg",
+          full_name: "pbtest.TestMessage3.proto2_msg",
+          index: 32,
+          number: 53,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "proto2_msg_empty",
+          full_name: "pbtest.TestMessage3.proto2_msg_empty",
+          index: 33,
+          number: 54,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "proto2_msg_missing",
+          full_name: "pbtest.TestMessage3.proto2_msg_missing",
+          index: 34,
+          number: 55,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_foreign_message_boxed",
+          full_name: "pbtest.TestMessage3.optional_foreign_message_boxed",
+          index: 35,
+          number: 56,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_foreign_message_nonnullable",
+          full_name: "pbtest.TestMessage3.optional_foreign_message_nonnullable",
+          index: 36,
+          number: 69,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int1",
+          full_name: "pbtest.TestMessage3.int1",
+          index: 37,
+          number: 57,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "foreign1",
+          full_name: "pbtest.TestMessage3.foreign1",
+          index: 38,
+          number: 58,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int2",
+          full_name: "pbtest.TestMessage3.int2",
+          index: 39,
+          number: 59,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(1),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "foreign2",
+          full_name: "pbtest.TestMessage3.foreign2",
+          index: 40,
+          number: 60,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(1),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int3",
+          full_name: "pbtest.TestMessage3.int3",
+          index: 41,
+          number: 61,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(2),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "foreign3",
+          full_name: "pbtest.TestMessage3.foreign3",
+          index: 42,
+          number: 62,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(2),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int4",
+          full_name: "pbtest.TestMessage3.int4",
+          index: 43,
+          number: 63,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(3),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "foreign4",
+          full_name: "pbtest.TestMessage3.foreign4",
+          index: 44,
+          number: 64,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(3),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int5",
+          full_name: "pbtest.TestMessage3.int5",
+          index: 45,
+          number: 65,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(4),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "foreign5",
+          full_name: "pbtest.TestMessage3.foreign5",
+          index: 46,
+          number: 66,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(4),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "int6",
+          full_name: "pbtest.TestMessage3.int6",
+          index: 47,
+          number: 67,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(5),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "bool6",
+          full_name: "pbtest.TestMessage3.bool6",
+          index: 48,
+          number: 68,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(5),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a",
+          full_name: "pbtest.TestMessage3.a",
+          index: 49,
+          number: 70,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(6),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "b",
+          full_name: "pbtest.TestMessage3.b",
+          index: 50,
+          number: 71,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(6),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "c",
+          full_name: "pbtest.TestMessage3.c",
+          index: 51,
+          number: 72,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(6),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "nested",
+          full_name: "pbtest.TestMessage3.nested",
+          index: 52,
+          number: 73,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "nested_nullable",
+          full_name: "pbtest.TestMessage3.nested_nullable",
+          index: 53,
+          number: 74,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "nested_repeated",
+          full_name: "pbtest.TestMessage3.nested_repeated",
+          index: 54,
+          number: 75,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "fixed_length",
+          full_name: "pbtest.TestMessage3.fixed_length",
+          index: 55,
+          number: 76,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "fixed_length_repeated",
+          full_name: "pbtest.TestMessage3.fixed_length_repeated",
+          index: 56,
+          number: 77,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "zero_or_fixed_length",
+          full_name: "pbtest.TestMessage3.zero_or_fixed_length",
+          index: 57,
+          number: 78,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "zero_or_fixed_length_repeated",
+          full_name: "pbtest.TestMessage3.zero_or_fixed_length_repeated",
+          index: 58,
+          number: 79,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_int",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_foreign",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_zero",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_null",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_unset",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_primitives",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "oneof_empty_field",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut optional_int32_size = 0;
     if self.optional_int32 != <i32 as ::std::default::Default>::default() {
@@ -2470,7 +3662,7 @@ impl ::pb_jelly::Message for TestMessage3 {
     size += zero_or_fixed_length_repeated_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.optional_int32 != <i32 as ::std::default::Default>::default() {
       let val = &self.optional_int32;
@@ -3664,9 +4856,395 @@ impl ::pb_jelly::Message for TestMessage3 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3 {
-  const NAME: &'static str = "TestMessage3";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3";
+impl ::pb_jelly::Reflection for TestMessage3 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "oneof_int" => {
+        if let Some(TestMessage3_OneofInt::Int1(ref val)) = self.oneof_int {
+          return Some("int1");
+        }
+        if let Some(TestMessage3_OneofInt::Foreign1(ref val)) = self.oneof_int {
+          return Some("foreign1");
+        }
+        return None;
+      }
+      "oneof_foreign" => {
+        if let Some(TestMessage3_OneofForeign::Int2(ref val)) = self.oneof_foreign {
+          return Some("int2");
+        }
+        if let Some(TestMessage3_OneofForeign::Foreign2(ref val)) = self.oneof_foreign {
+          return Some("foreign2");
+        }
+        return None;
+      }
+      "oneof_zero" => {
+        if let Some(TestMessage3_OneofZero::Int3(ref val)) = self.oneof_zero {
+          return Some("int3");
+        }
+        if let Some(TestMessage3_OneofZero::Foreign3(ref val)) = self.oneof_zero {
+          return Some("foreign3");
+        }
+        return None;
+      }
+      "oneof_null" => {
+        if let Some(TestMessage3_OneofNull::Int4(ref val)) = self.oneof_null {
+          return Some("int4");
+        }
+        if let Some(TestMessage3_OneofNull::Foreign4(ref val)) = self.oneof_null {
+          return Some("foreign4");
+        }
+        return None;
+      }
+      "oneof_unset" => {
+        if let Some(TestMessage3_OneofUnset::Int5(ref val)) = self.oneof_unset {
+          return Some("int5");
+        }
+        if let Some(TestMessage3_OneofUnset::Foreign5(ref val)) = self.oneof_unset {
+          return Some("foreign5");
+        }
+        return None;
+      }
+      "oneof_primitives" => {
+        if let Some(TestMessage3_OneofPrimitives::Int6(ref val)) = self.oneof_primitives {
+          return Some("int6");
+        }
+        if let Some(TestMessage3_OneofPrimitives::Bool6(ref val)) = self.oneof_primitives {
+          return Some("bool6");
+        }
+        return None;
+      }
+      "oneof_empty_field" => {
+        if let TestMessage3_OneofEmptyField::A = self.oneof_empty_field {
+          let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+          return Some("a");
+        }
+        if let TestMessage3_OneofEmptyField::B = self.oneof_empty_field {
+          let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+          return Some("b");
+        }
+        if let TestMessage3_OneofEmptyField::C(ref val) = self.oneof_empty_field {
+          return Some("c");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "optional_int32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_int32);
+      }
+      "optional_int64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_int64);
+      }
+      "optional_uint32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_uint32);
+      }
+      "optional_uint64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_uint64);
+      }
+      "optional_fixed64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_fixed64);
+      }
+      "optional_fixed32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_fixed32);
+      }
+      "optional_sfixed64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_sfixed64);
+      }
+      "optional_sfixed32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_sfixed32);
+      }
+      "optional_double" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_double);
+      }
+      "optional_bool" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_bool);
+      }
+      "optional_string" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_string);
+      }
+      "optional_bytes" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_bytes);
+      }
+      "optional_float" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_float);
+      }
+      "optional_foreign_message" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_message.get_or_insert_with(::std::default::Default::default));
+      }
+      "optional_nested_enum" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_nested_enum);
+      }
+      "optional_foreign_enum" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_foreign_enum);
+      }
+      "repeated_int32" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_int64" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_uint32" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_uint64" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_fixed64" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_fixed32" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_sfixed64" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_sfixed32" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_double" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_bool" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_string" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_bytes" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_float" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_foreign_message" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_nested_enum" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "repeated_foreign_enum" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "proto2_msg" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.proto2_msg.get_or_insert_with(::std::default::Default::default));
+      }
+      "proto2_msg_empty" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.proto2_msg_empty.get_or_insert_with(::std::default::Default::default));
+      }
+      "proto2_msg_missing" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.proto2_msg_missing.get_or_insert_with(::std::default::Default::default));
+      }
+      "optional_foreign_message_boxed" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_message_boxed.get_or_insert_with(::std::default::Default::default).as_mut());
+      }
+      "optional_foreign_message_nonnullable" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_foreign_message_nonnullable);
+      }
+      "int1" => {
+        match self.oneof_int {
+          Some(TestMessage3_OneofInt::Int1(_)) => (),
+          _ => {
+            self.oneof_int = Some(TestMessage3_OneofInt::Int1(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofInt::Int1(ref mut val)) = self.oneof_int {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "foreign1" => {
+        match self.oneof_int {
+          Some(TestMessage3_OneofInt::Foreign1(_)) => (),
+          _ => {
+            self.oneof_int = Some(TestMessage3_OneofInt::Foreign1(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofInt::Foreign1(ref mut val)) = self.oneof_int {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int2" => {
+        match self.oneof_foreign {
+          Some(TestMessage3_OneofForeign::Int2(_)) => (),
+          _ => {
+            self.oneof_foreign = Some(TestMessage3_OneofForeign::Int2(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofForeign::Int2(ref mut val)) = self.oneof_foreign {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "foreign2" => {
+        match self.oneof_foreign {
+          Some(TestMessage3_OneofForeign::Foreign2(_)) => (),
+          _ => {
+            self.oneof_foreign = Some(TestMessage3_OneofForeign::Foreign2(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofForeign::Foreign2(ref mut val)) = self.oneof_foreign {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int3" => {
+        match self.oneof_zero {
+          Some(TestMessage3_OneofZero::Int3(_)) => (),
+          _ => {
+            self.oneof_zero = Some(TestMessage3_OneofZero::Int3(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofZero::Int3(ref mut val)) = self.oneof_zero {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "foreign3" => {
+        match self.oneof_zero {
+          Some(TestMessage3_OneofZero::Foreign3(_)) => (),
+          _ => {
+            self.oneof_zero = Some(TestMessage3_OneofZero::Foreign3(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofZero::Foreign3(ref mut val)) = self.oneof_zero {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int4" => {
+        match self.oneof_null {
+          Some(TestMessage3_OneofNull::Int4(_)) => (),
+          _ => {
+            self.oneof_null = Some(TestMessage3_OneofNull::Int4(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofNull::Int4(ref mut val)) = self.oneof_null {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "foreign4" => {
+        match self.oneof_null {
+          Some(TestMessage3_OneofNull::Foreign4(_)) => (),
+          _ => {
+            self.oneof_null = Some(TestMessage3_OneofNull::Foreign4(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofNull::Foreign4(ref mut val)) = self.oneof_null {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int5" => {
+        match self.oneof_unset {
+          Some(TestMessage3_OneofUnset::Int5(_)) => (),
+          _ => {
+            self.oneof_unset = Some(TestMessage3_OneofUnset::Int5(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofUnset::Int5(ref mut val)) = self.oneof_unset {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "foreign5" => {
+        match self.oneof_unset {
+          Some(TestMessage3_OneofUnset::Foreign5(_)) => (),
+          _ => {
+            self.oneof_unset = Some(TestMessage3_OneofUnset::Foreign5(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofUnset::Foreign5(ref mut val)) = self.oneof_unset {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "int6" => {
+        match self.oneof_primitives {
+          Some(TestMessage3_OneofPrimitives::Int6(_)) => (),
+          _ => {
+            self.oneof_primitives = Some(TestMessage3_OneofPrimitives::Int6(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofPrimitives::Int6(ref mut val)) = self.oneof_primitives {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "bool6" => {
+        match self.oneof_primitives {
+          Some(TestMessage3_OneofPrimitives::Bool6(_)) => (),
+          _ => {
+            self.oneof_primitives = Some(TestMessage3_OneofPrimitives::Bool6(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3_OneofPrimitives::Bool6(ref mut val)) = self.oneof_primitives {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "a" => {
+        match self.oneof_empty_field {
+          TestMessage3_OneofEmptyField::A => (),
+          _ => {
+            self.oneof_empty_field = TestMessage3_OneofEmptyField::A;
+          },
+        }
+        return ::pb_jelly::reflection::FieldMut::Empty;
+      }
+      "b" => {
+        match self.oneof_empty_field {
+          TestMessage3_OneofEmptyField::B => (),
+          _ => {
+            self.oneof_empty_field = TestMessage3_OneofEmptyField::B;
+          },
+        }
+        return ::pb_jelly::reflection::FieldMut::Empty;
+      }
+      "c" => {
+        match self.oneof_empty_field {
+          TestMessage3_OneofEmptyField::C(_) => (),
+          _ => {
+            self.oneof_empty_field = TestMessage3_OneofEmptyField::C(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3_OneofEmptyField::C(ref mut val) = self.oneof_empty_field {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "nested" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.nested);
+      }
+      "nested_nullable" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.nested_nullable.get_or_insert_with(::std::default::Default::default));
+      }
+      "nested_repeated" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "fixed_length" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.fixed_length);
+      }
+      "fixed_length_repeated" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "zero_or_fixed_length" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.zero_or_fixed_length);
+      }
+      "zero_or_fixed_length_repeated" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -3691,7 +5269,56 @@ lazy_static! {
   pub static ref TestMessage3_NestedMessage_default: TestMessage3_NestedMessage = TestMessage3_NestedMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3_NestedMessage",
+      full_name: "pbtest.TestMessage3_NestedMessage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "f",
+          full_name: "pbtest.TestMessage3_NestedMessage.f",
+          index: 0,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "d",
+          full_name: "pbtest.TestMessage3_NestedMessage.d",
+          index: 1,
+          number: 4,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "e",
+          full_name: "pbtest.TestMessage3_NestedMessage.e",
+          index: 2,
+          number: 5,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "n",
+          full_name: "pbtest.TestMessage3_NestedMessage.n",
+          index: 3,
+          number: 6,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "nested_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut f_size = 0;
     if let TestMessage3_NestedMessage_NestedOneof::F(ref val) = self.nested_oneof {
@@ -3725,7 +5352,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage {
     size += n_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let TestMessage3_NestedMessage_NestedOneof::F(ref val) = self.nested_oneof {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -3808,9 +5435,84 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3_NestedMessage {
-  const NAME: &'static str = "TestMessage3_NestedMessage";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3_NestedMessage";
+impl ::pb_jelly::Reflection for TestMessage3_NestedMessage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "nested_oneof" => {
+        if let TestMessage3_NestedMessage_NestedOneof::F(ref val) = self.nested_oneof {
+          return Some("f");
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::D(ref val) = self.nested_oneof {
+          return Some("d");
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::E(ref val) = self.nested_oneof {
+          return Some("e");
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::N(ref val) = self.nested_oneof {
+          return Some("n");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "f" => {
+        match self.nested_oneof {
+          TestMessage3_NestedMessage_NestedOneof::F(_) => (),
+          _ => {
+            self.nested_oneof = TestMessage3_NestedMessage_NestedOneof::F(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::F(ref mut val) = self.nested_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "d" => {
+        match self.nested_oneof {
+          TestMessage3_NestedMessage_NestedOneof::D(_) => (),
+          _ => {
+            self.nested_oneof = TestMessage3_NestedMessage_NestedOneof::D(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::D(ref mut val) = self.nested_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "e" => {
+        match self.nested_oneof {
+          TestMessage3_NestedMessage_NestedOneof::E(_) => (),
+          _ => {
+            self.nested_oneof = TestMessage3_NestedMessage_NestedOneof::E(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::E(ref mut val) = self.nested_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "n" => {
+        match self.nested_oneof {
+          TestMessage3_NestedMessage_NestedOneof::N(_) => (),
+          _ => {
+            self.nested_oneof = TestMessage3_NestedMessage_NestedOneof::N(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3_NestedMessage_NestedOneof::N(ref mut val) = self.nested_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -3830,7 +5532,35 @@ lazy_static! {
   pub static ref TestMessage3_NestedMessage_File_default: TestMessage3_NestedMessage_File = TestMessage3_NestedMessage_File::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3_NestedMessage_File",
+      full_name: "pbtest.TestMessage3_NestedMessage_File",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "blocklist",
+          full_name: "pbtest.TestMessage3_NestedMessage_File.blocklist",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "size",
+          full_name: "pbtest.TestMessage3_NestedMessage_File.size",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut blocklist_size = 0;
     for val in &self.blocklist {
@@ -3850,7 +5580,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
     size += size_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     for val in &self.blocklist {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -3900,9 +5630,27 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3_NestedMessage_File {
-  const NAME: &'static str = "TestMessage3_NestedMessage_File";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3_NestedMessage_File";
+impl ::pb_jelly::Reflection for TestMessage3_NestedMessage_File {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "blocklist" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      "size" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.size);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -3918,10 +5666,20 @@ lazy_static! {
   pub static ref TestMessage3_NestedMessage_Dir_default: TestMessage3_NestedMessage_Dir = TestMessage3_NestedMessage_Dir::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3_NestedMessage_Dir",
+      full_name: "pbtest.TestMessage3_NestedMessage_Dir",
+      fields: &[
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     0
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     0
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -3938,9 +5696,21 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3_NestedMessage_Dir {
-  const NAME: &'static str = "TestMessage3_NestedMessage_Dir";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3_NestedMessage_Dir";
+impl ::pb_jelly::Reflection for TestMessage3_NestedMessage_Dir {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -3965,7 +5735,47 @@ lazy_static! {
   pub static ref TestMessage3NonNullableOneof_default: TestMessage3NonNullableOneof = TestMessage3NonNullableOneof::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3NonNullableOneof",
+      full_name: "pbtest.TestMessage3NonNullableOneof",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "a",
+          full_name: "pbtest.TestMessage3NonNullableOneof.a",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "b",
+          full_name: "pbtest.TestMessage3NonNullableOneof.b",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "other_field",
+          full_name: "pbtest.TestMessage3NonNullableOneof.other_field",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "non_nullable_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut a_size = 0;
     if let TestMessage3NonNullableOneof_NonNullableOneof::A(ref val) = self.non_nullable_oneof {
@@ -3991,7 +5801,7 @@ impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
     size += other_field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let TestMessage3NonNullableOneof_NonNullableOneof::A(ref val) = self.non_nullable_oneof {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -4055,9 +5865,57 @@ impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3NonNullableOneof {
-  const NAME: &'static str = "TestMessage3NonNullableOneof";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3NonNullableOneof";
+impl ::pb_jelly::Reflection for TestMessage3NonNullableOneof {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "non_nullable_oneof" => {
+        if let TestMessage3NonNullableOneof_NonNullableOneof::A(ref val) = self.non_nullable_oneof {
+          return Some("a");
+        }
+        if let TestMessage3NonNullableOneof_NonNullableOneof::B(ref val) = self.non_nullable_oneof {
+          return Some("b");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "a" => {
+        match self.non_nullable_oneof {
+          TestMessage3NonNullableOneof_NonNullableOneof::A(_) => (),
+          _ => {
+            self.non_nullable_oneof = TestMessage3NonNullableOneof_NonNullableOneof::A(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3NonNullableOneof_NonNullableOneof::A(ref mut val) = self.non_nullable_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "b" => {
+        match self.non_nullable_oneof {
+          TestMessage3NonNullableOneof_NonNullableOneof::B(_) => (),
+          _ => {
+            self.non_nullable_oneof = TestMessage3NonNullableOneof_NonNullableOneof::B(::std::default::Default::default());
+          },
+        }
+        if let TestMessage3NonNullableOneof_NonNullableOneof::B(ref mut val) = self.non_nullable_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "other_field" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.other_field);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4075,7 +5933,26 @@ lazy_static! {
   pub static ref TestMessage3ErrIfDefaultEnum_default: TestMessage3ErrIfDefaultEnum = TestMessage3ErrIfDefaultEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3ErrIfDefaultEnum",
+      full_name: "pbtest.TestMessage3ErrIfDefaultEnum",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "field",
+          full_name: "pbtest.TestMessage3ErrIfDefaultEnum.field",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut field_size = 0;
     let val = &self.field;
@@ -4085,7 +5962,7 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
     size += field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     let val = &self.field;
     size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -4119,9 +5996,24 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3ErrIfDefaultEnum {
-  const NAME: &'static str = "TestMessage3ErrIfDefaultEnum";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3ErrIfDefaultEnum";
+impl ::pb_jelly::Reflection for TestMessage3ErrIfDefaultEnum {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "field" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.field);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4145,7 +6037,38 @@ lazy_static! {
   pub static ref TestMessage3ErrIfDefaultEnumOneof_default: TestMessage3ErrIfDefaultEnumOneof = TestMessage3ErrIfDefaultEnumOneof::default();
 }
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3ErrIfDefaultEnumOneof",
+      full_name: "pbtest.TestMessage3ErrIfDefaultEnumOneof",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "something",
+          full_name: "pbtest.TestMessage3ErrIfDefaultEnumOneof.something",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "nothing",
+          full_name: "pbtest.TestMessage3ErrIfDefaultEnumOneof.nothing",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "maybe",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut something_size = 0;
     if let Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(ref val)) = self.maybe {
@@ -4164,7 +6087,7 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
     size += nothing_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if let Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(ref val)) = self.maybe {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -4212,9 +6135,42 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3ErrIfDefaultEnumOneof {
-  const NAME: &'static str = "TestMessage3ErrIfDefaultEnumOneof";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3ErrIfDefaultEnumOneof";
+impl ::pb_jelly::Reflection for TestMessage3ErrIfDefaultEnumOneof {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "maybe" => {
+        if let Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(ref val)) = self.maybe {
+          return Some("something");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "something" => {
+        match self.maybe {
+          Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(_)) => (),
+          _ => {
+            self.maybe = Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(ref mut val)) = self.maybe {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "nothing" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.nothing.get_or_insert_with(::std::default::Default::default));
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4232,7 +6188,26 @@ lazy_static! {
   pub static ref TestMessage3RepeatedErrIfDefaultEnum_default: TestMessage3RepeatedErrIfDefaultEnum = TestMessage3RepeatedErrIfDefaultEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3RepeatedErrIfDefaultEnum",
+      full_name: "pbtest.TestMessage3RepeatedErrIfDefaultEnum",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "field",
+          full_name: "pbtest.TestMessage3RepeatedErrIfDefaultEnum.field",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut field_size = 0;
     for val in &self.field {
@@ -4246,7 +6221,7 @@ impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
     size += field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     for val in &self.field {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -4297,9 +6272,24 @@ impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3RepeatedErrIfDefaultEnum {
-  const NAME: &'static str = "TestMessage3RepeatedErrIfDefaultEnum";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3RepeatedErrIfDefaultEnum";
+impl ::pb_jelly::Reflection for TestMessage3RepeatedErrIfDefaultEnum {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "field" => {
+        unimplemented!("Repeated fields are not currently supported.");
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4317,7 +6307,26 @@ lazy_static! {
   pub static ref TestMessage3ClosedEnum_default: TestMessage3ClosedEnum = TestMessage3ClosedEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3ClosedEnum {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3ClosedEnum",
+      full_name: "pbtest.TestMessage3ClosedEnum",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "value",
+          full_name: "pbtest.TestMessage3ClosedEnum.value",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut value_size = 0;
     if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
@@ -4329,7 +6338,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum {
     size += value_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
       let val = &self.value;
@@ -4362,9 +6371,24 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3ClosedEnum {
-  const NAME: &'static str = "TestMessage3ClosedEnum";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3ClosedEnum";
+impl ::pb_jelly::Reflection for TestMessage3ClosedEnum {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "value" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.value);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4382,7 +6406,26 @@ lazy_static! {
   pub static ref TestMessage3ClosedEnum2_default: TestMessage3ClosedEnum2 = TestMessage3ClosedEnum2::default();
 }
 impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3ClosedEnum2",
+      full_name: "pbtest.TestMessage3ClosedEnum2",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "value",
+          full_name: "pbtest.TestMessage3ClosedEnum2.value",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut value_size = 0;
     if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
@@ -4394,7 +6437,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
     size += value_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
       let val = &self.value;
@@ -4427,9 +6470,24 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3ClosedEnum2 {
-  const NAME: &'static str = "TestMessage3ClosedEnum2";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3ClosedEnum2";
+impl ::pb_jelly::Reflection for TestMessage3ClosedEnum2 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "value" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.value);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4447,7 +6505,26 @@ lazy_static! {
   pub static ref TestMessage3NonOptionalBoxedMessage_default: TestMessage3NonOptionalBoxedMessage = TestMessage3NonOptionalBoxedMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3NonOptionalBoxedMessage",
+      full_name: "pbtest.TestMessage3NonOptionalBoxedMessage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "msg",
+          full_name: "pbtest.TestMessage3NonOptionalBoxedMessage.msg",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut msg_size = 0;
      {
@@ -4460,7 +6537,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
     size += msg_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
      {
       let val = &*self.msg;
@@ -4497,9 +6574,24 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3NonOptionalBoxedMessage {
-  const NAME: &'static str = "TestMessage3NonOptionalBoxedMessage";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3NonOptionalBoxedMessage";
+impl ::pb_jelly::Reflection for TestMessage3NonOptionalBoxedMessage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "msg" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.msg.as_mut());
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4517,7 +6609,26 @@ lazy_static! {
   pub static ref TestMessage3NonOptionalBoxedMessage_InnerMessage_default: TestMessage3NonOptionalBoxedMessage_InnerMessage = TestMessage3NonOptionalBoxedMessage_InnerMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestMessage3NonOptionalBoxedMessage_InnerMessage",
+      full_name: "pbtest.TestMessage3NonOptionalBoxedMessage_InnerMessage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "name",
+          full_name: "pbtest.TestMessage3NonOptionalBoxedMessage_InnerMessage.name",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut name_size = 0;
     if self.name != <::std::string::String as ::std::default::Default>::default() {
@@ -4530,7 +6641,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
     size += name_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.name != <::std::string::String as ::std::default::Default>::default() {
       let val = &self.name;
@@ -4567,9 +6678,24 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestMessage3NonOptionalBoxedMessage_InnerMessage {
-  const NAME: &'static str = "TestMessage3NonOptionalBoxedMessage_InnerMessage";
-  const FULL_NAME: &'static str = "pbtest.TestMessage3NonOptionalBoxedMessage_InnerMessage";
+impl ::pb_jelly::Reflection for TestMessage3NonOptionalBoxedMessage_InnerMessage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "name" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.name);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -4589,7 +6715,26 @@ lazy_static! {
   pub static ref TestPreserveUnrecognized1_default: TestPreserveUnrecognized1 = TestPreserveUnrecognized1::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestPreserveUnrecognized1",
+      full_name: "pbtest.TestPreserveUnrecognized1",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "string1",
+          full_name: "pbtest.TestPreserveUnrecognized1.string1",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string1_size = 0;
     if self.string1 != <::std::string::String as ::std::default::Default>::default() {
@@ -4603,7 +6748,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
     size += self._unrecognized.len();
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.string1 != <::std::string::String as ::std::default::Default>::default() {
       let val = &self.string1;
@@ -4643,9 +6788,24 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestPreserveUnrecognized1 {
-  const NAME: &'static str = "TestPreserveUnrecognized1";
-  const FULL_NAME: &'static str = "pbtest.TestPreserveUnrecognized1";
+impl ::pb_jelly::Reflection for TestPreserveUnrecognized1 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "string1" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.string1);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -4691,7 +6851,143 @@ lazy_static! {
   pub static ref TestPreserveUnrecognized2_default: TestPreserveUnrecognized2 = TestPreserveUnrecognized2::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestPreserveUnrecognized2",
+      full_name: "pbtest.TestPreserveUnrecognized2",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "a_string1",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_string1",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_int32",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_int32",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_int64",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_int64",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_uint32",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_uint32",
+          index: 3,
+          number: 4,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_uint64",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_uint64",
+          index: 4,
+          number: 5,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_fixed64",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_fixed64",
+          index: 5,
+          number: 6,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_fixed32",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_fixed32",
+          index: 6,
+          number: 7,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_sfixed64",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_sfixed64",
+          index: 7,
+          number: 8,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_sfixed32",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_sfixed32",
+          index: 8,
+          number: 9,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_double",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_double",
+          index: 9,
+          number: 10,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_bool",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_bool",
+          index: 10,
+          number: 11,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_string",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_string",
+          index: 11,
+          number: 12,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_bytes",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_bytes",
+          index: 12,
+          number: 13,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_float",
+          full_name: "pbtest.TestPreserveUnrecognized2.a_float",
+          index: 13,
+          number: 14,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut a_string1_size = 0;
     if self.a_string1 != <::std::string::String as ::std::default::Default>::default() {
@@ -4811,7 +7107,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
     size += self._unrecognized.len();
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.a_string1 != <::std::string::String as ::std::default::Default>::default() {
       let val = &self.a_string1;
@@ -5054,9 +7350,63 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestPreserveUnrecognized2 {
-  const NAME: &'static str = "TestPreserveUnrecognized2";
-  const FULL_NAME: &'static str = "pbtest.TestPreserveUnrecognized2";
+impl ::pb_jelly::Reflection for TestPreserveUnrecognized2 {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "a_string1" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_string1);
+      }
+      "a_int32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_int32);
+      }
+      "a_int64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_int64);
+      }
+      "a_uint32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_uint32);
+      }
+      "a_uint64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_uint64);
+      }
+      "a_fixed64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_fixed64);
+      }
+      "a_fixed32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_fixed32);
+      }
+      "a_sfixed64" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_sfixed64);
+      }
+      "a_sfixed32" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_sfixed32);
+      }
+      "a_double" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_double);
+      }
+      "a_bool" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_bool);
+      }
+      "a_string" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_string);
+      }
+      "a_bytes" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_bytes);
+      }
+      "a_float" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.a_float);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -5074,12 +7424,22 @@ lazy_static! {
   pub static ref TestPreserveUnrecognizedEmpty_default: TestPreserveUnrecognizedEmpty = TestPreserveUnrecognizedEmpty::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestPreserveUnrecognizedEmpty",
+      full_name: "pbtest.TestPreserveUnrecognizedEmpty",
+      fields: &[
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     size += self._unrecognized.len();
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     0
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -5099,8 +7459,20 @@ impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for TestPreserveUnrecognizedEmpty {
-  const NAME: &'static str = "TestPreserveUnrecognizedEmpty";
-  const FULL_NAME: &'static str = "pbtest.TestPreserveUnrecognizedEmpty";
+impl ::pb_jelly::Reflection for TestPreserveUnrecognizedEmpty {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
