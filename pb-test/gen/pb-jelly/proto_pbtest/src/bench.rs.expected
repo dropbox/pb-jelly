@@ -175,7 +175,7 @@ impl StringMessage {
     self.data.take().unwrap_or_default()
   }
   pub fn get_data(&self) -> &str {
-    self.data.as_ref().map(|s| s.as_str()).unwrap_or("")
+    self.data.as_deref().unwrap_or("")
   }
 }
 impl ::std::default::Default for StringMessage {
