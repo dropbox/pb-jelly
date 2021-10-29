@@ -417,7 +417,7 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_STRING:
             return (
                 "&str",
-                'self.%s.as_ref().map(|s| s.as_str()).unwrap_or("")' % name,
+                'self.%s.as_deref().unwrap_or("")' % name,
             )
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             assert not (
