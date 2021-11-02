@@ -1,6 +1,10 @@
 # Unreleased
 * Everything has been released!
 
+# 0.0.9
+### November 2, 2021
+* Simplify Option<String> -> &str conversion in pb-jelly-gen (clippy warning)
+
 # 0.0.8
 ### October 25, 2021
 * Move `(gogoproto.nullable)` option to `(rust.nullable_field)`, removing the dependency on gogoproto
