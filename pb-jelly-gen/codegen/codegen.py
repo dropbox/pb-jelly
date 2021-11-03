@@ -1656,7 +1656,7 @@ class Context(object):
             features = {u"serde": u' features = ["serde_derive"]'}
             versions = {
                 u"lazy_static": u' version = "1.4.0" ',
-                u"pb-jelly": u' version = "0.0.8" ',
+                u"pb-jelly": u' version = "0.0.9" ',
                 u"serde": u' version = "1.0" ',
                 u"bytes": u' version = "1.0" ',
             }
