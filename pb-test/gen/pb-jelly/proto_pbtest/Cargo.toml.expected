@@ -7,5 +7,5 @@ edition = "2018"
 [dependencies]
 bytes = { version = "1.0" }
 lazy_static = { version = "1.4.0" }
-pb-jelly = { version = "0.0.8" }
+pb-jelly = { version = "0.0.9" }
 proto_google = {path = "../proto_google"}
