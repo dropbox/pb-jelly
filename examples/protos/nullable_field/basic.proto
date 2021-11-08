@@ -1,0 +1,16 @@
+syntax = "proto3";
+package basic;
+
+import "rust/extensions.proto";
+
+message Inner { int32 x = 1; }
+message PlainMessage {
+    Inner field1 = 1;
+    Inner field2 = 2;
+    Inner field3 = 3;
+}
+message NonNullableMessage {
+    Inner field1_nonnullable = 1 [(rust.nullable_field)=false];
+    Inner field2 = 2 [(rust.nullable_field)=true];
+    Inner field3 = 3;  // Messages default to nullable
+}
