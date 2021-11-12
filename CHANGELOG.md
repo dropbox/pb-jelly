@@ -1,5 +1,9 @@
 # Unreleased
-* Everything has been released!
+* Simplify the zerocopy implementation. (#127)
+  * `PbBuffer` has been reworked to untie it from `PbBufferReader`.
+    * `copy_from_reader` replaces `from_reader` and allows a `PbBuffer` to be constructed, by copying, from any `Buf`. Implementations can still opt out by returning `Err`.
+    * `copy_to_writer` replaces `into_reader`. Callers that were using `into_reader` to call `Message::deserialize` should instead construct their desired `PbBufferReader` directly (e.g. `Cursor<Bytes>`).
+  * `PbBufferReader::as_buffer` is renamed to `read_buffer`, and provided implementations fall back to copying `Lazy` fields by default (instead of returning an error).
 
 # 0.0.9
 ### November 2, 2021

@@ -1,25 +1,30 @@
-//! This module exposes three fundamental concepts:
+//! This module exposes two fundamental concepts:
 //!
 //! [PbBufferReader]
 //! A [PbBufferReader] is something which a [Message] can be deserialized from. In the common case,
 //! this means that the relevant bytes are copied out of the underlying store and copied into an
-//! appropriate struct which implements [Message]. The underlying data store is referred to as a
-//! [PbBuffer].
+//! appropriate struct which implements [Message].
 //!
 //! [PbBufferWriter]
 //! A [PbBufferWriter] is something which a [Message] can be serialized to. In the common case, this
 //! means that the relevant bytes are copied out of the concrete struct and into the underlying
-//! data store. The underlying data store is referred to as a [PbBuffer].
+//! data store.
 //!
-//! [Lazy]
-//! The interesting trick of the [PbBuffer]/[PbBufferReader]/[PbBufferWriter] abstraction is that there are
-//! cases where we want to minimize the number of times we copy the data contained within a message
-//! (or field of a message). Especially on resource-constrained hardware (mostly MP OSDs), we want
-//! to be able to avoid the cost of serialization and deserialization.
+//! # Zerocopy serialization and deserialization and `Lazy`
 //!
-//! To support this, a [PbBufferReader] and a [PbBufferWriter] may use *compatible* backing stores, and
-//! expose a [Lazy] message type which represents the not-yet-deserialized data. The flow is
-//! roughly as follows:
+//! There are cases where we want to minimize the number of times we copy the data contained within
+//! a message. Especially on resource-constrained hardware (mostly MP OSDs), we want to avoid the cost
+//! of copying large buffers during serialization and deserialization.
+//!
+//! To support this, messages may contain zerocopy fields using the [`Lazy`] type.
+//! `pb-jelly-gen` may generate these using the `CORD`, `grpc_slices`, or `zero_copy` options; they
+//! use different underlying types, which must implement [PbBuffer], but they all behave similarly.
+//!
+//! [PbBufferReader] and a [PbBufferWriter] have the opportunity to recognize [Lazy] fields.
+//! At deserialization time, if [PbBufferReader] is used with a compatible [Lazy] field, instead of
+//! allocating, it may simply store a reference to its underlying input buffer in the [Lazy].
+//! Similarly, at serialization time, a [PbBufferWriter] used with a compatible [Lazy] may copy a
+//! reference to the [Lazy] field into its output buffer, rather than copying its content.
 //!
 //! Request (bytes on the wire)
 //!     |
@@ -27,7 +32,7 @@
 //! RPC Framework (with an underlying allocator, e.g. blob::Blob or grpc::Slice)
 //!     |
 //!     v
-//! BR: PbBufferReader deserializes the struct using RPC framework's allocator.
+//! BR: [PbBufferReader] deserializes the struct using RPC framework's allocator.
 //!     |
 //!     v
 //! Request (concrete struct containing a [Lazy] field)
@@ -39,7 +44,7 @@
 //! Response (concrete struct containing a [Lazy] field)
 //!     |
 //!     v
-//! BW: PbBufferWriter serializes the struct using RPC framework's allocator.
+//! BW: [PbBufferWriter] serializes the struct using RPC framework's allocator.
 //!     |
 //!     v
 //! RPC Framework (with an underlying allocator, e.g. blob::Blob or grpc::Slice)
@@ -47,16 +52,6 @@
 //!     v
 //! Response (bytes on the wire).
 //!
-//! In order for [Lazy] to work (i.e. minimize copies), we must have the [PbBufferReader] and the
-//! [PbBufferWriter] use compatible underlying allocators. Compatibility is defined by the
-//! both of the following:
-//! - the ability for the [PbBufferWriter] to successfully call `write_buffer` for the appropriate
-//! [PbBuffer] type, which writes non-deserialized data back into the data store.
-//! - the ability to use [PbBuffer::into_reader] and [PbBufferReader::as_buffer] to *convert* between
-//! underlying data stores.
-//!
-//! Roughly speaking, [Lazy] converts to the appropriate [PbBuffer] type when `deserialize` is
-//! called, and then lazily writes itself when `serialize` is called.
 //!
 //! In the status quo, the behavior is as follows:
 //!
@@ -65,19 +60,13 @@
 //! Converting from `blob_pb::WrappedBlob` to a `blob_pb::VecSlice` is zero-copy.
 //! Converting from a `blob_pb::VecSlice` to a `blob_pb::Blob` requires a single copy.
 
-use std::any::{
-    type_name,
-    Any,
-};
-use std::default::Default;
+use std::any::Any;
 use std::fmt::{
     self,
     Debug,
 };
 use std::io::{
     Cursor,
-    Error,
-    ErrorKind,
     Result,
     Write,
 };
@@ -89,52 +78,40 @@ use bytes::{
 
 use super::Message;
 
-/// A stand-in trait for any backing buffer store. Required to be object-safe for lazy evaluation.
-/// PbBuffers are expected to own references to the data they reference, and should be cheap
+/// A stand-in trait for any backing buffer store.
+/// `PbBuffer`s are expected to own references to the data they reference, and should be cheap
 /// (constant-time) to clone.
 #[allow(clippy::len_without_is_empty)]
-pub trait PbBuffer: Any + Clone + Default {
-    type Reader: PbBufferReader;
+pub trait PbBuffer: Any + Sized {
+    /// Returns the length of the data contained in this buffer.
     fn len(&self) -> usize;
-    fn into_reader(self) -> Self::Reader;
-
-    /// Deserialize this buffer from a reader. Unless overridden, this will error
-    /// if the reader does not support casting to [Self].
-    fn from_reader<R: PbBufferReader>(reader: &mut R) -> Result<Self> {
-        reader.as_buffer::<Self>()
-    }
+    /// Fallback method to read the contents of `self`. This method is expected to write exactly
+    /// `self.len()` bytes into `writer`, or fail with an error.
+    ///
+    /// This method is used to write `Lazy` fields to incompatible [`PbBufferWriter`]s.
+    fn copy_to_writer<W: Write + ?Sized>(&self, writer: &mut W) -> Result<()>;
+    /// Fallback method to create an instance of this `PbBuffer`.
+    ///
+    /// This method is used to read `Lazy` fields from incompatible [`PbBufferReader`]s.
+    fn copy_from_reader<B: Buf + ?Sized>(reader: &mut B) -> Result<Self>;
 }
 
-/// If `B1` and `B2` are the same type, returns the passed-in buffer;
-/// otherwise, returns an error.
-pub fn cast_buffer<B1: PbBuffer, B2: PbBuffer>(buf: B1) -> Result<B2> {
-    let mut buf = Some(buf);
-    if let Some(buf) = (&mut buf as &mut dyn Any).downcast_mut::<Option<B2>>() {
-        Ok(buf.take().unwrap())
-    } else {
-        Err(Error::new(
-            ErrorKind::InvalidInput,
-            format!(
-                "This reader produces buffers of type {}, not {}",
-                type_name::<B1>(),
-                type_name::<B2>()
-            ),
-        ))
-    }
+/// If `B1` and `B2` are the same type, returns a function to cast `B1 -> B2`; otherwise None.
+/// Used to implement [PbBuffer] casting.
+pub fn type_is<B1: 'static, B2: 'static>() -> Option<fn(B1) -> B2> {
+    let f: fn(B1) -> B1 = |x| x;
+    // If B1 = B2, then this cast should succeed!
+    (&f as &dyn Any).downcast_ref::<fn(B1) -> B2>().copied()
 }
 
 /// All concrete types which are used for deserialization should implement
 /// [PbBufferReader], which includes functions to convert to and from [PbBuffer].
-pub trait PbBufferReader: Buf + Sized {
-    /// Get a reference to the underlying [PbBuffer]. This is expected to be cheap,
-    /// if supported, or return error.
-    /// The implementation should dispatch on the type `B` and return an error
-    /// if the requested buffer type is unknown.
-    fn as_buffer<B: PbBuffer>(&self) -> Result<B> {
-        Err(Error::new(
-            ErrorKind::InvalidInput,
-            "Taking ownership of the PbBuffer from this reader is not supported",
-        ))
+pub trait PbBufferReader: Buf {
+    /// Attempt to read into a compatible [PbBuffer], avoiding a copy if possible.
+    /// The implementation should dispatch on the type `B`. If unsupported,
+    /// the reader may fall back to [PbBuffer::copy_from_reader].
+    fn read_buffer<B: PbBuffer>(&mut self) -> Result<B> {
+        B::copy_from_reader(self)
     }
 
     /// Advance the interal cursor by `at`, and return a [PbBufferReader] corresponding to the
@@ -143,30 +120,40 @@ pub trait PbBufferReader: Buf + Sized {
 }
 
 /// All concrete types used for serialization should implement [PbBufferWriter] in order to support
-/// serializing lazily-evaluated types without copies.
+/// serializing [Lazy] fields without copies.
 pub trait PbBufferWriter: Write {
-    /// Attempt to write a lazily-evaluated buffer into [Self]. If the underlying [B] is not
-    /// zero-copy-supported by the [PbBufferWriter], this should read/copy the bytes out from [B].
+    /// Attempt to write a zerocopy buffer into `self`. If `B` is not zero-copy-supported
+    /// by the [PbBufferWriter], this may read/copy the bytes out from `buf`.
     fn write_buffer<B: PbBuffer>(&mut self, buf: &B) -> Result<()>;
 }
 
-/// A wrapper around a lazily-evaluted [PbBufferReader] which implements [Message].
-#[derive(Clone, Default, PartialEq)]
-pub struct Lazy<B: PbBuffer> {
+/// A wrapper around a [PbBuffer], which implements [Message].
+#[derive(Clone, PartialEq)]
+pub struct Lazy<B> {
+    // TODO: Make this not an `Option` by giving `VecSlice` a cheap `Default` impl
     contents: Option<B>,
 }
 
-impl<B: PbBuffer> Lazy<B> {
+impl<B> Default for Lazy<B> {
+    fn default() -> Self {
+        Self { contents: None }
+    }
+}
+
+impl<B> Lazy<B> {
     pub fn new(r: B) -> Self {
         Self { contents: Some(r) }
     }
 
-    pub fn into_buffer(self) -> B {
+    pub fn into_buffer(self) -> B
+    where
+        B: Default,
+    {
         self.contents.unwrap_or_default()
     }
 }
 
-impl<B: PbBuffer> Debug for Lazy<B> {
+impl<B> Debug for Lazy<B> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Lazy")
             .field("contents", &self.contents.as_ref().map(|_| "_"))
@@ -191,7 +178,7 @@ impl<B: PbBuffer + PartialEq> Message for Lazy<B> {
     }
 
     fn deserialize<R: PbBufferReader>(&mut self, r: &mut R) -> Result<()> {
-        self.contents = Some(B::from_reader(r)?);
+        self.contents = Some(r.read_buffer()?);
         Ok(())
     }
 }
@@ -206,21 +193,32 @@ impl<'a> PbBufferReader for Cursor<&'a [u8]> {
 }
 
 impl PbBuffer for Bytes {
-    type Reader = Cursor<Bytes>;
+    #[inline]
     fn len(&self) -> usize {
         self.len()
     }
-    fn into_reader(self) -> Cursor<Bytes> {
-        Cursor::new(self)
+
+    fn copy_to_writer<W: Write + ?Sized>(&self, writer: &mut W) -> Result<()> {
+        writer.write_all(&self)
+    }
+
+    fn copy_from_reader<B: Buf + ?Sized>(reader: &mut B) -> Result<Self> {
+        let len = reader.remaining();
+        Ok(reader.copy_to_bytes(len))
     }
 }
 
 impl PbBufferReader for Cursor<Bytes> {
-    fn as_buffer<B: PbBuffer>(&self) -> Result<B> {
-        let bytes = self.get_ref().slice((self.position() as usize)..);
-        cast_buffer(bytes)
+    fn read_buffer<B: PbBuffer>(&mut self) -> Result<B> {
+        if let Some(cast) = type_is::<Bytes, B>() {
+            let bytes = self.get_ref().slice((self.position() as usize)..);
+            Ok(cast(bytes))
+        } else {
+            B::copy_from_reader(self)
+        }
     }
 
+    #[inline]
     fn split(&mut self, at: usize) -> Self {
         let pos = self.position() as usize;
         self.advance(at);
@@ -233,16 +231,7 @@ impl<'a> PbBufferWriter for Cursor<&'a mut Vec<u8>> {
     /// Note: this implementation freely copies the data out of `buf`.
     #[inline]
     fn write_buffer<B: PbBuffer>(&mut self, buf: &B) -> Result<()> {
-        let mut reader = buf.clone().into_reader();
-        while reader.has_remaining() {
-            let n = {
-                let bytes = reader.chunk();
-                self.write_all(bytes)?;
-                bytes.len()
-            };
-            reader.advance(n);
-        }
-        Ok(())
+        buf.copy_to_writer(self)
     }
 }
 
@@ -250,20 +239,11 @@ impl<'a> PbBufferWriter for Cursor<&'a mut [u8]> {
     /// Note: this implementation freely copies the data out of `buf`.
     #[inline]
     fn write_buffer<B: PbBuffer>(&mut self, buf: &B) -> Result<()> {
-        let mut reader = buf.clone().into_reader();
-        while reader.has_remaining() {
-            let n = {
-                let bytes = reader.chunk();
-                self.write_all(bytes)?;
-                bytes.len()
-            };
-            reader.advance(n);
-        }
-        Ok(())
+        buf.copy_to_writer(self)
     }
 }
 
-/// A wrapper around a [Write] which copies all the data into the underlying [Write]r.
+/// A wrapper around a [Write] which copies all [Lazy] data into the underlying [Write]r.
 pub struct CopyWriter<'a, W: Write> {
     pub writer: &'a mut W,
 }
@@ -284,15 +264,21 @@ impl<'a, W: Write + 'a> PbBufferWriter for CopyWriter<'a, W> {
     /// Note: this implementation freely copies the data out of `buf`.
     #[inline]
     fn write_buffer<B: PbBuffer>(&mut self, buf: &B) -> Result<()> {
-        let mut reader = buf.clone().into_reader();
-        while reader.has_remaining() {
-            let n = {
-                let bytes = reader.chunk();
-                self.write_all(bytes)?;
-                bytes.len()
-            };
-            reader.advance(n);
-        }
-        Ok(())
+        buf.copy_to_writer(self.writer)
     }
+}
+
+#[test]
+fn test_lazy_bytes_deserialize() {
+    let mut lazy = Lazy::<Bytes>::default();
+    let bytes = Bytes::from_static(b"asdfasdf");
+    lazy.deserialize(&mut Cursor::new(bytes.clone()))
+        .expect("failed to deserialize");
+    let deserialized = lazy.into_buffer();
+    assert_eq!(deserialized, bytes, "The entire buffer should be copied");
+    assert_eq!(
+        deserialized.as_ptr(),
+        bytes.as_ptr(),
+        "The Bytes instance should be cloned"
+    )
 }

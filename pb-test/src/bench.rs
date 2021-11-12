@@ -4,13 +4,13 @@ mod benches {
     use pb_jelly::{
         Lazy,
         Message,
-        PbBuffer,
     };
     use proto_pbtest::bench::{
         BytesData,
         StringMessage,
         VecData,
     };
+    use std::io::Cursor;
     use test::Bencher;
 
     #[bench]
@@ -31,13 +31,11 @@ mod benches {
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
-            // Convert our bytes::Bytes into a pb::PbBufferReader
-            let mut bytes_reader = bytes_buf.clone().into_reader();
-
             // Deserialize our proto
             let mut de_proto = BytesData::default();
-            de_proto.deserialize(&mut bytes_reader).unwrap();
+            de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
             assert!(de_proto.has_data());
+            de_proto
         });
     }
 
@@ -59,13 +57,11 @@ mod benches {
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
-            // Convert our bytes::Bytes into a pb::PbBufferReader
-            let mut bytes_reader = bytes_buf.clone().into_reader();
-
             // Deserialize our proto
             let mut de_proto = VecData::default();
-            de_proto.deserialize(&mut bytes_reader).unwrap();
+            de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
             assert!(de_proto.has_data());
+            de_proto
         });
     }
 
@@ -81,13 +77,11 @@ mod benches {
         let bytes_buf = Bytes::from(ser_bytes);
 
         b.iter(|| {
-            // Convert our bytes::Bytes into a pb::PbBufferReader
-            let mut bytes_reader = bytes_buf.clone().into_reader();
-
             // Deserialize our proto
             let mut de_proto = StringMessage::default();
-            de_proto.deserialize(&mut bytes_reader).unwrap();
+            de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
             assert!(de_proto.has_data());
+            de_proto
         });
     }
 }
