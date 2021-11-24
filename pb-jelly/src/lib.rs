@@ -28,7 +28,7 @@ pub mod wire_format;
 
 mod buffer;
 pub use crate::buffer::{
-    cast_buffer,
+    type_is,
     CopyWriter,
     Lazy,
     PbBuffer,

@@ -7,16 +7,19 @@ use std::io::{
 };
 use std::rc::Rc;
 
-use bytes::Buf;
+use bytes::{
+    Buf,
+    BufMut,
+};
 
 use crate::varint;
 use crate::wire_format;
 
 use super::{
-    cast_buffer,
     ensure_split,
     ensure_wire_format,
     skip,
+    type_is,
     Lazy,
     Message,
     PbBuffer,
@@ -39,12 +42,16 @@ impl AsRef<[u8]> for VecReader {
 }
 
 impl PbBuffer for VecReader {
-    type Reader = VecReader;
     fn len(&self) -> usize {
         self.remaining()
     }
-    fn into_reader(self) -> VecReader {
-        self
+    fn copy_to_writer<W: Write + ?Sized>(&self, writer: &mut W) -> Result<()> {
+        writer.write_all(self.as_ref())
+    }
+    fn copy_from_reader<B: Buf + ?Sized>(reader: &mut B) -> Result<Self> {
+        let mut v = vec![];
+        v.put(reader);
+        Ok(v.into())
     }
 }
 
@@ -75,8 +82,12 @@ impl Buf for VecReader {
 }
 
 impl PbBufferReader for VecReader {
-    fn as_buffer<B: PbBuffer>(&self) -> Result<B> {
-        cast_buffer(self.clone())
+    fn read_buffer<B: PbBuffer>(&mut self) -> Result<B> {
+        if let Some(cast) = type_is::<VecReader, B>() {
+            Ok(cast(self.clone()))
+        } else {
+            B::copy_from_reader(self)
+        }
     }
 
     fn split(&mut self, at: usize) -> Self {
@@ -201,59 +212,59 @@ impl Message for TestMessage {
 }
 
 #[test]
-fn test_serialize_message_into_slice() {
+fn test_deserialize_message_from_vec_reader() {
     let mut message = TestMessage::default();
     message.normal_data = vec![1, 2, 3];
     message.payload = Lazy::new(vec![4, 5, 6].into());
 
     let serialized = message.serialize_to_vec();
-    assert_eq!(
-        TestMessage::deserialize_from_slice(&serialized).unwrap_err().kind(),
-        ErrorKind::InvalidInput
-    );
     assert_eq!(serialized.len(), message.compute_size());
+    assert_eq!(serialized, [10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
 
+    // Deserializing the message from a slice should succeed, even though it incurs a copy.
+    assert_eq!(
+        TestMessage::deserialize_from_slice(&serialized).expect("deserialization failed"),
+        message
+    );
+
+    // Deserializing from a `VecReader` should succeed and capture a reference to the reader.
+    let reader = VecReader::from(serialized);
     let mut deserialized = TestMessage::default();
-    deserialized
-        .deserialize(&mut VecReader::from(serialized.clone()))
-        .unwrap();
+    deserialized.deserialize(&mut reader.clone()).unwrap();
 
     assert_eq!(deserialized.normal_data, message.normal_data);
-    assert_eq!(
-        deserialized.payload.into_buffer().as_ref(),
-        message.payload.into_buffer().as_ref()
+    let deserialized_payload = deserialized.payload.into_buffer();
+    assert!(
+        Rc::ptr_eq(&deserialized_payload.contents, &reader.contents),
+        "Should reference the original buffer"
     );
-
-    assert_eq!(serialized, vec![10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
+    assert_eq!(deserialized_payload.as_ref(), message.payload.into_buffer().as_ref());
 }
 
 #[test]
 fn test_serialize_message_into_vec_writer() {
+    let payload: VecReader = vec![4, 5, 6].into();
     let mut message = TestMessage::default();
     message.normal_data = vec![1, 2, 3];
-    message.payload = Lazy::new(vec![4, 5, 6].into());
+    message.payload = Lazy::new(payload.clone());
 
+    // Serialize to a `VecWriter`.
     let mut out = VecWriter::default();
     message.serialize(&mut out).unwrap();
 
+    // One of the segments of `out` should reference the same buffer as `payload`.
+    assert_eq!(
+        out.contents
+            .iter()
+            .filter(|buf| Rc::ptr_eq(&buf.contents, &payload.contents))
+            .count(),
+        1
+    );
+
     let serialized = out.serialized();
-
     assert_eq!(
-        TestMessage::deserialize_from_slice(&serialized).unwrap_err().kind(),
-        ErrorKind::InvalidInput
+        TestMessage::deserialize_from_slice(&serialized).expect("deserialization failed"),
+        message
     );
-
-    let mut deserialized = TestMessage::default();
-    deserialized
-        .deserialize(&mut VecReader::from(serialized.clone()))
-        .unwrap();
-    assert_eq!(serialized.len(), message.compute_size());
-
-    assert_eq!(deserialized.normal_data, message.normal_data);
-    assert_eq!(
-        deserialized.payload.into_buffer().as_ref(),
-        message.payload.into_buffer().as_ref()
-    );
-
-    assert_eq!(serialized, vec![10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
+    assert_eq!(serialized, [10, 3, 1, 2, 3, 18, 3, 4, 5, 6]);
 }
