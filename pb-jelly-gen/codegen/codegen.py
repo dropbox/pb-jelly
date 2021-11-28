@@ -1719,6 +1719,7 @@ rust_doc(
 SPEC_TOML_TEMPLATE = (
     """# @"""
     + """generated, do not edit
+[package]
 name = "{crate}"
 edition = "2018"
 
