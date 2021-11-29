@@ -2,9 +2,9 @@ use bytes::Bytes;
 use pb_jelly::{
     Lazy,
     Message,
-    PbBuffer,
 };
 use proto_zero_copy::basic::BytesMessage;
+use std::io::Cursor;
 
 fn main() -> std::io::Result<()> {
     // Create 1kb of Data
@@ -21,18 +21,21 @@ fn main() -> std::io::Result<()> {
     // Serialized proto gets theoretically sent across ☁️ The Internet ☁️
 
     // To achieve zero copy deserialization, we need to our serialized bytes to be in a container
-    // that implements the `pb::PbBufferReader` trait, `bytes::Bytes` implements this trait.
+    // with a reader that implements the `pb::PbBufferReader` trait, such as `Cursor<bytes::Bytes>`.
     //
     // Ideally your serialized bytes would already be in a `Bytes` struct, e.g. some network request you're about to
     // handle.
     let request = Bytes::from(ser_bytes);
-    let mut reader = request.into_reader();
+    let mut reader = Cursor::new(request.clone());
 
     // Deserialize our proto
     let mut de_proto = BytesMessage::default();
     de_proto.deserialize(&mut reader)?;
     // Grab the bytes from the Lazy field
     let inner_bytes: Bytes = de_proto.data.unwrap().into_buffer();
+    // Because of the coordination between the `Cursor<Bytes>` reader and the `Lazy<Bytes>` field,
+    // this field contains a reference to the original data, rather than a copy!
+    assert!(request.as_ptr_range().contains(&inner_bytes.as_ptr()));
 
     // Print our fields!
     println!("Name: {}", de_proto.name.unwrap());
