@@ -57,3 +57,6 @@ path = "src/serde/main.rs"
 [[bin]]
 name = "zero_copy"
 path = "src/zero_copy/main.rs"
+
+[patch.crates-io]
+pb-jelly = { path = "../pb-jelly" }
