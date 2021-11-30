@@ -1,4 +1,8 @@
 # Unreleased
+... everything has been released!
+
+# 0.0.10
+### November 30, 2021
 * Simplify the zerocopy implementation. (#127)
   * `PbBuffer` has been reworked to untie it from `PbBufferReader`.
     * `copy_from_reader` replaces `from_reader` and allows a `PbBuffer` to be constructed, by copying, from any `Buf`. Implementations can still opt out by returning `Err`.
