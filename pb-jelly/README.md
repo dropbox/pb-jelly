@@ -10,7 +10,7 @@ include this crate as a dependency in your `Cargo.toml`.
 ##### `Cargo.toml`
 ```
 [dependencies]
-pb-jelly = "0.0.9"
+pb-jelly = "0.0.10"
 ```
 
 Then in the general case, all you'll need to use in your code is the `Message` trait this crate defines, e.g.
