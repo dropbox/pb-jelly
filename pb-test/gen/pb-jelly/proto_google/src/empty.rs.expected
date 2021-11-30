@@ -21,10 +21,20 @@ lazy_static! {
   pub static ref Empty_default: Empty = Empty::default();
 }
 impl ::pb_jelly::Message for Empty {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Empty",
+      full_name: "google.protobuf.Empty",
+      fields: &[
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     0
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     0
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -41,8 +51,20 @@ impl ::pb_jelly::Message for Empty {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for Empty {
-  const NAME: &'static str = "Empty";
-  const FULL_NAME: &'static str = "google.protobuf.Empty";
+impl ::pb_jelly::Reflection for Empty {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 

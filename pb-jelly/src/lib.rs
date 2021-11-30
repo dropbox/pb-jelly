@@ -23,6 +23,7 @@ use bytes::buf::{
     BufMut,
 };
 
+pub mod erased;
 pub mod varint;
 pub mod wire_format;
 
@@ -50,7 +51,15 @@ pub use crate::base_types::{
 };
 
 mod descriptor;
-pub use crate::descriptor::MessageDescriptor;
+pub use crate::descriptor::{
+    FieldDescriptor,
+    Label,
+    MessageDescriptor,
+    OneofDescriptor,
+};
+
+pub mod reflection;
+pub use crate::reflection::Reflection;
 
 #[cfg(test)]
 mod tests;
@@ -59,6 +68,11 @@ mod tests;
 /// like string, bytes, etc. The exact details of this trait is implemented for messages
 /// and base types can be found at - <https://developers.google.com/protocol-buffers/docs/encoding>
 pub trait Message: PartialEq + Default + Debug + Any {
+    /// Returns the `MessageDescriptor` for this message, if this is not a primitive type.
+    fn descriptor(&self) -> Option<MessageDescriptor> {
+        None
+    }
+
     /// Computes the number of bytes a message will take when serialized. This does not
     /// include number of bytes required for tag+wire_format or the bytes used to represent
     /// length of the message in case of LengthDelimited messages/types.

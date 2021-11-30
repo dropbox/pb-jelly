@@ -14,7 +14,26 @@ lazy_static! {
   pub static ref InpMessage_default: InpMessage = InpMessage::default();
 }
 impl ::pb_jelly::Message for InpMessage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "InpMessage",
+      full_name: "pbtest.InpMessage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "i",
+          full_name: "pbtest.InpMessage.i",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut i_size = 0;
     if self.i != <i32 as ::std::default::Default>::default() {
@@ -26,7 +45,7 @@ impl ::pb_jelly::Message for InpMessage {
     size += i_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.i != <i32 as ::std::default::Default>::default() {
       let val = &self.i;
@@ -59,9 +78,24 @@ impl ::pb_jelly::Message for InpMessage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for InpMessage {
-  const NAME: &'static str = "InpMessage";
-  const FULL_NAME: &'static str = "pbtest.InpMessage";
+impl ::pb_jelly::Reflection for InpMessage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "i" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.i);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -79,7 +113,26 @@ lazy_static! {
   pub static ref OutMessage_default: OutMessage = OutMessage::default();
 }
 impl ::pb_jelly::Message for OutMessage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "OutMessage",
+      full_name: "pbtest.OutMessage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "o",
+          full_name: "pbtest.OutMessage.o",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut o_size = 0;
     if self.o != <i32 as ::std::default::Default>::default() {
@@ -91,7 +144,7 @@ impl ::pb_jelly::Message for OutMessage {
     size += o_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.o != <i32 as ::std::default::Default>::default() {
       let val = &self.o;
@@ -124,8 +177,23 @@ impl ::pb_jelly::Message for OutMessage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for OutMessage {
-  const NAME: &'static str = "OutMessage";
-  const FULL_NAME: &'static str = "pbtest.OutMessage";
+impl ::pb_jelly::Reflection for OutMessage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "o" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.o);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 

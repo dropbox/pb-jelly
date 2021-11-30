@@ -26,7 +26,26 @@ lazy_static! {
   pub static ref BytesData_default: BytesData = BytesData::default();
 }
 impl ::pb_jelly::Message for BytesData {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "BytesData",
+      full_name: "pbtest.BytesData",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "data",
+          full_name: "pbtest.BytesData.data",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
     for val in &self.data {
@@ -38,7 +57,7 @@ impl ::pb_jelly::Message for BytesData {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     for val in &self.data {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -73,9 +92,24 @@ impl ::pb_jelly::Message for BytesData {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for BytesData {
-  const NAME: &'static str = "BytesData";
-  const FULL_NAME: &'static str = "pbtest.BytesData";
+impl ::pb_jelly::Reflection for BytesData {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "data" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default));
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -108,7 +142,26 @@ lazy_static! {
   pub static ref VecData_default: VecData = VecData::default();
 }
 impl ::pb_jelly::Message for VecData {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "VecData",
+      full_name: "pbtest.VecData",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "data",
+          full_name: "pbtest.VecData.data",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
     for val in &self.data {
@@ -120,7 +173,7 @@ impl ::pb_jelly::Message for VecData {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     for val in &self.data {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -155,9 +208,24 @@ impl ::pb_jelly::Message for VecData {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for VecData {
-  const NAME: &'static str = "VecData";
-  const FULL_NAME: &'static str = "pbtest.VecData";
+impl ::pb_jelly::Reflection for VecData {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "data" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default));
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -189,7 +257,26 @@ lazy_static! {
   pub static ref StringMessage_default: StringMessage = StringMessage::default();
 }
 impl ::pb_jelly::Message for StringMessage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "StringMessage",
+      full_name: "pbtest.StringMessage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "data",
+          full_name: "pbtest.StringMessage.data",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
     for val in &self.data {
@@ -201,7 +288,7 @@ impl ::pb_jelly::Message for StringMessage {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     for val in &self.data {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -236,8 +323,23 @@ impl ::pb_jelly::Message for StringMessage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for StringMessage {
-  const NAME: &'static str = "StringMessage";
-  const FULL_NAME: &'static str = "pbtest.StringMessage";
+impl ::pb_jelly::Reflection for StringMessage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "data" => {
+        return ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default));
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 

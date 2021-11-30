@@ -14,7 +14,26 @@ lazy_static! {
   pub static ref NoPackage_default: NoPackage = NoPackage::default();
 }
 impl ::pb_jelly::Message for NoPackage {
-  fn compute_size(&self) -> usize  {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "NoPackage",
+      full_name: "NoPackage",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "field",
+          full_name: "NoPackage.field",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut field_size = 0;
     if self.field != <::std::string::String as ::std::default::Default>::default() {
@@ -27,7 +46,7 @@ impl ::pb_jelly::Message for NoPackage {
     size += field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize  {
+  fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
     if self.field != <::std::string::String as ::std::default::Default>::default() {
       let val = &self.field;
@@ -64,8 +83,23 @@ impl ::pb_jelly::Message for NoPackage {
     Ok(())
   }
 }
-impl ::pb_jelly::MessageDescriptor for NoPackage {
-  const NAME: &'static str = "NoPackage";
-  const FULL_NAME: &'static str = "NoPackage";
+impl ::pb_jelly::Reflection for NoPackage {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "field" => {
+        return ::pb_jelly::reflection::FieldMut::Value(&mut self.field);
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
 }
 

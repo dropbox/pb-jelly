@@ -76,7 +76,10 @@ use bytes::{
     Bytes,
 };
 
-use super::Message;
+use super::{
+    Message,
+    Reflection,
+};
 
 /// A stand-in trait for any backing buffer store.
 /// `PbBuffer`s are expected to own references to the data they reference, and should be cheap
@@ -182,6 +185,8 @@ impl<B: PbBuffer + PartialEq> Message for Lazy<B> {
         Ok(())
     }
 }
+
+impl<B: PbBuffer + PartialEq> Reflection for Lazy<B> {}
 
 impl<'a> PbBufferReader for Cursor<&'a [u8]> {
     fn split(&mut self, at: usize) -> Self {
