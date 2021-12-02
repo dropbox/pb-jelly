@@ -1382,21 +1382,28 @@ class CodeWriter(object):
                         typ = self.rust_type(msg_type, field)
                         with block(self, '"%s" =>' % field.name):
                             if typ.oneof:
-                                with block(self, "match self.%s" % typ.oneof.name):
-                                    self.write("%s => ()," % typ.oneof_val(name, "_"))
-                                    with block(self, "_ =>", start=" {", end="},"):
-                                        # If this oneof is not currently set to this variant, we explicitly
-                                        # set it to this variant.
+                                if len(
+                                    oneof_fields[typ.oneof.name]
+                                ) > 1 or oneof_nullable(typ.oneof):
+                                    # Only useful to generate this logic if there is more than one
+                                    # possible value for this oneof.
+                                    with block(self, "match self.%s" % typ.oneof.name):
                                         self.write(
-                                            "self.%s = %s;"
-                                            % (
-                                                typ.oneof.name,
-                                                typ.oneof_val(
-                                                    name,
-                                                    "::std::default::Default::default()",
-                                                ),
-                                            )
+                                            "%s => ()," % typ.oneof_val(name, "_")
                                         )
+                                        with block(self, "_ =>", start=" {", end="},"):
+                                            # If this oneof is not currently set to this variant, we explicitly
+                                            # set it to this variant.
+                                            self.write(
+                                                "self.%s = %s;"
+                                                % (
+                                                    typ.oneof.name,
+                                                    typ.oneof_val(
+                                                        name,
+                                                        "::std::default::Default::default()",
+                                                    ),
+                                                )
+                                            )
                                 if typ.is_empty_oneof_field():
                                     self.write(
                                         "return ::pb_jelly::reflection::FieldMut::Empty;"
