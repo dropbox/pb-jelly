@@ -11,6 +11,13 @@ message Vec {}
 message Default {}
 message String {}
 
+message Version0OneOfNoneNullable {
+    oneof test_oneof {
+        option (rust.nullable) = false;
+        string string_one_of = 1;
+    }
+}
+
 message Version1OneOfNoneNullable {
     oneof test_oneof {
         option (rust.nullable) = false;

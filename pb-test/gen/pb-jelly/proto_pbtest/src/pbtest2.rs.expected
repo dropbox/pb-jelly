@@ -699,6 +699,130 @@ impl ::pb_jelly::Reflection for String {
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version0OneOfNoneNullable {
+  pub test_oneof: Version0OneOfNoneNullable_TestOneof,
+}
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum Version0OneOfNoneNullable_TestOneof {
+  StringOneOf(::std::string::String),
+}
+impl Version0OneOfNoneNullable {
+}
+impl ::std::default::Default for Version0OneOfNoneNullable {
+  fn default() -> Self {
+    Version0OneOfNoneNullable {
+      test_oneof: Version0OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default()),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version0OneOfNoneNullable_default: Version0OneOfNoneNullable = Version0OneOfNoneNullable::default();
+}
+impl ::pb_jelly::Message for Version0OneOfNoneNullable {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version0OneOfNoneNullable",
+      full_name: "pbtest.Version0OneOfNoneNullable",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "string_one_of",
+          full_name: "pbtest.Version0OneOfNoneNullable.string_one_of",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "test_oneof",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut string_one_of_size = 0;
+    if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      let l = ::pb_jelly::Message::compute_size(val);
+      string_one_of_size += ::pb_jelly::wire_format::serialized_length(1);
+      string_one_of_size += ::pb_jelly::varint::serialized_length(l as u64);
+      string_one_of_size += l;
+    }
+    size += string_one_of_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    let mut oneof_test_oneof: ::std::option::Option<Version0OneOfNoneNullable_TestOneof> = None;
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version0OneOfNoneNullable", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_test_oneof = Some(Version0OneOfNoneNullable_TestOneof::StringOneOf(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    match oneof_test_oneof {
+      Some(v) => self.test_oneof = v,
+      None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, "missing value for non-nullable oneof 'test_oneof' while parsing message pbtest.Version0OneOfNoneNullable")),
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for Version0OneOfNoneNullable {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "test_oneof" => {
+        if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
+          return Some("string_one_of");
+        }
+        return None;
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "string_one_of" => {
+        if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref mut val) = self.test_oneof {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given");
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Version1OneOfNoneNullable {
   pub test_oneof: Version1OneOfNoneNullable_TestOneof,
 }
