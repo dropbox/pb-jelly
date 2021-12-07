@@ -7,6 +7,45 @@ env:
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  clippy_check:
+    name: Check lint with clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: clippy
+      - name: Run clippy on pb-jelly
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --manifest-path pb-jelly/Cargo.toml --all-features
+      - name: Run clippy on pb-jelly-gen
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --manifest-path pb-jelly-gen/Cargo.toml --all-features
+      - uses: actions/setup-python@v2
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate dependencies for pb-test
+        run: (cd pb-test/pb_test_gen; cargo run)
+      - name: Run clippy on pb-test
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --manifest-path pb-test/Cargo.toml --all-features
+      - name: Run clippy on proto_pbtest
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --manifest-path pb-test/gen/pb-jelly/proto_pbtest/Cargo.toml --all-features
   rustfmt:
     name: Check formatting with rustfmt
     runs-on: ubuntu-latest
