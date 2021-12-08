@@ -425,7 +425,7 @@ class RustType(object):
             return self.rust_type(), "self.%s.unwrap_or_default()" % name
         elif self.field.type == FieldDescriptorProto.TYPE_MESSAGE:
             deref = (
-                "" if not self.is_boxed() else ".map(|v| ::std::ops::Deref::deref(v))"
+                "" if not self.is_boxed() else ".map(::std::ops::Deref::deref)"
             )
             return (
                 "&" + self.rust_type(),
@@ -1369,7 +1369,7 @@ class CodeWriter(object):
                                     self, "val", name, msg_type, oneof_field
                                 ):
                                     self.write('return Some("%s");' % oneof_field.name)
-                            self.write("return None;")
+                            self.write("None")
                     with block(self, "_ =>"):
                         self.write('panic!("unknown oneof name given");')
 
@@ -1406,7 +1406,7 @@ class CodeWriter(object):
                                             )
                                 if typ.is_empty_oneof_field():
                                     self.write(
-                                        "return ::pb_jelly::reflection::FieldMut::Empty;"
+                                        "::pb_jelly::reflection::FieldMut::Empty"
                                     )
                                 else:
                                     with block(
@@ -1424,32 +1424,32 @@ class CodeWriter(object):
                             elif typ.is_repeated():
                                 # TODO: Would be nice to support this, but some more thought would
                                 # need to be put into what the API for it looks like.
-                                # self.write("return ::pb_jelly::reflection::FieldMut::Repeated(&mut self.%s);" % field.name)
+                                # self.write("::pb_jelly::reflection::FieldMut::Repeated(&mut self.%s)" % field.name)
                                 self.write(
-                                    'unimplemented!("Repeated fields are not currently supported.");'
+                                    'unimplemented!("Repeated fields are not currently supported.")'
                                 )
                             elif typ.is_nullable() and typ.is_boxed():
                                 self.write(
-                                    "return ::pb_jelly::reflection::FieldMut::Value(self.%s.get_or_insert_with(::std::default::Default::default).as_mut());"
+                                    "::pb_jelly::reflection::FieldMut::Value(self.%s.get_or_insert_with(::std::default::Default::default).as_mut())"
                                     % field.name
                                 )
                             elif typ.is_boxed():
                                 self.write(
-                                    "return ::pb_jelly::reflection::FieldMut::Value(self.%s.as_mut());"
+                                    "::pb_jelly::reflection::FieldMut::Value(self.%s.as_mut())"
                                     % field.name
                                 )
                             elif typ.is_nullable():
                                 self.write(
-                                    "return ::pb_jelly::reflection::FieldMut::Value(self.%s.get_or_insert_with(::std::default::Default::default));"
+                                    "::pb_jelly::reflection::FieldMut::Value(self.%s.get_or_insert_with(::std::default::Default::default))"
                                     % field.name
                                 )
                             else:
                                 self.write(
-                                    "return ::pb_jelly::reflection::FieldMut::Value(&mut self.%s);"
+                                    "::pb_jelly::reflection::FieldMut::Value(&mut self.%s)"
                                     % field.name
                                 )
                     with block(self, "_ =>"):
-                        self.write('panic!("unknown field name given");')
+                        self.write('panic!("unknown field name given")')
 
 
 def walk(proto: FileDescriptorProto) -> WalkRet:
@@ -1885,8 +1885,6 @@ RS_HEADER = "// @" + "generated, do not edit\n"
 
 LIB_RS_HEADER = """
 #![warn(rust_2018_idioms)]
-#![allow(clippy::float_cmp)]
-#![allow(clippy::module_inception)]
 #![allow(irrefutable_let_patterns)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
@@ -1895,6 +1893,17 @@ LIB_RS_HEADER = """
 #![allow(unused_variables)]
 #![allow(irrefutable_let_patterns)]
 #![allow(broken_intra_doc_links)]
+
+// Modules are generated based on the naming conventions of protobuf, which might cause "module inception"
+#![allow(clippy::module_inception)]
+// This is all generated code, so "manually" implementing derivable impls is okay
+#![allow(clippy::derivable_impls)]
+// For enums with many variants, the matches!(...) macro isn't obviously better
+#![allow(clippy::match_like_matches_macro)]
+// TODO: Ideally we don't allow this
+#![allow(clippy::option_as_ref_deref)]
+// TODO: Ideally we don't allow this
+#![allow(clippy::match_single_binding)]
 
 """
 
