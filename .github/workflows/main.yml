@@ -146,8 +146,8 @@ jobs:
           cd ..
           cargo bench bench --features=bench_prost,bench_rust_protobuf
 
-  clippy:
-    name: clippy
+  clippy_gen:
+    name: clippy gen
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
