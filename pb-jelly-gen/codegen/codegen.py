@@ -287,14 +287,10 @@ class RustType(object):
 
     def can_be_packed(self) -> bool:
         # Return true if incoming messages could be packed on the wire
-        return (
-            self.field.label == FieldDescriptorProto.LABEL_REPEATED
-            and self.wire_format()
-            in (
-                "Varint",
-                "Fixed64",
-                "Fixed32",
-            )
+        return self.field.label == FieldDescriptorProto.LABEL_REPEATED and self.wire_format() in (
+            "Varint",
+            "Fixed64",
+            "Fixed32",
         )
 
     def should_serialize_packed(self) -> bool:
@@ -424,9 +420,7 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
             return self.rust_type(), "self.%s.unwrap_or_default()" % name
         elif self.field.type == FieldDescriptorProto.TYPE_MESSAGE:
-            deref = (
-                "" if not self.is_boxed() else ".map(::std::ops::Deref::deref)"
-            )
+            deref = "" if not self.is_boxed() else ".map(::std::ops::Deref::deref)"
             return (
                 "&" + self.rust_type(),
                 "self.%s.as_ref()%s.unwrap_or(&%s_default)"
@@ -1626,9 +1620,9 @@ class Context(object):
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
                     assert field_type.typ.options.Extensions[
                         extensions_pb2.preserve_unrecognized
-                    ], "%s preserves unrecognized but child message %s does not" % (
-                        fq_msg,
-                        field_fq_msg,
+                    ], (
+                        "%s preserves unrecognized but child message %s does not"
+                        % (fq_msg, field_fq_msg)
                     )
 
                 self.calc_impls(
