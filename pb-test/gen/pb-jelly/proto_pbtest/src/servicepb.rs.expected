@@ -89,10 +89,10 @@ impl ::pb_jelly::Reflection for InpMessage {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "i" => {
-        return ::pb_jelly::reflection::FieldMut::Value(&mut self.i);
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.i)
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -188,10 +188,10 @@ impl ::pb_jelly::Reflection for OutMessage {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "o" => {
-        return ::pb_jelly::reflection::FieldMut::Value(&mut self.o);
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.o)
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }

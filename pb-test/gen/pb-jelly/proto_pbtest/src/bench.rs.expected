@@ -103,10 +103,10 @@ impl ::pb_jelly::Reflection for BytesData {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "data" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -219,10 +219,10 @@ impl ::pb_jelly::Reflection for VecData {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "data" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -334,10 +334,10 @@ impl ::pb_jelly::Reflection for StringMessage {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "data" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.data.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
