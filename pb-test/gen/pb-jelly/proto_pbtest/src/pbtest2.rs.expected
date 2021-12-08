@@ -506,7 +506,7 @@ impl ::pb_jelly::Reflection for Option {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -568,7 +568,7 @@ impl ::pb_jelly::Reflection for Vec {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -630,7 +630,7 @@ impl ::pb_jelly::Reflection for Default {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -692,7 +692,7 @@ impl ::pb_jelly::Reflection for String {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -800,7 +800,7 @@ impl ::pb_jelly::Reflection for Version0OneOfNoneNullable {
         if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
           return Some("string_one_of");
         }
-        return None;
+        None
       }
       _ => {
         panic!("unknown oneof name given");
@@ -816,7 +816,7 @@ impl ::pb_jelly::Reflection for Version0OneOfNoneNullable {
         unreachable!()
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -962,7 +962,7 @@ impl ::pb_jelly::Reflection for Version1OneOfNoneNullable {
         if let Version1OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
           return Some("string_two_of");
         }
-        return None;
+        None
       }
       _ => {
         panic!("unknown oneof name given");
@@ -996,7 +996,7 @@ impl ::pb_jelly::Reflection for Version1OneOfNoneNullable {
         unreachable!()
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -1175,7 +1175,7 @@ impl ::pb_jelly::Reflection for Version2OneOfNoneNullable {
         if let Version2OneOfNoneNullable_TestOneof::IntOneOf(ref val) = self.test_oneof {
           return Some("int_one_Of");
         }
-        return None;
+        None
       }
       _ => {
         panic!("unknown oneof name given");
@@ -1221,7 +1221,7 @@ impl ::pb_jelly::Reflection for Version2OneOfNoneNullable {
         unreachable!()
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -1325,10 +1325,10 @@ impl ::pb_jelly::Reflection for Version1Enum {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "enum_field" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.enum_field.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.enum_field.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -1432,10 +1432,10 @@ impl ::pb_jelly::Reflection for Version2Enum {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "enum_field" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.enum_field.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.enum_field.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -1538,7 +1538,7 @@ impl ::pb_jelly::Reflection for Version1OneOf {
         if let Some(Version1OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
           return Some("string_one_of");
         }
-        return None;
+        None
       }
       _ => {
         panic!("unknown oneof name given");
@@ -1560,7 +1560,7 @@ impl ::pb_jelly::Reflection for Version1OneOf {
         unreachable!()
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -1696,7 +1696,7 @@ impl ::pb_jelly::Reflection for Version2OneOf {
         if let Some(Version2OneOf_TestOneof::IntOneOf(ref val)) = self.test_oneof {
           return Some("int_one_of");
         }
-        return None;
+        None
       }
       _ => {
         panic!("unknown oneof name given");
@@ -1730,7 +1730,7 @@ impl ::pb_jelly::Reflection for Version2OneOf {
         unreachable!()
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -1842,10 +1842,10 @@ impl ::pb_jelly::Reflection for Version1 {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "required_string" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.required_string.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.required_string.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -2493,49 +2493,49 @@ impl ::pb_jelly::Reflection for Version2 {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "required_string" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.required_string.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.required_string.get_or_insert_with(::std::default::Default::default))
       }
       "optional_int32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_int32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_int32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_int64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_int64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_int64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_uint32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_uint32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_uint32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_uint64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_uint64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_uint64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_fixed64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_fixed32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_sfixed64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_sfixed32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_double" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_double.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_double.get_or_insert_with(::std::default::Default::default))
       }
       "optional_bool" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_bool.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_bool.get_or_insert_with(::std::default::Default::default))
       }
       "optional_string" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_string.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_string.get_or_insert_with(::std::default::Default::default))
       }
       "optional_bytes" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_bytes.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_bytes.get_or_insert_with(::std::default::Default::default))
       }
       "optional_float" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_float.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_float.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -2639,10 +2639,10 @@ impl ::pb_jelly::Reflection for ForeignMessage {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "c" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.c.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.c.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
@@ -3092,7 +3092,7 @@ impl TestMessage {
     self.optional_foreign_message_boxed.take().unwrap_or_default()
   }
   pub fn get_optional_foreign_message_boxed(&self) -> &ForeignMessage {
-    self.optional_foreign_message_boxed.as_ref().map(|v| ::std::ops::Deref::deref(v)).unwrap_or(&ForeignMessage_default)
+    self.optional_foreign_message_boxed.as_ref().map(::std::ops::Deref::deref).unwrap_or(&ForeignMessage_default)
   }
   pub fn has_type_(&self) -> bool {
     self.type_.is_some()
@@ -4992,7 +4992,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_OneofInt::Foreign1(ref val)) = self.oneof_int {
           return Some("foreign1");
         }
-        return None;
+        None
       }
       "oneof_foreign" => {
         if let Some(TestMessage_OneofForeign::Int2(ref val)) = self.oneof_foreign {
@@ -5001,7 +5001,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_OneofForeign::Foreign2(ref val)) = self.oneof_foreign {
           return Some("foreign2");
         }
-        return None;
+        None
       }
       "oneof_zero" => {
         if let Some(TestMessage_OneofZero::Int3(ref val)) = self.oneof_zero {
@@ -5010,7 +5010,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_OneofZero::Foreign3(ref val)) = self.oneof_zero {
           return Some("foreign3");
         }
-        return None;
+        None
       }
       "oneof_null" => {
         if let Some(TestMessage_OneofNull::Int4(ref val)) = self.oneof_null {
@@ -5019,7 +5019,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_OneofNull::Foreign4(ref val)) = self.oneof_null {
           return Some("foreign4");
         }
-        return None;
+        None
       }
       "oneof_unset" => {
         if let Some(TestMessage_OneofUnset::Int5(ref val)) = self.oneof_unset {
@@ -5028,7 +5028,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_OneofUnset::Foreign5(ref val)) = self.oneof_unset {
           return Some("foreign5");
         }
-        return None;
+        None
       }
       "oneof_primitives" => {
         if let Some(TestMessage_OneofPrimitives::Int6(ref val)) = self.oneof_primitives {
@@ -5037,7 +5037,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_OneofPrimitives::Bool6(ref val)) = self.oneof_primitives {
           return Some("bool6");
         }
-        return None;
+        None
       }
       "oneof_empty_field" => {
         if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
@@ -5051,7 +5051,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
           return Some("c");
         }
-        return None;
+        None
       }
       "mod_" => {
         if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
@@ -5060,7 +5060,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
           return Some("unsafe_");
         }
-        return None;
+        None
       }
       _ => {
         panic!("unknown oneof name given");
@@ -5070,106 +5070,106 @@ impl ::pb_jelly::Reflection for TestMessage {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "optional_int32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_int32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_int32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_int64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_int64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_int64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_uint32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_uint32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_uint32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_uint64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_uint64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_uint64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_fixed64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_fixed32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_fixed32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_sfixed64" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed64.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed64.get_or_insert_with(::std::default::Default::default))
       }
       "optional_sfixed32" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed32.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_sfixed32.get_or_insert_with(::std::default::Default::default))
       }
       "optional_double" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_double.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_double.get_or_insert_with(::std::default::Default::default))
       }
       "optional_bool" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_bool.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_bool.get_or_insert_with(::std::default::Default::default))
       }
       "optional_string" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_string.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_string.get_or_insert_with(::std::default::Default::default))
       }
       "optional_bytes" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_bytes.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_bytes.get_or_insert_with(::std::default::Default::default))
       }
       "optional_float" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_float.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_float.get_or_insert_with(::std::default::Default::default))
       }
       "optional_foreign_message" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_message.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_message.get_or_insert_with(::std::default::Default::default))
       }
       "optional_nested_enum" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_nested_enum.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_nested_enum.get_or_insert_with(::std::default::Default::default))
       }
       "optional_foreign_enum" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_enum.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_enum.get_or_insert_with(::std::default::Default::default))
       }
       "repeated_int32" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_int64" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_uint32" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_uint64" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_fixed64" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_fixed32" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_sfixed64" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_sfixed32" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_double" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_bool" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_string" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_bytes" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_float" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_foreign_message" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_nested_enum" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "repeated_foreign_enum" => {
-        unimplemented!("Repeated fields are not currently supported.");
+        unimplemented!("Repeated fields are not currently supported.")
       }
       "optional_foreign_message_boxed" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_message_boxed.get_or_insert_with(::std::default::Default::default).as_mut());
+        ::pb_jelly::reflection::FieldMut::Value(self.optional_foreign_message_boxed.get_or_insert_with(::std::default::Default::default).as_mut())
       }
       "optional_foreign_message_nonnullable" => {
-        return ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_foreign_message_nonnullable);
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_foreign_message_nonnullable)
       }
       "int1" => {
         match self.oneof_int {
@@ -5322,7 +5322,7 @@ impl ::pb_jelly::Reflection for TestMessage {
             self.oneof_empty_field = TestMessage_OneofEmptyField::A;
           },
         }
-        return ::pb_jelly::reflection::FieldMut::Empty;
+        ::pb_jelly::reflection::FieldMut::Empty
       }
       "b" => {
         match self.oneof_empty_field {
@@ -5331,7 +5331,7 @@ impl ::pb_jelly::Reflection for TestMessage {
             self.oneof_empty_field = TestMessage_OneofEmptyField::B;
           },
         }
-        return ::pb_jelly::reflection::FieldMut::Empty;
+        ::pb_jelly::reflection::FieldMut::Empty
       }
       "c" => {
         match self.oneof_empty_field {
@@ -5346,7 +5346,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         unreachable!()
       }
       "type_" => {
-        return ::pb_jelly::reflection::FieldMut::Value(self.type_.get_or_insert_with(::std::default::Default::default));
+        ::pb_jelly::reflection::FieldMut::Value(self.type_.get_or_insert_with(::std::default::Default::default))
       }
       "loop_" => {
         match self.mod_ {
@@ -5373,7 +5373,7 @@ impl ::pb_jelly::Reflection for TestMessage {
         unreachable!()
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }

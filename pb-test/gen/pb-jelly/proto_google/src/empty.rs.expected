@@ -62,7 +62,7 @@ impl ::pb_jelly::Reflection for Empty {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }

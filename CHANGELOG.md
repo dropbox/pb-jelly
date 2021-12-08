@@ -1,4 +1,5 @@
 # Unreleased
+* Avoid unnecessary `return` statements in some generated code. (#136)
 * Avoid extra logic for oneofs with only 1 possible value. (#133)
 
 # 0.0.10

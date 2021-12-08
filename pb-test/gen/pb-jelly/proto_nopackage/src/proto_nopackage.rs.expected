@@ -94,10 +94,10 @@ impl ::pb_jelly::Reflection for NoPackage {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "field" => {
-        return ::pb_jelly::reflection::FieldMut::Value(&mut self.field);
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.field)
       }
       _ => {
-        panic!("unknown field name given");
+        panic!("unknown field name given")
       }
     }
   }
