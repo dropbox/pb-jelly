@@ -20,6 +20,7 @@ jobs:
           components: rustfmt
       - name: Run rustfmt
         run: ci/run_rustfmt.sh
+
   black:
     name: Run black formatter on codegen.py
     runs-on: ubuntu-latest
@@ -27,6 +28,7 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: actions/checkout@v2
       - run: ci/run_black.sh
+
   mypy:
     name: Run mypy on codegen.py
     runs-on: ubuntu-latest
@@ -39,6 +41,7 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: actions/checkout@v2
       - run: ci/run_mypy.sh
+
   pb-jelly-unit:
     name: pb-jelly unit tests
     runs-on: ubuntu-latest
@@ -53,6 +56,7 @@ jobs:
         run: |
           cd pb-jelly
           cargo test
+
   pb-jelly-gen-unit:
     name: pb-jelly-gen unit tests
     runs-on: ubuntu-latest
@@ -67,6 +71,7 @@ jobs:
         run: |
           cd pb-jelly-gen
           cargo test
+
   pbtest:
     strategy:
       matrix:
@@ -94,6 +99,7 @@ jobs:
           cargo run
           cd ..
           cargo test
+
   examples:
     name: examples
     runs-on: ubuntu-latest
@@ -116,6 +122,7 @@ jobs:
           cargo run
           cd ..
           cargo test
+
   benchmarks:
     name: benchmarks
     runs-on: ubuntu-latest
@@ -138,3 +145,29 @@ jobs:
           cargo run --features=bench_prost,bench_rust_protobuf
           cd ..
           cargo bench bench --features=bench_prost,bench_rust_protobuf
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - run: rustup component add clippy
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run clippy
+        env:
+          RUSTFLAGS: "-D warnings"
+        run: |
+          cd pb-test/pb_test_gen
+          cargo run
+          cd ../gen/pb-jelly/proto_pbtest
+          cargo clippy
