@@ -771,7 +771,7 @@ lazy_static! {
   pub static ref ForeignMessage3_default: ForeignMessage3 = ForeignMessage3::default();
 }
 impl ::pb_jelly::Message for ForeignMessage3 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "ForeignMessage3",
       full_name: "pbtest.ForeignMessage3",
@@ -789,7 +789,7 @@ impl ::pb_jelly::Message for ForeignMessage3 {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut c_size = 0;
@@ -875,7 +875,7 @@ lazy_static! {
   pub static ref Version31OneOfNoneNullable_default: Version31OneOfNoneNullable = Version31OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version31OneOfNoneNullable {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version31OneOfNoneNullable",
       full_name: "pbtest.Version31OneOfNoneNullable",
@@ -905,7 +905,7 @@ impl ::pb_jelly::Message for Version31OneOfNoneNullable {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
@@ -1054,7 +1054,7 @@ lazy_static! {
   pub static ref Version32OneOfNoneNullable_default: Version32OneOfNoneNullable = Version32OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version32OneOfNoneNullable {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version32OneOfNoneNullable",
       full_name: "pbtest.Version32OneOfNoneNullable",
@@ -1093,7 +1093,7 @@ impl ::pb_jelly::Message for Version32OneOfNoneNullable {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
@@ -1271,7 +1271,7 @@ lazy_static! {
   pub static ref Version31Enum_default: Version31Enum = Version31Enum::default();
 }
 impl ::pb_jelly::Message for Version31Enum {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version31Enum",
       full_name: "pbtest.Version31Enum",
@@ -1289,7 +1289,7 @@ impl ::pb_jelly::Message for Version31Enum {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut enum_field_size = 0;
@@ -1370,7 +1370,7 @@ lazy_static! {
   pub static ref Version32Enum_default: Version32Enum = Version32Enum::default();
 }
 impl ::pb_jelly::Message for Version32Enum {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version32Enum",
       full_name: "pbtest.Version32Enum",
@@ -1388,7 +1388,7 @@ impl ::pb_jelly::Message for Version32Enum {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut enum_field_size = 0;
@@ -1473,7 +1473,7 @@ lazy_static! {
   pub static ref Version31OneOf_default: Version31OneOf = Version31OneOf::default();
 }
 impl ::pb_jelly::Message for Version31OneOf {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version31OneOf",
       full_name: "pbtest.Version31OneOf",
@@ -1494,7 +1494,7 @@ impl ::pb_jelly::Message for Version31OneOf {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
@@ -1597,7 +1597,7 @@ lazy_static! {
   pub static ref Version32OneOf_default: Version32OneOf = Version32OneOf::default();
 }
 impl ::pb_jelly::Message for Version32OneOf {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version32OneOf",
       full_name: "pbtest.Version32OneOf",
@@ -1627,7 +1627,7 @@ impl ::pb_jelly::Message for Version32OneOf {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string_one_of_size = 0;
@@ -1760,7 +1760,7 @@ lazy_static! {
   pub static ref Version31_default: Version31 = Version31::default();
 }
 impl ::pb_jelly::Message for Version31 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version31",
       full_name: "pbtest.Version31",
@@ -1778,7 +1778,7 @@ impl ::pb_jelly::Message for Version31 {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut optional_string1_size = 0;
@@ -1890,7 +1890,7 @@ lazy_static! {
   pub static ref Version32_default: Version32 = Version32::default();
 }
 impl ::pb_jelly::Message for Version32 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Version32",
       full_name: "pbtest.Version32",
@@ -2025,7 +2025,7 @@ impl ::pb_jelly::Message for Version32 {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut optional_string1_size = 0;
@@ -2597,7 +2597,7 @@ lazy_static! {
   pub static ref TestMessage3_default: TestMessage3 = TestMessage3::default();
 }
 impl ::pb_jelly::Message for TestMessage3 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3",
       full_name: "pbtest.TestMessage3",
@@ -3158,7 +3158,7 @@ impl ::pb_jelly::Message for TestMessage3 {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut optional_int32_size = 0;
@@ -5269,7 +5269,7 @@ lazy_static! {
   pub static ref TestMessage3_NestedMessage_default: TestMessage3_NestedMessage = TestMessage3_NestedMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3_NestedMessage",
       full_name: "pbtest.TestMessage3_NestedMessage",
@@ -5317,7 +5317,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut f_size = 0;
@@ -5532,7 +5532,7 @@ lazy_static! {
   pub static ref TestMessage3_NestedMessage_File_default: TestMessage3_NestedMessage_File = TestMessage3_NestedMessage_File::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3_NestedMessage_File",
       full_name: "pbtest.TestMessage3_NestedMessage_File",
@@ -5559,7 +5559,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut blocklist_size = 0;
@@ -5666,7 +5666,7 @@ lazy_static! {
   pub static ref TestMessage3_NestedMessage_Dir_default: TestMessage3_NestedMessage_Dir = TestMessage3_NestedMessage_Dir::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3_NestedMessage_Dir",
       full_name: "pbtest.TestMessage3_NestedMessage_Dir",
@@ -5675,7 +5675,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     0
   }
@@ -5735,7 +5735,7 @@ lazy_static! {
   pub static ref TestMessage3NonNullableOneof_default: TestMessage3NonNullableOneof = TestMessage3NonNullableOneof::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3NonNullableOneof",
       full_name: "pbtest.TestMessage3NonNullableOneof",
@@ -5774,7 +5774,7 @@ impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut a_size = 0;
@@ -5933,7 +5933,7 @@ lazy_static! {
   pub static ref TestMessage3ErrIfDefaultEnum_default: TestMessage3ErrIfDefaultEnum = TestMessage3ErrIfDefaultEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3ErrIfDefaultEnum",
       full_name: "pbtest.TestMessage3ErrIfDefaultEnum",
@@ -5951,7 +5951,7 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut field_size = 0;
@@ -6037,7 +6037,7 @@ lazy_static! {
   pub static ref TestMessage3ErrIfDefaultEnumOneof_default: TestMessage3ErrIfDefaultEnumOneof = TestMessage3ErrIfDefaultEnumOneof::default();
 }
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3ErrIfDefaultEnumOneof",
       full_name: "pbtest.TestMessage3ErrIfDefaultEnumOneof",
@@ -6067,7 +6067,7 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
         },
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut something_size = 0;
@@ -6188,7 +6188,7 @@ lazy_static! {
   pub static ref TestMessage3RepeatedErrIfDefaultEnum_default: TestMessage3RepeatedErrIfDefaultEnum = TestMessage3RepeatedErrIfDefaultEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3RepeatedErrIfDefaultEnum",
       full_name: "pbtest.TestMessage3RepeatedErrIfDefaultEnum",
@@ -6206,7 +6206,7 @@ impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut field_size = 0;
@@ -6307,7 +6307,7 @@ lazy_static! {
   pub static ref TestMessage3ClosedEnum_default: TestMessage3ClosedEnum = TestMessage3ClosedEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3ClosedEnum {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3ClosedEnum",
       full_name: "pbtest.TestMessage3ClosedEnum",
@@ -6325,7 +6325,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut value_size = 0;
@@ -6406,7 +6406,7 @@ lazy_static! {
   pub static ref TestMessage3ClosedEnum2_default: TestMessage3ClosedEnum2 = TestMessage3ClosedEnum2::default();
 }
 impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3ClosedEnum2",
       full_name: "pbtest.TestMessage3ClosedEnum2",
@@ -6424,7 +6424,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut value_size = 0;
@@ -6505,7 +6505,7 @@ lazy_static! {
   pub static ref TestMessage3NonOptionalBoxedMessage_default: TestMessage3NonOptionalBoxedMessage = TestMessage3NonOptionalBoxedMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3NonOptionalBoxedMessage",
       full_name: "pbtest.TestMessage3NonOptionalBoxedMessage",
@@ -6523,7 +6523,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut msg_size = 0;
@@ -6609,7 +6609,7 @@ lazy_static! {
   pub static ref TestMessage3NonOptionalBoxedMessage_InnerMessage_default: TestMessage3NonOptionalBoxedMessage_InnerMessage = TestMessage3NonOptionalBoxedMessage_InnerMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestMessage3NonOptionalBoxedMessage_InnerMessage",
       full_name: "pbtest.TestMessage3NonOptionalBoxedMessage_InnerMessage",
@@ -6627,7 +6627,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut name_size = 0;
@@ -6715,7 +6715,7 @@ lazy_static! {
   pub static ref TestPreserveUnrecognized1_default: TestPreserveUnrecognized1 = TestPreserveUnrecognized1::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestPreserveUnrecognized1",
       full_name: "pbtest.TestPreserveUnrecognized1",
@@ -6733,7 +6733,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut string1_size = 0;
@@ -6851,7 +6851,7 @@ lazy_static! {
   pub static ref TestPreserveUnrecognized2_default: TestPreserveUnrecognized2 = TestPreserveUnrecognized2::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestPreserveUnrecognized2",
       full_name: "pbtest.TestPreserveUnrecognized2",
@@ -6986,7 +6986,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut a_string1_size = 0;
@@ -7424,7 +7424,7 @@ lazy_static! {
   pub static ref TestPreserveUnrecognizedEmpty_default: TestPreserveUnrecognizedEmpty = TestPreserveUnrecognizedEmpty::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "TestPreserveUnrecognizedEmpty",
       full_name: "pbtest.TestPreserveUnrecognizedEmpty",
@@ -7433,7 +7433,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     size += self._unrecognized.len();

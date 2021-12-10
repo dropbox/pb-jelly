@@ -26,7 +26,7 @@ lazy_static! {
   pub static ref BytesData_default: BytesData = BytesData::default();
 }
 impl ::pb_jelly::Message for BytesData {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "BytesData",
       full_name: "pbtest.BytesData",
@@ -44,7 +44,7 @@ impl ::pb_jelly::Message for BytesData {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
@@ -142,7 +142,7 @@ lazy_static! {
   pub static ref VecData_default: VecData = VecData::default();
 }
 impl ::pb_jelly::Message for VecData {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "VecData",
       full_name: "pbtest.VecData",
@@ -160,7 +160,7 @@ impl ::pb_jelly::Message for VecData {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
@@ -257,7 +257,7 @@ lazy_static! {
   pub static ref StringMessage_default: StringMessage = StringMessage::default();
 }
 impl ::pb_jelly::Message for StringMessage {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "StringMessage",
       full_name: "pbtest.StringMessage",
@@ -275,7 +275,7 @@ impl ::pb_jelly::Message for StringMessage {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;

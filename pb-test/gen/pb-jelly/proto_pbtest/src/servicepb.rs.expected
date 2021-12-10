@@ -14,7 +14,7 @@ lazy_static! {
   pub static ref InpMessage_default: InpMessage = InpMessage::default();
 }
 impl ::pb_jelly::Message for InpMessage {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "InpMessage",
       full_name: "pbtest.InpMessage",
@@ -32,7 +32,7 @@ impl ::pb_jelly::Message for InpMessage {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut i_size = 0;
@@ -113,7 +113,7 @@ lazy_static! {
   pub static ref OutMessage_default: OutMessage = OutMessage::default();
 }
 impl ::pb_jelly::Message for OutMessage {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "OutMessage",
       full_name: "pbtest.OutMessage",
@@ -131,7 +131,7 @@ impl ::pb_jelly::Message for OutMessage {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut o_size = 0;

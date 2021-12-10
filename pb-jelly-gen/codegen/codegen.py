@@ -1012,7 +1012,9 @@ class CodeWriter(object):
         with block(self, "impl ::pb_jelly::Message for " + name):
             with block(
                 self,
-                "fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor>",
+                "const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> = ",
+                start=" (",
+                end=");",
             ):
                 name = "_".join(path + [msg_type.name])
                 full_name = (

@@ -21,7 +21,7 @@ where
     T: ConcreteMessage,
 {
     fn erased_descriptor(&self) -> Option<MessageDescriptor> {
-        self.descriptor()
+        T::DESCRIPTOR
     }
 
     fn erased_compute_size(&self) -> usize {
