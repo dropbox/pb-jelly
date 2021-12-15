@@ -1,4 +1,8 @@
 # Unreleased
+... everything has been released!
+
+# 0.0.11
+### December 15, 2021
 * Avoid unnecessary `return` statements in some generated code. (#136)
 * Avoid extra logic for oneofs with only 1 possible value. (#133)
 
