@@ -169,5 +169,5 @@ jobs:
         run: |
           cd pb-test/pb_test_gen
           cargo run
-          cd ../gen/pb-jelly/proto_pbtest
-          cargo clippy
+          cd ..
+          cargo clippy -p proto_pbtest
