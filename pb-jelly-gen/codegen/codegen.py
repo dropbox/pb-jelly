@@ -294,10 +294,14 @@ class RustType(object):
 
     def can_be_packed(self) -> bool:
         # Return true if incoming messages could be packed on the wire
-        return self.field.label == FieldDescriptorProto.LABEL_REPEATED and self.wire_format() in (
-            "Varint",
-            "Fixed64",
-            "Fixed32",
+        return (
+            self.field.label == FieldDescriptorProto.LABEL_REPEATED
+            and self.wire_format()
+            in (
+                "Varint",
+                "Fixed64",
+                "Fixed32",
+            )
         )
 
     def should_serialize_packed(self) -> bool:
@@ -658,7 +662,7 @@ class CodeWriter(object):
             return
         for l in text_block.rstrip().split("\n"):
             if l:
-                self.write(u"{}{}".format(prefix, l))
+                self.write("{}{}".format(prefix, l))
             else:
                 self.write("")
 
@@ -1643,9 +1647,9 @@ class Context(object):
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
                     assert field_type.typ.options.Extensions[
                         extensions_pb2.preserve_unrecognized
-                    ], (
-                        "%s preserves unrecognized but child message %s does not"
-                        % (fq_msg, field_fq_msg)
+                    ], "%s preserves unrecognized but child message %s does not" % (
+                        fq_msg,
+                        field_fq_msg,
                     )
 
                 self.calc_impls(
@@ -1796,8 +1800,8 @@ class Context(object):
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
             features = {
-                u"serde": u'features=["serde_derive"]',
-                u"compact_str": 'features=["bytes"]',
+                "serde": 'features=["serde_derive"]',
+                "compact_str": 'features=["bytes"]',
             }
 
             if derive_serde:
@@ -1805,7 +1809,7 @@ class Context(object):
             if include_sso:
                 all_deps.update({"compact_str"})
                 if derive_serde:
-                    features.update({u"compact_str": 'features=["bytes", "serde"]'})
+                    features.update({"compact_str": 'features=["bytes", "serde"]'})
 
             deps_str = "\n".join(
                 "{dep} = {{{feat}}}".format(dep=dep, feat=features.get(dep, ""))
@@ -1822,8 +1826,8 @@ class Context(object):
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
             features = {
-                u"serde": u'features=["serde_derive"]',
-                u"compact_str": 'features=["bytes"]',
+                "serde": 'features=["serde_derive"]',
+                "compact_str": 'features=["bytes"]',
             }
 
             if derive_serde:
@@ -1831,14 +1835,14 @@ class Context(object):
             if include_sso:
                 all_deps.update({"compact_str"})
                 if derive_serde:
-                    features.update({u"compact_str": 'features=["bytes", "serde"]'})
+                    features.update({"compact_str": 'features=["bytes", "serde"]'})
 
             versions = {
-                u"lazy_static": u' version = "1.4.0" ',
-                u"pb-jelly": u' version = "0.0.11" ',
-                u"serde": u' version = "1.0" ',
-                u"bytes": u' version = "1.0" ',
-                u"compact_str": u' version = "0.5" ',
+                "lazy_static": ' version = "1.4.0" ',
+                "pb-jelly": ' version = "0.0.11" ',
+                "serde": ' version = "1.0" ',
+                "bytes": ' version = "1.0" ',
+                "compact_str": ' version = "0.5" ',
             }
 
             deps_lines = []
@@ -1849,7 +1853,7 @@ class Context(object):
                 if dep in versions:
                     fields.append(versions[dep])
                 else:
-                    fields.append(u'path = "../{dep}"'.format(dep=dep))
+                    fields.append('path = "../{dep}"'.format(dep=dep))
                 deps_lines.append(
                     "{dep} = {{{fields}}}".format(dep=dep, fields=",".join(fields))
                 )
