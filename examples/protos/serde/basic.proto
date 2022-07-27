@@ -8,4 +8,5 @@ option (rust.serde_derive) = true;
 
 message NewYorkCity {
     uint64 num_windows = 1;
+    string neighborhood = 2 [(rust.sso)=true];
 }

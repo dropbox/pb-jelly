@@ -9,6 +9,7 @@ publish = false
 
 [dependencies]
 bytes = "1.0"
+compact_str = "0.5"
 pb-jelly = "0.0.11"
 proto_box_it = { path = "gen/rust/proto/proto_box_it" }
 proto_custom_type = { path = "gen/rust/proto/proto_custom_type" }
@@ -17,6 +18,7 @@ proto_multi = { path = "gen/rust/proto/proto_multi" }
 proto_non_optional = { path = "gen/rust/proto/proto_non_optional" }
 proto_nullable_field = { path = "gen/rust/proto/proto_nullable_field" }
 proto_serde = { path = "gen/rust/proto/proto_serde" }
+proto_sso = { path = "gen/rust/proto/proto_sso" }
 proto_user = { path = "gen/rust/proto/proto_user" }
 proto_zero_copy = { path = "gen/rust/proto/proto_zero_copy"}
 serde_json = "1"
@@ -53,6 +55,10 @@ path = "src/nullable_field/main.rs"
 [[bin]]
 name = "serde"
 path = "src/serde/main.rs"
+
+[[bin]]
+name = "sso"
+path = "src/sso/main.rs"
 
 [[bin]]
 name = "zero_copy"

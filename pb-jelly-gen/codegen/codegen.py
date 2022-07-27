@@ -61,6 +61,7 @@ PRIMITIVE_TYPES = {
 BLOB_TYPE = "::pb_jelly::Lazy<::blob_pb::WrappedBlob>"
 VEC_SLICE_TYPE = "::pb_jelly::Lazy<::blob_pb::VecSlice>"
 LAZY_BYTES_TYPE = "::pb_jelly::Lazy<::bytes::Bytes>"
+SMALL_STRING_OPT_TYPE = "::compact_str::CompactString"
 # pull out `x` from every instance of `::x::y::z`, but not `y` or `z`
 CRATE_NAME_REGEX = re.compile(r"(?:^|\W)::(\w+)(?:::\w+)*")
 
@@ -257,6 +258,12 @@ class RustType(object):
             and self.field.options.Extensions[extensions_pb2.zero_copy]
         )
 
+    def is_small_string_optimization(self) -> bool:
+        return (
+            self.field.type == FieldDescriptorProto.TYPE_STRING
+            and self.field.options.Extensions[extensions_pb2.sso]
+        )
+
     def is_boxed(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_MESSAGE
@@ -332,7 +339,10 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_BOOL:
             return "bool", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_STRING:
-            return "::std::string::String", "v"
+            if self.is_small_string_optimization():
+                return SMALL_STRING_OPT_TYPE, "v"
+            else:
+                return "::std::string::String", "v"
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             if self.is_blob():
                 return BLOB_TYPE, "v"
@@ -365,7 +375,10 @@ class RustType(object):
         expr = "self.%s.take().unwrap_or_default()" % self.field.name
 
         if self.field.type == FieldDescriptorProto.TYPE_STRING:
-            return "::std::string::String", expr
+            if self.is_small_string_optimization():
+                return SMALL_STRING_OPT_TYPE, expr
+            else:
+                return "::std::string::String", expr
         elif self.field.type == FieldDescriptorProto.TYPE_BYTES:
             if self.is_blob():
                 return BLOB_TYPE, expr
@@ -446,6 +459,9 @@ class RustType(object):
 
         if self.is_lazy_bytes():
             return LAZY_BYTES_TYPE
+
+        if self.is_small_string_optimization():
+            return SMALL_STRING_OPT_TYPE
 
         if typ in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[typ][0]
@@ -615,6 +631,7 @@ class CodeWriter(object):
         self.indentation = 0
         self.content = StringIO()
         self.is_proto3 = proto_file and proto_file.syntax == "proto3"
+        self.uses_sso = False
         if proto_file and proto_file.options.Extensions[extensions_pb2.serde_derive]:
             self.derive_serde = True
         else:
@@ -664,7 +681,13 @@ class CodeWriter(object):
     def rust_type(
         self, msg_type: DescriptorProto, field: FieldDescriptorProto
     ) -> RustType:
-        return RustType(self.ctx, self.proto_file, msg_type, field)
+        rust_type = RustType(self.ctx, self.proto_file, msg_type, field)
+
+        # checks if any of our types use a small string optimization
+        if not self.uses_sso and rust_type.is_small_string_optimization():
+            self.uses_sso = True
+
+        return rust_type
 
     def gen_closed_enum(
         self,
@@ -1769,14 +1792,20 @@ class Context(object):
             build_file = BUILD_TEMPLATE.format(crate=crate)
             yield crate, build_file
 
-    def get_spec_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
+    def get_spec_toml_file(self, derive_serde: bool, include_sso: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
+            features = {u"serde": u'features=["serde_derive"]', u"compact_str": 'features=["bytes"]'}
+
             if derive_serde:
                 all_deps.update({"serde"})
-            features = {u"serde": u'features=["serde_derive"]'}
+            if include_sso:
+                all_deps.update({"compact_str"})
+                if derive_serde:
+                    features.update({u"compact_str": 'features=["bytes", "serde"]'})
+
             deps_str = "\n".join(
                 "{dep} = {{{feat}}}".format(dep=dep, feat=features.get(dep, ""))
                 for dep in sorted(all_deps)
@@ -1784,19 +1813,26 @@ class Context(object):
             targets = SPEC_TOML_TEMPLATE.format(crate=crate, deps=deps_str)
             yield crate, targets
 
-    def get_cargo_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
+    def get_cargo_toml_file(self, derive_serde: bool, include_sso: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
+            features = {u"serde": u'features=["serde_derive"]', u"compact_str": 'features=["bytes"]'}
+
             if derive_serde:
                 all_deps.update({"serde"})
-            features = {u"serde": u' features = ["serde_derive"]'}
+            if include_sso:
+                all_deps.update({"compact_str"})
+                if derive_serde:
+                    features.update({u"compact_str": 'features=["bytes", "serde"]'})
+
             versions = {
                 u"lazy_static": u' version = "1.4.0" ',
                 u"pb-jelly": u' version = "0.0.11" ',
                 u"serde": u' version = "1.0" ',
                 u"bytes": u' version = "1.0" ',
+                u"compact_str": u' version = "0.5" ',
             }
 
             deps_lines = []
@@ -1921,6 +1957,7 @@ def generate_single_crate(
     # Set iteration order is nondeterministic, but this is ok, because we never iterate through this
     processed_files: Set[Text] = set()
     derive_serde = False
+    include_sso = False
 
     for proto_file_name in file_to_generate:
 
@@ -1974,6 +2011,10 @@ def generate_single_crate(
 
         add_mod(writer=writer)
 
+        # check if the writer ever used a small string optimization
+        if writer.uses_sso:
+            include_sso = True
+
     # Note that output filenames must use "/" even on windows. It is part of the
     # protoc plugin protocol. The plugin speaks os-independent in "/". Thus, we
     # should not use os.path.sep or os.path.join
@@ -1989,13 +2030,13 @@ def generate_single_crate(
             output.name = file_prefix + crate + "/BUILD.in-gen-proto~"
             output.content = build_file
     elif "generate_spec_toml" in request.parameter:
-        for crate, spec_toml_file in ctx.get_spec_toml_file(derive_serde):
+        for crate, spec_toml_file in ctx.get_spec_toml_file(derive_serde, include_sso):
             output = response.file.add()
             output.name = file_prefix + crate + "/Spec.toml"
             output.content = spec_toml_file
     else:
         # Generate good ol Cargo.toml files
-        for crate, cargo_toml_file in ctx.get_cargo_toml_file(derive_serde):
+        for crate, cargo_toml_file in ctx.get_cargo_toml_file(derive_serde, include_sso):
             output = response.file.add()
             output.name = file_prefix + crate + "/Cargo.toml"
             output.content = cargo_toml_file

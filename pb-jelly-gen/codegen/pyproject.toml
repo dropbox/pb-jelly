@@ -1,6 +1,13 @@
+[project]
+name = "pb-jelly"
+version = "0.0.11"
+
 [build-system]
 requires = [
     "setuptools>=42",
     "wheel",
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []

@@ -17,3 +17,35 @@ message VecData {
 message StringMessage {
     optional string data = 1;
 }
+
+message StringMessageSSO {
+    optional string data = 1 [(rust.sso)=true];
+}
+
+message Cities {
+    repeated City cities = 1;
+}
+
+message City {
+    required string city = 1;
+    required string growth_from_2000_to_2013 = 2;
+    required double latitude = 3;
+    required double longitude = 4;
+    required string population = 5;
+    required string rank = 6;
+    required string state = 7;
+}
+
+message CitiesSSO {
+    repeated CitySSO cities = 1;
+}
+
+message CitySSO {
+    required string city = 1 [(rust.sso)=true];
+    required string growth_from_2000_to_2013 = 2 [(rust.sso)=true];
+    required double latitude = 3;
+    required double longitude = 4;
+    required string population = 5 [(rust.sso)=true];
+    required string rank = 6 [(rust.sso)=true];
+    required string state = 7 [(rust.sso)=true];
+}

@@ -1849,6 +1849,110 @@ impl ::pb_jelly::Reflection for Version31 {
   }
 }
 
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Version31SSO {
+  pub optional_string1: ::compact_str::CompactString,
+}
+impl ::std::default::Default for Version31SSO {
+  fn default() -> Self {
+    Version31SSO {
+      optional_string1: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref Version31SSO_default: Version31SSO = Version31SSO::default();
+}
+impl ::pb_jelly::Message for Version31SSO {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Version31SSO",
+      full_name: "pbtest.Version31SSO",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "optional_string1",
+          full_name: "pbtest.Version31SSO.optional_string1",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut optional_string1_size = 0;
+    if self.optional_string1 != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.optional_string1;
+      let l = ::pb_jelly::Message::compute_size(val);
+      optional_string1_size += ::pb_jelly::wire_format::serialized_length(1);
+      optional_string1_size += ::pb_jelly::varint::serialized_length(l as u64);
+      optional_string1_size += l;
+    }
+    size += optional_string1_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    if self.optional_string1 != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.optional_string1;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.optional_string1 != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.optional_string1;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version31SSO", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.optional_string1 = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for Version31SSO {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "optional_string1" => {
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.optional_string1)
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Version32 {
   pub optional_string1: ::std::string::String,
@@ -7469,6 +7573,428 @@ impl ::pb_jelly::Reflection for TestPreserveUnrecognizedEmpty {
   }
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct TestSmallString {
+  pub compact: ::compact_str::CompactString,
+}
+impl ::std::default::Default for TestSmallString {
+  fn default() -> Self {
+    TestSmallString {
+      compact: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestSmallString_default: TestSmallString = TestSmallString::default();
+}
+impl ::pb_jelly::Message for TestSmallString {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestSmallString",
+      full_name: "pbtest.TestSmallString",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "compact",
+          full_name: "pbtest.TestSmallString.compact",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut compact_size = 0;
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      let l = ::pb_jelly::Message::compute_size(val);
+      compact_size += ::pb_jelly::wire_format::serialized_length(1);
+      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
+      compact_size += l;
+    }
+    size += compact_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestSmallString", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.compact = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for TestSmallString {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "compact" => {
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.compact)
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct TestBoxedSmallString {
+  pub compact: ::compact_str::CompactString,
+}
+impl ::std::default::Default for TestBoxedSmallString {
+  fn default() -> Self {
+    TestBoxedSmallString {
+      compact: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestBoxedSmallString_default: TestBoxedSmallString = TestBoxedSmallString::default();
+}
+impl ::pb_jelly::Message for TestBoxedSmallString {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestBoxedSmallString",
+      full_name: "pbtest.TestBoxedSmallString",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "compact",
+          full_name: "pbtest.TestBoxedSmallString.compact",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut compact_size = 0;
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      let l = ::pb_jelly::Message::compute_size(val);
+      compact_size += ::pb_jelly::wire_format::serialized_length(1);
+      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
+      compact_size += l;
+    }
+    size += compact_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestBoxedSmallString", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.compact = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for TestBoxedSmallString {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "compact" => {
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.compact)
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct TestNonOptionalSmallString {
+  pub compact: ::compact_str::CompactString,
+}
+impl ::std::default::Default for TestNonOptionalSmallString {
+  fn default() -> Self {
+    TestNonOptionalSmallString {
+      compact: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestNonOptionalSmallString_default: TestNonOptionalSmallString = TestNonOptionalSmallString::default();
+}
+impl ::pb_jelly::Message for TestNonOptionalSmallString {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestNonOptionalSmallString",
+      full_name: "pbtest.TestNonOptionalSmallString",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "compact",
+          full_name: "pbtest.TestNonOptionalSmallString.compact",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut compact_size = 0;
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      let l = ::pb_jelly::Message::compute_size(val);
+      compact_size += ::pb_jelly::wire_format::serialized_length(1);
+      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
+      compact_size += l;
+    }
+    size += compact_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
+      let val = &self.compact;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestNonOptionalSmallString", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.compact = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for TestNonOptionalSmallString {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "compact" => {
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.compact)
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct TestSmallStringPreserveUnrecognized {
+  pub compact: ::std::string::String,
+  pub _unrecognized: Vec<u8>,
+}
+impl ::std::default::Default for TestSmallStringPreserveUnrecognized {
+  fn default() -> Self {
+    TestSmallStringPreserveUnrecognized {
+      compact: ::std::default::Default::default(),
+      _unrecognized: Vec::new(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestSmallStringPreserveUnrecognized_default: TestSmallStringPreserveUnrecognized = TestSmallStringPreserveUnrecognized::default();
+}
+impl ::pb_jelly::Message for TestSmallStringPreserveUnrecognized {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestSmallStringPreserveUnrecognized",
+      full_name: "pbtest.TestSmallStringPreserveUnrecognized",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "compact",
+          full_name: "pbtest.TestSmallStringPreserveUnrecognized.compact",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut compact_size = 0;
+    if self.compact != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.compact;
+      let l = ::pb_jelly::Message::compute_size(val);
+      compact_size += ::pb_jelly::wire_format::serialized_length(1);
+      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
+      compact_size += l;
+    }
+    size += compact_size;
+    size += self._unrecognized.len();
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    if self.compact != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.compact;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if self.compact != <::std::string::String as ::std::default::Default>::default() {
+      let val = &self.compact;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    w.write_all(&self._unrecognized)?;
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    let mut unrecognized = ::pb_jelly::Unrecognized::default();
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestSmallStringPreserveUnrecognized", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.compact = val;
+        }
+        _ => {
+          unrecognized.gather(field_number, typ, &mut buf)?;
+        }
+      }
+    }
+    unrecognized.serialize(&mut self._unrecognized)?;
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for TestSmallStringPreserveUnrecognized {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "compact" => {
+        ::pb_jelly::reflection::FieldMut::Value(&mut self.compact)
+      }
       _ => {
         panic!("unknown field name given")
       }

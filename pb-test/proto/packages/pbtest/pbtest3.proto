@@ -65,6 +65,10 @@ message Version31 {
     string optional_string1 = 1;
 }
 
+message Version31SSO {
+    string optional_string1 = 1 [(rust.sso)=true];
+}
+
 message Version32 {
     string   optional_string1     = 1;
     int32    optional_int32       = 2;
@@ -296,4 +300,22 @@ message TestPreserveUnrecognized2 {
 
 message TestPreserveUnrecognizedEmpty {
     option (rust.preserve_unrecognized) = true;
+}
+
+message TestSmallString {
+    string compact = 1 [(rust.sso)=true];
+}
+
+message TestBoxedSmallString {
+    string compact = 1 [(rust.sso)=true, (rust.box_it)=true];
+}
+
+message TestNonOptionalSmallString {
+    string compact = 1 [(rust.sso)=true, (rust.box_it)=true, (rust.nullable_field)=false];
+}
+
+message TestSmallStringPreserveUnrecognized {
+    option (rust.preserve_unrecognized) = true;
+
+    string compact = 1;
 }
