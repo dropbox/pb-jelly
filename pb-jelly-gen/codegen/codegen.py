@@ -294,14 +294,10 @@ class RustType(object):
 
     def can_be_packed(self) -> bool:
         # Return true if incoming messages could be packed on the wire
-        return (
-            self.field.label == FieldDescriptorProto.LABEL_REPEATED
-            and self.wire_format()
-            in (
-                "Varint",
-                "Fixed64",
-                "Fixed32",
-            )
+        return self.field.label == FieldDescriptorProto.LABEL_REPEATED and self.wire_format() in (
+            "Varint",
+            "Fixed64",
+            "Fixed32",
         )
 
     def should_serialize_packed(self) -> bool:
@@ -1647,9 +1643,9 @@ class Context(object):
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
                     assert field_type.typ.options.Extensions[
                         extensions_pb2.preserve_unrecognized
-                    ], "%s preserves unrecognized but child message %s does not" % (
-                        fq_msg,
-                        field_fq_msg,
+                    ], (
+                        "%s preserves unrecognized but child message %s does not"
+                        % (fq_msg, field_fq_msg)
                     )
 
                 self.calc_impls(
@@ -1792,12 +1788,17 @@ class Context(object):
             build_file = BUILD_TEMPLATE.format(crate=crate)
             yield crate, build_file
 
-    def get_spec_toml_file(self, derive_serde: bool, include_sso: bool) -> Iterator[Tuple[Text, Text]]:
+    def get_spec_toml_file(
+        self, derive_serde: bool, include_sso: bool
+    ) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
-            features = {u"serde": u'features=["serde_derive"]', u"compact_str": 'features=["bytes"]'}
+            features = {
+                u"serde": u'features=["serde_derive"]',
+                u"compact_str": 'features=["bytes"]',
+            }
 
             if derive_serde:
                 all_deps.update({"serde"})
@@ -1813,12 +1814,17 @@ class Context(object):
             targets = SPEC_TOML_TEMPLATE.format(crate=crate, deps=deps_str)
             yield crate, targets
 
-    def get_cargo_toml_file(self, derive_serde: bool, include_sso: bool) -> Iterator[Tuple[Text, Text]]:
+    def get_cargo_toml_file(
+        self, derive_serde: bool, include_sso: bool
+    ) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
-            features = {u"serde": u'features=["serde_derive"]', u"compact_str": 'features=["bytes"]'}
+            features = {
+                u"serde": u'features=["serde_derive"]',
+                u"compact_str": 'features=["bytes"]',
+            }
 
             if derive_serde:
                 all_deps.update({"serde"})
@@ -2036,7 +2042,9 @@ def generate_single_crate(
             output.content = spec_toml_file
     else:
         # Generate good ol Cargo.toml files
-        for crate, cargo_toml_file in ctx.get_cargo_toml_file(derive_serde, include_sso):
+        for crate, cargo_toml_file in ctx.get_cargo_toml_file(
+            derive_serde, include_sso
+        ):
             output = response.file.add()
             output.name = file_prefix + crate + "/Cargo.toml"
             output.content = cargo_toml_file
