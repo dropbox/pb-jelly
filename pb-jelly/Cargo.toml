@@ -16,4 +16,5 @@ categories = ["encoding", "parsing", "web-programming"]
 [dependencies]
 byteorder = "1.4"
 bytes = "1.0"
+compact_str = { version = "0.5", features = ["bytes"] }
 serde = { version = "1.0", features = ["derive"] }

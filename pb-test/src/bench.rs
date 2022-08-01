@@ -1,16 +1,26 @@
 #[cfg(test)]
 mod benches {
     use bytes::Bytes;
+    use compact_str::CompactString;
     use pb_jelly::{
         Lazy,
         Message,
     };
     use proto_pbtest::bench::{
         BytesData,
+        Cities,
+        CitiesSSO,
+        City,
+        CitySSO,
         StringMessage,
+        StringMessageSSO,
         VecData,
     };
-    use std::io::Cursor;
+    use serde::Deserialize;
+    use std::{
+        hint::black_box,
+        io::Cursor,
+    };
     use test::Bencher;
 
     #[bench]
@@ -72,16 +82,135 @@ mod benches {
         let mut proto = StringMessage::default();
         proto.set_data(data);
 
-        let ser_bytes: Vec<u8> = proto.serialize_to_vec();
-
-        let bytes_buf = Bytes::from(ser_bytes);
+        let bytes: Vec<u8> = proto.serialize_to_vec();
+        let bytes = Bytes::from(bytes);
 
         b.iter(|| {
             // Deserialize our proto
             let mut de_proto = StringMessage::default();
-            de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
-            assert!(de_proto.has_data());
-            de_proto
+            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+            black_box(de_proto)
+        });
+    }
+
+    #[bench]
+    fn bench_deserialize_string_sso(b: &mut Bencher) {
+        let data = CompactString::from(include_str!("../data/moby_dick.txt"));
+
+        let mut proto = StringMessageSSO::default();
+        proto.set_data(data);
+
+        let bytes: Vec<u8> = proto.serialize_to_vec();
+        let bytes = Bytes::from(bytes);
+
+        b.iter(|| {
+            // Deserialize our proto
+            let mut de_proto = StringMessageSSO::default();
+            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+            black_box(de_proto)
+        });
+    }
+
+    #[bench]
+    fn bench_deserialize_small_string(b: &mut Bencher) {
+        let data = String::from("IMG_1234.png");
+
+        let mut proto = StringMessage::default();
+        proto.set_data(data);
+
+        let bytes: Vec<u8> = proto.serialize_to_vec();
+        let bytes = Bytes::from(bytes);
+
+        b.iter(|| {
+            // Deserialize our proto
+            let mut de_proto = StringMessage::default();
+            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+            black_box(de_proto)
+        });
+    }
+
+    #[bench]
+    fn bench_deserialize_small_string_sso(b: &mut Bencher) {
+        let data = CompactString::from("IMG_1234.png");
+
+        let mut proto = StringMessageSSO::default();
+        proto.set_data(data);
+
+        let bytes: Vec<u8> = proto.serialize_to_vec();
+        let bytes = Bytes::from(bytes);
+
+        b.iter(|| {
+            // Deserialize our proto
+            let mut de_proto = StringMessageSSO::default();
+            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+            black_box(de_proto)
+        });
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct JsonCity {
+        city: CompactString,
+        growth_from_2000_to_2013: CompactString,
+        latitude: f64,
+        longitude: f64,
+        population: CompactString,
+        rank: CompactString,
+        state: CompactString,
+    }
+
+    #[bench]
+    fn bench_deserialize_many_strings(b: &mut Bencher) {
+        let json = String::from(include_str!("../data/cities.json"));
+        let json_cities: Vec<JsonCity> = serde_json::from_str(&json).expect("failed to parse cities.json");
+
+        let cities: Vec<City> = json_cities
+            .into_iter()
+            .map(|city| City {
+                city: Some(city.city.to_string()),
+                growth_from_2000_to_2013: Some(city.growth_from_2000_to_2013.to_string()),
+                latitude: Some(city.latitude),
+                longitude: Some(city.longitude),
+                population: Some(city.population.to_string()),
+                rank: Some(city.rank.to_string()),
+                state: Some(city.state.to_string()),
+            })
+            .collect();
+        let proto = Cities { cities };
+
+        let bytes = proto.serialize_to_vec();
+
+        b.iter(|| {
+            // Deserialize our proto
+            let de_proto: Cities = Message::deserialize_from_slice(&bytes[..]).unwrap();
+            black_box(de_proto)
+        });
+    }
+
+    #[bench]
+    fn bench_deserialize_many_strings_sso(b: &mut Bencher) {
+        let json = String::from(include_str!("../data/cities.json"));
+        let json_cities: Vec<JsonCity> = serde_json::from_str(&json).expect("failed to parse cities.json");
+
+        let cities: Vec<CitySSO> = json_cities
+            .into_iter()
+            .map(|city| CitySSO {
+                city: Some(city.city),
+                growth_from_2000_to_2013: Some(city.growth_from_2000_to_2013),
+                latitude: Some(city.latitude),
+                longitude: Some(city.longitude),
+                population: Some(city.population),
+                rank: Some(city.rank),
+                state: Some(city.state),
+            })
+            .collect();
+        let proto = CitiesSSO { cities };
+
+        let bytes = proto.serialize_to_vec();
+
+        b.iter(|| {
+            // Deserialize our proto
+            let de_proto: CitiesSSO = Message::deserialize_from_slice(&bytes[..]).unwrap();
+            black_box(de_proto)
         });
     }
 }

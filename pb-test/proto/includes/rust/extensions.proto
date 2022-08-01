@@ -21,6 +21,8 @@ extend google.protobuf.FieldOptions {
 
     // Generate this `bytes` field using a Lazy<bytes::Bytes> to enable zero-copy deserialization.
     optional bool zero_copy = 50007;
+    // Generate this `string` field using a type that supports a small string optimization.
+    optional bool sso = 50009;
 
     // If false, make this field's Rust type non-Optional. If the field is
     // missing on the wire during deserialization, it will remain as

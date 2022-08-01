@@ -610,7 +610,7 @@ fn read_pb3_v1_v2_compatibility() {
     assert!(parsed2.optional_double.abs() < 0.00001);
     assert_eq!(parsed2.optional_bool, false);
     assert_eq!(parsed2.optional_string.as_str(), "");
-    assert_eq!(parsed2.optional_bytes, vec![]);
+    assert_eq!(parsed2.optional_bytes, ::std::vec::Vec::<u8>::new());
     assert!(parsed2.optional_float.abs() < 0.000001);
 }
 
@@ -787,4 +787,13 @@ fn test_preserve_unrecognized_sort_order() {
         TestPreserveUnrecognized1::deserialize_from_slice(&serialized).unwrap(),
         TestPreserveUnrecognized1::deserialize_from_slice(&serialized_backward).unwrap(),
     );
+}
+
+#[test]
+fn test_strings_sso3() {
+    let buf = get_go_proto_bytes("pbtest3_version2");
+    assert_ne!(buf.len(), 0);
+
+    let msg = Version31SSO::deserialize_from_slice(buf.as_ref()).unwrap();
+    assert_eq!(msg.optional_string1.as_str(), "abc");
 }

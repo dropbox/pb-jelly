@@ -21,6 +21,7 @@ use bytes::{
     Buf,
     BufMut,
 };
+use compact_str::CompactString;
 
 use super::{
     unexpected_eof,
@@ -582,6 +583,31 @@ impl Message for String {
 }
 
 impl Reflection for String {}
+
+impl Message for compact_str::CompactString {
+    fn compute_size(&self) -> usize {
+        self.len()
+    }
+
+    fn serialize<W: PbBufferWriter>(&self, w: &mut W) -> Result<()> {
+        w.write_all(self.as_bytes())?;
+        Ok(())
+    }
+
+    fn deserialize<B: PbBufferReader>(&mut self, buf: &mut B) -> Result<()> {
+        match CompactString::from_utf8_buf(buf) {
+            // success! set ourself equal to the CompactString we just created
+            Ok(compact) => {
+                *self = compact;
+                Ok(())
+            },
+            // error! there was invalid UTF-8, return an error
+            Err(_) => Err(std::io::ErrorKind::InvalidData.into()),
+        }
+    }
+}
+
+impl Reflection for compact_str::CompactString {}
 
 impl Message for () {
     fn compute_size(&self) -> usize {

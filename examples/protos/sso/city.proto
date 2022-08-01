@@ -1,0 +1,14 @@
+syntax = "proto3";
+package city;
+
+// rust/extensions.proto is included by default
+import "rust/extensions.proto";
+
+message City {
+    string name = 1 [(rust.sso)=true];
+    double latitude = 2;
+    double longitude = 3;
+    string population = 4 [(rust.sso)=true];
+    string rank = 5 [(rust.sso)=true];
+    string state = 6 [(rust.sso)=true];
+}
