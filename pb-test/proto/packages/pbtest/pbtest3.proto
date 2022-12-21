@@ -319,3 +319,31 @@ message TestSmallStringPreserveUnrecognized {
 
     string compact = 1;
 }
+
+message TestProto3Optional {
+    // optional doesn't mean anything here, messages are already optional
+    optional ForeignMessage3 a_message = 1;
+    optional int32    a_int32       = 2;
+    optional int64    a_int64       = 3;
+    optional uint32   a_uint32      = 4;
+    optional uint64   a_uint64      = 5;
+    optional fixed64  a_fixed64     = 6;
+    optional fixed32  a_fixed32     = 7;
+    optional sfixed64 a_sfixed64    = 8;
+    optional sfixed32 a_sfixed32    = 9;
+    optional double   a_double      = 10;
+    optional bool     a_bool        = 11;
+    optional string   a_string      = 12;
+    optional bytes    a_bytes       = 13;
+    optional float    a_float       = 14;
+    // make sure the synthetic oneofs don't interfere with real oneofs
+    oneof real_oneof_1 {
+        string real_oneof_1_1 = 15;
+        string real_oneof_1_2 = 16;
+    }
+    oneof real_oneof_2 {
+        option (rust.nullable) = false;
+        string real_oneof_2_1 = 17;
+        string real_oneof_2_2 = 18;
+    }
+}

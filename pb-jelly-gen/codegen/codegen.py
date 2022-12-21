@@ -159,8 +159,11 @@ class RustType(object):
         self.proto_file = proto_file
         self.field = field
         self.is_proto3 = proto_file.syntax == "proto3"
+        # note that proto3 optional is considered a oneof, but we don't emit it as such
         self.oneof = (
-            field.HasField("oneof_index") and msg_type.oneof_decl[field.oneof_index]
+            field.HasField("oneof_index")
+            and not field.proto3_optional
+            and msg_type.oneof_decl[field.oneof_index]
         )
 
     def default(self, msg_name: Text) -> Text:
@@ -277,15 +280,23 @@ class RustType(object):
         return self.field.options.Extensions[extensions_pb2.type]
 
     def is_nullable(self) -> bool:
-        if self.field.type in PRIMITIVE_TYPES and self.is_proto3:
-            # Primitive types in proto3 are never nullable on the wire - as
-            # they cannot actually be represented on the wire as null
-            # rather they are represented as 0-value ("" or 0)
+        if (
+            self.field.type in PRIMITIVE_TYPES
+            and self.is_proto3
+            and not self.field.proto3_optional
+        ):
+            # Primitive types in proto3 are not nullable by default;
+            # if missing, they are decoded as 0-value ("" or 0).
+            # proto3_optional overrides this and treats those fields like 1-variant oneofs on the wire,
+            # enabling them to be truly optional
             return False
         if self.field.options.HasExtension(extensions_pb2.nullable_field):
+            # We still allow overriding nullability as an extension
             return self.field.options.Extensions[extensions_pb2.nullable_field]
         return (
-            not self.is_proto3 or self.field.type == FieldDescriptorProto.TYPE_MESSAGE
+            not self.is_proto3
+            or self.field.type == FieldDescriptorProto.TYPE_MESSAGE
+            or self.field.proto3_optional
         )
 
     def is_empty_oneof_field(self) -> bool:
@@ -894,6 +905,15 @@ class CodeWriter(object):
                 oneof.name = oneof.name + "_"
 
         oneof_fields: DefaultDict[Text, List[FieldDescriptorProto]] = defaultdict(list)
+        proto3_optional_synthetic_oneofs: Set[int] = {
+            field.oneof_index for field in msg_type.field if field.proto3_optional
+        }
+        # Filter out oneofs synthesized by proto3 optional; we treat these as plain `Option`al fields, not oneofs
+        oneof_decls = [
+            oneof
+            for ix, oneof in enumerate(msg_type.oneof_decl)
+            if ix not in proto3_optional_synthetic_oneofs
+        ]
 
         derives = ["Clone", "Debug", "PartialEq"]
         if self.derive_serde:
@@ -921,7 +941,7 @@ class CodeWriter(object):
                 else:
                     self.write("pub %s: %s," % (field.name, typ))
 
-            for oneof in msg_type.oneof_decl:
+            for oneof in oneof_decls:
                 if oneof_nullable(oneof):
                     self.write(
                         "pub %s: ::std::option::Option<%s>,"
@@ -936,7 +956,7 @@ class CodeWriter(object):
                 self.write("pub _unrecognized: Vec<u8>,")
 
         # Generate any oneof enum structs
-        for oneof in msg_type.oneof_decl:
+        for oneof in oneof_decls:
             self.write("#[derive(%s)]" % ", ".join(sorted(derives)))
             with block(self, "pub enum " + oneof_msg_name(name, oneof)):
                 for oneof_field in oneof_fields[oneof.name]:
@@ -1018,7 +1038,7 @@ class CodeWriter(object):
                         typ = self.rust_type(msg_type, field)
                         if not typ.oneof:
                             self.write("%s: %s," % (field.name, typ.default(name)))
-                    for oneof in msg_type.oneof_decl:
+                    for oneof in oneof_decls:
                         oneof_field = oneof_fields[oneof.name][0]
                         typ = self.rust_type(msg_type, oneof_field)
                         self.write("%s: %s," % (oneof.name, typ.default(name)))
@@ -1079,7 +1099,10 @@ class CodeWriter(object):
                                 elif field.label == FieldDescriptorProto.LABEL_REPEATED:
                                     self.write("label: ::pb_jelly::Label::Repeated,")
 
-                                if field.HasField("oneof_index"):
+                                if (
+                                    field.HasField("oneof_index")
+                                    and not field.proto3_optional
+                                ):
                                     self.write(
                                         "oneof_index: Some(%d)," % field.oneof_index
                                     )
@@ -1087,7 +1110,9 @@ class CodeWriter(object):
                                     self.write("oneof_index: None,")
 
                     with block(self, "oneofs:", start=" &[", end="],"):
-                        for oneof in msg_type.oneof_decl:
+                        # Note that synthetic oneofs are always located at the end of `msg_type.oneof_decl`,
+                        # so the oneof indices will still match
+                        for oneof in oneof_decls:
                             with block(
                                 self,
                                 "::pb_jelly::OneofDescriptor",
@@ -1201,7 +1226,7 @@ class CodeWriter(object):
                         "let mut unrecognized = ::pb_jelly::Unrecognized::default();"
                     )
 
-                for oneof in msg_type.oneof_decl:
+                for oneof in oneof_decls:
                     if not oneof_nullable(oneof):
                         oneof_typ = oneof_msg_name(name, oneof)
                         self.write(
@@ -1353,7 +1378,7 @@ class CodeWriter(object):
                                 )
                             else:
                                 self.write("::pb_jelly::skip(typ, &mut buf)?;")
-                for oneof in msg_type.oneof_decl:
+                for oneof in oneof_decls:
                     if not oneof_nullable(oneof):
                         with block(self, "match oneof_" + oneof.name):
                             self.write("Some(v) => self.%s = v," % oneof.name)
@@ -1380,10 +1405,10 @@ class CodeWriter(object):
                 "fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str>",
             ):
                 with block(self, "match oneof_name"):
-                    for oneof in msg_type.oneof_decl:
+                    for oneof in oneof_decls:
                         oneof_field = oneof_fields[oneof.name][0]
 
-                    for oneof in msg_type.oneof_decl:
+                    for oneof in oneof_decls:
                         with block(self, '"%s" =>' % oneof.name):
                             for oneof_field in oneof_fields[oneof.name]:
                                 with field_iter(
@@ -2094,6 +2119,9 @@ def main() -> None:
 
     # Create response
     response = plugin.CodeGeneratorResponse()
+    response.supported_features = (
+        plugin.CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
+    )
 
     # Generate code
     generate_code(request, response)

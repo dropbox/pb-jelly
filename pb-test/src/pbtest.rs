@@ -797,3 +797,77 @@ fn test_strings_sso3() {
     let msg = Version31SSO::deserialize_from_slice(buf.as_ref()).unwrap();
     assert_eq!(msg.optional_string1.as_str(), "abc");
 }
+
+fn check_roundtrip<M: Message>(proto: &M) {
+    assert_eq!(
+        M::deserialize_from_slice(&proto.serialize_to_vec()).expect("failed to deserialize"),
+        *proto
+    );
+}
+
+fn unwrap_field_mut<'a>(p: &'a mut impl Reflection, field_name: &str) -> &'a mut dyn Reflection {
+    match p.get_field_mut(field_name) {
+        FieldMut::Value(r) => r,
+        _ => panic!("field {} was empty", field_name),
+    }
+}
+
+#[test]
+fn test_proto3_optional() {
+    // Check that all-None roundtrips
+    check_roundtrip(&TestProto3Optional::default());
+    // Check that all default value roundtrips (which is different from None)
+    check_roundtrip(&TestProto3Optional {
+        a_message: Some(ForeignMessage3 { c: 0 }),
+        a_int32: Some(0),
+        a_int64: Some(0),
+        a_uint32: Some(0),
+        a_uint64: Some(0),
+        a_fixed64: Some(pb_jelly::Fixed64(0)),
+        a_fixed32: Some(pb_jelly::Fixed32(0)),
+        a_sfixed64: Some(pb_jelly::Sfixed64(0)),
+        a_sfixed32: Some(pb_jelly::Sfixed32(0)),
+        a_double: Some(0.0),
+        a_bool: Some(false),
+        a_string: Some("".to_owned()),
+        a_bytes: Some(vec![]),
+        a_float: Some(0.0),
+        real_oneof_1: Some(TestProto3Optional_RealOneof1::RealOneof11("".to_string())),
+        real_oneof_2: TestProto3Optional_RealOneof2::RealOneof21("".to_string()),
+    });
+    let mut proto = TestProto3Optional {
+        a_message: Some(ForeignMessage3 { c: 123 }),
+        a_int32: Some(123),
+        a_int64: Some(123),
+        a_uint32: Some(123),
+        a_uint64: Some(123),
+        a_fixed64: Some(pb_jelly::Fixed64(123)),
+        a_fixed32: Some(pb_jelly::Fixed32(123)),
+        a_sfixed64: Some(pb_jelly::Sfixed64(123)),
+        a_sfixed32: Some(pb_jelly::Sfixed32(123)),
+        a_double: Some(12.3),
+        a_bool: Some(true),
+        a_string: Some("123".to_owned()),
+        a_bytes: Some(vec![1, 2, 3]),
+        a_float: Some(12.3),
+        real_oneof_1: Some(TestProto3Optional_RealOneof1::RealOneof12("123".to_string())),
+        real_oneof_2: TestProto3Optional_RealOneof2::RealOneof22("123".to_string()),
+    };
+    check_roundtrip(&proto);
+    let descriptor = proto.descriptor().unwrap();
+    assert_eq!(descriptor.fields.len(), 18);
+    for field in descriptor.fields {
+        // only real oneofs have oneof_index set
+        assert_eq!(field.oneof_index.is_some(), field.name.starts_with("real_oneof"));
+    }
+    // only real oneofs are listed
+    assert_eq!(descriptor.oneofs.len(), 2);
+    assert_eq!(descriptor.oneofs[0].name, "real_oneof_1");
+    assert_eq!(descriptor.oneofs[1].name, "real_oneof_2");
+
+    // basic test for reflection
+    unwrap_field_mut(&mut proto, "a_int32")
+        .erased_deserialize(&456i32.serialize_to_vec())
+        .unwrap();
+    assert_eq!(proto.a_int32, Some(456));
+}
