@@ -193,43 +193,11 @@ impl GenProtos {
         }
         let temp_dir = self.create_temp_files().expect("Failed to package codegen script");
 
-        // Generate extensions in python (prereq for rust codegen)
-        self.gen_extensions(&temp_dir);
         // Generate Rust protos
         self.gen_rust_protos(temp_dir)
     }
 
-    fn gen_extensions(&self, temp_dir: &tempfile::TempDir) {
-        let mut protoc_cmd = Command::new("protoc");
-        protoc_cmd.arg("-I");
-        protoc_cmd.arg(temp_dir.path());
-        protoc_cmd.arg("--python_out");
-        protoc_cmd.arg(temp_dir.path().join("proto"));
-        protoc_cmd.arg(temp_dir.path().join("rust").join("extensions.proto"));
-        dbg!(&protoc_cmd);
-        let status = protoc_cmd
-            .status()
-            .expect("Unable to generate extensions.proto into extensions_pb2.py 🤮");
-        assert!(status.success());
-    }
-
     fn create_venv(&self, temp_dir: &tempfile::TempDir) -> PathBuf {
-        // parse protoc --version
-        let protoc_version = {
-            let output = Command::new("protoc")
-                .arg("--version")
-                .output()
-                .expect("Failed to get protoc version (is protoc installed?)");
-            assert!(output.status.success());
-            let version = String::from_utf8(output.stdout).expect("Unable to parse protoc --version output in utf8");
-            let mut version_parts = version.split_whitespace();
-            assert_eq!(version_parts.next(), Some("libprotoc"));
-            version_parts
-                .next()
-                .expect("Version not found in parsed protoc --version output")
-                .to_string()
-        };
-
         // Create venv
         let venv = temp_dir.path().join(".codegen_venv");
         let status = Command::new(if cfg!(windows) { "python.exe" } else { "python3" })
@@ -240,19 +208,13 @@ impl GenProtos {
         assert!(status.success(), "Failed to create venv");
         let bin_dir = venv.join(if cfg!(windows) { "Scripts" } else { "bin" });
 
-        // pip install --upgrade pip protobuf=={version}
+        // pip install -r requirements.txt
         let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "python.exe" } else { "python" }));
-        cmd.args(&[
-            "-m",
-            "pip",
-            "install",
-            "--upgrade",
-            "pip",
-            &format!("protobuf=={}", protoc_version),
-        ]);
+        cmd.args(&["-m", "pip", "install", "-r"]);
+        cmd.arg(temp_dir.path().join("requirements.txt"));
         dbg!(&cmd);
-        let status = cmd.status().expect("Failed to pip install protobuf");
-        assert!(status.success(), "Failed to pip install protobuf");
+        let status = cmd.status().expect("Failed to pip install requirements");
+        assert!(status.success(), "Failed to pip install requirements");
 
         // pip install -e .
         let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "pip.exe" } else { "pip" }));
@@ -277,6 +239,7 @@ impl GenProtos {
         // Create protoc cmd in the venv
         let mut protoc_cmd = Command::new("protoc");
         protoc_cmd.env("PATH", new_path);
+        protoc_cmd.env("PYTHONPATH", temp_dir.path());
 
         // Directories that contain protos
         dbg!("Include paths");
