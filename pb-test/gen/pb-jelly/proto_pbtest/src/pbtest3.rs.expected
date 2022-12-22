@@ -8002,3 +8002,784 @@ impl ::pb_jelly::Reflection for TestSmallStringPreserveUnrecognized {
   }
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct TestProto3Optional {
+  /// optional doesn't mean anything here, messages are already optional
+  pub a_message: ::std::option::Option<ForeignMessage3>,
+  pub a_int32: ::std::option::Option<i32>,
+  pub a_int64: ::std::option::Option<i64>,
+  pub a_uint32: ::std::option::Option<u32>,
+  pub a_uint64: ::std::option::Option<u64>,
+  pub a_fixed64: ::std::option::Option<::pb_jelly::Fixed64>,
+  pub a_fixed32: ::std::option::Option<::pb_jelly::Fixed32>,
+  pub a_sfixed64: ::std::option::Option<::pb_jelly::Sfixed64>,
+  pub a_sfixed32: ::std::option::Option<::pb_jelly::Sfixed32>,
+  pub a_double: ::std::option::Option<f64>,
+  pub a_bool: ::std::option::Option<bool>,
+  pub a_string: ::std::option::Option<::std::string::String>,
+  pub a_bytes: ::std::option::Option<::std::vec::Vec<u8>>,
+  pub a_float: ::std::option::Option<f32>,
+  pub real_oneof_1: ::std::option::Option<TestProto3Optional_RealOneof1>,
+  pub real_oneof_2: TestProto3Optional_RealOneof2,
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestProto3Optional_RealOneof1 {
+  RealOneof11(::std::string::String),
+  RealOneof12(::std::string::String),
+}
+#[derive(Clone, Debug, PartialEq)]
+pub enum TestProto3Optional_RealOneof2 {
+  RealOneof21(::std::string::String),
+  RealOneof22(::std::string::String),
+}
+impl ::std::default::Default for TestProto3Optional {
+  fn default() -> Self {
+    TestProto3Optional {
+      a_message: ::std::default::Default::default(),
+      a_int32: ::std::default::Default::default(),
+      a_int64: ::std::default::Default::default(),
+      a_uint32: ::std::default::Default::default(),
+      a_uint64: ::std::default::Default::default(),
+      a_fixed64: ::std::default::Default::default(),
+      a_fixed32: ::std::default::Default::default(),
+      a_sfixed64: ::std::default::Default::default(),
+      a_sfixed32: ::std::default::Default::default(),
+      a_double: ::std::default::Default::default(),
+      a_bool: ::std::default::Default::default(),
+      a_string: ::std::default::Default::default(),
+      a_bytes: ::std::default::Default::default(),
+      a_float: ::std::default::Default::default(),
+      real_oneof_1: None,
+      real_oneof_2: TestProto3Optional_RealOneof2::RealOneof21(::std::default::Default::default()),
+    }
+  }
+}
+lazy_static! {
+  pub static ref TestProto3Optional_default: TestProto3Optional = TestProto3Optional::default();
+}
+impl ::pb_jelly::Message for TestProto3Optional {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "TestProto3Optional",
+      full_name: "pbtest.TestProto3Optional",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "a_message",
+          full_name: "pbtest.TestProto3Optional.a_message",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_int32",
+          full_name: "pbtest.TestProto3Optional.a_int32",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_int64",
+          full_name: "pbtest.TestProto3Optional.a_int64",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_uint32",
+          full_name: "pbtest.TestProto3Optional.a_uint32",
+          index: 3,
+          number: 4,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_uint64",
+          full_name: "pbtest.TestProto3Optional.a_uint64",
+          index: 4,
+          number: 5,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_fixed64",
+          full_name: "pbtest.TestProto3Optional.a_fixed64",
+          index: 5,
+          number: 6,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_fixed32",
+          full_name: "pbtest.TestProto3Optional.a_fixed32",
+          index: 6,
+          number: 7,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_sfixed64",
+          full_name: "pbtest.TestProto3Optional.a_sfixed64",
+          index: 7,
+          number: 8,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_sfixed32",
+          full_name: "pbtest.TestProto3Optional.a_sfixed32",
+          index: 8,
+          number: 9,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_double",
+          full_name: "pbtest.TestProto3Optional.a_double",
+          index: 9,
+          number: 10,
+          typ: ::pb_jelly::wire_format::Type::Fixed64,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_bool",
+          full_name: "pbtest.TestProto3Optional.a_bool",
+          index: 10,
+          number: 11,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_string",
+          full_name: "pbtest.TestProto3Optional.a_string",
+          index: 11,
+          number: 12,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_bytes",
+          full_name: "pbtest.TestProto3Optional.a_bytes",
+          index: 12,
+          number: 13,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "a_float",
+          full_name: "pbtest.TestProto3Optional.a_float",
+          index: 13,
+          number: 14,
+          typ: ::pb_jelly::wire_format::Type::Fixed32,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "real_oneof_1_1",
+          full_name: "pbtest.TestProto3Optional.real_oneof_1_1",
+          index: 14,
+          number: 15,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "real_oneof_1_2",
+          full_name: "pbtest.TestProto3Optional.real_oneof_1_2",
+          index: 15,
+          number: 16,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(0),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "real_oneof_2_1",
+          full_name: "pbtest.TestProto3Optional.real_oneof_2_1",
+          index: 16,
+          number: 17,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(1),
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "real_oneof_2_2",
+          full_name: "pbtest.TestProto3Optional.real_oneof_2_2",
+          index: 17,
+          number: 18,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: Some(1),
+        },
+      ],
+      oneofs: &[
+        ::pb_jelly::OneofDescriptor {
+          name: "real_oneof_1",
+        },
+        ::pb_jelly::OneofDescriptor {
+          name: "real_oneof_2",
+        },
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut a_message_size = 0;
+    for val in &self.a_message {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_message_size += ::pb_jelly::wire_format::serialized_length(1);
+      a_message_size += ::pb_jelly::varint::serialized_length(l as u64);
+      a_message_size += l;
+    }
+    size += a_message_size;
+    let mut a_int32_size = 0;
+    for val in &self.a_int32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_int32_size += ::pb_jelly::wire_format::serialized_length(2);
+      a_int32_size += l;
+    }
+    size += a_int32_size;
+    let mut a_int64_size = 0;
+    for val in &self.a_int64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_int64_size += ::pb_jelly::wire_format::serialized_length(3);
+      a_int64_size += l;
+    }
+    size += a_int64_size;
+    let mut a_uint32_size = 0;
+    for val in &self.a_uint32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_uint32_size += ::pb_jelly::wire_format::serialized_length(4);
+      a_uint32_size += l;
+    }
+    size += a_uint32_size;
+    let mut a_uint64_size = 0;
+    for val in &self.a_uint64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_uint64_size += ::pb_jelly::wire_format::serialized_length(5);
+      a_uint64_size += l;
+    }
+    size += a_uint64_size;
+    let mut a_fixed64_size = 0;
+    for val in &self.a_fixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_fixed64_size += ::pb_jelly::wire_format::serialized_length(6);
+      a_fixed64_size += l;
+    }
+    size += a_fixed64_size;
+    let mut a_fixed32_size = 0;
+    for val in &self.a_fixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_fixed32_size += ::pb_jelly::wire_format::serialized_length(7);
+      a_fixed32_size += l;
+    }
+    size += a_fixed32_size;
+    let mut a_sfixed64_size = 0;
+    for val in &self.a_sfixed64 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_sfixed64_size += ::pb_jelly::wire_format::serialized_length(8);
+      a_sfixed64_size += l;
+    }
+    size += a_sfixed64_size;
+    let mut a_sfixed32_size = 0;
+    for val in &self.a_sfixed32 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_sfixed32_size += ::pb_jelly::wire_format::serialized_length(9);
+      a_sfixed32_size += l;
+    }
+    size += a_sfixed32_size;
+    let mut a_double_size = 0;
+    for val in &self.a_double {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_double_size += ::pb_jelly::wire_format::serialized_length(10);
+      a_double_size += l;
+    }
+    size += a_double_size;
+    let mut a_bool_size = 0;
+    for val in &self.a_bool {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_bool_size += ::pb_jelly::wire_format::serialized_length(11);
+      a_bool_size += l;
+    }
+    size += a_bool_size;
+    let mut a_string_size = 0;
+    for val in &self.a_string {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_string_size += ::pb_jelly::wire_format::serialized_length(12);
+      a_string_size += ::pb_jelly::varint::serialized_length(l as u64);
+      a_string_size += l;
+    }
+    size += a_string_size;
+    let mut a_bytes_size = 0;
+    for val in &self.a_bytes {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_bytes_size += ::pb_jelly::wire_format::serialized_length(13);
+      a_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
+      a_bytes_size += l;
+    }
+    size += a_bytes_size;
+    let mut a_float_size = 0;
+    for val in &self.a_float {
+      let l = ::pb_jelly::Message::compute_size(val);
+      a_float_size += ::pb_jelly::wire_format::serialized_length(14);
+      a_float_size += l;
+    }
+    size += a_float_size;
+    let mut real_oneof_1_1_size = 0;
+    if let Some(TestProto3Optional_RealOneof1::RealOneof11(ref val)) = self.real_oneof_1 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      real_oneof_1_1_size += ::pb_jelly::wire_format::serialized_length(15);
+      real_oneof_1_1_size += ::pb_jelly::varint::serialized_length(l as u64);
+      real_oneof_1_1_size += l;
+    }
+    size += real_oneof_1_1_size;
+    let mut real_oneof_1_2_size = 0;
+    if let Some(TestProto3Optional_RealOneof1::RealOneof12(ref val)) = self.real_oneof_1 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      real_oneof_1_2_size += ::pb_jelly::wire_format::serialized_length(16);
+      real_oneof_1_2_size += ::pb_jelly::varint::serialized_length(l as u64);
+      real_oneof_1_2_size += l;
+    }
+    size += real_oneof_1_2_size;
+    let mut real_oneof_2_1_size = 0;
+    if let TestProto3Optional_RealOneof2::RealOneof21(ref val) = self.real_oneof_2 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      real_oneof_2_1_size += ::pb_jelly::wire_format::serialized_length(17);
+      real_oneof_2_1_size += ::pb_jelly::varint::serialized_length(l as u64);
+      real_oneof_2_1_size += l;
+    }
+    size += real_oneof_2_1_size;
+    let mut real_oneof_2_2_size = 0;
+    if let TestProto3Optional_RealOneof2::RealOneof22(ref val) = self.real_oneof_2 {
+      let l = ::pb_jelly::Message::compute_size(val);
+      real_oneof_2_2_size += ::pb_jelly::wire_format::serialized_length(18);
+      real_oneof_2_2_size += ::pb_jelly::varint::serialized_length(l as u64);
+      real_oneof_2_2_size += l;
+    }
+    size += real_oneof_2_2_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.a_message {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_int32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_int64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_uint32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_uint64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_fixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_fixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_sfixed64 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_sfixed32 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_double {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_bool {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_string {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_bytes {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    for val in &self.a_float {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestProto3Optional_RealOneof1::RealOneof11(ref val)) = self.real_oneof_1 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let Some(TestProto3Optional_RealOneof1::RealOneof12(ref val)) = self.real_oneof_1 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let TestProto3Optional_RealOneof2::RealOneof21(ref val) = self.real_oneof_2 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    if let TestProto3Optional_RealOneof2::RealOneof22(ref val) = self.real_oneof_2 {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.a_message {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_int32 {
+      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_int64 {
+      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_uint32 {
+      ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_uint64 {
+      ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_fixed64 {
+      ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_fixed32 {
+      ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_sfixed64 {
+      ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_sfixed32 {
+      ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_double {
+      ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Fixed64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_bool {
+      ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_string {
+      ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_bytes {
+      ::pb_jelly::wire_format::write(13, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    for val in &self.a_float {
+      ::pb_jelly::wire_format::write(14, ::pb_jelly::wire_format::Type::Fixed32, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestProto3Optional_RealOneof1::RealOneof11(ref val)) = self.real_oneof_1 {
+      ::pb_jelly::wire_format::write(15, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(TestProto3Optional_RealOneof1::RealOneof12(ref val)) = self.real_oneof_1 {
+      ::pb_jelly::wire_format::write(16, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let TestProto3Optional_RealOneof2::RealOneof21(ref val) = self.real_oneof_2 {
+      ::pb_jelly::wire_format::write(17, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let TestProto3Optional_RealOneof2::RealOneof22(ref val) = self.real_oneof_2 {
+      ::pb_jelly::wire_format::write(18, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    let mut oneof_real_oneof_2: ::std::option::Option<TestProto3Optional_RealOneof2> = None;
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ForeignMessage3 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.a_message = Some(val);
+        }
+        2 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestProto3Optional", 2)?;
+          let mut val: i32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_int32 = Some(val);
+        }
+        3 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestProto3Optional", 3)?;
+          let mut val: i64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_int64 = Some(val);
+        }
+        4 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestProto3Optional", 4)?;
+          let mut val: u32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_uint32 = Some(val);
+        }
+        5 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestProto3Optional", 5)?;
+          let mut val: u64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_uint64 = Some(val);
+        }
+        6 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestProto3Optional", 6)?;
+          let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_fixed64 = Some(val);
+        }
+        7 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestProto3Optional", 7)?;
+          let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_fixed32 = Some(val);
+        }
+        8 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestProto3Optional", 8)?;
+          let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_sfixed64 = Some(val);
+        }
+        9 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestProto3Optional", 9)?;
+          let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_sfixed32 = Some(val);
+        }
+        10 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestProto3Optional", 10)?;
+          let mut val: f64 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_double = Some(val);
+        }
+        11 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestProto3Optional", 11)?;
+          let mut val: bool = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_bool = Some(val);
+        }
+        12 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 12)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.a_string = Some(val);
+        }
+        13 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 13)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.a_bytes = Some(val);
+        }
+        14 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestProto3Optional", 14)?;
+          let mut val: f32 = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          self.a_float = Some(val);
+        }
+        15 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 15)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.real_oneof_1 = Some(TestProto3Optional_RealOneof1::RealOneof11(val));
+        }
+        16 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 16)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.real_oneof_1 = Some(TestProto3Optional_RealOneof1::RealOneof12(val));
+        }
+        17 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 17)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_real_oneof_2 = Some(TestProto3Optional_RealOneof2::RealOneof21(val));
+        }
+        18 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestProto3Optional", 18)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: ::std::string::String = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          oneof_real_oneof_2 = Some(TestProto3Optional_RealOneof2::RealOneof22(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    match oneof_real_oneof_2 {
+      Some(v) => self.real_oneof_2 = v,
+      None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, "missing value for non-nullable oneof 'real_oneof_2' while parsing message pbtest.TestProto3Optional")),
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for TestProto3Optional {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      "real_oneof_1" => {
+        if let Some(TestProto3Optional_RealOneof1::RealOneof11(ref val)) = self.real_oneof_1 {
+          return Some("real_oneof_1_1");
+        }
+        if let Some(TestProto3Optional_RealOneof1::RealOneof12(ref val)) = self.real_oneof_1 {
+          return Some("real_oneof_1_2");
+        }
+        None
+      }
+      "real_oneof_2" => {
+        if let TestProto3Optional_RealOneof2::RealOneof21(ref val) = self.real_oneof_2 {
+          return Some("real_oneof_2_1");
+        }
+        if let TestProto3Optional_RealOneof2::RealOneof22(ref val) = self.real_oneof_2 {
+          return Some("real_oneof_2_2");
+        }
+        None
+      }
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "a_message" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_message.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_int32" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_int32.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_int64" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_int64.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_uint32" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_uint32.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_uint64" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_uint64.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_fixed64" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_fixed64.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_fixed32" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_fixed32.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_sfixed64" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_sfixed64.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_sfixed32" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_sfixed32.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_double" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_double.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_bool" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_bool.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_string" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_string.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_bytes" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_bytes.get_or_insert_with(::std::default::Default::default))
+      }
+      "a_float" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.a_float.get_or_insert_with(::std::default::Default::default))
+      }
+      "real_oneof_1_1" => {
+        match self.real_oneof_1 {
+          Some(TestProto3Optional_RealOneof1::RealOneof11(_)) => (),
+          _ => {
+            self.real_oneof_1 = Some(TestProto3Optional_RealOneof1::RealOneof11(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestProto3Optional_RealOneof1::RealOneof11(ref mut val)) = self.real_oneof_1 {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "real_oneof_1_2" => {
+        match self.real_oneof_1 {
+          Some(TestProto3Optional_RealOneof1::RealOneof12(_)) => (),
+          _ => {
+            self.real_oneof_1 = Some(TestProto3Optional_RealOneof1::RealOneof12(::std::default::Default::default()));
+          },
+        }
+        if let Some(TestProto3Optional_RealOneof1::RealOneof12(ref mut val)) = self.real_oneof_1 {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "real_oneof_2_1" => {
+        match self.real_oneof_2 {
+          TestProto3Optional_RealOneof2::RealOneof21(_) => (),
+          _ => {
+            self.real_oneof_2 = TestProto3Optional_RealOneof2::RealOneof21(::std::default::Default::default());
+          },
+        }
+        if let TestProto3Optional_RealOneof2::RealOneof21(ref mut val) = self.real_oneof_2 {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      "real_oneof_2_2" => {
+        match self.real_oneof_2 {
+          TestProto3Optional_RealOneof2::RealOneof22(_) => (),
+          _ => {
+            self.real_oneof_2 = TestProto3Optional_RealOneof2::RealOneof22(::std::default::Default::default());
+          },
+        }
+        if let TestProto3Optional_RealOneof2::RealOneof22(ref mut val) = self.real_oneof_2 {
+          return ::pb_jelly::reflection::FieldMut::Value(val);
+        }
+        unreachable!()
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
