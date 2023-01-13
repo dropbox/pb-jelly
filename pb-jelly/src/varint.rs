@@ -6,7 +6,7 @@ use std::io::{
 };
 
 #[inline]
-pub fn serialized_length(mut val: u64) -> usize {
+pub const fn serialized_length(mut val: u64) -> usize {
     let mut ans = 1;
     while val & !0x7Fu64 != 0 {
         val >>= 7;
@@ -18,17 +18,23 @@ pub fn serialized_length(mut val: u64) -> usize {
 
 #[inline]
 pub fn write<W: Write>(mut val: u64, w: &mut W) -> io::Result<()> {
+    // the maximum length in bytes of an encoded (64-bit) varint
+    const MAX_LEN: usize = serialized_length(u64::MAX);
+
+    let mut len = 0;
+    let mut buf = [0; MAX_LEN];
     loop {
         if val & !0x7Fu64 == 0 {
-            w.write_all(&[val as u8])?;
+            buf[len] = val as u8;
+            len += 1;
             break;
         } else {
-            w.write_all(&[((val & 0x7F) | 0x80) as u8])?;
+            buf[len] = ((val & 0x7F) | 0x80) as u8;
             val >>= 7;
+            len += 1;
         }
     }
-
-    Ok(())
+    w.write_all(&buf[..len])
 }
 
 #[inline]
