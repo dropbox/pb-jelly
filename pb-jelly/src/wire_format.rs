@@ -14,7 +14,7 @@ pub enum Type {
 }
 
 impl Type {
-    fn as_u32(self) -> u32 {
+    const fn as_u32(self) -> u32 {
         match self {
             Type::Varint => 0,
             Type::Fixed64 => 1,
@@ -38,8 +38,8 @@ impl Type {
 }
 
 #[inline]
-pub fn serialized_length(field_number: u32) -> usize {
-    super::varint::serialized_length(u64::from(field_number << 3))
+pub const fn serialized_length(field_number: u32) -> usize {
+    super::varint::serialized_length((field_number << 3) as u64)
 }
 
 #[inline]
