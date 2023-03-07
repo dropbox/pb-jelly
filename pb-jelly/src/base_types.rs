@@ -577,7 +577,7 @@ impl Message for String {
             // Success! We have valid UTF-8, we can forget our guard.
             Ok(_) => Ok(std::mem::forget(guard)),
             // Error! Our guard will be dropped, and the buffer will be cleared.
-            Err(_) => Err(std::io::ErrorKind::InvalidData.into()),
+            Err(e) => Err(std::io::Error::new(std::io::ErrorKind::InvalidData, e)),
         }
     }
 }
