@@ -706,7 +706,6 @@ class CodeWriter(object):
         enum_variants: List[Tuple[int, EnumValueDescriptorProto]],
         scl: SourceCodeLocation,
     ) -> None:
-
         # Generate a closed enum
         self.write_comments(self.source_code_info_by_scl.get(tuple(scl)))
         if self.derive_serde:
@@ -777,7 +776,6 @@ class CodeWriter(object):
         enum_variants: List[Tuple[int, EnumValueDescriptorProto]],
         scl: SourceCodeLocation,
     ) -> None:
-
         closed_name = name + "_Closed"
 
         # Generate an open enum
@@ -1995,7 +1993,6 @@ def generate_single_crate(
     include_sso = False
 
     for proto_file_name in file_to_generate:
-
         # Detect packages which collide with filenames. The rust codegen does not support those due
         # to the rust module structure.
         #
