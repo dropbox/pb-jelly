@@ -12,14 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-          components: rustfmt
+      - run: rustup update nightly
+      - run: rustup component add rustfmt --toolchain nightly
       - name: Run rustfmt
-        run: ci/run_rustfmt.sh
+        run: rustup run nightly ci/run_rustfmt.sh
 
   black:
     name: Run black formatter on codegen.py
@@ -47,30 +43,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
+      - run: rustup update nightly
       - name: Run unit tests
         run: |
           cd pb-jelly
-          cargo test
+          rustup run nightly cargo test
 
   pb-jelly-gen-unit:
     name: pb-jelly-gen unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
+      - run: rustup update nightly
       - name: Run unit tests
         run: |
           cd pb-jelly-gen
-          cargo test
+          rustup run nightly cargo test
 
   pbtest:
     strategy:
@@ -81,11 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
+      - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -96,9 +80,9 @@ jobs:
           VALIDATE: 1
         run: |
           cd pb-test/pb_test_gen
-          cargo run
+          rustup run nightly cargo run
           cd ..
-          cargo test
+          rustup run nightly cargo test
 
   examples:
     name: examples
@@ -106,11 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
+      - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -119,9 +99,9 @@ jobs:
       - name: Run tests
         run: |
           cd examples/examples_gen
-          cargo run
+          rustup run nightly cargo run
           cd ..
-          cargo test
+          rustup run nightly cargo test
 
   benchmarks:
     name: benchmarks
@@ -129,11 +109,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
+      - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -142,9 +118,9 @@ jobs:
       - name: Run benchmark
         run: |
           cd pb-test/pb_test_gen
-          cargo run --features=bench_prost,bench_rust_protobuf
+          rustup run nightly cargo run --features=bench_prost,bench_rust_protobuf
           cd ..
-          cargo bench bench --features=bench_prost,bench_rust_protobuf
+          rustup run nightly cargo bench bench --features=bench_prost,bench_rust_protobuf
 
   clippy_gen:
     name: clippy gen
@@ -152,12 +128,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-      - run: rustup component add clippy
+      - run: rustup update nightly
+      - run: rustup component add clippy --toolchain nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -168,6 +140,6 @@ jobs:
           RUSTFLAGS: "-D warnings"
         run: |
           cd pb-test/pb_test_gen
-          cargo run
+          rustup run nightly cargo run
           cd ..
-          cargo clippy -p proto_pbtest
+          rustup run nightly cargo clippy -p proto_pbtest
