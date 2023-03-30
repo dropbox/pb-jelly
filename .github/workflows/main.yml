@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nightly
-        run: rustup update nightly
+      - run: rustup update nightly
+      - run: rustup component add rustfmt --toolchain nightly
       - name: Run rustfmt
         run: rustup run nightly ci/run_rustfmt.sh
 
@@ -43,8 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nightly
-        run: rustup update nightly
+      - run: rustup update nightly
       - name: Run unit tests
         run: |
           cd pb-jelly
@@ -55,8 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nightly
-        run: rustup update nightly
+      - run: rustup update nightly
       - name: Run unit tests
         run: |
           cd pb-jelly-gen
@@ -71,8 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        run: rustup update nightly
+      - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -93,8 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        run: rustup update nightly
+      - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -113,8 +109,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        run: rustup update nightly
+      - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
@@ -133,9 +128,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install nightly
-        run: rustup update nightly
-      - run: rustup component add clippy
+      - run: rustup update nightly
+      - run: rustup component add clippy --toolchain nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
         with:
