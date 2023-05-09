@@ -1,6 +1,13 @@
 # Unreleased
 ... everything has been released!
 
+# 0.0.12
+### May 9, 2023
+* Add a `(rust.sso)` option to opt into using `compact_str` for strings (#141)
+* Support `optional` fields in proto3 (#143)
+* Optimize varint encoding (#144)
+* Pass through UTF-8 decode errors when deserializing strings
+
 # 0.0.11
 ### December 15, 2021
 * Avoid unnecessary `return` statements in some generated code. (#136)
