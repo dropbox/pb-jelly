@@ -7,4 +7,4 @@ edition = "2018"
 [dependencies]
 compact_str = {features=["bytes"], version = "0.5" }
 lazy_static = { version = "1.4.0" }
-pb-jelly = { version = "0.0.11" }
+pb-jelly = { version = "0.0.12" }
