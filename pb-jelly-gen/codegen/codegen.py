@@ -1959,7 +1959,7 @@ LIB_RS_HEADER = """
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(irrefutable_let_patterns)]
-#![allow(broken_intra_doc_links)]
+#![allow(rustdoc::broken_intra_doc_links)]
 
 // Modules are generated based on the naming conventions of protobuf, which might cause "module inception"
 #![allow(clippy::module_inception)]
