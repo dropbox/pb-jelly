@@ -1,6 +1,10 @@
 # Unreleased
 ... everything has been released!
 
+# 0.0.13
+## Oct 12, 2023
+*  Add `rustdoc::` prefix to `#[allow(broken_intra_doc_links)]` (#148) 
+
 # 0.0.12
 ### May 9, 2023
 * Add a `(rust.sso)` option to opt into using `compact_str` for strings (#141)
