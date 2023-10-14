@@ -21,7 +21,7 @@ lazy_static! {
   pub static ref Empty_default: Empty = Empty::default();
 }
 impl ::pb_jelly::Message for Empty {
-  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+  const DESCRIPTOR: ::std::option::Option<::pb_jelly::MessageDescriptor> =  (
     Some(::pb_jelly::MessageDescriptor {
       name: "Empty",
       full_name: "google.protobuf.Empty",
@@ -30,7 +30,7 @@ impl ::pb_jelly::Message for Empty {
       oneofs: &[
       ],
     })
-  }
+  );
   fn compute_size(&self) -> usize {
     0
   }

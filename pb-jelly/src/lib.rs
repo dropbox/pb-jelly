@@ -68,10 +68,8 @@ mod tests;
 /// like string, bytes, etc. The exact details of this trait is implemented for messages
 /// and base types can be found at - <https://developers.google.com/protocol-buffers/docs/encoding>
 pub trait Message: PartialEq + Default + Debug + Any {
-    /// Returns the `MessageDescriptor` for this message, if this is not a primitive type.
-    fn descriptor(&self) -> Option<MessageDescriptor> {
-        None
-    }
+    /// The `MessageDescriptor` for this message, if this is not a primitive type.
+    const DESCRIPTOR: Option<MessageDescriptor> = None;
 
     /// Computes the number of bytes a message will take when serialized. This does not
     /// include number of bytes required for tag+wire_format or the bytes used to represent

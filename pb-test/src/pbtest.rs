@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::Cursor;
 use std::io::Read;
 
+use pb_jelly::erased::Message as ErasedMessage;
 use pb_jelly::reflection::FieldMut;
 use pb_jelly::wire_format::Type;
 use pb_jelly::{
@@ -340,8 +341,8 @@ fn all_fields_reflection3() {
     expected.zero_or_fixed_length_repeated = vec![None, Some([0, 1, 2, 3]), None, Some([4, 5, 6, 7])];
 
     let mut serialized: ::std::collections::HashMap<u32, ::std::vec::Vec<u8>> = ::std::collections::HashMap::new();
-    let oneofs = expected.descriptor().unwrap().oneofs;
-    for f in expected.descriptor().unwrap().fields {
+    let oneofs = expected.erased_descriptor().unwrap().oneofs;
+    for f in expected.erased_descriptor().unwrap().fields {
         if f.label == Label::Repeated {
             // Skip, repeated fields aren't currently supported.
             continue;
@@ -371,7 +372,7 @@ fn all_fields_reflection3() {
     deserialized.nested_repeated = expected.nested_repeated.clone();
     deserialized.fixed_length_repeated = expected.fixed_length_repeated.clone();
     deserialized.zero_or_fixed_length_repeated = expected.zero_or_fixed_length_repeated.clone();
-    for f in deserialized.descriptor().unwrap().fields {
+    for f in deserialized.erased_descriptor().unwrap().fields {
         if f.label == Label::Repeated {
             // Skip, repeated fields aren't currently supported.
             continue;
