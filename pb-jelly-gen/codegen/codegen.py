@@ -276,6 +276,8 @@ class RustType(object):
         return self.field.options.Extensions[extensions_pb2.type]
 
     def is_nullable(self) -> bool:
+        if self.oneof:
+            return False
         if (
             self.field.type in PRIMITIVE_TYPES
             and self.is_proto3
@@ -362,7 +364,10 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
             return self.rust_type(), "v"
         elif self.field.type == FieldDescriptorProto.TYPE_MESSAGE:
-            return self.rust_type(maybe_boxed=True), "v"
+            if self.is_boxed():
+                return "::std::boxed::Box<%s>" % self.rust_type(), "v"
+            else:
+                return self.rust_type(), "v"
         raise AssertionError("Unexpected field type")
 
     def take_method(self) -> Tuple[Optional[Text], Optional[Text]]:
@@ -395,7 +400,10 @@ class RustType(object):
         elif self.field.type == FieldDescriptorProto.TYPE_ENUM:
             return self.rust_type(), expr
         elif self.field.type == FieldDescriptorProto.TYPE_MESSAGE:
-            return self.rust_type(maybe_boxed=True), expr
+            if self.is_boxed():
+                return "::std::boxed::Box<%s>" % self.rust_type(), expr
+            else:
+                return self.rust_type(), expr
         raise AssertionError("Unexpected field type")
 
     def get_method(self) -> Tuple[Text, Text]:
@@ -446,10 +454,7 @@ class RustType(object):
             )
         raise AssertionError("Unexpected field type")
 
-    def rust_type(self, maybe_boxed: bool = False) -> Text:
-        if maybe_boxed and self.is_boxed():
-            return "::std::boxed::Box<%s>" % self.rust_type(maybe_boxed=False)
-
+    def rust_type(self) -> Text:
         typ = self.field.type
 
         if self.has_custom_type():
@@ -485,15 +490,18 @@ class RustType(object):
             "Unsupported type: {!r}".format(FieldDescriptorProto.Type.Name(typ))
         )
 
-    def __str__(self) -> str:
-        rust_type = self.rust_type(maybe_boxed=True)
+    def storage_type(self) -> str:
+        rust_type = self.rust_type()
+
+        if self.is_boxed():
+            rust_type = "::std::boxed::Box<%s>" % rust_type
 
         if self.is_repeated():
-            return "::std::vec::Vec<%s>" % rust_type
+            rust_type = "::std::vec::Vec<%s>" % rust_type
         elif self.is_nullable():
-            return "::std::option::Option<%s>" % rust_type
-        else:
-            return rust_type
+            rust_type = "::std::option::Option<%s>" % rust_type
+
+        return rust_type
 
     def oneof_field_match(self, var: Text) -> Text:
         if self.is_empty_oneof_field():
@@ -606,7 +614,7 @@ def field_iter(
         with block(
             ctx,
             "if self.%s != <%s as ::std::default::Default>::default()"
-            % (field.name, typ),
+            % (field.name, typ.storage_type()),
         ):
             if typ.is_boxed():
                 ctx.write("let %s = &*self.%s;" % (var, field.name))
@@ -931,7 +939,7 @@ class CodeWriter(object):
                 if typ.oneof:
                     oneof_fields[typ.oneof.name].append(field)
                 else:
-                    self.write("pub %s: %s," % (field.name, typ))
+                    self.write("pub %s: %s," % (field.name, typ.storage_type()))
 
             for oneof in oneof_decls:
                 if oneof_nullable(oneof):
@@ -954,7 +962,7 @@ class CodeWriter(object):
                 for oneof_field in oneof_fields[oneof.name]:
                     typ = self.rust_type(msg_type, oneof_field)
                     self.write(
-                        "%s," % typ.oneof_field_match(typ.rust_type(maybe_boxed=True))
+                        "%s," % typ.oneof_field_match(typ.storage_type())
                     )
 
         if not self.is_proto3:
@@ -1680,6 +1688,9 @@ class Context(object):
                 if not self.impls_by_msg[field_fq_msg].Eq:
                     msg_impls_eq = False
                 if not self.impls_by_msg[field_fq_msg].Copy:
+                    msg_impls_copy = False
+
+                if rust_type.is_boxed():
                     msg_impls_copy = False
             else:
                 raise RuntimeError(

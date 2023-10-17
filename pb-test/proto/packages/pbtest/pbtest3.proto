@@ -208,6 +208,10 @@ message TestMessage3 {
  repeated bytes zero_or_fixed_length_repeated = 79 [(rust.type)="Option<[u8; 4]>"];
 }
 
+message TestBoxedNonnullable {
+ ForeignMessage3 field = 1 [(rust.box_it)=true, (rust.nullable_field)=false];
+}
+
 message TestMessage3NonNullableOneof {
   oneof non_nullable_oneof {
       option (rust.nullable) = false;
