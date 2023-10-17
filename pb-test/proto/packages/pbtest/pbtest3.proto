@@ -347,3 +347,15 @@ message TestProto3Optional {
         string real_oneof_2_2 = 18;
     }
 }
+
+message RecursiveOneof {
+    oneof oneof_field {
+        // This field should be boxed automatically.
+        RecursiveOneof field = 1;
+        google.protobuf.Empty empty = 2;
+        // Boxing should override the empty-oneof-field special case.
+        google.protobuf.Empty boxed_empty = 3 [(rust.box_it) = true];
+        ForeignMessage3 not_boxed = 4;
+        ForeignMessage3 boxed = 5 [(rust.box_it) = true];
+    }
+}

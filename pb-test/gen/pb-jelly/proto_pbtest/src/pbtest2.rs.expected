@@ -3085,10 +3085,10 @@ impl TestMessage {
   pub fn has_optional_foreign_message_boxed(&self) -> bool {
     self.optional_foreign_message_boxed.is_some()
   }
-  pub fn set_optional_foreign_message_boxed(&mut self, v: Box<ForeignMessage>) {
+  pub fn set_optional_foreign_message_boxed(&mut self, v: ::std::boxed::Box<ForeignMessage>) {
     self.optional_foreign_message_boxed = Some(v);
   }
-  pub fn take_optional_foreign_message_boxed(&mut self) -> Box<ForeignMessage> {
+  pub fn take_optional_foreign_message_boxed(&mut self) -> ::std::boxed::Box<ForeignMessage> {
     self.optional_foreign_message_boxed.take().unwrap_or_default()
   }
   pub fn get_optional_foreign_message_boxed(&self) -> &ForeignMessage {

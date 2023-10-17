@@ -871,3 +871,20 @@ fn test_proto3_optional() {
         .unwrap();
     assert_eq!(proto.a_int32, Some(456));
 }
+
+// Test that boxing works properly for oneof fields.
+#[test]
+fn test_recursive_oneof() {
+    let message = RecursiveOneof {
+        oneof_field: Some(RecursiveOneof_OneofField::BoxedEmpty(std::default::Default::default())),
+    };
+    check_roundtrip(&message);
+    let message = RecursiveOneof {
+        oneof_field: Some(RecursiveOneof_OneofField::Field(Box::new(message))),
+    };
+    check_roundtrip(&message);
+    let message = RecursiveOneof {
+        oneof_field: Some(RecursiveOneof_OneofField::Field(Box::new(message))),
+    };
+    check_roundtrip(&message);
+}

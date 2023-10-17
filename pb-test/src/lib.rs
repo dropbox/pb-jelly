@@ -1,5 +1,4 @@
 #![warn(rust_2018_idioms)]
-#![feature(bench_black_box)]
 #![feature(test)]
 
 #[allow(unused_extern_crates)]
