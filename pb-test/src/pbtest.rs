@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::Cursor;
 use std::io::Read;
 
+use bytes::Bytes;
 use pb_jelly::reflection::FieldMut;
 use pb_jelly::wire_format::Type;
 use pb_jelly::{
@@ -870,6 +871,21 @@ fn test_proto3_optional() {
         .erased_deserialize(&456i32.serialize_to_vec())
         .unwrap();
     assert_eq!(proto.a_int32, Some(456));
+}
+
+#[test]
+fn test_proto3_zerocopy_read() {
+    let data = Bytes::from_static(b"\x0a\x08zerocopy\x12\x09zerocopy2");
+
+    let mut proto = TestProto3Zerocopy::default();
+    proto.deserialize(&mut Cursor::new(data.clone())).unwrap();
+    let data1 = proto.data1.into_buffer();
+    let data2 = proto.data2.into_buffer();
+    assert_eq!(data1, &b"zerocopy"[..]);
+    assert_eq!(data2, &b"zerocopy2"[..]);
+    // The deserialized buffers should point into `data`.
+    data.slice_ref(data1.as_ref());
+    data.slice_ref(data2.as_ref());
 }
 
 // Test that boxing works properly for oneof fields.

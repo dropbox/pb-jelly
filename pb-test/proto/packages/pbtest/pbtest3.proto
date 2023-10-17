@@ -352,6 +352,11 @@ message TestProto3Optional {
     }
 }
 
+message TestProto3Zerocopy {
+    bytes data1 = 1 [(rust.zero_copy) = true];
+    bytes data2 = 2 [(rust.zero_copy) = true];
+}
+
 message RecursiveOneof {
     oneof oneof_field {
         // This field should be boxed automatically.
