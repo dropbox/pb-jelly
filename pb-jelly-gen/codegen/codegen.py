@@ -961,9 +961,7 @@ class CodeWriter(object):
             with block(self, "pub enum " + oneof_msg_name(name, oneof)):
                 for oneof_field in oneof_fields[oneof.name]:
                     typ = self.rust_type(msg_type, oneof_field)
-                    self.write(
-                        "%s," % typ.oneof_field_match(typ.storage_type())
-                    )
+                    self.write("%s," % typ.oneof_field_match(typ.storage_type()))
 
         if not self.is_proto3:
             with block(self, "impl " + name):
