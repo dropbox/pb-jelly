@@ -4000,7 +4000,7 @@ impl ::pb_jelly::Message for TestMessage {
     size += bool6_size;
     let mut a_size = 0;
     if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
-      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
       let l = ::pb_jelly::Message::compute_size(val);
       a_size += ::pb_jelly::wire_format::serialized_length(70);
       a_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -4009,7 +4009,7 @@ impl ::pb_jelly::Message for TestMessage {
     size += a_size;
     let mut b_size = 0;
     if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
-      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
       let l = ::pb_jelly::Message::compute_size(val);
       b_size += ::pb_jelly::wire_format::serialized_length(71);
       b_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -4189,11 +4189,11 @@ impl ::pb_jelly::Message for TestMessage {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
     if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
-      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
     if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
-      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
     if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
@@ -4424,14 +4424,14 @@ impl ::pb_jelly::Message for TestMessage {
       ::pb_jelly::Message::serialize(val, w)?;
     }
     if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
-      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
       ::pb_jelly::wire_format::write(70, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
     if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
-      let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
       ::pb_jelly::wire_format::write(71, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -4934,7 +4934,7 @@ impl ::pb_jelly::Message for TestMessage {
           ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 70)?;
           let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
           let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::proto_google::empty::Empty = ::std::default::Default::default();
+          let mut val: ::proto_google::protobuf::empty::Empty = ::std::default::Default::default();
           ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
           oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::A);
         }
@@ -4942,7 +4942,7 @@ impl ::pb_jelly::Message for TestMessage {
           ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 71)?;
           let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
           let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::proto_google::empty::Empty = ::std::default::Default::default();
+          let mut val: ::proto_google::protobuf::empty::Empty = ::std::default::Default::default();
           ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
           oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::B);
         }
@@ -5041,11 +5041,11 @@ impl ::pb_jelly::Reflection for TestMessage {
       }
       "oneof_empty_field" => {
         if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
-          let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+          let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
           return Some("a");
         }
         if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
-          let val: &::proto_google::empty::Empty = &::std::default::Default::default();
+          let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
           return Some("b");
         }
         if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {

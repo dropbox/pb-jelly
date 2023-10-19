@@ -1,6 +1,6 @@
 syntax="proto3";
 
-import "google/empty.proto";
+import "google/protobuf/empty.proto";
 import "pbtest/pbtest2.proto";
 import "rust/extensions.proto";
 

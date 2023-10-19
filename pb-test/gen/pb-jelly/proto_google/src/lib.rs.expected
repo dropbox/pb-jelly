@@ -24,4 +24,4 @@
 #[macro_use]
 extern crate lazy_static;
 
-pub mod empty;
+pub mod protobuf;
