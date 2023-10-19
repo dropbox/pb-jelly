@@ -4,6 +4,7 @@ use std::io::Cursor;
 use std::io::Read;
 
 use bytes::Bytes;
+use pb_jelly::extensions::Extensible;
 use pb_jelly::reflection::FieldMut;
 use pb_jelly::wire_format::Type;
 use pb_jelly::{
@@ -17,6 +18,7 @@ use pretty_assertions::{
     assert_eq,
     assert_ne,
 };
+use proto_pbtest::extensions;
 use proto_pbtest::pbtest2::*;
 use proto_pbtest::pbtest3::*;
 
@@ -936,4 +938,39 @@ fn test_mutual_recursion() {
             inner: Some(MutuallyRecursiveWithBoxedA::default()),
         })),
     });
+}
+
+#[test]
+fn test_extensions() {
+    check_roundtrip(extensions::FakeMsg::default());
+    check_roundtrip(extensions::FakeMsg {
+        base_field: Some(39),
+        singular_primitive: Some(123),
+        singular_message: Some(ForeignMessage3 { c: 321 }),
+        repeated_primitive: vec![456, 789],
+        repeated_message: vec![ForeignMessage3 { c: 654 }, ForeignMessage3 { c: 987 }],
+    });
+
+    // Check that serializing a FakeMsg and deserializing into Msg preserves the extension fields,
+    // and that those fields can be read using `get_extension()`.
+    fn check_roundtrip(orig: extensions::FakeMsg) {
+        let m = extensions::Msg::deserialize_from_slice(&orig.serialize_to_vec()).unwrap();
+        assert_eq!(m.base_field, orig.base_field);
+        assert_eq!(
+            m.get_extension(extensions::SINGULAR_PRIMITIVE).unwrap(),
+            orig.singular_primitive
+        );
+        assert_eq!(
+            m.get_extension(extensions::SINGULAR_MESSAGE).unwrap(),
+            orig.singular_message,
+        );
+        assert_eq!(
+            m.get_extension(extensions::REPEATED_PRIMITIVE).unwrap(),
+            orig.repeated_primitive,
+        );
+        assert_eq!(
+            m.get_extension(extensions::REPEATED_MESSAGE).unwrap(),
+            orig.repeated_message
+        );
+    }
 }
