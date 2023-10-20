@@ -2,6 +2,7 @@ syntax="proto3";
 
 import "google/protobuf/empty.proto";
 import "pbtest/pbtest2.proto";
+import "pbtest/mod/struct.proto";
 import "rust/extensions.proto";
 
 package pbtest;
@@ -367,4 +368,19 @@ message RecursiveOneof {
         ForeignMessage3 not_boxed = 4;
         ForeignMessage3 boxed = 5 [(rust.box_it) = true];
     }
+}
+
+message MentionsKeywordPath {
+    pbtest.mod.Message message = 1;
+}
+
+message NonNullableOneofKeyword {
+    oneof async {
+        option (rust.nullable) = false;
+        int64 a = 1;
+    }
+}
+
+message NonNullableEnumKeyword {
+    TestMessage3.NestedMessage.NonNullableEnum enum = 1;
 }

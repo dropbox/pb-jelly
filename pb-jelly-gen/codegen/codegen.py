@@ -63,15 +63,25 @@ CRATE_NAME_REGEX = re.compile(r"(?:^|\W)::(\w+)(?:::\w+)*")
 
 # Keywords in rust which cannot be module names.
 RESERVED_KEYWORDS = {
+    "Self",
+    "abstract",
+    "alignof",
     "as",
+    "async",
+    "await",
+    "become",
+    "box",
     "break",
     "const",
     "continue",
     "crate",
+    "do",
+    "dyn",
     "else",
     "enum",
     "extern",
     "false",
+    "final",
     "fn",
     "for",
     "if",
@@ -79,43 +89,43 @@ RESERVED_KEYWORDS = {
     "in",
     "let",
     "loop",
+    "macro",
     "match",
     "mod",
     "move",
     "mut",
+    "offsetof",
+    "override",
+    "priv",
+    "proc",
     "pub",
+    "pure",
     "ref",
     "return",
-    "Self",
     "self",
+    "sizeof",
     "static",
     "struct",
     "super",
     "trait",
     "true",
     "type",
+    "typeof",
     "unsafe",
+    "unsized",
     "use",
+    "virtual",
     "where",
     "while",
-    "abstract",
-    "alignof",
-    "become",
-    "box",
-    "do",
-    "final",
-    "macro",
-    "offsetof",
-    "override",
-    "priv",
-    "proc",
-    "pure",
-    "sizeof",
-    "typeof",
-    "unsized",
-    "virtual",
     "yield",
 }
+
+
+def escape_name(s: str) -> str:
+    if s in RESERVED_KEYWORDS:
+        return "r#" + s
+    return s
+
 
 # SourceCodeLocation is defined by `message Location` here
 # https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto
@@ -381,7 +391,7 @@ class RustType(object):
         if not self.field.type in has_take_method:
             return None, None
 
-        expr = "self.%s.take().unwrap_or_default()" % self.field.name
+        expr = "self.%s.take().unwrap_or_default()" % escape_name(self.field.name)
 
         if self.field.type == FieldDescriptorProto.TYPE_STRING:
             if self.is_small_string_optimization():
@@ -408,7 +418,7 @@ class RustType(object):
 
     def get_method(self) -> Tuple[Text, Text]:
         assert not self.is_repeated()
-        name = self.field.name
+        name = escape_name(self.field.name)
 
         if self.field.type == FieldDescriptorProto.TYPE_FLOAT:
             return "f32", "self.%s.unwrap_or(0.)" % name
@@ -574,7 +584,7 @@ def field_iter(
         with block(
             ctx,
             "if let %s = self.%s"
-            % (typ.oneof_val(msg_name, "ref " + var), typ.oneof.name),
+            % (typ.oneof_val(msg_name, "ref " + var), escape_name(typ.oneof.name)),
         ):
             if typ.is_empty_oneof_field():
                 ctx.write(
@@ -595,7 +605,7 @@ def field_iter(
         # Always emit messages explicitly marked as non-nullable
         deref = "*" if typ.is_boxed() else ""
         with block(ctx, ""):
-            ctx.write("let %s = &%sself.%s;" % (var, deref, field.name))
+            ctx.write("let %s = &%sself.%s;" % (var, deref, escape_name(field.name)))
             yield
     elif (
         field.type == FieldDescriptorProto.TYPE_ENUM
@@ -605,7 +615,7 @@ def field_iter(
         # The default value (as considered by proto) doesn't appear in the generated enum and
         # doesn't map to .default(). All of the values that actually get generated need to get
         # encoded.
-        ctx.write("let %s = &self.%s;" % (var, field.name))
+        ctx.write("let %s = &self.%s;" % (var, escape_name(field.name)))
         yield
     elif not typ.is_nullable() and not typ.is_repeated():
         # For proto3, we remove the Option for primitive fields.
@@ -614,16 +624,16 @@ def field_iter(
         with block(
             ctx,
             "if self.%s != <%s as ::std::default::Default>::default()"
-            % (field.name, typ.storage_type()),
+            % (escape_name(field.name), typ.storage_type()),
         ):
             if typ.is_boxed():
-                ctx.write("let %s = &*self.%s;" % (var, field.name))
+                ctx.write("let %s = &*self.%s;" % (var, escape_name(field.name)))
             else:
-                ctx.write("let %s = &self.%s;" % (var, field.name))
+                ctx.write("let %s = &self.%s;" % (var, escape_name(field.name)))
             yield
     else:
         # This iterates through Vec and the Option<> type for optional fieldds
-        with block(ctx, "for %s in &self.%s" % (var, field.name)):
+        with block(ctx, "for %s in &self.%s" % (var, escape_name(field.name))):
             if typ.is_boxed():
                 ctx.write("let %s = &**%s;" % (var, var))
             yield
@@ -895,14 +905,7 @@ class CodeWriter(object):
     ) -> None:
         assert self.indentation == 0
         name = "_".join(path + [msg_type.name])
-
-        # Adjust some field names
-        for field in msg_type.field:
-            if field.name in RESERVED_KEYWORDS:
-                field.name = field.name + "_"
-        for oneof in msg_type.oneof_decl:
-            if oneof.name in RESERVED_KEYWORDS:
-                oneof.name = oneof.name + "_"
+        escaped_name = escape_name(name)
 
         oneof_fields: DefaultDict[Text, List[FieldDescriptorProto]] = defaultdict(list)
         proto3_optional_synthetic_oneofs: Set[int] = {
@@ -928,7 +931,7 @@ class CodeWriter(object):
         self.write_comments(self.source_code_info_by_scl.get(tuple(scl)))
 
         self.write("#[derive(%s)]" % ", ".join(sorted(derives)))
-        with block(self, "pub struct " + name):
+        with block(self, "pub struct " + escaped_name):
             for idx, field in enumerate(msg_type.field):
                 ffn = DescriptorProto.FIELD_FIELD_NUMBER
                 self.write_comments(
@@ -939,17 +942,20 @@ class CodeWriter(object):
                 if typ.oneof:
                     oneof_fields[typ.oneof.name].append(field)
                 else:
-                    self.write("pub %s: %s," % (field.name, typ.storage_type()))
+                    self.write(
+                        "pub %s: %s," % (escape_name(field.name), typ.storage_type())
+                    )
 
             for oneof in oneof_decls:
                 if oneof_nullable(oneof):
                     self.write(
                         "pub %s: ::std::option::Option<%s>,"
-                        % (oneof.name, oneof_msg_name(name, oneof))
+                        % (escape_name(oneof.name), oneof_msg_name(name, oneof))
                     )
                 else:
                     self.write(
-                        "pub %s: %s," % (oneof.name, oneof_msg_name(name, oneof))
+                        "pub %s: %s,"
+                        % (escape_name(oneof.name), oneof_msg_name(name, oneof))
                     )
 
             if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
@@ -964,7 +970,7 @@ class CodeWriter(object):
                     self.write("%s," % typ.oneof_field_match(typ.storage_type()))
 
         if not self.is_proto3:
-            with block(self, "impl " + name):
+            with block(self, "impl " + escaped_name):
                 for field in msg_type.field:
                     typ = self.rust_type(msg_type, field)
                     if typ.oneof:
@@ -975,21 +981,24 @@ class CodeWriter(object):
                             "pub fn set_%s(&mut self, v: ::std::vec::Vec<%s>)"
                             % (field.name, typ.rust_type()),
                         ):
-                            self.write("self.%s = v;" % field.name)
+                            self.write("self.%s = v;" % escape_name(field.name))
 
                         with block(
                             self,
                             "pub fn take_%s(&mut self) -> ::std::vec::Vec<%s>"
                             % (field.name, typ.rust_type()),
                         ):
-                            self.write("::std::mem::take(&mut self.%s)" % field.name)
+                            self.write(
+                                "::std::mem::take(&mut self.%s)"
+                                % escape_name(field.name)
+                            )
 
                         with block(
                             self,
                             "pub fn get_%s(&self) -> &[%s]"
                             % (field.name, typ.rust_type()),
                         ):
-                            self.write("&self.%s" % field.name)
+                            self.write("&self.%s" % escape_name(field.name))
 
                         with block(
                             self,
@@ -1000,7 +1009,7 @@ class CodeWriter(object):
 
                     elif typ.is_nullable():
                         with block(self, "pub fn has_%s(&self) -> bool" % field.name):
-                            self.write("self.%s.is_some()" % field.name)
+                            self.write("self.%s.is_some()" % escape_name(field.name))
 
                         input_type, input_expr = typ.set_method()
                         with block(
@@ -1008,7 +1017,10 @@ class CodeWriter(object):
                             "pub fn set_%s(&mut self, v: %s)"
                             % (field.name, input_type),
                         ):
-                            self.write("self.%s = Some(%s);" % (field.name, input_expr))
+                            self.write(
+                                "self.%s = Some(%s);"
+                                % (escape_name(field.name), input_expr)
+                            )
 
                         return_type, return_expr = typ.take_method()
                         if return_type is not None and return_expr is not None:
@@ -1031,17 +1043,21 @@ class CodeWriter(object):
                             ):
                                 self.write(return_expr)
 
-        with block(self, "impl ::std::default::Default for " + name):
+        with block(self, "impl ::std::default::Default for " + escaped_name):
             with block(self, "fn default() -> Self"):
-                with block(self, name):
+                with block(self, escaped_name):
                     for field in msg_type.field:
                         typ = self.rust_type(msg_type, field)
                         if not typ.oneof:
-                            self.write("%s: %s," % (field.name, typ.default(name)))
+                            self.write(
+                                "%s: %s," % (escape_name(field.name), typ.default(name))
+                            )
                     for oneof in oneof_decls:
                         oneof_field = oneof_fields[oneof.name][0]
                         typ = self.rust_type(msg_type, oneof_field)
-                        self.write("%s: %s," % (oneof.name, typ.default(name)))
+                        self.write(
+                            "%s: %s," % (escape_name(oneof.name), typ.default(name))
+                        )
                     if msg_type.options.Extensions[
                         extensions_pb2.preserve_unrecognized
                     ]:
@@ -1049,10 +1065,11 @@ class CodeWriter(object):
 
         with block(self, "lazy_static!"):
             self.write(
-                "pub static ref %s_default: %s = %s::default();" % (name, name, name)
+                "pub static ref %s_default: %s = %s::default();"
+                % (name, escaped_name, escaped_name)
             )
 
-        with block(self, "impl ::pb_jelly::Message for " + name):
+        with block(self, "impl ::pb_jelly::Message for " + escaped_name):
             with block(
                 self,
                 "fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor>",
@@ -1186,7 +1203,9 @@ class CodeWriter(object):
                     # In proto2, this ensures we don't emit fields set to None
                     # In proto3, this ensures we don't emit fields set to their default value
                     if typ.should_serialize_packed():
-                        with block(self, "if !self.%s.is_empty()" % field.name):
+                        with block(
+                            self, "if !self.%s.is_empty()" % escape_name(field.name)
+                        ):
                             self.write("let mut size = 0;")
                             with field_iter(self, "val", name, msg_type, field):
                                 self.write(
@@ -1244,7 +1263,7 @@ class CodeWriter(object):
                         if enum_err_if_default_or_unknown(enum_type) and not typ.oneof:
                             self.write(
                                 "let mut %s: ::std::option::Option<%s> = None;"
-                                % (field.name, typ.rust_type())
+                                % (escape_name(field.name), typ.rust_type())
                             )
                             err_if_default_field_names[field.name] = None
 
@@ -1279,7 +1298,8 @@ class CodeWriter(object):
                                                     "::pb_jelly::Message::deserialize(&mut val, &mut vals)?;"
                                                 )
                                                 self.write(
-                                                    "self.%s.push(val);" % field.name
+                                                    "self.%s.push(val);"
+                                                    % escape_name(field.name)
                                                 )
                                         with block(self, "_ =>"):
                                             self.write(
@@ -1333,7 +1353,10 @@ class CodeWriter(object):
                                         )
 
                                     if typ.is_repeated():
-                                        self.write("self.%s.push(val);" % field.name)
+                                        self.write(
+                                            "self.%s.push(val);"
+                                            % escape_name(field.name)
+                                        )
                                     else:
                                         field_val = (
                                             "Box::new(val)" if typ.is_boxed() else "val"
@@ -1344,7 +1367,7 @@ class CodeWriter(object):
                                                 self.write(
                                                     "self.%s = %s;"
                                                     % (
-                                                        typ.oneof.name,
+                                                        escape_name(typ.oneof.name),
                                                         typ.oneof_val(name, field_val),
                                                     )
                                                 )
@@ -1359,17 +1382,17 @@ class CodeWriter(object):
                                         elif typ.is_nullable():
                                             self.write(
                                                 "self.%s = Some(%s);"
-                                                % (field.name, field_val)
+                                                % (escape_name(field.name), field_val)
                                             )
                                         elif field.name in err_if_default_field_names:
                                             self.write(
                                                 "%s = Some(%s);"
-                                                % (field.name, field_val)
+                                                % (escape_name(field.name), field_val)
                                             )
                                         else:
                                             self.write(
                                                 "self.%s = %s;"
-                                                % (field.name, field_val)
+                                                % (escape_name(field.name), field_val)
                                             )
                         with block(self, "_ =>"):
                             if preserve_unrecognized:
@@ -1381,15 +1404,17 @@ class CodeWriter(object):
                 for oneof in oneof_decls:
                     if not oneof_nullable(oneof):
                         with block(self, "match oneof_" + oneof.name):
-                            self.write("Some(v) => self.%s = v," % oneof.name)
+                            self.write(
+                                "Some(v) => self.%s = v," % escape_name(oneof.name)
+                            )
                             self.write(
                                 "None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, \"missing value for non-nullable oneof '%s' while parsing message %s.%s\")),"
                                 % (oneof.name, self.proto_file.package, msg_type.name)
                             )
 
                 for field_name in err_if_default_field_names:
-                    with block(self, "match " + field_name):
-                        self.write("Some(v) => self.%s = v," % field_name)
+                    with block(self, "match %s" % escape_name(field_name)):
+                        self.write("Some(v) => self.%s = v," % escape_name(field_name))
                         self.write(
                             "None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, \"err_if_default_or_unknown '%s' had no value while parsing message %s.%s\")),"
                             % (field_name, self.proto_file.package, msg_type.name)
@@ -1433,7 +1458,10 @@ class CodeWriter(object):
                                 ) > 1 or oneof_nullable(typ.oneof):
                                     # Only useful to generate this logic if there is more than one
                                     # possible value for this oneof.
-                                    with block(self, "match self.%s" % typ.oneof.name):
+                                    with block(
+                                        self,
+                                        "match self.%s" % escape_name(typ.oneof.name),
+                                    ):
                                         self.write(
                                             "%s => ()," % typ.oneof_val(name, "_")
                                         )
@@ -1443,7 +1471,7 @@ class CodeWriter(object):
                                             self.write(
                                                 "self.%s = %s;"
                                                 % (
-                                                    typ.oneof.name,
+                                                    escape_name(typ.oneof.name),
                                                     typ.oneof_val(
                                                         name,
                                                         "::std::default::Default::default()",
@@ -1460,7 +1488,7 @@ class CodeWriter(object):
                                         "if let %s = self.%s"
                                         % (
                                             typ.oneof_val(name, "ref mut val"),
-                                            typ.oneof.name,
+                                            escape_name(typ.oneof.name),
                                         ),
                                     ):
                                         if typ.is_boxed():
@@ -1479,22 +1507,22 @@ class CodeWriter(object):
                             elif typ.is_nullable() and typ.is_boxed():
                                 self.write(
                                     "::pb_jelly::reflection::FieldMut::Value(self.%s.get_or_insert_with(::std::default::Default::default).as_mut())"
-                                    % field.name
+                                    % escape_name(field.name)
                                 )
                             elif typ.is_boxed():
                                 self.write(
                                     "::pb_jelly::reflection::FieldMut::Value(self.%s.as_mut())"
-                                    % field.name
+                                    % escape_name(field.name)
                                 )
                             elif typ.is_nullable():
                                 self.write(
                                     "::pb_jelly::reflection::FieldMut::Value(self.%s.get_or_insert_with(::std::default::Default::default))"
-                                    % field.name
+                                    % escape_name(field.name)
                                 )
                             else:
                                 self.write(
                                     "::pb_jelly::reflection::FieldMut::Value(&mut self.%s)"
-                                    % field.name
+                                    % escape_name(field.name)
                                 )
                     with block(self, "_ =>"):
                         self.write('panic!("unknown field name given")')
@@ -1566,6 +1594,7 @@ class ProtoType(Generic[M]):
             return "_".join(self.path + [self.typ.name])
 
         mod_parts = self.mod_parts + ["_".join(self.path + [self.typ.name])]
+        mod_parts = [escape_name(part) for part in mod_parts]
         if other_crate != self.crate:
             # Different crate. Insert crate name in fully qualified module.
             mod_parts.insert(0, "::" + self.crate)
@@ -1782,7 +1811,10 @@ class Context(object):
                 filename = mod_prefix_path + "/mod.rs"
                 content = "\n".join(
                     ["// @" + "generated, do not edit", ""]
-                    + ["pub mod %s;" % mod for mod in sorted(sub_mod_tree.keys())]
+                    + [
+                        "pub mod %s;" % escape_name(mod)
+                        for mod in sorted(sub_mod_tree.keys())
+                    ]
                     + [""]
                 )
                 yield filename, content
@@ -1795,7 +1827,7 @@ class Context(object):
 
             crate_mod_tree: ModTree = mod_tree[crate]
             for mod_name, child_mod_tree in sorted(crate_mod_tree.items()):
-                librs.write("pub mod %s;" % mod_name)
+                librs.write("pub mod %s;" % escape_name(mod_name))
 
                 for res in mod_tree_dfs(crate + "/src/" + mod_name, child_mod_tree):
                     yield res
@@ -1886,11 +1918,7 @@ class Context(object):
         filename = proto_filename.replace(self.prefix_to_clear, "").replace(
             ".proto", ""
         )
-        mod_parts_unsanitized = filename.split("/")
-        mod_parts = [
-            mod + "_" if mod in RESERVED_KEYWORDS else mod
-            for mod in mod_parts_unsanitized
-        ]
+        mod_parts = filename.split("/")
         # Each proto module will become its own crate. We append "_proto" to the crate name
         # to disambiguate the top level crate names.
         if self.crate_per_dir:
