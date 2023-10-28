@@ -2685,7 +2685,7 @@ pub struct TestMessage {
   pub optional_foreign_message_boxed: ::std::option::Option<::std::boxed::Box<ForeignMessage>>,
   pub optional_foreign_message_nonnullable: ForeignMessage,
   /// Use some rust reserved keywords
-  pub type_: ::std::option::Option<bool>,
+  pub r#type: ::std::option::Option<bool>,
   pub oneof_int: ::std::option::Option<TestMessage_OneofInt>,
   pub oneof_foreign: ::std::option::Option<TestMessage_OneofForeign>,
   pub oneof_zero: ::std::option::Option<TestMessage_OneofZero>,
@@ -2693,7 +2693,7 @@ pub struct TestMessage {
   pub oneof_unset: ::std::option::Option<TestMessage_OneofUnset>,
   pub oneof_primitives: ::std::option::Option<TestMessage_OneofPrimitives>,
   pub oneof_empty_field: TestMessage_OneofEmptyField,
-  pub mod_: ::std::option::Option<TestMessage_Mod>,
+  pub r#mod: ::std::option::Option<TestMessage_Mod>,
 }
 #[derive(Clone, Debug, PartialEq)]
 pub enum TestMessage_OneofInt {
@@ -3094,14 +3094,14 @@ impl TestMessage {
   pub fn get_optional_foreign_message_boxed(&self) -> &ForeignMessage {
     self.optional_foreign_message_boxed.as_ref().map(::std::ops::Deref::deref).unwrap_or(&ForeignMessage_default)
   }
-  pub fn has_type_(&self) -> bool {
-    self.type_.is_some()
+  pub fn has_type(&self) -> bool {
+    self.r#type.is_some()
   }
-  pub fn set_type_(&mut self, v: bool) {
-    self.type_ = Some(v);
+  pub fn set_type(&mut self, v: bool) {
+    self.r#type = Some(v);
   }
-  pub fn get_type_(&self) -> bool {
-    self.type_.unwrap_or(false)
+  pub fn get_type(&self) -> bool {
+    self.r#type.unwrap_or(false)
   }
 }
 impl ::std::default::Default for TestMessage {
@@ -3141,7 +3141,7 @@ impl ::std::default::Default for TestMessage {
       repeated_foreign_enum: ::std::default::Default::default(),
       optional_foreign_message_boxed: ::std::default::Default::default(),
       optional_foreign_message_nonnullable: ::std::default::Default::default(),
-      type_: ::std::default::Default::default(),
+      r#type: ::std::default::Default::default(),
       oneof_int: None,
       oneof_foreign: None,
       oneof_zero: None,
@@ -3149,7 +3149,7 @@ impl ::std::default::Default for TestMessage {
       oneof_unset: None,
       oneof_primitives: None,
       oneof_empty_field: TestMessage_OneofEmptyField::A,
-      mod_: None,
+      r#mod: None,
     }
   }
 }
@@ -3604,8 +3604,8 @@ impl ::pb_jelly::Message for TestMessage {
           oneof_index: Some(6),
         },
         ::pb_jelly::FieldDescriptor {
-          name: "type_",
-          full_name: "pbtest.TestMessage.type_",
+          name: "type",
+          full_name: "pbtest.TestMessage.type",
           index: 49,
           number: 73,
           typ: ::pb_jelly::wire_format::Type::Varint,
@@ -3613,8 +3613,8 @@ impl ::pb_jelly::Message for TestMessage {
           oneof_index: None,
         },
         ::pb_jelly::FieldDescriptor {
-          name: "loop_",
-          full_name: "pbtest.TestMessage.loop_",
+          name: "loop",
+          full_name: "pbtest.TestMessage.loop",
           index: 50,
           number: 74,
           typ: ::pb_jelly::wire_format::Type::Varint,
@@ -3622,8 +3622,8 @@ impl ::pb_jelly::Message for TestMessage {
           oneof_index: Some(7),
         },
         ::pb_jelly::FieldDescriptor {
-          name: "unsafe_",
-          full_name: "pbtest.TestMessage.unsafe_",
+          name: "unsafe",
+          full_name: "pbtest.TestMessage.unsafe",
           index: 51,
           number: 75,
           typ: ::pb_jelly::wire_format::Type::Varint,
@@ -3654,7 +3654,7 @@ impl ::pb_jelly::Message for TestMessage {
           name: "oneof_empty_field",
         },
         ::pb_jelly::OneofDescriptor {
-          name: "mod_",
+          name: "mod",
         },
       ],
     })
@@ -4023,27 +4023,27 @@ impl ::pb_jelly::Message for TestMessage {
       c_size += l;
     }
     size += c_size;
-    let mut type__size = 0;
-    for val in &self.type_ {
+    let mut type_size = 0;
+    for val in &self.r#type {
       let l = ::pb_jelly::Message::compute_size(val);
-      type__size += ::pb_jelly::wire_format::serialized_length(73);
-      type__size += l;
+      type_size += ::pb_jelly::wire_format::serialized_length(73);
+      type_size += l;
     }
-    size += type__size;
-    let mut loop__size = 0;
-    if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
+    size += type_size;
+    let mut loop_size = 0;
+    if let Some(TestMessage_Mod::Loop(ref val)) = self.r#mod {
       let l = ::pb_jelly::Message::compute_size(val);
-      loop__size += ::pb_jelly::wire_format::serialized_length(74);
-      loop__size += l;
+      loop_size += ::pb_jelly::wire_format::serialized_length(74);
+      loop_size += l;
     }
-    size += loop__size;
-    let mut unsafe__size = 0;
-    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
+    size += loop_size;
+    let mut unsafe_size = 0;
+    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.r#mod {
       let l = ::pb_jelly::Message::compute_size(val);
-      unsafe__size += ::pb_jelly::wire_format::serialized_length(75);
-      unsafe__size += l;
+      unsafe_size += ::pb_jelly::wire_format::serialized_length(75);
+      unsafe_size += l;
     }
-    size += unsafe__size;
+    size += unsafe_size;
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -4199,13 +4199,13 @@ impl ::pb_jelly::Message for TestMessage {
     if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
-    for val in &self.type_ {
+    for val in &self.r#type {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
-    if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
+    if let Some(TestMessage_Mod::Loop(ref val)) = self.r#mod {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
-    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
+    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.r#mod {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
     size
@@ -4441,15 +4441,15 @@ impl ::pb_jelly::Message for TestMessage {
       ::pb_jelly::wire_format::write(72, ::pb_jelly::wire_format::Type::Varint, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.type_ {
+    for val in &self.r#type {
       ::pb_jelly::wire_format::write(73, ::pb_jelly::wire_format::Type::Varint, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
+    if let Some(TestMessage_Mod::Loop(ref val)) = self.r#mod {
       ::pb_jelly::wire_format::write(74, ::pb_jelly::wire_format::Type::Varint, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
+    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.r#mod {
       ::pb_jelly::wire_format::write(75, ::pb_jelly::wire_format::Type::Varint, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
@@ -4956,19 +4956,19 @@ impl ::pb_jelly::Message for TestMessage {
           ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 73)?;
           let mut val: bool = ::std::default::Default::default();
           ::pb_jelly::Message::deserialize(&mut val, buf)?;
-          self.type_ = Some(val);
+          self.r#type = Some(val);
         }
         74 => {
           ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 74)?;
           let mut val: i32 = ::std::default::Default::default();
           ::pb_jelly::Message::deserialize(&mut val, buf)?;
-          self.mod_ = Some(TestMessage_Mod::Loop(val));
+          self.r#mod = Some(TestMessage_Mod::Loop(val));
         }
         75 => {
           ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 75)?;
           let mut val: i32 = ::std::default::Default::default();
           ::pb_jelly::Message::deserialize(&mut val, buf)?;
-          self.mod_ = Some(TestMessage_Mod::Unsafe(val));
+          self.r#mod = Some(TestMessage_Mod::Unsafe(val));
         }
         _ => {
           ::pb_jelly::skip(typ, &mut buf)?;
@@ -5053,12 +5053,12 @@ impl ::pb_jelly::Reflection for TestMessage {
         }
         None
       }
-      "mod_" => {
-        if let Some(TestMessage_Mod::Loop(ref val)) = self.mod_ {
-          return Some("loop_");
+      "mod" => {
+        if let Some(TestMessage_Mod::Loop(ref val)) = self.r#mod {
+          return Some("loop");
         }
-        if let Some(TestMessage_Mod::Unsafe(ref val)) = self.mod_ {
-          return Some("unsafe_");
+        if let Some(TestMessage_Mod::Unsafe(ref val)) = self.r#mod {
+          return Some("unsafe");
         }
         None
       }
@@ -5345,29 +5345,29 @@ impl ::pb_jelly::Reflection for TestMessage {
         }
         unreachable!()
       }
-      "type_" => {
-        ::pb_jelly::reflection::FieldMut::Value(self.type_.get_or_insert_with(::std::default::Default::default))
+      "type" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.r#type.get_or_insert_with(::std::default::Default::default))
       }
-      "loop_" => {
-        match self.mod_ {
+      "loop" => {
+        match self.r#mod {
           Some(TestMessage_Mod::Loop(_)) => (),
           _ => {
-            self.mod_ = Some(TestMessage_Mod::Loop(::std::default::Default::default()));
+            self.r#mod = Some(TestMessage_Mod::Loop(::std::default::Default::default()));
           },
         }
-        if let Some(TestMessage_Mod::Loop(ref mut val)) = self.mod_ {
+        if let Some(TestMessage_Mod::Loop(ref mut val)) = self.r#mod {
           return ::pb_jelly::reflection::FieldMut::Value(val);
         }
         unreachable!()
       }
-      "unsafe_" => {
-        match self.mod_ {
+      "unsafe" => {
+        match self.r#mod {
           Some(TestMessage_Mod::Unsafe(_)) => (),
           _ => {
-            self.mod_ = Some(TestMessage_Mod::Unsafe(::std::default::Default::default()));
+            self.r#mod = Some(TestMessage_Mod::Unsafe(::std::default::Default::default()));
           },
         }
-        if let Some(TestMessage_Mod::Unsafe(ref mut val)) = self.mod_ {
+        if let Some(TestMessage_Mod::Unsafe(ref mut val)) = self.r#mod {
           return ::pb_jelly::reflection::FieldMut::Value(val);
         }
         unreachable!()

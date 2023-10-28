@@ -178,9 +178,9 @@ fn all_fields() {
     expected.oneof_empty_field = TestMessage_OneofEmptyField::C(33);
     expected.oneof_empty_field = TestMessage_OneofEmptyField::B;
     expected.oneof_empty_field = TestMessage_OneofEmptyField::A;
-    expected.type_ = Some(false);
-    expected.mod_ = Some(TestMessage_Mod::Unsafe(3));
-    expected.mod_ = Some(TestMessage_Mod::Loop(3));
+    expected.r#type = Some(false);
+    expected.r#mod = Some(TestMessage_Mod::Unsafe(3));
+    expected.r#mod = Some(TestMessage_Mod::Loop(3));
 
     succeeds(&buf[..], expected)
 }
