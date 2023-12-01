@@ -38,6 +38,7 @@ use include_dir::{
 use std::os::unix::fs::PermissionsExt;
 use std::{
     convert::AsRef,
+    ffi::OsStr,
     fs,
     io::Write,
     iter::IntoIterator,
@@ -228,17 +229,17 @@ impl GenProtos {
     }
 
     fn gen_rust_protos(&self, temp_dir: tempfile::TempDir) -> Output {
+        let venv_bin = self.create_venv(&temp_dir);
         let new_path = {
-            let venv_bin = self.create_venv(&temp_dir);
             let mut path: Vec<_> = std::env::split_paths(&std::env::var_os("PATH").unwrap()).collect();
-            path.insert(0, venv_bin);
+            path.insert(0, venv_bin.clone());
             std::env::join_paths(path).unwrap()
         };
         dbg!(&new_path);
 
         // Create protoc cmd in the venv
         let mut protoc_cmd = Command::new("protoc");
-        protoc_cmd.env("PATH", new_path);
+        protoc_cmd.env("PATH", &new_path);
         protoc_cmd.env("PYTHONPATH", temp_dir.path());
 
         // Directories that contain protos
@@ -264,8 +265,24 @@ impl GenProtos {
             dbg!(path);
         }
 
+        protoc_cmd.arg(
+            [
+                OsStr::new("--plugin=protoc-gen-rust_pb_jelly="),
+                venv_bin
+                    .join(if cfg!(windows) {
+                        "protoc-gen-rust.exe"
+                    } else {
+                        "protoc-gen-rust"
+                    })
+                    .as_os_str(),
+            ]
+            .join(OsStr::new("")),
+        );
+
         // Set the Rust out path
-        protoc_cmd.arg("--rust_out");
+        // (Don't use "rust" as the name of the plugin because protoc now has (broken) upstream Rust support that
+        // overrides the plugin)
+        protoc_cmd.arg("--rust_pb_jelly_out");
         protoc_cmd.arg(&self.gen_path);
 
         // Get paths of our Protos
