@@ -22,9 +22,6 @@ impl ::std::default::Default for BytesData {
     }
   }
 }
-lazy_static! {
-  pub static ref BytesData_default: BytesData = BytesData::default();
-}
 impl ::pb_jelly::Message for BytesData {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -138,9 +135,6 @@ impl ::std::default::Default for VecData {
     }
   }
 }
-lazy_static! {
-  pub static ref VecData_default: VecData = VecData::default();
-}
 impl ::pb_jelly::Message for VecData {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -252,9 +246,6 @@ impl ::std::default::Default for StringMessage {
       data: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref StringMessage_default: StringMessage = StringMessage::default();
 }
 impl ::pb_jelly::Message for StringMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -368,9 +359,6 @@ impl ::std::default::Default for StringMessageSSO {
     }
   }
 }
-lazy_static! {
-  pub static ref StringMessageSSO_default: StringMessageSSO = StringMessageSSO::default();
-}
 impl ::pb_jelly::Message for StringMessageSSO {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -482,9 +470,6 @@ impl ::std::default::Default for Cities {
       cities: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref Cities_default: Cities = Cities::default();
 }
 impl ::pb_jelly::Message for Cities {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -675,9 +660,6 @@ impl ::std::default::Default for City {
       state: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref City_default: City = City::default();
 }
 impl ::pb_jelly::Message for City {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -1003,9 +985,6 @@ impl ::std::default::Default for CitiesSSO {
     }
   }
 }
-lazy_static! {
-  pub static ref CitiesSSO_default: CitiesSSO = CitiesSSO::default();
-}
 impl ::pb_jelly::Message for CitiesSSO {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1195,9 +1174,6 @@ impl ::std::default::Default for CitySSO {
       state: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref CitySSO_default: CitySSO = CitySSO::default();
 }
 impl ::pb_jelly::Message for CitySSO {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {

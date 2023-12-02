@@ -461,9 +461,6 @@ impl ::std::default::Default for Option {
     }
   }
 }
-lazy_static! {
-  pub static ref Option_default: Option = Option::default();
-}
 impl ::pb_jelly::Message for Option {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -522,9 +519,6 @@ impl ::std::default::Default for Vec {
     Vec {
     }
   }
-}
-lazy_static! {
-  pub static ref Vec_default: Vec = Vec::default();
 }
 impl ::pb_jelly::Message for Vec {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -585,9 +579,6 @@ impl ::std::default::Default for Default {
     }
   }
 }
-lazy_static! {
-  pub static ref Default_default: Default = Default::default();
-}
 impl ::pb_jelly::Message for Default {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -646,9 +637,6 @@ impl ::std::default::Default for String {
     String {
     }
   }
-}
-lazy_static! {
-  pub static ref String_default: String = String::default();
 }
 impl ::pb_jelly::Message for String {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -714,9 +702,6 @@ impl ::std::default::Default for Version0OneOfNoneNullable {
       test_oneof: Version0OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default()),
     }
   }
-}
-lazy_static! {
-  pub static ref Version0OneOfNoneNullable_default: Version0OneOfNoneNullable = Version0OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version0OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -839,9 +824,6 @@ impl ::std::default::Default for Version1OneOfNoneNullable {
       test_oneof: Version1OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default()),
     }
   }
-}
-lazy_static! {
-  pub static ref Version1OneOfNoneNullable_default: Version1OneOfNoneNullable = Version1OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version1OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -1020,9 +1002,6 @@ impl ::std::default::Default for Version2OneOfNoneNullable {
       test_oneof: Version2OneOfNoneNullable_TestOneof::StringOneOf(::std::default::Default::default()),
     }
   }
-}
-lazy_static! {
-  pub static ref Version2OneOfNoneNullable_default: Version2OneOfNoneNullable = Version2OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version2OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -1249,9 +1228,6 @@ impl ::std::default::Default for Version1Enum {
     }
   }
 }
-lazy_static! {
-  pub static ref Version1Enum_default: Version1Enum = Version1Enum::default();
-}
 impl ::pb_jelly::Message for Version1Enum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1356,9 +1332,6 @@ impl ::std::default::Default for Version2Enum {
     }
   }
 }
-lazy_static! {
-  pub static ref Version2Enum_default: Version2Enum = Version2Enum::default();
-}
 impl ::pb_jelly::Message for Version2Enum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1457,9 +1430,6 @@ impl ::std::default::Default for Version1OneOf {
       test_oneof: None,
     }
   }
-}
-lazy_static! {
-  pub static ref Version1OneOf_default: Version1OneOf = Version1OneOf::default();
 }
 impl ::pb_jelly::Message for Version1OneOf {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -1583,9 +1553,6 @@ impl ::std::default::Default for Version2OneOf {
       test_oneof: None,
     }
   }
-}
-lazy_static! {
-  pub static ref Version2OneOf_default: Version2OneOf = Version2OneOf::default();
 }
 impl ::pb_jelly::Message for Version2OneOf {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -1760,9 +1727,6 @@ impl ::std::default::Default for Version1 {
       required_string: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref Version1_default: Version1 = Version1::default();
 }
 impl ::pb_jelly::Message for Version1 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -2024,9 +1988,6 @@ impl ::std::default::Default for Version2 {
       optional_float: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref Version2_default: Version2 = Version2::default();
 }
 impl ::pb_jelly::Message for Version2 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
@@ -2563,9 +2524,6 @@ impl ::std::default::Default for ForeignMessage {
     }
   }
 }
-lazy_static! {
-  pub static ref ForeignMessage_default: ForeignMessage = ForeignMessage::default();
-}
 impl ::pb_jelly::Message for ForeignMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -2870,7 +2828,7 @@ impl TestMessage {
     self.optional_foreign_message.take().unwrap_or_default()
   }
   pub fn get_optional_foreign_message(&self) -> &ForeignMessage {
-    self.optional_foreign_message.as_ref().unwrap_or(&ForeignMessage_default)
+    self.optional_foreign_message.as_ref().unwrap_or({ static DEFAULT: ::std::sync::OnceLock<ForeignMessage> = ::std::sync::OnceLock::new(); DEFAULT.get_or_init(<ForeignMessage as ::std::default::Default>::default) })
   }
   pub fn has_optional_nested_enum(&self) -> bool {
     self.optional_nested_enum.is_some()
@@ -3092,7 +3050,7 @@ impl TestMessage {
     self.optional_foreign_message_boxed.take().unwrap_or_default()
   }
   pub fn get_optional_foreign_message_boxed(&self) -> &ForeignMessage {
-    self.optional_foreign_message_boxed.as_ref().map(::std::ops::Deref::deref).unwrap_or(&ForeignMessage_default)
+    self.optional_foreign_message_boxed.as_ref().map(::std::ops::Deref::deref).unwrap_or({ static DEFAULT: ::std::sync::OnceLock<ForeignMessage> = ::std::sync::OnceLock::new(); DEFAULT.get_or_init(<ForeignMessage as ::std::default::Default>::default) })
   }
   pub fn has_type(&self) -> bool {
     self.r#type.is_some()
@@ -3152,9 +3110,6 @@ impl ::std::default::Default for TestMessage {
       r#mod: None,
     }
   }
-}
-lazy_static! {
-  pub static ref TestMessage_default: TestMessage = TestMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {

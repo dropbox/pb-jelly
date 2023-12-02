@@ -10,9 +10,6 @@ impl ::std::default::Default for InpMessage {
     }
   }
 }
-lazy_static! {
-  pub static ref InpMessage_default: InpMessage = InpMessage::default();
-}
 impl ::pb_jelly::Message for InpMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -108,9 +105,6 @@ impl ::std::default::Default for OutMessage {
       o: ::std::default::Default::default(),
     }
   }
-}
-lazy_static! {
-  pub static ref OutMessage_default: OutMessage = OutMessage::default();
 }
 impl ::pb_jelly::Message for OutMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {

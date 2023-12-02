@@ -459,8 +459,11 @@ class RustType(object):
             deref = "" if not self.is_boxed() else ".map(::std::ops::Deref::deref)"
             return (
                 "&" + self.rust_type(),
-                "self.%s.as_ref()%s.unwrap_or(&%s_default)"
-                % (name, deref, self.rust_type()),
+                "self.{name}.as_ref(){deref}.unwrap_or({{ \
+static DEFAULT: ::std::sync::OnceLock<{ty}> = ::std::sync::OnceLock::new(); \
+DEFAULT.get_or_init(<{ty} as ::std::default::Default>::default) }})".format(
+                    name=name, deref=deref, ty=self.rust_type()
+                ),
             )
         raise AssertionError("Unexpected field type")
 
@@ -1062,12 +1065,6 @@ class CodeWriter(object):
                         extensions_pb2.preserve_unrecognized
                     ]:
                         self.write("_unrecognized: Vec::new(),")
-
-        with block(self, "lazy_static!"):
-            self.write(
-                "pub static ref %s_default: %s = %s::default();"
-                % (name, escaped_name, escaped_name)
-            )
 
         with block(self, "impl ::pb_jelly::Message for " + escaped_name):
             with block(
@@ -1795,8 +1792,6 @@ class Context(object):
     ) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             librs = CodeWriter(None, None, None, None)  # type: ignore
-            librs.write("#[macro_use]")
-            librs.write("extern crate lazy_static;")
             if derive_serde:
                 librs.write("#[macro_use]")
                 librs.write("extern crate serde;")
@@ -1846,7 +1841,7 @@ class Context(object):
     ) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
-                {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
+                {"pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
             features = {
                 "serde": 'features=["serde_derive"]',
@@ -1872,7 +1867,7 @@ class Context(object):
     ) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
-                {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
+                {"pb-jelly"} | deps | self.extra_crates[crate]
             ) - {"std"}
             features = {
                 "serde": 'features=["serde_derive"]',
@@ -1887,7 +1882,6 @@ class Context(object):
                     features.update({"compact_str": 'features=["bytes", "serde"]'})
 
             versions = {
-                "lazy_static": ' version = "1.4.0" ',
                 "pb-jelly": ' version = "0.0.14" ',
                 "serde": ' version = "1.0" ',
                 "bytes": ' version = "1.0" ',
