@@ -65,9 +65,7 @@ impl ::pb_jelly::Message for InpMessage {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "InpMessage", 1)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "InpMessage", 1)?;
           self.i = val;
         }
         _ => {
@@ -164,9 +162,7 @@ impl ::pb_jelly::Message for OutMessage {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "OutMessage", 1)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "OutMessage", 1)?;
           self.o = val;
         }
         _ => {

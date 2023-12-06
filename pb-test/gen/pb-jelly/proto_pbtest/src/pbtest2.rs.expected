@@ -774,11 +774,7 @@ impl ::pb_jelly::Message for Version0OneOfNoneNullable {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version0OneOfNoneNullable", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version0OneOfNoneNullable", 1)?;
           oneof_test_oneof = Some(Version0OneOfNoneNullable_TestOneof::StringOneOf(val));
         }
         _ => {
@@ -925,19 +921,11 @@ impl ::pb_jelly::Message for Version1OneOfNoneNullable {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1OneOfNoneNullable", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version1OneOfNoneNullable", 1)?;
           oneof_test_oneof = Some(Version1OneOfNoneNullable_TestOneof::StringOneOf(val));
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1OneOfNoneNullable", 2)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version1OneOfNoneNullable", 2)?;
           oneof_test_oneof = Some(Version1OneOfNoneNullable_TestOneof::StringTwoOf(val));
         }
         _ => {
@@ -1129,25 +1117,15 @@ impl ::pb_jelly::Message for Version2OneOfNoneNullable {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2OneOfNoneNullable", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version2OneOfNoneNullable", 1)?;
           oneof_test_oneof = Some(Version2OneOfNoneNullable_TestOneof::StringOneOf(val));
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2OneOfNoneNullable", 2)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version2OneOfNoneNullable", 2)?;
           oneof_test_oneof = Some(Version2OneOfNoneNullable_TestOneof::StringTwoOf(val));
         }
         3 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2OneOfNoneNullable", 3)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2OneOfNoneNullable", 3)?;
           oneof_test_oneof = Some(Version2OneOfNoneNullable_TestOneof::IntOneOf(val));
         }
         _ => {
@@ -1301,9 +1279,7 @@ impl ::pb_jelly::Message for Version1Enum {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version1Enum", 1)?;
-          let mut val: Version1Enum_TestEnum = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, Version1Enum_TestEnum>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version1Enum", 1)?;
           self.enum_field = Some(val);
         }
         _ => {
@@ -1408,9 +1384,7 @@ impl ::pb_jelly::Message for Version2Enum {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2Enum", 1)?;
-          let mut val: Version2Enum_TestEnum = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, Version2Enum_TestEnum>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2Enum", 1)?;
           self.enum_field = Some(val);
         }
         _ => {
@@ -1516,11 +1490,7 @@ impl ::pb_jelly::Message for Version1OneOf {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1OneOf", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version1OneOf", 1)?;
           self.test_oneof = Some(Version1OneOf_TestOneof::StringOneOf(val));
         }
         _ => {
@@ -1665,17 +1635,11 @@ impl ::pb_jelly::Message for Version2OneOf {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2OneOf", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version2OneOf", 1)?;
           self.test_oneof = Some(Version2OneOf_TestOneof::StringOneOf(val));
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2OneOf", 2)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2OneOf", 2)?;
           self.test_oneof = Some(Version2OneOf_TestOneof::IntOneOf(val));
         }
         _ => {
@@ -1816,11 +1780,7 @@ impl ::pb_jelly::Message for Version1 {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version1", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version1", 1)?;
           self.required_string = Some(val);
         }
         _ => {
@@ -2385,93 +2345,59 @@ impl ::pb_jelly::Message for Version2 {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version2", 1)?;
           self.required_string = Some(val);
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 2)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 2)?;
           self.optional_int32 = Some(val);
         }
         3 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 3)?;
-          let mut val: i64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 3)?;
           self.optional_int64 = Some(val);
         }
         4 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 4)?;
-          let mut val: u32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, u32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 4)?;
           self.optional_uint32 = Some(val);
         }
         5 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 5)?;
-          let mut val: u64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, u64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 5)?;
           self.optional_uint64 = Some(val);
         }
         6 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 6)?;
-          let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Fixed64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 6)?;
           self.optional_fixed64 = Some(val);
         }
         7 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 7)?;
-          let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Fixed32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 7)?;
           self.optional_fixed32 = Some(val);
         }
         8 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 8)?;
-          let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Sfixed64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 8)?;
           self.optional_sfixed64 = Some(val);
         }
         9 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 9)?;
-          let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Sfixed32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 9)?;
           self.optional_sfixed32 = Some(val);
         }
         10 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 10)?;
-          let mut val: f64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "Version2", 10)?;
           self.optional_double = Some(val);
         }
         11 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 11)?;
-          let mut val: bool = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Version2", 11)?;
           self.optional_bool = Some(val);
         }
         12 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2", 12)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "Version2", 12)?;
           self.optional_string = Some(val);
         }
         13 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Version2", 13)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(buf, typ, "Version2", 13)?;
           self.optional_bytes = Some(val);
         }
         14 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 14)?;
-          let mut val: f32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "Version2", 14)?;
           self.optional_float = Some(val);
         }
         _ => {
@@ -2615,9 +2541,7 @@ impl ::pb_jelly::Message for ForeignMessage {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "ForeignMessage", 1)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ForeignMessage", 1)?;
           self.c = Some(val);
         }
         _ => {
@@ -4460,514 +4384,198 @@ impl ::pb_jelly::Message for TestMessage {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 1)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 1)?;
           self.optional_int32 = Some(val);
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 2)?;
-          let mut val: i64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 2)?;
           self.optional_int64 = Some(val);
         }
         3 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 3)?;
-          let mut val: u32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, u32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 3)?;
           self.optional_uint32 = Some(val);
         }
         4 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 4)?;
-          let mut val: u64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, u64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 4)?;
           self.optional_uint64 = Some(val);
         }
         8 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 8)?;
-          let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Fixed64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 8)?;
           self.optional_fixed64 = Some(val);
         }
         9 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 9)?;
-          let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Fixed32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 9)?;
           self.optional_fixed32 = Some(val);
         }
         10 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 10)?;
-          let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Sfixed64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 10)?;
           self.optional_sfixed64 = Some(val);
         }
         11 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 11)?;
-          let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ::pb_jelly::Sfixed32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 11)?;
           self.optional_sfixed32 = Some(val);
         }
         12 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 12)?;
-          let mut val: f64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 12)?;
           self.optional_double = Some(val);
         }
         13 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 13)?;
-          let mut val: bool = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 13)?;
           self.optional_bool = Some(val);
         }
         14 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 14)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "TestMessage", 14)?;
           self.optional_string = Some(val);
         }
         15 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 15)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(buf, typ, "TestMessage", 15)?;
           self.optional_bytes = Some(val);
         }
         16 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 16)?;
-          let mut val: f32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 16)?;
           self.optional_float = Some(val);
         }
         19 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 19)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 19)?;
           self.optional_foreign_message = Some(val);
         }
         21 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 21)?;
-          let mut val: TestMessage_NestedEnum = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, TestMessage_NestedEnum>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 21)?;
           self.optional_nested_enum = Some(val);
         }
         22 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 22)?;
-          let mut val: ForeignEnum = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, ForeignEnum>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 22)?;
           self.optional_foreign_enum = Some(val);
         }
         31 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: i32 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_int32.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 31)?;
-              let mut val: i32 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_int32.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 31, &mut self.repeated_int32)?;
         }
         32 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: i64 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_int64.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 32)?;
-              let mut val: i64 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_int64.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, i64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 32, &mut self.repeated_int64)?;
         }
         33 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: u32 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_uint32.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 33)?;
-              let mut val: u32 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_uint32.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, u32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 33, &mut self.repeated_uint32)?;
         }
         34 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: u64 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_uint64.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 34)?;
-              let mut val: u64 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_uint64.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, u64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 34, &mut self.repeated_uint64)?;
         }
         38 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_fixed64.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 38)?;
-              let mut val: ::pb_jelly::Fixed64 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_fixed64.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, ::pb_jelly::Fixed64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 38, &mut self.repeated_fixed64)?;
         }
         39 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_fixed32.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 39)?;
-              let mut val: ::pb_jelly::Fixed32 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_fixed32.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, ::pb_jelly::Fixed32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 39, &mut self.repeated_fixed32)?;
         }
         40 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_sfixed64.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 40)?;
-              let mut val: ::pb_jelly::Sfixed64 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_sfixed64.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, ::pb_jelly::Sfixed64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 40, &mut self.repeated_sfixed64)?;
         }
         41 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_sfixed32.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 41)?;
-              let mut val: ::pb_jelly::Sfixed32 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_sfixed32.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, ::pb_jelly::Sfixed32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 41, &mut self.repeated_sfixed32)?;
         }
         42 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: f64 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_double.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 42)?;
-              let mut val: f64 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_double.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "TestMessage", 42, &mut self.repeated_double)?;
         }
         43 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: bool = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_bool.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 43)?;
-              let mut val: bool = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_bool.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 43, &mut self.repeated_bool)?;
         }
         44 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 44)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "TestMessage", 44)?;
           self.repeated_string.push(val);
         }
         45 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 45)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(buf, typ, "TestMessage", 45)?;
           self.repeated_bytes.push(val);
         }
         46 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: f32 = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_float.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 46)?;
-              let mut val: f32 = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_float.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, f32>(buf, typ, ::pb_jelly::wire_format::Type::Fixed32, "TestMessage", 46, &mut self.repeated_float)?;
         }
         49 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 49)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 49)?;
           self.repeated_foreign_message.push(val);
         }
         51 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: TestMessage_NestedEnum = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_nested_enum.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 51)?;
-              let mut val: TestMessage_NestedEnum = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_nested_enum.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, TestMessage_NestedEnum>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 51, &mut self.repeated_nested_enum)?;
         }
         52 => {
-          match typ {
-            ::pb_jelly::wire_format::Type::LengthDelimited => {
-              let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-              let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;
-              while vals.has_remaining() {
-                let mut val: ForeignEnum = ::std::default::Default::default();
-                ::pb_jelly::Message::deserialize(&mut val, &mut vals)?;
-                self.repeated_foreign_enum.push(val);
-              }
-            }
-            _ => {
-              ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 52)?;
-              let mut val: ForeignEnum = ::std::default::Default::default();
-              ::pb_jelly::Message::deserialize(&mut val, buf)?;
-              self.repeated_foreign_enum.push(val);
-            }
-          }
+          ::pb_jelly::helpers::deserialize_packed::<B, ForeignEnum>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 52, &mut self.repeated_foreign_enum)?;
         }
         53 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 53)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 53)?;
           self.optional_foreign_message_boxed = Some(Box::new(val));
         }
         54 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 54)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 54)?;
           self.optional_foreign_message_nonnullable = val;
         }
         57 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 57)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 57)?;
           self.oneof_int = Some(TestMessage_OneofInt::Int1(val));
         }
         58 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 58)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 58)?;
           self.oneof_int = Some(TestMessage_OneofInt::Foreign1(val));
         }
         59 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 59)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 59)?;
           self.oneof_foreign = Some(TestMessage_OneofForeign::Int2(val));
         }
         60 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 60)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 60)?;
           self.oneof_foreign = Some(TestMessage_OneofForeign::Foreign2(val));
         }
         61 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 61)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 61)?;
           self.oneof_zero = Some(TestMessage_OneofZero::Int3(val));
         }
         62 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 62)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 62)?;
           self.oneof_zero = Some(TestMessage_OneofZero::Foreign3(val));
         }
         63 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 63)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 63)?;
           self.oneof_null = Some(TestMessage_OneofNull::Int4(val));
         }
         64 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 64)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 64)?;
           self.oneof_null = Some(TestMessage_OneofNull::Foreign4(val));
         }
         65 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 65)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 65)?;
           self.oneof_unset = Some(TestMessage_OneofUnset::Int5(val));
         }
         66 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 66)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ForeignMessage = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ForeignMessage>(buf, typ, "TestMessage", 66)?;
           self.oneof_unset = Some(TestMessage_OneofUnset::Foreign5(val));
         }
         67 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 67)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 67)?;
           self.oneof_primitives = Some(TestMessage_OneofPrimitives::Int6(val));
         }
         68 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 68)?;
-          let mut val: bool = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 68)?;
           self.oneof_primitives = Some(TestMessage_OneofPrimitives::Bool6(val));
         }
         70 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 70)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::proto_google::protobuf::empty::Empty = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::proto_google::protobuf::empty::Empty>(buf, typ, "TestMessage", 70)?;
           oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::A);
         }
         71 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "TestMessage", 71)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::proto_google::protobuf::empty::Empty = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::proto_google::protobuf::empty::Empty>(buf, typ, "TestMessage", 71)?;
           oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::B);
         }
         72 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 72)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 72)?;
           oneof_oneof_empty_field = Some(TestMessage_OneofEmptyField::C(val));
         }
         73 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 73)?;
-          let mut val: bool = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 73)?;
           self.r#type = Some(val);
         }
         74 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 74)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 74)?;
           self.r#mod = Some(TestMessage_Mod::Loop(val));
         }
         75 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 75)?;
-          let mut val: i32 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "TestMessage", 75)?;
           self.r#mod = Some(TestMessage_Mod::Unsafe(val));
         }
         _ => {

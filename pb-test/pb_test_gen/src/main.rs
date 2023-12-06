@@ -1,5 +1,8 @@
 use pb_jelly_gen::GenProtos;
-use std::{env, fs};
+use std::{
+    env,
+    fs,
+};
 
 #[cfg(feature = "bench_prost")]
 use prost_build;

@@ -1344,80 +1344,35 @@ class CodeWriter(object):
                             typ = self.rust_type(msg_type, field)
                             with block(self, "%s =>" % field.number):
                                 if typ.can_be_packed():
-                                    with block(self, "match typ"):
-                                        with block(
-                                            self,
-                                            "::pb_jelly::wire_format::Type::LengthDelimited =>",
-                                        ):
-                                            self.write(
-                                                "let len = ::pb_jelly::varint::ensure_read(&mut buf)?;"
-                                            )
-                                            self.write(
-                                                "let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;"
-                                            )
-                                            with block(
-                                                self, "while vals.has_remaining()"
-                                            ):
-                                                self.write(
-                                                    "let mut val: %s = ::std::default::Default::default();"
-                                                    % typ.rust_type()
-                                                )
-                                                self.write(
-                                                    "::pb_jelly::Message::deserialize(&mut val, &mut vals)?;"
-                                                )
-                                                self.write(
-                                                    "self.%s.push(val);"
-                                                    % escape_name(field.name)
-                                                )
-                                        with block(self, "_ =>"):
-                                            self.write(
-                                                '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::%s, "%s", %s)?;'
-                                                % (
-                                                    typ.wire_format(),
-                                                    name,
-                                                    field.number,
-                                                )
-                                            )
-                                            self.write(
-                                                "let mut val: %s = ::std::default::Default::default();"
-                                                % typ.rust_type()
-                                            )
-                                            self.write(
-                                                "::pb_jelly::Message::deserialize(&mut val, buf)?;"
-                                            )
-                                            self.write(
-                                                "self.%s.push(val);" % field.name
-                                            )
+                                    self.write(
+                                        '::pb_jelly::helpers::deserialize_packed::<B, {typ}>(\
+buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, "{msg_name}", {field_number}, &mut self.{escaped_name})?;'.format(
+                                            typ=typ.rust_type(),
+                                            expected_wire_format=typ.wire_format(),
+                                            msg_name=name,
+                                            field_number=field.number,
+                                            escaped_name=escape_name(field.name),
+                                        )
+                                    )
                                 else:
                                     if typ.is_length_delimited():
                                         self.write(
-                                            '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "%s", %s)?;'
-                                            % (name, field.number)
-                                        )
-                                        self.write(
-                                            "let len = ::pb_jelly::varint::ensure_read(&mut buf)?;"
-                                        )
-                                        self.write(
-                                            "let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;"
-                                        )
-                                        self.write(
-                                            "let mut val: %s = ::std::default::Default::default();"
-                                            % typ.rust_type()
-                                        )
-                                        self.write(
-                                            "::pb_jelly::Message::deserialize(&mut val, &mut next)?;"
+                                            'let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, {typ}>(\
+buf, typ, "{msg_name}", {field_number})?;'.format(
+                                                typ=typ.rust_type(),
+                                                msg_name=name,
+                                                field_number=field.number,
+                                            )
                                         )
                                     else:
                                         self.write(
-                                            '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::%s, "%s", %s)?;'
-                                            % (typ.wire_format(), name, field.number)
-                                        )
-                                        self.write(
-                                            "let mut val: %s = ::std::default::Default::default();"
-                                            % typ.rust_type()
-                                        )
-                                        self.write(
-                                            "::pb_jelly::Message::deserialize(&mut val, buf)?;"
+                                            'let val = ::pb_jelly::helpers::deserialize_known_length::<B, {typ}>(\
+buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, "{msg_name}", {field_number})?;'.format(
+                                                typ=typ.rust_type(),
+                                                expected_wire_format=typ.wire_format(),
+                                                msg_name=name,
+                                                field_number=field.number,
+                                            )
                                         )
 
                                     if typ.is_repeated():

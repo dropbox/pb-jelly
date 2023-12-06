@@ -24,6 +24,7 @@ use bytes::buf::{
 };
 
 pub mod erased;
+pub mod helpers;
 pub mod varint;
 pub mod wire_format;
 

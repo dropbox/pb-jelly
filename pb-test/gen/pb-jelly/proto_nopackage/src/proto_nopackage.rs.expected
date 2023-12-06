@@ -68,11 +68,7 @@ impl ::pb_jelly::Message for NoPackage {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "NoPackage", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "NoPackage", 1)?;
           self.field = val;
         }
         _ => {
