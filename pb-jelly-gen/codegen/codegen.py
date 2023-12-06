@@ -890,18 +890,6 @@ class CodeWriter(object):
             with block(self, "pub const fn value(self) -> i32"):
                 self.write("self.0")
 
-            with block(
-                self,
-                "pub fn into_known(self) -> ::std::option::Option<%s>" % closed_name,
-            ):
-                with block(self, "match self"):
-                    for _, value in enum_variants:
-                        self.write(
-                            "%s::%s => Some(%s::%s),"
-                            % (name, value.name, closed_name, value.name)
-                        )
-                    self.write("_ => None,")
-
         with block(self, "impl ::std::default::Default for " + name):
             with block(self, "fn default() -> Self"):
                 # Under proto2, the default value is the first defined.
@@ -925,27 +913,27 @@ class CodeWriter(object):
             pass
 
         with block(self, "impl ::pb_jelly::OpenProtoEnum for " + name):
-            with block(self, "fn name(self) -> ::std::option::Option<&'static str>"):
+            self.write("type Closed = {};".format(closed_name))
+            with block(
+                self,
+                "fn into_known(self) -> ::std::option::Option<%s>" % closed_name,
+            ):
                 with block(self, "match self"):
                     for _, value in enum_variants:
                         self.write(
-                            '%s::%s => Some("%s"),' % (name, value.name, value.name)
+                            "%s::%s => Some(%s::%s),"
+                            % (name, value.name, closed_name, value.name)
                         )
                     self.write("_ => None,")
-
-            with block(self, "fn is_known(self) -> bool"):
-                with block(self, "match self"):
-                    for _, value in enum_variants:
-                        self.write("%s::%s => true," % (name, value.name))
-                    self.write("_ => false,")
 
         with block(self, "impl ::std::fmt::Debug for " + name):
             with block(
                 self,
                 "fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result",
             ):
-                self.write("use ::pb_jelly::OpenProtoEnum;")
-                with block(self, "match self.name()"):
+                with block(
+                    self, "match <Self as ::pb_jelly::OpenProtoEnum>::name(*self)"
+                ):
                     self.write('Some(s) => write!(f, "{}", s),')
                     self.write('None => write!(f, "Unknown({})", self.0),')
 

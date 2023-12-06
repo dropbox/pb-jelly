@@ -10,14 +10,6 @@ impl ForeignEnum3 {
   pub const fn value(self) -> i32 {
     self.0
   }
-  pub fn into_known(self) -> ::std::option::Option<ForeignEnum3_Closed> {
-    match self {
-      ForeignEnum3::FOREIGN3_FOO => Some(ForeignEnum3_Closed::FOREIGN3_FOO),
-      ForeignEnum3::FOREIGN3_BAR => Some(ForeignEnum3_Closed::FOREIGN3_BAR),
-      ForeignEnum3::FOREIGN3_BAZ => Some(ForeignEnum3_Closed::FOREIGN3_BAZ),
-      _ => None,
-    }
-  }
 }
 impl ::std::default::Default for ForeignEnum3 {
   fn default() -> Self {
@@ -42,27 +34,19 @@ impl From<ForeignEnum3_Closed> for ForeignEnum3 {
 impl ::pb_jelly::ProtoEnum for ForeignEnum3 {
 }
 impl ::pb_jelly::OpenProtoEnum for ForeignEnum3 {
-  fn name(self) -> ::std::option::Option<&'static str> {
+  type Closed = ForeignEnum3_Closed;
+  fn into_known(self) -> ::std::option::Option<ForeignEnum3_Closed> {
     match self {
-      ForeignEnum3::FOREIGN3_FOO => Some("FOREIGN3_FOO"),
-      ForeignEnum3::FOREIGN3_BAR => Some("FOREIGN3_BAR"),
-      ForeignEnum3::FOREIGN3_BAZ => Some("FOREIGN3_BAZ"),
+      ForeignEnum3::FOREIGN3_FOO => Some(ForeignEnum3_Closed::FOREIGN3_FOO),
+      ForeignEnum3::FOREIGN3_BAR => Some(ForeignEnum3_Closed::FOREIGN3_BAR),
+      ForeignEnum3::FOREIGN3_BAZ => Some(ForeignEnum3_Closed::FOREIGN3_BAZ),
       _ => None,
-    }
-  }
-  fn is_known(self) -> bool {
-    match self {
-      ForeignEnum3::FOREIGN3_FOO => true,
-      ForeignEnum3::FOREIGN3_BAR => true,
-      ForeignEnum3::FOREIGN3_BAZ => true,
-      _ => false,
     }
   }
 }
 impl ::std::fmt::Debug for ForeignEnum3 {
   fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-    use ::pb_jelly::OpenProtoEnum;
-    match self.name() {
+    match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
       Some(s) => write!(f, "{}", s),
       None => write!(f, "Unknown({})", self.0),
     }
@@ -124,12 +108,6 @@ impl Version31Enum_TestEnum {
   pub const fn value(self) -> i32 {
     self.0
   }
-  pub fn into_known(self) -> ::std::option::Option<Version31Enum_TestEnum_Closed> {
-    match self {
-      Version31Enum_TestEnum::ENUM0 => Some(Version31Enum_TestEnum_Closed::ENUM0),
-      _ => None,
-    }
-  }
 }
 impl ::std::default::Default for Version31Enum_TestEnum {
   fn default() -> Self {
@@ -154,23 +132,17 @@ impl From<Version31Enum_TestEnum_Closed> for Version31Enum_TestEnum {
 impl ::pb_jelly::ProtoEnum for Version31Enum_TestEnum {
 }
 impl ::pb_jelly::OpenProtoEnum for Version31Enum_TestEnum {
-  fn name(self) -> ::std::option::Option<&'static str> {
+  type Closed = Version31Enum_TestEnum_Closed;
+  fn into_known(self) -> ::std::option::Option<Version31Enum_TestEnum_Closed> {
     match self {
-      Version31Enum_TestEnum::ENUM0 => Some("ENUM0"),
+      Version31Enum_TestEnum::ENUM0 => Some(Version31Enum_TestEnum_Closed::ENUM0),
       _ => None,
-    }
-  }
-  fn is_known(self) -> bool {
-    match self {
-      Version31Enum_TestEnum::ENUM0 => true,
-      _ => false,
     }
   }
 }
 impl ::std::fmt::Debug for Version31Enum_TestEnum {
   fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-    use ::pb_jelly::OpenProtoEnum;
-    match self.name() {
+    match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
       Some(s) => write!(f, "{}", s),
       None => write!(f, "Unknown({})", self.0),
     }
@@ -225,13 +197,6 @@ impl Version32Enum_TestEnum {
   pub const fn value(self) -> i32 {
     self.0
   }
-  pub fn into_known(self) -> ::std::option::Option<Version32Enum_TestEnum_Closed> {
-    match self {
-      Version32Enum_TestEnum::ENUM0 => Some(Version32Enum_TestEnum_Closed::ENUM0),
-      Version32Enum_TestEnum::ENUM1 => Some(Version32Enum_TestEnum_Closed::ENUM1),
-      _ => None,
-    }
-  }
 }
 impl ::std::default::Default for Version32Enum_TestEnum {
   fn default() -> Self {
@@ -256,25 +221,18 @@ impl From<Version32Enum_TestEnum_Closed> for Version32Enum_TestEnum {
 impl ::pb_jelly::ProtoEnum for Version32Enum_TestEnum {
 }
 impl ::pb_jelly::OpenProtoEnum for Version32Enum_TestEnum {
-  fn name(self) -> ::std::option::Option<&'static str> {
+  type Closed = Version32Enum_TestEnum_Closed;
+  fn into_known(self) -> ::std::option::Option<Version32Enum_TestEnum_Closed> {
     match self {
-      Version32Enum_TestEnum::ENUM0 => Some("ENUM0"),
-      Version32Enum_TestEnum::ENUM1 => Some("ENUM1"),
+      Version32Enum_TestEnum::ENUM0 => Some(Version32Enum_TestEnum_Closed::ENUM0),
+      Version32Enum_TestEnum::ENUM1 => Some(Version32Enum_TestEnum_Closed::ENUM1),
       _ => None,
-    }
-  }
-  fn is_known(self) -> bool {
-    match self {
-      Version32Enum_TestEnum::ENUM0 => true,
-      Version32Enum_TestEnum::ENUM1 => true,
-      _ => false,
     }
   }
 }
 impl ::std::fmt::Debug for Version32Enum_TestEnum {
   fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-    use ::pb_jelly::OpenProtoEnum;
-    match self.name() {
+    match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
       Some(s) => write!(f, "{}", s),
       None => write!(f, "Unknown({})", self.0),
     }
@@ -336,15 +294,6 @@ impl TestMessage3_NestedEnum3 {
   pub const fn value(self) -> i32 {
     self.0
   }
-  pub fn into_known(self) -> ::std::option::Option<TestMessage3_NestedEnum3_Closed> {
-    match self {
-      TestMessage3_NestedEnum3::FOO => Some(TestMessage3_NestedEnum3_Closed::FOO),
-      TestMessage3_NestedEnum3::BAR => Some(TestMessage3_NestedEnum3_Closed::BAR),
-      TestMessage3_NestedEnum3::BAZ => Some(TestMessage3_NestedEnum3_Closed::BAZ),
-      TestMessage3_NestedEnum3::NEG => Some(TestMessage3_NestedEnum3_Closed::NEG),
-      _ => None,
-    }
-  }
 }
 impl ::std::default::Default for TestMessage3_NestedEnum3 {
   fn default() -> Self {
@@ -369,29 +318,20 @@ impl From<TestMessage3_NestedEnum3_Closed> for TestMessage3_NestedEnum3 {
 impl ::pb_jelly::ProtoEnum for TestMessage3_NestedEnum3 {
 }
 impl ::pb_jelly::OpenProtoEnum for TestMessage3_NestedEnum3 {
-  fn name(self) -> ::std::option::Option<&'static str> {
+  type Closed = TestMessage3_NestedEnum3_Closed;
+  fn into_known(self) -> ::std::option::Option<TestMessage3_NestedEnum3_Closed> {
     match self {
-      TestMessage3_NestedEnum3::FOO => Some("FOO"),
-      TestMessage3_NestedEnum3::BAR => Some("BAR"),
-      TestMessage3_NestedEnum3::BAZ => Some("BAZ"),
-      TestMessage3_NestedEnum3::NEG => Some("NEG"),
+      TestMessage3_NestedEnum3::FOO => Some(TestMessage3_NestedEnum3_Closed::FOO),
+      TestMessage3_NestedEnum3::BAR => Some(TestMessage3_NestedEnum3_Closed::BAR),
+      TestMessage3_NestedEnum3::BAZ => Some(TestMessage3_NestedEnum3_Closed::BAZ),
+      TestMessage3_NestedEnum3::NEG => Some(TestMessage3_NestedEnum3_Closed::NEG),
       _ => None,
-    }
-  }
-  fn is_known(self) -> bool {
-    match self {
-      TestMessage3_NestedEnum3::FOO => true,
-      TestMessage3_NestedEnum3::BAR => true,
-      TestMessage3_NestedEnum3::BAZ => true,
-      TestMessage3_NestedEnum3::NEG => true,
-      _ => false,
     }
   }
 }
 impl ::std::fmt::Debug for TestMessage3_NestedEnum3 {
   fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-    use ::pb_jelly::OpenProtoEnum;
-    match self.name() {
+    match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
       Some(s) => write!(f, "{}", s),
       None => write!(f, "Unknown({})", self.0),
     }
@@ -458,12 +398,6 @@ impl TestMessage3_NestedMessage_Enum {
   pub const fn value(self) -> i32 {
     self.0
   }
-  pub fn into_known(self) -> ::std::option::Option<TestMessage3_NestedMessage_Enum_Closed> {
-    match self {
-      TestMessage3_NestedMessage_Enum::ENUM_VARIANT_ONE => Some(TestMessage3_NestedMessage_Enum_Closed::ENUM_VARIANT_ONE),
-      _ => None,
-    }
-  }
 }
 impl ::std::default::Default for TestMessage3_NestedMessage_Enum {
   fn default() -> Self {
@@ -488,23 +422,17 @@ impl From<TestMessage3_NestedMessage_Enum_Closed> for TestMessage3_NestedMessage
 impl ::pb_jelly::ProtoEnum for TestMessage3_NestedMessage_Enum {
 }
 impl ::pb_jelly::OpenProtoEnum for TestMessage3_NestedMessage_Enum {
-  fn name(self) -> ::std::option::Option<&'static str> {
+  type Closed = TestMessage3_NestedMessage_Enum_Closed;
+  fn into_known(self) -> ::std::option::Option<TestMessage3_NestedMessage_Enum_Closed> {
     match self {
-      TestMessage3_NestedMessage_Enum::ENUM_VARIANT_ONE => Some("ENUM_VARIANT_ONE"),
+      TestMessage3_NestedMessage_Enum::ENUM_VARIANT_ONE => Some(TestMessage3_NestedMessage_Enum_Closed::ENUM_VARIANT_ONE),
       _ => None,
-    }
-  }
-  fn is_known(self) -> bool {
-    match self {
-      TestMessage3_NestedMessage_Enum::ENUM_VARIANT_ONE => true,
-      _ => false,
     }
   }
 }
 impl ::std::fmt::Debug for TestMessage3_NestedMessage_Enum {
   fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-    use ::pb_jelly::OpenProtoEnum;
-    match self.name() {
+    match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
       Some(s) => write!(f, "{}", s),
       None => write!(f, "Unknown({})", self.0),
     }

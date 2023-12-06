@@ -49,10 +49,17 @@ pub trait ClosedProtoEnum: ProtoEnum + Debug {
 ///
 /// Note that this is *not* a closed enum.
 pub trait OpenProtoEnum: ProtoEnum {
+    type Closed: ClosedProtoEnum;
+    /// If this is a known variant, returns the corresponding closed enum value.
+    fn into_known(self) -> Option<Self::Closed>;
     /// Get the name of this variant, if it is known.
-    fn name(self) -> Option<&'static str>;
-    /// Whether or not this enum variant is "known" (i.e. there is an associate constant with it).
-    fn is_known(self) -> bool;
+    fn name(self) -> Option<&'static str> {
+        self.into_known().map(<Self::Closed as ClosedProtoEnum>::name)
+    }
+    /// Whether or not this enum variant is "known" (i.e. there is an associated constant with it).
+    fn is_known(self) -> bool {
+        self.into_known().is_some()
+    }
 }
 
 /// Marker trait for proto enums.
