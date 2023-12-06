@@ -720,14 +720,7 @@ impl ::pb_jelly::Message for ForeignMessage3 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut c_size = 0;
-    if self.c != <i32 as ::std::default::Default>::default() {
-      let val = &self.c;
-      let l = ::pb_jelly::Message::compute_size(val);
-      c_size += ::pb_jelly::wire_format::serialized_length(1);
-      c_size += l;
-    }
-    size += c_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.c, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -1196,14 +1189,7 @@ impl ::pb_jelly::Message for Version31Enum {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut enum_field_size = 0;
-    if self.enum_field != <Version31Enum_TestEnum as ::std::default::Default>::default() {
-      let val = &self.enum_field;
-      let l = ::pb_jelly::Message::compute_size(val);
-      enum_field_size += ::pb_jelly::wire_format::serialized_length(1);
-      enum_field_size += l;
-    }
-    size += enum_field_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<Version31Enum_TestEnum>(&self.enum_field, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -1289,14 +1275,7 @@ impl ::pb_jelly::Message for Version32Enum {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut enum_field_size = 0;
-    if self.enum_field != <Version32Enum_TestEnum as ::std::default::Default>::default() {
-      let val = &self.enum_field;
-      let l = ::pb_jelly::Message::compute_size(val);
-      enum_field_size += ::pb_jelly::wire_format::serialized_length(1);
-      enum_field_size += l;
-    }
-    size += enum_field_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<Version32Enum_TestEnum>(&self.enum_field, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -1663,15 +1642,7 @@ impl ::pb_jelly::Message for Version31 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut optional_string1_size = 0;
-    if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string1;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_string1_size += ::pb_jelly::wire_format::serialized_length(1);
-      optional_string1_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_string1_size += l;
-    }
-    size += optional_string1_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -1757,15 +1728,7 @@ impl ::pb_jelly::Message for Version31SSO {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut optional_string1_size = 0;
-    if self.optional_string1 != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.optional_string1;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_string1_size += ::pb_jelly::wire_format::serialized_length(1);
-      optional_string1_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_string1_size += l;
-    }
-    size += optional_string1_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -1994,121 +1957,20 @@ impl ::pb_jelly::Message for Version32 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut optional_string1_size = 0;
-    if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string1;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_string1_size += ::pb_jelly::wire_format::serialized_length(1);
-      optional_string1_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_string1_size += l;
-    }
-    size += optional_string1_size;
-    let mut optional_int32_size = 0;
-    if self.optional_int32 != <i32 as ::std::default::Default>::default() {
-      let val = &self.optional_int32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_int32_size += ::pb_jelly::wire_format::serialized_length(2);
-      optional_int32_size += l;
-    }
-    size += optional_int32_size;
-    let mut optional_int64_size = 0;
-    if self.optional_int64 != <i64 as ::std::default::Default>::default() {
-      let val = &self.optional_int64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_int64_size += ::pb_jelly::wire_format::serialized_length(3);
-      optional_int64_size += l;
-    }
-    size += optional_int64_size;
-    let mut optional_uint32_size = 0;
-    if self.optional_uint32 != <u32 as ::std::default::Default>::default() {
-      let val = &self.optional_uint32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_uint32_size += ::pb_jelly::wire_format::serialized_length(4);
-      optional_uint32_size += l;
-    }
-    size += optional_uint32_size;
-    let mut optional_uint64_size = 0;
-    if self.optional_uint64 != <u64 as ::std::default::Default>::default() {
-      let val = &self.optional_uint64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_uint64_size += ::pb_jelly::wire_format::serialized_length(5);
-      optional_uint64_size += l;
-    }
-    size += optional_uint64_size;
-    let mut optional_fixed64_size = 0;
-    if self.optional_fixed64 != <::pb_jelly::Fixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_fixed64_size += ::pb_jelly::wire_format::serialized_length(6);
-      optional_fixed64_size += l;
-    }
-    size += optional_fixed64_size;
-    let mut optional_fixed32_size = 0;
-    if self.optional_fixed32 != <::pb_jelly::Fixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_fixed32_size += ::pb_jelly::wire_format::serialized_length(7);
-      optional_fixed32_size += l;
-    }
-    size += optional_fixed32_size;
-    let mut optional_sfixed64_size = 0;
-    if self.optional_sfixed64 != <::pb_jelly::Sfixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_sfixed64_size += ::pb_jelly::wire_format::serialized_length(8);
-      optional_sfixed64_size += l;
-    }
-    size += optional_sfixed64_size;
-    let mut optional_sfixed32_size = 0;
-    if self.optional_sfixed32 != <::pb_jelly::Sfixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_sfixed32_size += ::pb_jelly::wire_format::serialized_length(9);
-      optional_sfixed32_size += l;
-    }
-    size += optional_sfixed32_size;
-    let mut optional_double_size = 0;
-    if self.optional_double != <f64 as ::std::default::Default>::default() {
-      let val = &self.optional_double;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_double_size += ::pb_jelly::wire_format::serialized_length(10);
-      optional_double_size += l;
-    }
-    size += optional_double_size;
-    let mut optional_bool_size = 0;
-    if self.optional_bool != <bool as ::std::default::Default>::default() {
-      let val = &self.optional_bool;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_bool_size += ::pb_jelly::wire_format::serialized_length(11);
-      optional_bool_size += l;
-    }
-    size += optional_bool_size;
-    let mut optional_string_size = 0;
-    if self.optional_string != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_string_size += ::pb_jelly::wire_format::serialized_length(12);
-      optional_string_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_string_size += l;
-    }
-    size += optional_string_size;
-    let mut optional_bytes_size = 0;
-    if self.optional_bytes != <::std::vec::Vec<u8> as ::std::default::Default>::default() {
-      let val = &self.optional_bytes;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_bytes_size += ::pb_jelly::wire_format::serialized_length(13);
-      optional_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_bytes_size += l;
-    }
-    size += optional_bytes_size;
-    let mut optional_float_size = 0;
-    if self.optional_float != <f32 as ::std::default::Default>::default() {
-      let val = &self.optional_float;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_float_size += ::pb_jelly::wire_format::serialized_length(14);
-      optional_float_size += l;
-    }
-    size += optional_float_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.optional_int32, 2, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<i64>(&self.optional_int64, 3, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<u32>(&self.optional_uint32, 4, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<u64>(&self.optional_uint64, 5, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Fixed64>(&self.optional_fixed64, 6, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Fixed32>(&self.optional_fixed32, 7, ::pb_jelly::wire_format::Type::Fixed32);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Sfixed64>(&self.optional_sfixed64, 8, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Sfixed32>(&self.optional_sfixed32, 9, ::pb_jelly::wire_format::Type::Fixed32);
+    size += ::pb_jelly::helpers::compute_size_scalar::<f64>(&self.optional_double, 10, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<bool>(&self.optional_bool, 11, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.optional_string, 12, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::vec::Vec<u8>>(&self.optional_bytes, 13, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<f32>(&self.optional_float, 14, ::pb_jelly::wire_format::Type::Fixed32);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -3031,112 +2893,19 @@ impl ::pb_jelly::Message for TestMessage3 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut optional_int32_size = 0;
-    if self.optional_int32 != <i32 as ::std::default::Default>::default() {
-      let val = &self.optional_int32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_int32_size += ::pb_jelly::wire_format::serialized_length(1);
-      optional_int32_size += l;
-    }
-    size += optional_int32_size;
-    let mut optional_int64_size = 0;
-    if self.optional_int64 != <i64 as ::std::default::Default>::default() {
-      let val = &self.optional_int64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_int64_size += ::pb_jelly::wire_format::serialized_length(2);
-      optional_int64_size += l;
-    }
-    size += optional_int64_size;
-    let mut optional_uint32_size = 0;
-    if self.optional_uint32 != <u32 as ::std::default::Default>::default() {
-      let val = &self.optional_uint32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_uint32_size += ::pb_jelly::wire_format::serialized_length(3);
-      optional_uint32_size += l;
-    }
-    size += optional_uint32_size;
-    let mut optional_uint64_size = 0;
-    if self.optional_uint64 != <u64 as ::std::default::Default>::default() {
-      let val = &self.optional_uint64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_uint64_size += ::pb_jelly::wire_format::serialized_length(4);
-      optional_uint64_size += l;
-    }
-    size += optional_uint64_size;
-    let mut optional_fixed64_size = 0;
-    if self.optional_fixed64 != <::pb_jelly::Fixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_fixed64_size += ::pb_jelly::wire_format::serialized_length(8);
-      optional_fixed64_size += l;
-    }
-    size += optional_fixed64_size;
-    let mut optional_fixed32_size = 0;
-    if self.optional_fixed32 != <::pb_jelly::Fixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_fixed32_size += ::pb_jelly::wire_format::serialized_length(9);
-      optional_fixed32_size += l;
-    }
-    size += optional_fixed32_size;
-    let mut optional_sfixed64_size = 0;
-    if self.optional_sfixed64 != <::pb_jelly::Sfixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_sfixed64_size += ::pb_jelly::wire_format::serialized_length(10);
-      optional_sfixed64_size += l;
-    }
-    size += optional_sfixed64_size;
-    let mut optional_sfixed32_size = 0;
-    if self.optional_sfixed32 != <::pb_jelly::Sfixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_sfixed32_size += ::pb_jelly::wire_format::serialized_length(11);
-      optional_sfixed32_size += l;
-    }
-    size += optional_sfixed32_size;
-    let mut optional_double_size = 0;
-    if self.optional_double != <f64 as ::std::default::Default>::default() {
-      let val = &self.optional_double;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_double_size += ::pb_jelly::wire_format::serialized_length(12);
-      optional_double_size += l;
-    }
-    size += optional_double_size;
-    let mut optional_bool_size = 0;
-    if self.optional_bool != <bool as ::std::default::Default>::default() {
-      let val = &self.optional_bool;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_bool_size += ::pb_jelly::wire_format::serialized_length(13);
-      optional_bool_size += l;
-    }
-    size += optional_bool_size;
-    let mut optional_string_size = 0;
-    if self.optional_string != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_string_size += ::pb_jelly::wire_format::serialized_length(14);
-      optional_string_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_string_size += l;
-    }
-    size += optional_string_size;
-    let mut optional_bytes_size = 0;
-    if self.optional_bytes != <::std::vec::Vec<u8> as ::std::default::Default>::default() {
-      let val = &self.optional_bytes;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_bytes_size += ::pb_jelly::wire_format::serialized_length(15);
-      optional_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
-      optional_bytes_size += l;
-    }
-    size += optional_bytes_size;
-    let mut optional_float_size = 0;
-    if self.optional_float != <f32 as ::std::default::Default>::default() {
-      let val = &self.optional_float;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_float_size += ::pb_jelly::wire_format::serialized_length(16);
-      optional_float_size += l;
-    }
-    size += optional_float_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.optional_int32, 1, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<i64>(&self.optional_int64, 2, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<u32>(&self.optional_uint32, 3, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<u64>(&self.optional_uint64, 4, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Fixed64>(&self.optional_fixed64, 8, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Fixed32>(&self.optional_fixed32, 9, ::pb_jelly::wire_format::Type::Fixed32);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Sfixed64>(&self.optional_sfixed64, 10, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Sfixed32>(&self.optional_sfixed32, 11, ::pb_jelly::wire_format::Type::Fixed32);
+    size += ::pb_jelly::helpers::compute_size_scalar::<f64>(&self.optional_double, 12, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<bool>(&self.optional_bool, 13, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.optional_string, 14, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::vec::Vec<u8>>(&self.optional_bytes, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<f32>(&self.optional_float, 16, ::pb_jelly::wire_format::Type::Fixed32);
     let mut optional_foreign_message_size = 0;
     for val in &self.optional_foreign_message {
       let l = ::pb_jelly::Message::compute_size(val);
@@ -3145,22 +2914,8 @@ impl ::pb_jelly::Message for TestMessage3 {
       optional_foreign_message_size += l;
     }
     size += optional_foreign_message_size;
-    let mut optional_nested_enum_size = 0;
-    if self.optional_nested_enum != <TestMessage3_NestedEnum3 as ::std::default::Default>::default() {
-      let val = &self.optional_nested_enum;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_nested_enum_size += ::pb_jelly::wire_format::serialized_length(21);
-      optional_nested_enum_size += l;
-    }
-    size += optional_nested_enum_size;
-    let mut optional_foreign_enum_size = 0;
-    if self.optional_foreign_enum != <ForeignEnum3 as ::std::default::Default>::default() {
-      let val = &self.optional_foreign_enum;
-      let l = ::pb_jelly::Message::compute_size(val);
-      optional_foreign_enum_size += ::pb_jelly::wire_format::serialized_length(22);
-      optional_foreign_enum_size += l;
-    }
-    size += optional_foreign_enum_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<TestMessage3_NestedEnum3>(&self.optional_nested_enum, 21, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<ForeignEnum3>(&self.optional_foreign_enum, 22, ::pb_jelly::wire_format::Type::Varint);
     let mut repeated_int32_size = 0;
     for val in &self.repeated_int32 {
       let l = ::pb_jelly::Message::compute_size(val);
@@ -3496,15 +3251,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       nested_repeated_size += l;
     }
     size += nested_repeated_size;
-    let mut fixed_length_size = 0;
-    if self.fixed_length != <[u8; 4] as ::std::default::Default>::default() {
-      let val = &self.fixed_length;
-      let l = ::pb_jelly::Message::compute_size(val);
-      fixed_length_size += ::pb_jelly::wire_format::serialized_length(76);
-      fixed_length_size += ::pb_jelly::varint::serialized_length(l as u64);
-      fixed_length_size += l;
-    }
-    size += fixed_length_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<[u8; 4]>(&self.fixed_length, 76, ::pb_jelly::wire_format::Type::LengthDelimited);
     let mut fixed_length_repeated_size = 0;
     for val in &self.fixed_length_repeated {
       let l = ::pb_jelly::Message::compute_size(val);
@@ -3513,15 +3260,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       fixed_length_repeated_size += l;
     }
     size += fixed_length_repeated_size;
-    let mut zero_or_fixed_length_size = 0;
-    if self.zero_or_fixed_length != <Option<[u8; 4]> as ::std::default::Default>::default() {
-      let val = &self.zero_or_fixed_length;
-      let l = ::pb_jelly::Message::compute_size(val);
-      zero_or_fixed_length_size += ::pb_jelly::wire_format::serialized_length(78);
-      zero_or_fixed_length_size += ::pb_jelly::varint::serialized_length(l as u64);
-      zero_or_fixed_length_size += l;
-    }
-    size += zero_or_fixed_length_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<Option<[u8; 4]>>(&self.zero_or_fixed_length, 78, ::pb_jelly::wire_format::Type::LengthDelimited);
     let mut zero_or_fixed_length_repeated_size = 0;
     for val in &self.zero_or_fixed_length_repeated {
       let l = ::pb_jelly::Message::compute_size(val);
@@ -5002,14 +4741,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
       blocklist_size += l;
     }
     size += blocklist_size;
-    let mut size_size = 0;
-    if self.size != <u32 as ::std::default::Default>::default() {
-      let val = &self.size;
-      let l = ::pb_jelly::Message::compute_size(val);
-      size_size += ::pb_jelly::wire_format::serialized_length(2);
-      size_size += l;
-    }
-    size += size_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<u32>(&self.size, 2, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -5313,14 +5045,7 @@ impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
       b_size += l;
     }
     size += b_size;
-    let mut other_field_size = 0;
-    if self.other_field != <u64 as ::std::default::Default>::default() {
-      let val = &self.other_field;
-      let l = ::pb_jelly::Message::compute_size(val);
-      other_field_size += ::pb_jelly::wire_format::serialized_length(3);
-      other_field_size += l;
-    }
-    size += other_field_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<u64>(&self.other_field, 3, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -5816,14 +5541,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut value_size = 0;
-    if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
-      let val = &self.value;
-      let l = ::pb_jelly::Message::compute_size(val);
-      value_size += ::pb_jelly::wire_format::serialized_length(1);
-      value_size += l;
-    }
-    size += value_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<TestMessage3ClosedEnum_ClosedEnum>(&self.value, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -5909,14 +5627,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut value_size = 0;
-    if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
-      let val = &self.value;
-      let l = ::pb_jelly::Message::compute_size(val);
-      value_size += ::pb_jelly::wire_format::serialized_length(1);
-      value_size += l;
-    }
-    size += value_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<TestMessage3ClosedEnum2_ClosedEnum>(&self.value, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -6102,15 +5813,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut name_size = 0;
-    if self.name != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.name;
-      let l = ::pb_jelly::Message::compute_size(val);
-      name_size += ::pb_jelly::wire_format::serialized_length(1);
-      name_size += ::pb_jelly::varint::serialized_length(l as u64);
-      name_size += l;
-    }
-    size += name_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.name, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -6198,15 +5901,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut string1_size = 0;
-    if self.string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.string1;
-      let l = ::pb_jelly::Message::compute_size(val);
-      string1_size += ::pb_jelly::wire_format::serialized_length(1);
-      string1_size += ::pb_jelly::varint::serialized_length(l as u64);
-      string1_size += l;
-    }
-    size += string1_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += self._unrecognized.len();
     size
   }
@@ -6441,121 +6136,20 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut a_string1_size = 0;
-    if self.a_string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.a_string1;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_string1_size += ::pb_jelly::wire_format::serialized_length(1);
-      a_string1_size += ::pb_jelly::varint::serialized_length(l as u64);
-      a_string1_size += l;
-    }
-    size += a_string1_size;
-    let mut a_int32_size = 0;
-    if self.a_int32 != <i32 as ::std::default::Default>::default() {
-      let val = &self.a_int32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_int32_size += ::pb_jelly::wire_format::serialized_length(2);
-      a_int32_size += l;
-    }
-    size += a_int32_size;
-    let mut a_int64_size = 0;
-    if self.a_int64 != <i64 as ::std::default::Default>::default() {
-      let val = &self.a_int64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_int64_size += ::pb_jelly::wire_format::serialized_length(3);
-      a_int64_size += l;
-    }
-    size += a_int64_size;
-    let mut a_uint32_size = 0;
-    if self.a_uint32 != <u32 as ::std::default::Default>::default() {
-      let val = &self.a_uint32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_uint32_size += ::pb_jelly::wire_format::serialized_length(4);
-      a_uint32_size += l;
-    }
-    size += a_uint32_size;
-    let mut a_uint64_size = 0;
-    if self.a_uint64 != <u64 as ::std::default::Default>::default() {
-      let val = &self.a_uint64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_uint64_size += ::pb_jelly::wire_format::serialized_length(5);
-      a_uint64_size += l;
-    }
-    size += a_uint64_size;
-    let mut a_fixed64_size = 0;
-    if self.a_fixed64 != <::pb_jelly::Fixed64 as ::std::default::Default>::default() {
-      let val = &self.a_fixed64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_fixed64_size += ::pb_jelly::wire_format::serialized_length(6);
-      a_fixed64_size += l;
-    }
-    size += a_fixed64_size;
-    let mut a_fixed32_size = 0;
-    if self.a_fixed32 != <::pb_jelly::Fixed32 as ::std::default::Default>::default() {
-      let val = &self.a_fixed32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_fixed32_size += ::pb_jelly::wire_format::serialized_length(7);
-      a_fixed32_size += l;
-    }
-    size += a_fixed32_size;
-    let mut a_sfixed64_size = 0;
-    if self.a_sfixed64 != <::pb_jelly::Sfixed64 as ::std::default::Default>::default() {
-      let val = &self.a_sfixed64;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_sfixed64_size += ::pb_jelly::wire_format::serialized_length(8);
-      a_sfixed64_size += l;
-    }
-    size += a_sfixed64_size;
-    let mut a_sfixed32_size = 0;
-    if self.a_sfixed32 != <::pb_jelly::Sfixed32 as ::std::default::Default>::default() {
-      let val = &self.a_sfixed32;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_sfixed32_size += ::pb_jelly::wire_format::serialized_length(9);
-      a_sfixed32_size += l;
-    }
-    size += a_sfixed32_size;
-    let mut a_double_size = 0;
-    if self.a_double != <f64 as ::std::default::Default>::default() {
-      let val = &self.a_double;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_double_size += ::pb_jelly::wire_format::serialized_length(10);
-      a_double_size += l;
-    }
-    size += a_double_size;
-    let mut a_bool_size = 0;
-    if self.a_bool != <bool as ::std::default::Default>::default() {
-      let val = &self.a_bool;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_bool_size += ::pb_jelly::wire_format::serialized_length(11);
-      a_bool_size += l;
-    }
-    size += a_bool_size;
-    let mut a_string_size = 0;
-    if self.a_string != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.a_string;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_string_size += ::pb_jelly::wire_format::serialized_length(12);
-      a_string_size += ::pb_jelly::varint::serialized_length(l as u64);
-      a_string_size += l;
-    }
-    size += a_string_size;
-    let mut a_bytes_size = 0;
-    if self.a_bytes != <::std::vec::Vec<u8> as ::std::default::Default>::default() {
-      let val = &self.a_bytes;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_bytes_size += ::pb_jelly::wire_format::serialized_length(13);
-      a_bytes_size += ::pb_jelly::varint::serialized_length(l as u64);
-      a_bytes_size += l;
-    }
-    size += a_bytes_size;
-    let mut a_float_size = 0;
-    if self.a_float != <f32 as ::std::default::Default>::default() {
-      let val = &self.a_float;
-      let l = ::pb_jelly::Message::compute_size(val);
-      a_float_size += ::pb_jelly::wire_format::serialized_length(14);
-      a_float_size += l;
-    }
-    size += a_float_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.a_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.a_int32, 2, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<i64>(&self.a_int64, 3, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<u32>(&self.a_uint32, 4, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<u64>(&self.a_uint64, 5, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Fixed64>(&self.a_fixed64, 6, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Fixed32>(&self.a_fixed32, 7, ::pb_jelly::wire_format::Type::Fixed32);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Sfixed64>(&self.a_sfixed64, 8, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Sfixed32>(&self.a_sfixed32, 9, ::pb_jelly::wire_format::Type::Fixed32);
+    size += ::pb_jelly::helpers::compute_size_scalar::<f64>(&self.a_double, 10, ::pb_jelly::wire_format::Type::Fixed64);
+    size += ::pb_jelly::helpers::compute_size_scalar::<bool>(&self.a_bool, 11, ::pb_jelly::wire_format::Type::Varint);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.a_string, 12, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::vec::Vec<u8>>(&self.a_bytes, 13, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<f32>(&self.a_float, 14, ::pb_jelly::wire_format::Type::Fixed32);
     size += self._unrecognized.len();
     size
   }
@@ -6868,15 +6462,7 @@ impl ::pb_jelly::Message for TestSmallString {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut compact_size = 0;
-    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.compact;
-      let l = ::pb_jelly::Message::compute_size(val);
-      compact_size += ::pb_jelly::wire_format::serialized_length(1);
-      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
-      compact_size += l;
-    }
-    size += compact_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -6962,15 +6548,7 @@ impl ::pb_jelly::Message for TestBoxedSmallString {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut compact_size = 0;
-    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.compact;
-      let l = ::pb_jelly::Message::compute_size(val);
-      compact_size += ::pb_jelly::wire_format::serialized_length(1);
-      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
-      compact_size += l;
-    }
-    size += compact_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -7056,15 +6634,7 @@ impl ::pb_jelly::Message for TestNonOptionalSmallString {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut compact_size = 0;
-    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.compact;
-      let l = ::pb_jelly::Message::compute_size(val);
-      compact_size += ::pb_jelly::wire_format::serialized_length(1);
-      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
-      compact_size += l;
-    }
-    size += compact_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -7152,15 +6722,7 @@ impl ::pb_jelly::Message for TestSmallStringPreserveUnrecognized {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut compact_size = 0;
-    if self.compact != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.compact;
-      let l = ::pb_jelly::Message::compute_size(val);
-      compact_size += ::pb_jelly::wire_format::serialized_length(1);
-      compact_size += ::pb_jelly::varint::serialized_length(l as u64);
-      compact_size += l;
-    }
-    size += compact_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += self._unrecognized.len();
     size
   }
@@ -7992,24 +7554,8 @@ impl ::pb_jelly::Message for TestProto3Zerocopy {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut data1_size = 0;
-    if self.data1 != <::pb_jelly::Lazy<::bytes::Bytes> as ::std::default::Default>::default() {
-      let val = &self.data1;
-      let l = ::pb_jelly::Message::compute_size(val);
-      data1_size += ::pb_jelly::wire_format::serialized_length(1);
-      data1_size += ::pb_jelly::varint::serialized_length(l as u64);
-      data1_size += l;
-    }
-    size += data1_size;
-    let mut data2_size = 0;
-    if self.data2 != <::pb_jelly::Lazy<::bytes::Bytes> as ::std::default::Default>::default() {
-      let val = &self.data2;
-      let l = ::pb_jelly::Message::compute_size(val);
-      data2_size += ::pb_jelly::wire_format::serialized_length(2);
-      data2_size += ::pb_jelly::varint::serialized_length(l as u64);
-      data2_size += l;
-    }
-    size += data2_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Lazy<::bytes::Bytes>>(&self.data1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
+    size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Lazy<::bytes::Bytes>>(&self.data2, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {

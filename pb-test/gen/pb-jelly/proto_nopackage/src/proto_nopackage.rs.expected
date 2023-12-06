@@ -35,15 +35,7 @@ impl ::pb_jelly::Message for NoPackage {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut field_size = 0;
-    if self.field != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.field;
-      let l = ::pb_jelly::Message::compute_size(val);
-      field_size += ::pb_jelly::wire_format::serialized_length(1);
-      field_size += ::pb_jelly::varint::serialized_length(l as u64);
-      field_size += l;
-    }
-    size += field_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.field, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {

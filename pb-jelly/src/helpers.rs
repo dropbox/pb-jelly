@@ -81,3 +81,16 @@ pub fn serialize_scalar<W: PbBufferWriter, T: Message>(
     }
     Ok(())
 }
+
+pub fn compute_size_scalar<T: Message>(val: &T, field_number: u32, wire_format: wire_format::Type) -> usize {
+    let mut size = 0;
+    if *val != T::default() {
+        size += wire_format::serialized_length(field_number);
+        let l = val.compute_size();
+        if let wire_format::Type::LengthDelimited = wire_format {
+            size += varint::serialized_length(l as u64);
+        }
+        size += l;
+    }
+    size
+}

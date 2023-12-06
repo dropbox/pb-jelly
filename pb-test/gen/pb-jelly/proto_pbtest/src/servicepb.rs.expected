@@ -35,14 +35,7 @@ impl ::pb_jelly::Message for InpMessage {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut i_size = 0;
-    if self.i != <i32 as ::std::default::Default>::default() {
-      let val = &self.i;
-      let l = ::pb_jelly::Message::compute_size(val);
-      i_size += ::pb_jelly::wire_format::serialized_length(1);
-      i_size += l;
-    }
-    size += i_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.i, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
@@ -128,14 +121,7 @@ impl ::pb_jelly::Message for OutMessage {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut o_size = 0;
-    if self.o != <i32 as ::std::default::Default>::default() {
-      let val = &self.o;
-      let l = ::pb_jelly::Message::compute_size(val);
-      o_size += ::pb_jelly::wire_format::serialized_length(1);
-      o_size += l;
-    }
-    size += o_size;
+    size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.o, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {

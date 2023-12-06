@@ -698,7 +698,6 @@ def field_iter(
                 ctx.write("let %s = &self.%s;" % (var, escape_name(field.name)))
             yield
     else:
-        # This iterates through Vec and the Option<> type for optional fieldds
         with block(ctx, "for %s in &self.%s" % (var, escape_name(field.name))):
             if typ.is_boxed():
                 ctx.write("let %s = &**%s;" % (var, var))
@@ -1203,33 +1202,56 @@ class CodeWriter(object):
                     for field in msg_type.field:
                         typ = self.rust_type(msg_type, field)
 
-                        self.write("let mut %s_size = 0;" % field.name)
-                        with field_iter(self, "val", name, msg_type, field):
-                            self.write(
-                                "let l = ::pb_jelly::Message::compute_size(val);"
+                        if (
+                            not typ.oneof
+                            and field.type != FieldDescriptorProto.TYPE_MESSAGE
+                            and not (
+                                field.type == FieldDescriptorProto.TYPE_ENUM
+                                and enum_err_if_default_or_unknown(
+                                    self.ctx.find_enum(field.type_name).typ
+                                )
                             )
-                            if not typ.should_serialize_packed():
-                                self.write(
-                                    "%s_size += ::pb_jelly::wire_format::serialized_length(%s);"
-                                    % (field.name, field.number)
+                            and not typ.is_nullable()
+                            and not typ.is_repeated()
+                            and not typ.is_boxed()
+                        ):
+                            # Special case this fairly common case to reduce codegen.
+                            self.write(
+                                "size += ::pb_jelly::helpers::compute_size_scalar::<{typ}>(&self.{escaped_name}, {field_number}, ::pb_jelly::wire_format::Type::{wire_format});".format(
+                                    typ=typ.rust_type(),
+                                    escaped_name=escape_name(field.name),
+                                    field_number=field.number,
+                                    wire_format=typ.wire_format(),
                                 )
-                            if typ.is_length_delimited():
+                            )
+                        else:
+                            self.write("let mut %s_size = 0;" % field.name)
+                            with field_iter(self, "val", name, msg_type, field):
                                 self.write(
-                                    "%s_size += ::pb_jelly::varint::serialized_length(l as u64);"
-                                    % field.name
+                                    "let l = ::pb_jelly::Message::compute_size(val);"
                                 )
-                            self.write("%s_size += l;" % field.name)
-                        if typ.should_serialize_packed():
-                            with block(self, "if !self.%s.is_empty()" % field.name):
-                                self.write(
-                                    "size += ::pb_jelly::wire_format::serialized_length(%s);"
-                                    % field.number
-                                )
-                                self.write(
-                                    "size += ::pb_jelly::varint::serialized_length(%s_size as u64);"
-                                    % field.name
-                                )
-                        self.write("size += %s_size;" % field.name)
+                                if not typ.should_serialize_packed():
+                                    self.write(
+                                        "%s_size += ::pb_jelly::wire_format::serialized_length(%s);"
+                                        % (field.name, field.number)
+                                    )
+                                if typ.is_length_delimited():
+                                    self.write(
+                                        "%s_size += ::pb_jelly::varint::serialized_length(l as u64);"
+                                        % field.name
+                                    )
+                                self.write("%s_size += l;" % field.name)
+                            if typ.should_serialize_packed():
+                                with block(self, "if !self.%s.is_empty()" % field.name):
+                                    self.write(
+                                        "size += ::pb_jelly::wire_format::serialized_length(%s);"
+                                        % field.number
+                                    )
+                                    self.write(
+                                        "size += ::pb_jelly::varint::serialized_length(%s_size as u64);"
+                                        % field.name
+                                    )
+                            self.write("size += %s_size;" % field.name)
                     if msg_type.options.Extensions[
                         extensions_pb2.preserve_unrecognized
                     ]:
