@@ -697,6 +697,13 @@ def field_iter(
             else:
                 ctx.write("let %s = &self.%s;" % (var, escape_name(field.name)))
             yield
+    elif typ.is_nullable() and not typ.is_repeated():
+        with block(
+            ctx, "if let Some(ref %s) = self.%s" % (var, escape_name(field.name))
+        ):
+            if typ.is_boxed():
+                ctx.write("let %s = &**%s;" % (var, var))
+            yield
     else:
         with block(ctx, "for %s in &self.%s" % (var, escape_name(field.name))):
             if typ.is_boxed():
