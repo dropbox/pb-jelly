@@ -54,11 +54,7 @@ impl ::pb_jelly::Message for InpMessage {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.i != <i32 as ::std::default::Default>::default() {
-      let val = &self.i;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.i, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -151,11 +147,7 @@ impl ::pb_jelly::Message for OutMessage {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.o != <i32 as ::std::default::Default>::default() {
-      let val = &self.o;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.o, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {

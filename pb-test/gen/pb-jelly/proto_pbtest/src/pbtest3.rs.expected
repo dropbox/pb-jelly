@@ -739,11 +739,7 @@ impl ::pb_jelly::Message for ForeignMessage3 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.c != <i32 as ::std::default::Default>::default() {
-      let val = &self.c;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.c, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -1219,11 +1215,7 @@ impl ::pb_jelly::Message for Version31Enum {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.enum_field != <Version31Enum_TestEnum as ::std::default::Default>::default() {
-      let val = &self.enum_field;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, Version31Enum_TestEnum>(w, &self.enum_field, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -1316,11 +1308,7 @@ impl ::pb_jelly::Message for Version32Enum {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.enum_field != <Version32Enum_TestEnum as ::std::default::Default>::default() {
-      let val = &self.enum_field;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, Version32Enum_TestEnum>(w, &self.enum_field, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -1695,13 +1683,7 @@ impl ::pb_jelly::Message for Version31 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string1;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -1795,13 +1777,7 @@ impl ::pb_jelly::Message for Version31SSO {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.optional_string1 != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.optional_string1;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::compact_str::CompactString>(w, &self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -2196,82 +2172,20 @@ impl ::pb_jelly::Message for Version32 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.optional_string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string1;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_int32 != <i32 as ::std::default::Default>::default() {
-      let val = &self.optional_int32;
-      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_int64 != <i64 as ::std::default::Default>::default() {
-      let val = &self.optional_int64;
-      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_uint32 != <u32 as ::std::default::Default>::default() {
-      let val = &self.optional_uint32;
-      ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_uint64 != <u64 as ::std::default::Default>::default() {
-      let val = &self.optional_uint64;
-      ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_fixed64 != <::pb_jelly::Fixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed64;
-      ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_fixed32 != <::pb_jelly::Fixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed32;
-      ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_sfixed64 != <::pb_jelly::Sfixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed64;
-      ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_sfixed32 != <::pb_jelly::Sfixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed32;
-      ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_double != <f64 as ::std::default::Default>::default() {
-      let val = &self.optional_double;
-      ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_bool != <bool as ::std::default::Default>::default() {
-      let val = &self.optional_bool;
-      ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_string != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string;
-      ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_bytes != <::std::vec::Vec<u8> as ::std::default::Default>::default() {
-      let val = &self.optional_bytes;
-      ::pb_jelly::wire_format::write(13, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_float != <f32 as ::std::default::Default>::default() {
-      let val = &self.optional_float;
-      ::pb_jelly::wire_format::write(14, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.optional_int32, 2, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, i64>(w, &self.optional_int64, 3, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, u32>(w, &self.optional_uint32, 4, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, u64>(w, &self.optional_uint64, 5, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Fixed64>(w, &self.optional_fixed64, 6, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Fixed32>(w, &self.optional_fixed32, 7, ::pb_jelly::wire_format::Type::Fixed32)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Sfixed64>(w, &self.optional_sfixed64, 8, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Sfixed32>(w, &self.optional_sfixed32, 9, ::pb_jelly::wire_format::Type::Fixed32)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, f64>(w, &self.optional_double, 10, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, bool>(w, &self.optional_bool, 11, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.optional_string, 12, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::vec::Vec<u8>>(w, &self.optional_bytes, 13, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, f32>(w, &self.optional_float, 14, ::pb_jelly::wire_format::Type::Fixed32)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -3822,91 +3736,27 @@ impl ::pb_jelly::Message for TestMessage3 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.optional_int32 != <i32 as ::std::default::Default>::default() {
-      let val = &self.optional_int32;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_int64 != <i64 as ::std::default::Default>::default() {
-      let val = &self.optional_int64;
-      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_uint32 != <u32 as ::std::default::Default>::default() {
-      let val = &self.optional_uint32;
-      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_uint64 != <u64 as ::std::default::Default>::default() {
-      let val = &self.optional_uint64;
-      ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_fixed64 != <::pb_jelly::Fixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed64;
-      ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_fixed32 != <::pb_jelly::Fixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_fixed32;
-      ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_sfixed64 != <::pb_jelly::Sfixed64 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed64;
-      ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_sfixed32 != <::pb_jelly::Sfixed32 as ::std::default::Default>::default() {
-      let val = &self.optional_sfixed32;
-      ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_double != <f64 as ::std::default::Default>::default() {
-      let val = &self.optional_double;
-      ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_bool != <bool as ::std::default::Default>::default() {
-      let val = &self.optional_bool;
-      ::pb_jelly::wire_format::write(13, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_string != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.optional_string;
-      ::pb_jelly::wire_format::write(14, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_bytes != <::std::vec::Vec<u8> as ::std::default::Default>::default() {
-      let val = &self.optional_bytes;
-      ::pb_jelly::wire_format::write(15, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_float != <f32 as ::std::default::Default>::default() {
-      let val = &self.optional_float;
-      ::pb_jelly::wire_format::write(16, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.optional_int32, 1, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, i64>(w, &self.optional_int64, 2, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, u32>(w, &self.optional_uint32, 3, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, u64>(w, &self.optional_uint64, 4, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Fixed64>(w, &self.optional_fixed64, 8, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Fixed32>(w, &self.optional_fixed32, 9, ::pb_jelly::wire_format::Type::Fixed32)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Sfixed64>(w, &self.optional_sfixed64, 10, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Sfixed32>(w, &self.optional_sfixed32, 11, ::pb_jelly::wire_format::Type::Fixed32)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, f64>(w, &self.optional_double, 12, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, bool>(w, &self.optional_bool, 13, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.optional_string, 14, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::vec::Vec<u8>>(w, &self.optional_bytes, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, f32>(w, &self.optional_float, 16, ::pb_jelly::wire_format::Type::Fixed32)?;
     for val in &self.optional_foreign_message {
       ::pb_jelly::wire_format::write(19, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if self.optional_nested_enum != <TestMessage3_NestedEnum3 as ::std::default::Default>::default() {
-      let val = &self.optional_nested_enum;
-      ::pb_jelly::wire_format::write(21, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.optional_foreign_enum != <ForeignEnum3 as ::std::default::Default>::default() {
-      let val = &self.optional_foreign_enum;
-      ::pb_jelly::wire_format::write(22, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, TestMessage3_NestedEnum3>(w, &self.optional_nested_enum, 21, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ForeignEnum3>(w, &self.optional_foreign_enum, 22, ::pb_jelly::wire_format::Type::Varint)?;
     if !self.repeated_int32.is_empty() {
       let mut size = 0;
       for val in &self.repeated_int32 {
@@ -4195,26 +4045,14 @@ impl ::pb_jelly::Message for TestMessage3 {
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if self.fixed_length != <[u8; 4] as ::std::default::Default>::default() {
-      let val = &self.fixed_length;
-      ::pb_jelly::wire_format::write(76, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, [u8; 4]>(w, &self.fixed_length, 76, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     for val in &self.fixed_length_repeated {
       ::pb_jelly::wire_format::write(77, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if self.zero_or_fixed_length != <Option<[u8; 4]> as ::std::default::Default>::default() {
-      let val = &self.zero_or_fixed_length;
-      ::pb_jelly::wire_format::write(78, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, Option<[u8; 4]>>(w, &self.zero_or_fixed_length, 78, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     for val in &self.zero_or_fixed_length_repeated {
       ::pb_jelly::wire_format::write(79, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
@@ -5192,11 +5030,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if self.size != <u32 as ::std::default::Default>::default() {
-      let val = &self.size;
-      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, u32>(w, &self.size, 2, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -5512,11 +5346,7 @@ impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
       ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    if self.other_field != <u64 as ::std::default::Default>::default() {
-      let val = &self.other_field;
-      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, u64>(w, &self.other_field, 3, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -6005,11 +5835,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.value != <TestMessage3ClosedEnum_ClosedEnum as ::std::default::Default>::default() {
-      let val = &self.value;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, TestMessage3ClosedEnum_ClosedEnum>(w, &self.value, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -6102,11 +5928,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.value != <TestMessage3ClosedEnum2_ClosedEnum as ::std::default::Default>::default() {
-      let val = &self.value;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, TestMessage3ClosedEnum2_ClosedEnum>(w, &self.value, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -6300,13 +6122,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.name != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.name;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.name, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -6403,13 +6219,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.string1;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     w.write_all(&self._unrecognized)?;
     Ok(())
   }
@@ -6810,82 +6620,20 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.a_string1 != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.a_string1;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_int32 != <i32 as ::std::default::Default>::default() {
-      let val = &self.a_int32;
-      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_int64 != <i64 as ::std::default::Default>::default() {
-      let val = &self.a_int64;
-      ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_uint32 != <u32 as ::std::default::Default>::default() {
-      let val = &self.a_uint32;
-      ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_uint64 != <u64 as ::std::default::Default>::default() {
-      let val = &self.a_uint64;
-      ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_fixed64 != <::pb_jelly::Fixed64 as ::std::default::Default>::default() {
-      let val = &self.a_fixed64;
-      ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_fixed32 != <::pb_jelly::Fixed32 as ::std::default::Default>::default() {
-      let val = &self.a_fixed32;
-      ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_sfixed64 != <::pb_jelly::Sfixed64 as ::std::default::Default>::default() {
-      let val = &self.a_sfixed64;
-      ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_sfixed32 != <::pb_jelly::Sfixed32 as ::std::default::Default>::default() {
-      let val = &self.a_sfixed32;
-      ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_double != <f64 as ::std::default::Default>::default() {
-      let val = &self.a_double;
-      ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_bool != <bool as ::std::default::Default>::default() {
-      let val = &self.a_bool;
-      ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_string != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.a_string;
-      ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_bytes != <::std::vec::Vec<u8> as ::std::default::Default>::default() {
-      let val = &self.a_bytes;
-      ::pb_jelly::wire_format::write(13, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.a_float != <f32 as ::std::default::Default>::default() {
-      let val = &self.a_float;
-      ::pb_jelly::wire_format::write(14, ::pb_jelly::wire_format::Type::Fixed32, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.a_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.a_int32, 2, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, i64>(w, &self.a_int64, 3, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, u32>(w, &self.a_uint32, 4, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, u64>(w, &self.a_uint64, 5, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Fixed64>(w, &self.a_fixed64, 6, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Fixed32>(w, &self.a_fixed32, 7, ::pb_jelly::wire_format::Type::Fixed32)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Sfixed64>(w, &self.a_sfixed64, 8, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Sfixed32>(w, &self.a_sfixed32, 9, ::pb_jelly::wire_format::Type::Fixed32)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, f64>(w, &self.a_double, 10, ::pb_jelly::wire_format::Type::Fixed64)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, bool>(w, &self.a_bool, 11, ::pb_jelly::wire_format::Type::Varint)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.a_string, 12, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::vec::Vec<u8>>(w, &self.a_bytes, 13, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, f32>(w, &self.a_float, 14, ::pb_jelly::wire_format::Type::Fixed32)?;
     w.write_all(&self._unrecognized)?;
     Ok(())
   }
@@ -7140,13 +6888,7 @@ impl ::pb_jelly::Message for TestSmallString {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.compact;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::compact_str::CompactString>(w, &self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -7240,13 +6982,7 @@ impl ::pb_jelly::Message for TestBoxedSmallString {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.compact;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::compact_str::CompactString>(w, &self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -7340,13 +7076,7 @@ impl ::pb_jelly::Message for TestNonOptionalSmallString {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.compact != <::compact_str::CompactString as ::std::default::Default>::default() {
-      let val = &self.compact;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::compact_str::CompactString>(w, &self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -7443,13 +7173,7 @@ impl ::pb_jelly::Message for TestSmallStringPreserveUnrecognized {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.compact != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.compact;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     w.write_all(&self._unrecognized)?;
     Ok(())
   }
@@ -8301,20 +8025,8 @@ impl ::pb_jelly::Message for TestProto3Zerocopy {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.data1 != <::pb_jelly::Lazy<::bytes::Bytes> as ::std::default::Default>::default() {
-      let val = &self.data1;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
-    if self.data2 != <::pb_jelly::Lazy<::bytes::Bytes> as ::std::default::Default>::default() {
-      let val = &self.data2;
-      ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Lazy<::bytes::Bytes>>(w, &self.data1, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::pb_jelly::Lazy<::bytes::Bytes>>(w, &self.data2, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {

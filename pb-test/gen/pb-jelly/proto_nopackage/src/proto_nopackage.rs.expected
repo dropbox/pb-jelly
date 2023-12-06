@@ -55,13 +55,7 @@ impl ::pb_jelly::Message for NoPackage {
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    if self.field != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.field;
-      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
-    }
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.field, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())
   }
   fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {

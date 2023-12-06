@@ -1273,18 +1273,41 @@ class CodeWriter(object):
                             )
                             self.write("::pb_jelly::varint::write(size as u64, w)?;")
 
-                    with field_iter(self, "val", name, msg_type, field):
-                        if not typ.should_serialize_packed():
-                            self.write(
-                                "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::%s, w)?;"
-                                % (field.number, typ.wire_format())
+                    if (
+                        not typ.oneof
+                        and field.type != FieldDescriptorProto.TYPE_MESSAGE
+                        and not (
+                            field.type == FieldDescriptorProto.TYPE_ENUM
+                            and enum_err_if_default_or_unknown(
+                                self.ctx.find_enum(field.type_name).typ
                             )
-                        if typ.is_length_delimited():
-                            self.write(
-                                "let l = ::pb_jelly::Message::compute_size(val);"
+                        )
+                        and not typ.is_nullable()
+                        and not typ.is_repeated()
+                        and not typ.is_boxed()
+                    ):
+                        # Special case this fairly common case to reduce codegen.
+                        self.write(
+                            "::pb_jelly::helpers::serialize_scalar::<W, {typ}>(w, &self.{escaped_name}, {field_number}, ::pb_jelly::wire_format::Type::{wire_format})?;".format(
+                                typ=typ.rust_type(),
+                                escaped_name=escape_name(field.name),
+                                field_number=field.number,
+                                wire_format=typ.wire_format(),
                             )
-                            self.write("::pb_jelly::varint::write(l as u64, w)?;")
-                        self.write("::pb_jelly::Message::serialize(val, w)?;")
+                        )
+                    else:
+                        with field_iter(self, "val", name, msg_type, field):
+                            if not typ.should_serialize_packed():
+                                self.write(
+                                    "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::%s, w)?;"
+                                    % (field.number, typ.wire_format())
+                                )
+                            if typ.is_length_delimited():
+                                self.write(
+                                    "let l = ::pb_jelly::Message::compute_size(val);"
+                                )
+                                self.write("::pb_jelly::varint::write(l as u64, w)?;")
+                            self.write("::pb_jelly::Message::serialize(val, w)?;")
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
                     self.write("w.write_all(&self._unrecognized)?;")
                 self.write("Ok(())")

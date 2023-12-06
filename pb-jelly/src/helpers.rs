@@ -7,6 +7,7 @@ use crate::{
     wire_format,
     Message,
     PbBufferReader,
+    PbBufferWriter,
 };
 
 pub fn deserialize_packed<B: PbBufferReader, T: Message>(
@@ -62,4 +63,21 @@ pub fn deserialize_known_length<B: PbBufferReader, T: Message>(
     let mut val: T = Default::default();
     val.deserialize(buf)?;
     Ok(val)
+}
+
+pub fn serialize_scalar<W: PbBufferWriter, T: Message>(
+    w: &mut W,
+    val: &T,
+    field_number: u32,
+    wire_format: wire_format::Type,
+) -> io::Result<()> {
+    if *val != T::default() {
+        wire_format::write(field_number, wire_format, w)?;
+        if let wire_format::Type::LengthDelimited = wire_format {
+            let l = val.compute_size();
+            varint::write(l as u64, w)?;
+        }
+        val.serialize(w)?;
+    }
+    Ok(())
 }
