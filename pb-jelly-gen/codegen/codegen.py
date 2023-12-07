@@ -1836,11 +1836,6 @@ class Context(object):
             content = RS_HEADER + LIB_RS_HEADER + librs.content.getvalue()
             yield filename, content
 
-    def get_build_file(self) -> Iterator[Tuple[Text, Text]]:
-        for crate in self.deps_map:
-            build_file = BUILD_TEMPLATE.format(crate=crate)
-            yield crate, build_file
-
     def get_spec_toml_file(
         self, derive_serde: bool, include_sso: bool
     ) -> Iterator[Tuple[Text, Text]]:
@@ -1927,23 +1922,6 @@ class Context(object):
         crate_name = "proto_" + mod_parts[0]
         return crate_name, mod_parts[1:]
 
-
-BUILD_TEMPLATE = """
-package(default_visibility = ["//visibility:public"])
-
-rust_library(
-    name = "{crate}",
-    crate_type = "lib",
-    edition = "2018",
-)
-
-
-rust_doc(
-    name = "{crate}_doc",
-    crate = ":{crate}",
-    edition = "2018",
-)
-"""
 
 SPEC_TOML_TEMPLATE = (
     """# @"""
@@ -2079,10 +2057,11 @@ def generate_single_crate(
         output.content = content
 
     if "generate_build_files" in request.parameter:
-        for crate, build_file in ctx.get_build_file():
+        for crate in ctx.deps_map:
+            # Create a stub file for later generation
             output = response.file.add()
             output.name = file_prefix + crate + "/BUILD.in-gen-proto~"
-            output.content = build_file
+            output.content = ""
     elif "generate_spec_toml" in request.parameter:
         for crate, spec_toml_file in ctx.get_spec_toml_file(derive_serde, include_sso):
             output = response.file.add()
