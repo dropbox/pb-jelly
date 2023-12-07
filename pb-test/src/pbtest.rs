@@ -904,3 +904,30 @@ fn test_recursive_oneof() {
     };
     check_roundtrip(&message);
 }
+
+#[test]
+fn test_mutual_recursion() {
+    check_roundtrip(&MutuallyRecursiveA {
+        // Both MutuallyRecursiveA::inner and MutuallyRecursiveB::inner are boxed
+        inner: Some(Box::new(MutuallyRecursiveB {
+            inner: Some(Box::new(MutuallyRecursiveA::default())),
+        })),
+    });
+    check_roundtrip(&MutuallyRecursiveWithRepeatedA {
+        inner: vec![
+            MutuallyRecursiveWithRepeatedB {
+                // MutuallyRecursiveWithRepeatedB::inner is *not* boxed
+                inner: Some(MutuallyRecursiveWithRepeatedA::default()),
+            },
+            MutuallyRecursiveWithRepeatedB {
+                inner: Some(MutuallyRecursiveWithRepeatedA::default()),
+            },
+        ],
+    });
+    check_roundtrip(&MutuallyRecursiveWithBoxedA {
+        inner: Some(Box::new(MutuallyRecursiveWithBoxedB {
+            // MutuallyRecursiveWithBoxedB::inner is *not* boxed
+            inner: Some(MutuallyRecursiveWithBoxedA::default()),
+        })),
+    });
+}

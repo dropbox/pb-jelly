@@ -8,11 +8,14 @@ from collections import defaultdict, namedtuple, OrderedDict
 from contextlib import contextmanager
 from typing import (
     Any,
+    Callable,
     DefaultDict,
     Dict,
     Generic,
+    Iterable,
     Iterator,
     List,
+    NamedTuple,
     Optional,
     Set,
     Text,
@@ -136,6 +139,69 @@ WalkRet = Tuple[
     List[Tuple[List[Text], DescriptorProto, SourceCodeLocation]],
 ]
 ModTree = DefaultDict[Text, DefaultDict[Text, Any]]
+
+
+T = TypeVar("T")
+
+
+class StronglyConnectedComponents(Generic[T]):
+    __slots__ = ("S", "B", "index", "next_component")
+
+    def __init__(self) -> None:
+        self.S: List[T] = []
+        self.B: List[int] = []
+        self.index: Dict[T, int] = {}
+        # Since we don't know the number of nodes in advance, just start counting from a reasonably high number
+        self.next_component = 2**32
+
+    def process(
+        self,
+        node: T,
+        edges_from: Callable[[T], Iterable[T]],
+        callback: Callable[[Set[T]], None],
+    ) -> None:
+        """
+        Computes the strongly connected components of a directed graph on the fly.
+
+        Calls `callback` with each component in topological order.
+        Specifically, each component will appears after the component containing `edges_from(node)`.
+        All nodes reachable from `node` will be processed, if they have not already been.
+
+        After, `self.index` will also be populated with component IDs for each visited node.
+        """
+        if node not in self.index:
+            self._dfs(node, edges_from, callback)
+
+    # a variant of https://en.wikipedia.org/wiki/Path-based_strong_component_algorithm;
+    # see "Path-based depth-first search for strong and biconnected components" by Harold N. Gabow,
+    # https://www.cs.princeton.edu/courses/archive/spr04/cos423/handouts/path%20based...pdf
+    def _dfs(
+        self,
+        node: T,
+        edges_from: Callable[[T], Iterable[T]],
+        callback: Callable[[Set[T]], None],
+    ) -> None:
+        self.S.append(node)
+        my_index = len(self.S)
+        self.index[node] = my_index
+        self.B.append(my_index)
+
+        for next_node in edges_from(node):
+            if next_node in self.index:
+                while self.index[next_node] < self.B[-1]:
+                    self.B.pop()
+            else:
+                self._dfs(next_node, edges_from, callback)
+
+        if my_index == self.B[-1]:
+            self.B.pop()
+            component = set()
+            while len(self.S) >= my_index:
+                v = self.S.pop()
+                self.index[v] = self.next_component
+                component.add(v)
+            self.next_component += 1
+            callback(component)
 
 
 def camelcase(underscored: Text) -> Text:
@@ -922,10 +988,12 @@ class CodeWriter(object):
         if self.derive_serde:
             derives.extend(["Deserialize", "Serialize"])
 
-        fq_msg = (self.proto_file.name, name)
-        if self.ctx.impls_by_msg[fq_msg].Eq:
+        impls = self.ctx.impls_by_msg[
+            ProtoType(self.ctx, self.proto_file, path, msg_type).proto_name()
+        ]
+        if impls.impls_eq:
             derives.extend(["Eq", "PartialOrd", "Ord", "Hash"])
-        if self.ctx.impls_by_msg[fq_msg].Copy:
+        if impls.impls_copy:
             derives.append("Copy")
 
         self.write_comments(self.source_code_info_by_scl.get(tuple(scl)))
@@ -1606,7 +1674,45 @@ class ProtoType(Generic[M]):
         return "::".join(mod_parts)
 
 
-Impls = namedtuple("Impls", ["Eq", "Copy"])
+class Impls(NamedTuple):
+    impls_eq: bool
+    impls_copy: bool
+
+
+def box_recursive_fields(types: Dict[Text, ProtoType[DescriptorProto]]) -> None:
+    """
+    Given message types, keyed by their `proto_name()`s, detect recursive fields
+    that would otherwise cause an infinite-size type and add the `box_it` extension to them.
+    """
+    scc: StronglyConnectedComponents[Text] = StronglyConnectedComponents()
+
+    def edges(type_name: Text) -> List[Text]:
+        field_type = types[type_name]
+        return [
+            field.type_name
+            for field in field_type.typ.field
+            if field.type == FieldDescriptorProto.TYPE_MESSAGE
+            and field.type_name in types
+            and field.label != FieldDescriptorProto.LABEL_REPEATED
+            and not field.options.Extensions[extensions_pb2.box_it]
+        ]
+
+    def handle_scc(type_scc: Set[Text]) -> None:
+        # For simplicity, apply box_it to all edges within the SCC.
+        # Not all edges (i.e. fields) need to be boxed - just enough to cut the SCC -
+        # but deciding which to box would be unintuitive and possibly not deterministic.
+        for type_name in type_scc:
+            field_type = types[type_name]
+            for field in field_type.typ.field:
+                if (
+                    field.type == FieldDescriptorProto.TYPE_MESSAGE
+                    and field.type_name in type_scc
+                    and field.label != FieldDescriptorProto.LABEL_REPEATED
+                ):
+                    field.options.Extensions[extensions_pb2.box_it] = True
+
+    for type_name in types:
+        scc.process(type_name, edges, handle_scc)
 
 
 class Context(object):
@@ -1620,9 +1726,10 @@ class Context(object):
         self.deps_map: DefaultDict[Text, Set[Text]] = defaultdict(set)
         self.extra_crates: DefaultDict[Text, Set[Text]] = defaultdict(set)
 
-        # Map from msg.type_name => whether it impls Eq / Copy
+        # Map from msg.proto_name() => cached impls
         # We have to build this on the fly as we process the types.
-        self.impls_by_msg: Dict[Tuple[Text, Text], Impls] = {}
+        self.impls_by_msg: Dict[Text, Impls] = {}
+        self.scc: StronglyConnectedComponents[Text] = StronglyConnectedComponents()
 
         # Indiciator if every directory should be their own crate.
         self.crate_per_dir = crate_per_dir
@@ -1633,98 +1740,94 @@ class Context(object):
 
     def calc_impls(
         self,
-        proto_file: FileDescriptorProto,
-        crate: Text,
-        msg_type: DescriptorProto,
-        fq_msg: Tuple[Text, Text],
+        types: Set[Text],
     ) -> None:
-        # Determine if each message can implement Eq / Ord Copy traits. Using Dynamic Programming.
-        # See if it's cached
-        if fq_msg in self.impls_by_msg:
-            return
+        impls_eq = True
+        impls_copy = True
 
-        # Place a false in the cache to prevent recursion loops
-        self.impls_by_msg[fq_msg] = Impls(Eq=False, Copy=False)
+        for type_name in types:
+            msg_type = self.find(type_name)
+            assert isinstance(msg_type.typ, DescriptorProto)
 
-        # Generate whether or not this msg implements Eq / Ord
-        (msg_impls_eq, msg_impls_copy) = (True, True)
+            crate, _ = self.crate_from_proto_filename(msg_type.proto_file.name)
 
-        if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
-            msg_impls_copy = False  # Preserve unparsed has a Vec which is not Copy
+            if msg_type.typ.options.Extensions[extensions_pb2.preserve_unrecognized]:
+                impls_copy = False  # Preserve unparsed has a Vec which is not Copy
 
-        for field in msg_type.field:
-            typ = field.type
-            rust_type = RustType(self, proto_file, msg_type, field)
-            if rust_type.has_custom_type():
-                self.extra_crates[crate].update(
-                    CRATE_NAME_REGEX.findall(rust_type.custom_type())
-                )
-
-            if field.type_name:
-                field_type = self.find(field.type_name)
-                if crate in self.deps_map:
-                    dep_crate, _ = self.crate_from_proto_filename(
-                        field_type.proto_file.name
+            for field in msg_type.typ.field:
+                typ = field.type
+                rust_type = RustType(self, msg_type.proto_file, msg_type.typ, field)
+                if rust_type.has_custom_type():
+                    self.extra_crates[crate].update(
+                        CRATE_NAME_REGEX.findall(rust_type.custom_type())
                     )
-                    if dep_crate != crate:
-                        self.deps_map[crate].add(dep_crate)
 
-            if field.label == FieldDescriptorProto.LABEL_REPEATED:
-                msg_impls_copy = False  # Vecs are not Copy.
+                if field.type_name:
+                    field_type = self.find(field.type_name)
+                    if crate in self.deps_map:
+                        dep_crate, _ = self.crate_from_proto_filename(
+                            field_type.proto_file.name
+                        )
+                        if dep_crate != crate:
+                            self.deps_map[crate].add(dep_crate)
 
-            # If we use a Blob type, or GRPC Slice
-            if typ == FieldDescriptorProto.TYPE_BYTES and (
-                field.options.ctype == FieldOptions.CORD
-                or field.options.Extensions[extensions_pb2.grpc_slices]
-            ):
-                (msg_impls_eq, msg_impls_copy) = (False, False)  # Blob is not eq/copy
-                self.extra_crates[crate].add("blob_pb")
-            # If we use a Bytes type
-            elif (
-                typ == FieldDescriptorProto.TYPE_BYTES
-                and field.options.Extensions[extensions_pb2.zero_copy]
-            ):
-                (msg_impls_eq, msg_impls_copy) = (False, False)
-                self.extra_crates[crate].add("bytes")
-            elif typ in PRIMITIVE_TYPES:
-                if not PRIMITIVE_TYPES[typ][1]:
-                    msg_impls_eq = False
-                if not PRIMITIVE_TYPES[typ][2]:
-                    msg_impls_copy = False
-            elif typ == FieldDescriptorProto.TYPE_ENUM:
-                pass  # Enums are Eq / Copy
-            elif typ == FieldDescriptorProto.TYPE_MESSAGE:
-                assert isinstance(field_type.typ, DescriptorProto)
-                field_fq_msg = (
-                    field_type.proto_file.name,
-                    "_".join(field_type.path + [field_type.typ.name]),
-                )
+                if field.label == FieldDescriptorProto.LABEL_REPEATED:
+                    impls_copy = False  # Vecs are not Copy.
 
-                if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
-                    assert field_type.typ.options.Extensions[
+                # If we use a Blob type, or GRPC Slice
+                if typ == FieldDescriptorProto.TYPE_BYTES and (
+                    field.options.ctype == FieldOptions.CORD
+                    or field.options.Extensions[extensions_pb2.grpc_slices]
+                ):
+                    (impls_eq, impls_copy) = (False, False)  # Blob is not eq/copy
+                    self.extra_crates[crate].add("blob_pb")
+                # If we use a Bytes type
+                elif (
+                    typ == FieldDescriptorProto.TYPE_BYTES
+                    and field.options.Extensions[extensions_pb2.zero_copy]
+                ):
+                    (impls_eq, impls_copy) = (False, False)
+                    self.extra_crates[crate].add("bytes")
+                elif typ in PRIMITIVE_TYPES:
+                    if not PRIMITIVE_TYPES[typ][1]:
+                        impls_eq = False
+                    if not PRIMITIVE_TYPES[typ][2]:
+                        impls_copy = False
+                elif typ == FieldDescriptorProto.TYPE_ENUM:
+                    pass  # Enums are Eq / Copy
+                elif typ == FieldDescriptorProto.TYPE_MESSAGE:
+                    assert isinstance(field_type.typ, DescriptorProto)
+                    if msg_type.typ.options.Extensions[
                         extensions_pb2.preserve_unrecognized
-                    ], "%s preserves unrecognized but child message %s does not" % (
-                        fq_msg,
-                        field_fq_msg,
+                    ]:
+                        assert field_type.typ.options.Extensions[
+                            extensions_pb2.preserve_unrecognized
+                        ], (
+                            "%s preserves unrecognized but child message %s does not"
+                            % (
+                                msg_type.proto_name(),
+                                field.type,
+                            )
+                        )
+                    if field.type_name not in types:
+                        field_impls = self.impls_by_msg[field.type_name]
+                        impls_eq = impls_eq and field_impls.impls_eq
+                        impls_copy = impls_copy and field_impls.impls_copy
+
+                    if rust_type.is_boxed():
+                        impls_copy = False
+                else:
+                    raise RuntimeError(
+                        "Unsupported type: {!r}".format(
+                            FieldDescriptorProto.Type.Name(typ)
+                        )
                     )
 
-                self.calc_impls(
-                    field_type.proto_file, crate, field_type.typ, field_fq_msg
-                )
-
-                if not self.impls_by_msg[field_fq_msg].Eq:
-                    msg_impls_eq = False
-                if not self.impls_by_msg[field_fq_msg].Copy:
-                    msg_impls_copy = False
-
-                if rust_type.is_boxed():
-                    msg_impls_copy = False
-            else:
-                raise RuntimeError(
-                    "Unsupported type: {!r}".format(FieldDescriptorProto.Type.Name(typ))
-                )
-
-        self.impls_by_msg[fq_msg] = Impls(Eq=msg_impls_eq, Copy=msg_impls_copy)
+        for type_name in types:
+            self.impls_by_msg[type_name] = Impls(
+                impls_eq=impls_eq,
+                impls_copy=impls_copy,
+            )
 
     def feed(self, proto_file: FileDescriptorProto, to_generate: List[Text]) -> None:
         enums, messages = walk(proto_file)
@@ -1737,14 +1840,30 @@ class Context(object):
             enum_pt = ProtoType(self, proto_file, enum_path, enum_typ)
             self.proto_types[enum_pt.proto_name()] = enum_pt
 
+        message_types: Dict[Text, ProtoType[DescriptorProto]] = {}
+
         for path, typ, _ in messages:
             msg_pt = ProtoType(self, proto_file, path, typ)
             self.proto_types[msg_pt.proto_name()] = msg_pt
+            message_types[msg_pt.proto_name()] = msg_pt
+
+        # Note that there can't be mutual recursion across files,
+        # so it suffices to examine one file at a time for the purposes of `box_recursive_fields`
+        box_recursive_fields(message_types)
 
         for path, typ, _ in messages:
-            fq_msg = (proto_file.name, "_".join(path + [typ.name]))
-            crate, _ = self.crate_from_proto_filename(proto_file.name)
-            self.calc_impls(proto_file, crate, typ, fq_msg)
+            msg_pt = ProtoType(self, proto_file, path, typ)
+
+            def edges(type_name: Text) -> List[Text]:
+                field_type = self.find(type_name)
+                assert isinstance(field_type.typ, DescriptorProto)
+                return [
+                    field.type_name
+                    for field in field_type.typ.field
+                    if field.type == FieldDescriptorProto.TYPE_MESSAGE
+                ]
+
+            self.scc.process(msg_pt.proto_name(), edges, self.calc_impls)
 
     def find_enum(self, typename: Text) -> ProtoType[EnumDescriptorProto]:
         pt = self.find(typename)
@@ -1763,32 +1882,6 @@ class Context(object):
             return self.proto_types[typename]
 
         raise RuntimeError("Could not find type by proto name: {}".format(typename))
-
-    def _set_boxed_if_recursive(
-        self, visited: Set[Text], looking_for: Text, pt: ProtoType[DescriptorProto]
-    ) -> bool:
-        visited.add(pt.proto_name())
-        any_field_boxed = False
-        for field in pt.typ.field:
-            if (
-                field.type == FieldDescriptorProto.TYPE_MESSAGE
-                and field.label != FieldDescriptorProto.LABEL_REPEATED
-            ):
-                need_box = False
-                if field.type_name not in visited:
-                    need_box = self._set_boxed_if_recursive(
-                        visited, looking_for, self.find_msg(field.type_name)
-                    )
-                if need_box or field.type_name == looking_for:
-                    field.options.Extensions[extensions_pb2.box_it] = True
-                    any_field_boxed = True
-        return any_field_boxed
-
-    # This will recursively descend through a message and see if there any
-    # recursive nesting.  In those cases, it will automatically box the fields.
-    def set_boxed_if_recursive(self, pt: ProtoType[DescriptorProto]) -> None:
-        visited: Set[Text] = set()
-        self._set_boxed_if_recursive(visited, pt.proto_name(), pt)
 
     def get_lib_and_mod_rs(
         self, mod_tree: ModTree, derive_serde: bool
@@ -2059,7 +2152,6 @@ def generate_single_crate(
             writer.write("")
 
         for path, msg_typ, scl in messages:
-            ctx.set_boxed_if_recursive(ProtoType(ctx, proto_file, path, msg_typ))
             writer.gen_msg(path, msg_typ, scl)
             writer.write("")
 

@@ -9033,13 +9033,13 @@ impl ::pb_jelly::Reflection for TestProto3Zerocopy {
   }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct RecursiveOneof {
   /// This field should be boxed automatically.
   /// Boxing should override the empty-oneof-field special case.
   pub oneof_field: ::std::option::Option<RecursiveOneof_OneofField>,
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum RecursiveOneof_OneofField {
   Field(::std::boxed::Box<RecursiveOneof>),
   Empty,
@@ -9682,6 +9682,624 @@ impl ::pb_jelly::Reflection for NonNullableEnumKeyword {
     match field_name {
       "enum" => {
         ::pb_jelly::reflection::FieldMut::Value(&mut self.r#enum)
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MutuallyRecursiveA {
+  pub inner: ::std::option::Option<::std::boxed::Box<MutuallyRecursiveB>>,
+}
+impl ::std::default::Default for MutuallyRecursiveA {
+  fn default() -> Self {
+    MutuallyRecursiveA {
+      inner: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref MutuallyRecursiveA_default: MutuallyRecursiveA = MutuallyRecursiveA::default();
+}
+impl ::pb_jelly::Message for MutuallyRecursiveA {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "MutuallyRecursiveA",
+      full_name: "pbtest.MutuallyRecursiveA",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner",
+          full_name: "pbtest.MutuallyRecursiveA.inner",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut inner_size = 0;
+    for val in &self.inner {
+      let val = &**val;
+      let l = ::pb_jelly::Message::compute_size(val);
+      inner_size += ::pb_jelly::wire_format::serialized_length(1);
+      inner_size += ::pb_jelly::varint::serialized_length(l as u64);
+      inner_size += l;
+    }
+    size += inner_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.inner {
+      let val = &**val;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.inner {
+      let val = &**val;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "MutuallyRecursiveA", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: MutuallyRecursiveB = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.inner = Some(Box::new(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for MutuallyRecursiveA {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.inner.get_or_insert_with(::std::default::Default::default).as_mut())
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MutuallyRecursiveB {
+  pub inner: ::std::option::Option<::std::boxed::Box<MutuallyRecursiveA>>,
+}
+impl ::std::default::Default for MutuallyRecursiveB {
+  fn default() -> Self {
+    MutuallyRecursiveB {
+      inner: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref MutuallyRecursiveB_default: MutuallyRecursiveB = MutuallyRecursiveB::default();
+}
+impl ::pb_jelly::Message for MutuallyRecursiveB {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "MutuallyRecursiveB",
+      full_name: "pbtest.MutuallyRecursiveB",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner",
+          full_name: "pbtest.MutuallyRecursiveB.inner",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut inner_size = 0;
+    for val in &self.inner {
+      let val = &**val;
+      let l = ::pb_jelly::Message::compute_size(val);
+      inner_size += ::pb_jelly::wire_format::serialized_length(1);
+      inner_size += ::pb_jelly::varint::serialized_length(l as u64);
+      inner_size += l;
+    }
+    size += inner_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.inner {
+      let val = &**val;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.inner {
+      let val = &**val;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "MutuallyRecursiveB", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: MutuallyRecursiveA = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.inner = Some(Box::new(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for MutuallyRecursiveB {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.inner.get_or_insert_with(::std::default::Default::default).as_mut())
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MutuallyRecursiveWithRepeatedA {
+  pub inner: ::std::vec::Vec<MutuallyRecursiveWithRepeatedB>,
+}
+impl ::std::default::Default for MutuallyRecursiveWithRepeatedA {
+  fn default() -> Self {
+    MutuallyRecursiveWithRepeatedA {
+      inner: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref MutuallyRecursiveWithRepeatedA_default: MutuallyRecursiveWithRepeatedA = MutuallyRecursiveWithRepeatedA::default();
+}
+impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedA {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "MutuallyRecursiveWithRepeatedA",
+      full_name: "pbtest.MutuallyRecursiveWithRepeatedA",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner",
+          full_name: "pbtest.MutuallyRecursiveWithRepeatedA.inner",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Repeated,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut inner_size = 0;
+    for val in &self.inner {
+      let l = ::pb_jelly::Message::compute_size(val);
+      inner_size += ::pb_jelly::wire_format::serialized_length(1);
+      inner_size += ::pb_jelly::varint::serialized_length(l as u64);
+      inner_size += l;
+    }
+    size += inner_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.inner {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.inner {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "MutuallyRecursiveWithRepeatedA", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: MutuallyRecursiveWithRepeatedB = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.inner.push(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for MutuallyRecursiveWithRepeatedA {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner" => {
+        unimplemented!("Repeated fields are not currently supported.")
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MutuallyRecursiveWithRepeatedB {
+  /// This field should *not* be boxed because `repeated` on the other message
+  /// should suffice to break the cycle.
+  pub inner: ::std::option::Option<MutuallyRecursiveWithRepeatedA>,
+}
+impl ::std::default::Default for MutuallyRecursiveWithRepeatedB {
+  fn default() -> Self {
+    MutuallyRecursiveWithRepeatedB {
+      inner: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref MutuallyRecursiveWithRepeatedB_default: MutuallyRecursiveWithRepeatedB = MutuallyRecursiveWithRepeatedB::default();
+}
+impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedB {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "MutuallyRecursiveWithRepeatedB",
+      full_name: "pbtest.MutuallyRecursiveWithRepeatedB",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner",
+          full_name: "pbtest.MutuallyRecursiveWithRepeatedB.inner",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut inner_size = 0;
+    for val in &self.inner {
+      let l = ::pb_jelly::Message::compute_size(val);
+      inner_size += ::pb_jelly::wire_format::serialized_length(1);
+      inner_size += ::pb_jelly::varint::serialized_length(l as u64);
+      inner_size += l;
+    }
+    size += inner_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.inner {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.inner {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "MutuallyRecursiveWithRepeatedB", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: MutuallyRecursiveWithRepeatedA = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.inner = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for MutuallyRecursiveWithRepeatedB {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.inner.get_or_insert_with(::std::default::Default::default))
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MutuallyRecursiveWithBoxedA {
+  pub inner: ::std::option::Option<::std::boxed::Box<MutuallyRecursiveWithBoxedB>>,
+}
+impl ::std::default::Default for MutuallyRecursiveWithBoxedA {
+  fn default() -> Self {
+    MutuallyRecursiveWithBoxedA {
+      inner: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref MutuallyRecursiveWithBoxedA_default: MutuallyRecursiveWithBoxedA = MutuallyRecursiveWithBoxedA::default();
+}
+impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedA {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "MutuallyRecursiveWithBoxedA",
+      full_name: "pbtest.MutuallyRecursiveWithBoxedA",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner",
+          full_name: "pbtest.MutuallyRecursiveWithBoxedA.inner",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut inner_size = 0;
+    for val in &self.inner {
+      let val = &**val;
+      let l = ::pb_jelly::Message::compute_size(val);
+      inner_size += ::pb_jelly::wire_format::serialized_length(1);
+      inner_size += ::pb_jelly::varint::serialized_length(l as u64);
+      inner_size += l;
+    }
+    size += inner_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.inner {
+      let val = &**val;
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.inner {
+      let val = &**val;
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "MutuallyRecursiveWithBoxedA", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: MutuallyRecursiveWithBoxedB = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.inner = Some(Box::new(val));
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for MutuallyRecursiveWithBoxedA {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.inner.get_or_insert_with(::std::default::Default::default).as_mut())
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MutuallyRecursiveWithBoxedB {
+  /// This field should not be boxed.
+  pub inner: ::std::option::Option<MutuallyRecursiveWithBoxedA>,
+}
+impl ::std::default::Default for MutuallyRecursiveWithBoxedB {
+  fn default() -> Self {
+    MutuallyRecursiveWithBoxedB {
+      inner: ::std::default::Default::default(),
+    }
+  }
+}
+lazy_static! {
+  pub static ref MutuallyRecursiveWithBoxedB_default: MutuallyRecursiveWithBoxedB = MutuallyRecursiveWithBoxedB::default();
+}
+impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedB {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "MutuallyRecursiveWithBoxedB",
+      full_name: "pbtest.MutuallyRecursiveWithBoxedB",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner",
+          full_name: "pbtest.MutuallyRecursiveWithBoxedB.inner",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0;
+    let mut inner_size = 0;
+    for val in &self.inner {
+      let l = ::pb_jelly::Message::compute_size(val);
+      inner_size += ::pb_jelly::wire_format::serialized_length(1);
+      inner_size += ::pb_jelly::varint::serialized_length(l as u64);
+      inner_size += l;
+    }
+    size += inner_size;
+    size
+  }
+  fn compute_grpc_slices_size(&self) -> usize {
+    let mut size = 0;
+    for val in &self.inner {
+      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    for val in &self.inner {
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      let l = ::pb_jelly::Message::compute_size(val);
+      ::pb_jelly::varint::write(l as u64, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "MutuallyRecursiveWithBoxedB", 1)?;
+          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
+          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
+          let mut val: MutuallyRecursiveWithBoxedA = ::std::default::Default::default();
+          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          self.inner = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for MutuallyRecursiveWithBoxedB {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.inner.get_or_insert_with(::std::default::Default::default))
       }
       _ => {
         panic!("unknown field name given")

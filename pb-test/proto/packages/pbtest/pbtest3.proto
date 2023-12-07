@@ -384,3 +384,30 @@ message NonNullableOneofKeyword {
 message NonNullableEnumKeyword {
     TestMessage3.NestedMessage.NonNullableEnum enum = 1;
 }
+
+message MutuallyRecursiveA {
+    MutuallyRecursiveB inner = 1;
+}
+
+message MutuallyRecursiveB {
+    MutuallyRecursiveA inner = 1;
+}
+
+message MutuallyRecursiveWithRepeatedA {
+    repeated MutuallyRecursiveWithRepeatedB inner = 1;
+}
+
+message MutuallyRecursiveWithRepeatedB {
+    // This field should *not* be boxed because `repeated` on the other message
+    // should suffice to break the cycle.
+    MutuallyRecursiveWithRepeatedA inner = 1;
+}
+
+message MutuallyRecursiveWithBoxedA {
+    MutuallyRecursiveWithBoxedB inner = 1 [(rust.box_it) = true];
+}
+
+message MutuallyRecursiveWithBoxedB {
+    // This field should not be boxed.
+    MutuallyRecursiveWithBoxedA inner = 1;
+}

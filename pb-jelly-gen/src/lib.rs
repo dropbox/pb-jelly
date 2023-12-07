@@ -49,6 +49,7 @@ use std::{
     process::{
         Command,
         Output,
+        Stdio,
     },
     str::from_utf8,
 };
@@ -239,6 +240,7 @@ impl GenProtos {
 
         // Create protoc cmd in the venv
         let mut protoc_cmd = Command::new("protoc");
+        protoc_cmd.stderr(Stdio::inherit());
         protoc_cmd.env("PATH", &new_path);
         protoc_cmd.env("PYTHONPATH", temp_dir.path());
 
