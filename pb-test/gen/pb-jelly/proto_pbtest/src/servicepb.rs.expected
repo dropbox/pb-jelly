@@ -38,14 +38,6 @@ impl ::pb_jelly::Message for InpMessage {
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.i, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if self.i != <i32 as ::std::default::Default>::default() {
-      let val = &self.i;
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     ::pb_jelly::helpers::serialize_scalar::<W, i32>(w, &self.i, 1, ::pb_jelly::wire_format::Type::Varint)?;
     Ok(())
@@ -122,14 +114,6 @@ impl ::pb_jelly::Message for OutMessage {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.o, 1, ::pb_jelly::wire_format::Type::Varint);
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if self.o != <i32 as ::std::default::Default>::default() {
-      let val = &self.o;
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {

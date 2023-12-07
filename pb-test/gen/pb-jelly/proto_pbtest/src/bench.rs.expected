@@ -169,13 +169,6 @@ impl ::pb_jelly::Message for VecData {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.data {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.data {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -278,13 +271,6 @@ impl ::pb_jelly::Message for StringMessage {
       data_size += l;
     }
     size += data_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.data {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -391,13 +377,6 @@ impl ::pb_jelly::Message for StringMessageSSO {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.data {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.data {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -500,13 +479,6 @@ impl ::pb_jelly::Message for Cities {
       cities_size += l;
     }
     size += cities_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.cities {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -791,31 +763,6 @@ impl ::pb_jelly::Message for City {
     size += state_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.city {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.growth_from_2000_to_2013 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.latitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.longitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.population {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.rank {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.state {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.city {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -992,13 +939,6 @@ impl ::pb_jelly::Message for CitiesSSO {
       cities_size += l;
     }
     size += cities_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.cities {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -1281,31 +1221,6 @@ impl ::pb_jelly::Message for CitySSO {
       state_size += l;
     }
     size += state_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.city {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.growth_from_2000_to_2013 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.latitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.longitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.population {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.rank {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.state {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {

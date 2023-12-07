@@ -530,6 +530,18 @@ class RustType(object):
             )
         raise AssertionError("Unexpected field type")
 
+    def may_use_grpc_slices(self) -> bool:
+        if (
+            self.has_custom_type()
+            or self.is_blob()
+            or self.is_grpc_slices()
+            or self.is_lazy_bytes()
+        ):
+            return True
+        if self.field.type == FieldDescriptorProto.TYPE_MESSAGE:
+            return self.ctx.impls_by_msg[self.field.type_name].may_use_grpc_slices
+        return False
+
     def rust_type(self) -> Text:
         typ = self.field.type
 
@@ -1267,17 +1279,17 @@ class CodeWriter(object):
                 else:
                     self.write("0")
 
-            with block(self, "fn compute_grpc_slices_size(&self) -> usize"):
-                if len(msg_type.field) > 0:
+            if impls.may_use_grpc_slices:
+                with block(self, "fn compute_grpc_slices_size(&self) -> usize"):
                     self.write("let mut size = 0;")
                     for field in msg_type.field:
-                        with field_iter(self, "val", name, msg_type, field):
-                            self.write(
-                                "size += ::pb_jelly::Message::compute_grpc_slices_size(val);"
-                            )
+                        rust_type = RustType(self.ctx, self.proto_file, msg_type, field)
+                        if rust_type.may_use_grpc_slices():
+                            with field_iter(self, "val", name, msg_type, field):
+                                self.write(
+                                    "size += ::pb_jelly::Message::compute_grpc_slices_size(val);"
+                                )
                     self.write("size")
-                else:
-                    self.write("0")
 
             with block(
                 self,
@@ -1672,6 +1684,7 @@ class ProtoType(Generic[M]):
 class Impls(NamedTuple):
     impls_eq: bool
     impls_copy: bool
+    may_use_grpc_slices: bool
 
 
 def box_recursive_fields(types: Dict[Text, ProtoType[DescriptorProto]]) -> None:
@@ -1739,6 +1752,7 @@ class Context(object):
     ) -> None:
         impls_eq = True
         impls_copy = True
+        may_use_grpc_slices = False
 
         for type_name in types:
             msg_type = self.find(type_name)
@@ -1756,6 +1770,7 @@ class Context(object):
                     self.extra_crates[crate].update(
                         CRATE_NAME_REGEX.findall(rust_type.custom_type())
                     )
+                    may_use_grpc_slices = True
 
                 if field.type_name:
                     field_type = self.find(field.type_name)
@@ -1776,6 +1791,7 @@ class Context(object):
                 ):
                     (impls_eq, impls_copy) = (False, False)  # Blob is not eq/copy
                     self.extra_crates[crate].add("blob_pb")
+                    may_use_grpc_slices = True
                 # If we use a Bytes type
                 elif (
                     typ == FieldDescriptorProto.TYPE_BYTES
@@ -1783,6 +1799,7 @@ class Context(object):
                 ):
                     (impls_eq, impls_copy) = (False, False)
                     self.extra_crates[crate].add("bytes")
+                    may_use_grpc_slices = True
                 elif typ in PRIMITIVE_TYPES:
                     if not PRIMITIVE_TYPES[typ][1]:
                         impls_eq = False
@@ -1808,6 +1825,9 @@ class Context(object):
                         field_impls = self.impls_by_msg[field.type_name]
                         impls_eq = impls_eq and field_impls.impls_eq
                         impls_copy = impls_copy and field_impls.impls_copy
+                        may_use_grpc_slices = (
+                            may_use_grpc_slices or field_impls.may_use_grpc_slices
+                        )
 
                     if rust_type.is_boxed():
                         impls_copy = False
@@ -1822,6 +1842,7 @@ class Context(object):
             self.impls_by_msg[type_name] = Impls(
                 impls_eq=impls_eq,
                 impls_copy=impls_copy,
+                may_use_grpc_slices=may_use_grpc_slices,
             )
 
     def feed(self, proto_file: FileDescriptorProto, to_generate: List[Text]) -> None:

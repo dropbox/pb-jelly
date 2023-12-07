@@ -38,14 +38,6 @@ impl ::pb_jelly::Message for NoPackage {
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.field, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if self.field != <::std::string::String as ::std::default::Default>::default() {
-      let val = &self.field;
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     ::pb_jelly::helpers::serialize_scalar::<W, ::std::string::String>(w, &self.field, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     Ok(())

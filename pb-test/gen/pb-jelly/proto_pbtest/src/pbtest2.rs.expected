@@ -418,9 +418,6 @@ impl ::pb_jelly::Message for Option {
   fn compute_size(&self) -> usize {
     0
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    0
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
   }
@@ -478,9 +475,6 @@ impl ::pb_jelly::Message for Vec {
     })
   }
   fn compute_size(&self) -> usize {
-    0
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
     0
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -542,9 +536,6 @@ impl ::pb_jelly::Message for Default {
   fn compute_size(&self) -> usize {
     0
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    0
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
   }
@@ -602,9 +593,6 @@ impl ::pb_jelly::Message for String {
     })
   }
   fn compute_size(&self) -> usize {
-    0
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
     0
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -691,13 +679,6 @@ impl ::pb_jelly::Message for Version0OneOfNoneNullable {
       string_one_of_size += l;
     }
     size += string_one_of_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -829,16 +810,6 @@ impl ::pb_jelly::Message for Version1OneOfNoneNullable {
       string_two_of_size += l;
     }
     size += string_two_of_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Version1OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Version1OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -1020,19 +991,6 @@ impl ::pb_jelly::Message for Version2OneOfNoneNullable {
     size += int_one_Of_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Version2OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Version2OneOfNoneNullable_TestOneof::StringTwoOf(ref val) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Version2OneOfNoneNullable_TestOneof::IntOneOf(ref val) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Version2OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -1201,13 +1159,6 @@ impl ::pb_jelly::Message for Version1Enum {
     size += enum_field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.enum_field {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.enum_field {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
@@ -1306,13 +1257,6 @@ impl ::pb_jelly::Message for Version2Enum {
     size += enum_field_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.enum_field {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.enum_field {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
@@ -1408,13 +1352,6 @@ impl ::pb_jelly::Message for Version1OneOf {
       string_one_of_size += l;
     }
     size += string_one_of_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(Version1OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -1546,16 +1483,6 @@ impl ::pb_jelly::Message for Version2OneOf {
       int_one_of_size += l;
     }
     size += int_one_of_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(Version2OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(Version2OneOf_TestOneof::IntOneOf(ref val)) = self.test_oneof {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -1698,13 +1625,6 @@ impl ::pb_jelly::Message for Version1 {
       required_string_size += l;
     }
     size += required_string_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.required_string {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -2170,52 +2090,6 @@ impl ::pb_jelly::Message for Version2 {
     size += optional_float_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.required_string {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_int32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_int64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_uint32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_uint64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_fixed64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_fixed32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_sfixed64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_sfixed32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_double {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_bool {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_string {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_bytes {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_float {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.required_string {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -2461,13 +2335,6 @@ impl ::pb_jelly::Message for ForeignMessage {
       c_size += l;
     }
     size += c_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.c {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -3908,170 +3775,6 @@ impl ::pb_jelly::Message for TestMessage {
       unsafe_size += l;
     }
     size += unsafe_size;
-    size
-  }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    if let Some(ref val) = self.optional_int32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_int64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_uint32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_uint64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_fixed64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_fixed32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_sfixed64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_sfixed32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_double {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_bool {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_string {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_bytes {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_float {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_foreign_message {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_nested_enum {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_foreign_enum {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_int32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_int64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_uint32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_uint64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_fixed64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_fixed32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_sfixed64 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_sfixed32 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_double {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_bool {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_string {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_bytes {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_float {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_foreign_message {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_nested_enum {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.repeated_foreign_enum {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.optional_foreign_message_boxed {
-      let val = &**val;
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-     {
-      let val = &self.optional_foreign_message_nonnullable;
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofInt::Int1(ref val)) = self.oneof_int {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofInt::Foreign1(ref val)) = self.oneof_int {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofForeign::Int2(ref val)) = self.oneof_foreign {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofForeign::Foreign2(ref val)) = self.oneof_foreign {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofZero::Int3(ref val)) = self.oneof_zero {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofZero::Foreign3(ref val)) = self.oneof_zero {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofNull::Int4(ref val)) = self.oneof_null {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofNull::Foreign4(ref val)) = self.oneof_null {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofUnset::Int5(ref val)) = self.oneof_unset {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofUnset::Foreign5(ref val)) = self.oneof_unset {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofPrimitives::Int6(ref val)) = self.oneof_primitives {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_OneofPrimitives::Bool6(ref val)) = self.oneof_primitives {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let TestMessage_OneofEmptyField::A = self.oneof_empty_field {
-      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let TestMessage_OneofEmptyField::B = self.oneof_empty_field {
-      let val: &::proto_google::protobuf::empty::Empty = &::std::default::Default::default();
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let TestMessage_OneofEmptyField::C(ref val) = self.oneof_empty_field {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(ref val) = self.r#type {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_Mod::Loop(ref val)) = self.r#mod {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    if let Some(TestMessage_Mod::Unsafe(ref val)) = self.r#mod {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
