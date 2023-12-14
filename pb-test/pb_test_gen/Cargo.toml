@@ -6,7 +6,7 @@ edition = "2018"
 publish = false
 
 [dependencies]
-#pb-jelly-gen = "0.0.14"  # If copying this example - use this
+#pb-jelly-gen = "0.0.15"  # If copying this example - use this
 pb-jelly-gen = { path = "../../pb-jelly-gen" }
 
 # only used when benchmarking PROST!

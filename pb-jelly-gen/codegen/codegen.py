@@ -1992,7 +1992,7 @@ class Context(object):
 
             versions = {
                 "lazy_static": ' version = "1.4.0" ',
-                "pb-jelly": ' version = "0.0.14" ',
+                "pb-jelly": ' version = "0.0.15" ',
                 "serde": ' version = "1.0" ',
                 "bytes": ' version = "1.0" ',
                 "compact_str": ' version = "0.5" ',
