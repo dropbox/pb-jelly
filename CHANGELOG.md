@@ -1,15 +1,21 @@
 # Unreleased
 ... everything has been released!
 
+# 0.0.15
+### Dec 14, 2023
+* Improve handling of recursive types (#157)
+  * In particular, recursive types now implement `Eq`/`Hash`/etc. if possible.
+* Reduce the amount of generated code (#158)
+
 # 0.0.14
-## Oct 27, 2023
+### Oct 27, 2023
 * Implement box_it for oneof fields (#150)
 * Use r# syntax for keywords instead of appending _ (#153)
   * This is a breaking change. Fields with names like `type` used to be generated as `type_`.
   Now, you should refer to them using a raw identifier: `r#type`.
 
 # 0.0.13
-## Oct 12, 2023
+### Oct 12, 2023
 * Add `rustdoc::` prefix to `#[allow(broken_intra_doc_links)]` (#148)
 
 # 0.0.12
