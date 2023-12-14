@@ -879,13 +879,19 @@ fn test_proto3_zerocopy_read() {
 
     let mut proto = TestProto3Zerocopy::default();
     proto.deserialize(&mut Cursor::new(data.clone())).unwrap();
-    let data1 = proto.data1.into_buffer();
-    let data2 = proto.data2.into_buffer();
+    let data1 = proto.data1.clone().into_buffer();
+    let data2 = proto.data2.clone().into_buffer();
     assert_eq!(data1, &b"zerocopy"[..]);
     assert_eq!(data2, &b"zerocopy2"[..]);
     // The deserialized buffers should point into `data`.
     data.slice_ref(data1.as_ref());
     data.slice_ref(data2.as_ref());
+
+    assert_eq!(proto.compute_grpc_slices_size(), "zerocopy".len() + "zerocopy2".len());
+    assert_eq!(
+        TestProto3ContainsZerocopy { inner: Some(proto) }.compute_grpc_slices_size(),
+        "zerocopy".len() + "zerocopy2".len()
+    );
 }
 
 // Test that boxing works properly for oneof fields.

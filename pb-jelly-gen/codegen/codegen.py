@@ -530,6 +530,18 @@ class RustType(object):
             )
         raise AssertionError("Unexpected field type")
 
+    def may_use_grpc_slices(self) -> bool:
+        if (
+            self.has_custom_type()
+            or self.is_blob()
+            or self.is_grpc_slices()
+            or self.is_lazy_bytes()
+        ):
+            return True
+        if self.field.type == FieldDescriptorProto.TYPE_MESSAGE:
+            return self.ctx.impls_by_msg[self.field.type_name].may_use_grpc_slices
+        return False
+
     def rust_type(self) -> Text:
         typ = self.field.type
 
@@ -697,8 +709,14 @@ def field_iter(
             else:
                 ctx.write("let %s = &self.%s;" % (var, escape_name(field.name)))
             yield
+    elif typ.is_nullable() and not typ.is_repeated():
+        with block(
+            ctx, "if let Some(ref %s) = self.%s" % (var, escape_name(field.name))
+        ):
+            if typ.is_boxed():
+                ctx.write("let %s = &**%s;" % (var, var))
+            yield
     else:
-        # This iterates through Vec and the Option<> type for optional fieldds
         with block(ctx, "for %s in &self.%s" % (var, escape_name(field.name))):
             if typ.is_boxed():
                 ctx.write("let %s = &**%s;" % (var, var))
@@ -890,18 +908,6 @@ class CodeWriter(object):
             with block(self, "pub const fn value(self) -> i32"):
                 self.write("self.0")
 
-            with block(
-                self,
-                "pub fn into_known(self) -> ::std::option::Option<%s>" % closed_name,
-            ):
-                with block(self, "match self"):
-                    for _, value in enum_variants:
-                        self.write(
-                            "%s::%s => Some(%s::%s),"
-                            % (name, value.name, closed_name, value.name)
-                        )
-                    self.write("_ => None,")
-
         with block(self, "impl ::std::default::Default for " + name):
             with block(self, "fn default() -> Self"):
                 # Under proto2, the default value is the first defined.
@@ -925,27 +931,27 @@ class CodeWriter(object):
             pass
 
         with block(self, "impl ::pb_jelly::OpenProtoEnum for " + name):
-            with block(self, "fn name(self) -> ::std::option::Option<&'static str>"):
+            self.write("type Closed = {};".format(closed_name))
+            with block(
+                self,
+                "fn into_known(self) -> ::std::option::Option<%s>" % closed_name,
+            ):
                 with block(self, "match self"):
                     for _, value in enum_variants:
                         self.write(
-                            '%s::%s => Some("%s"),' % (name, value.name, value.name)
+                            "%s::%s => Some(%s::%s),"
+                            % (name, value.name, closed_name, value.name)
                         )
                     self.write("_ => None,")
-
-            with block(self, "fn is_known(self) -> bool"):
-                with block(self, "match self"):
-                    for _, value in enum_variants:
-                        self.write("%s::%s => true," % (name, value.name))
-                    self.write("_ => false,")
 
         with block(self, "impl ::std::fmt::Debug for " + name):
             with block(
                 self,
                 "fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result",
             ):
-                self.write("use ::pb_jelly::OpenProtoEnum;")
-                with block(self, "match self.name()"):
+                with block(
+                    self, "match <Self as ::pb_jelly::OpenProtoEnum>::name(*self)"
+                ):
                     self.write('Some(s) => write!(f, "{}", s),')
                     self.write('None => write!(f, "Unknown({})", self.0),')
 
@@ -1215,33 +1221,56 @@ class CodeWriter(object):
                     for field in msg_type.field:
                         typ = self.rust_type(msg_type, field)
 
-                        self.write("let mut %s_size = 0;" % field.name)
-                        with field_iter(self, "val", name, msg_type, field):
-                            self.write(
-                                "let l = ::pb_jelly::Message::compute_size(val);"
+                        if (
+                            not typ.oneof
+                            and field.type != FieldDescriptorProto.TYPE_MESSAGE
+                            and not (
+                                field.type == FieldDescriptorProto.TYPE_ENUM
+                                and enum_err_if_default_or_unknown(
+                                    self.ctx.find_enum(field.type_name).typ
+                                )
                             )
-                            if not typ.should_serialize_packed():
-                                self.write(
-                                    "%s_size += ::pb_jelly::wire_format::serialized_length(%s);"
-                                    % (field.name, field.number)
+                            and not typ.is_nullable()
+                            and not typ.is_repeated()
+                            and not typ.is_boxed()
+                        ):
+                            # Special case this fairly common case to reduce codegen.
+                            self.write(
+                                "size += ::pb_jelly::helpers::compute_size_scalar::<{typ}>(&self.{escaped_name}, {field_number}, ::pb_jelly::wire_format::Type::{wire_format});".format(
+                                    typ=typ.rust_type(),
+                                    escaped_name=escape_name(field.name),
+                                    field_number=field.number,
+                                    wire_format=typ.wire_format(),
                                 )
-                            if typ.is_length_delimited():
+                            )
+                        else:
+                            self.write("let mut %s_size = 0;" % field.name)
+                            with field_iter(self, "val", name, msg_type, field):
                                 self.write(
-                                    "%s_size += ::pb_jelly::varint::serialized_length(l as u64);"
-                                    % field.name
+                                    "let l = ::pb_jelly::Message::compute_size(val);"
                                 )
-                            self.write("%s_size += l;" % field.name)
-                        if typ.should_serialize_packed():
-                            with block(self, "if !self.%s.is_empty()" % field.name):
-                                self.write(
-                                    "size += ::pb_jelly::wire_format::serialized_length(%s);"
-                                    % field.number
-                                )
-                                self.write(
-                                    "size += ::pb_jelly::varint::serialized_length(%s_size as u64);"
-                                    % field.name
-                                )
-                        self.write("size += %s_size;" % field.name)
+                                if not typ.should_serialize_packed():
+                                    self.write(
+                                        "%s_size += ::pb_jelly::wire_format::serialized_length(%s);"
+                                        % (field.name, field.number)
+                                    )
+                                if typ.is_length_delimited():
+                                    self.write(
+                                        "%s_size += ::pb_jelly::varint::serialized_length(l as u64);"
+                                        % field.name
+                                    )
+                                self.write("%s_size += l;" % field.name)
+                            if typ.should_serialize_packed():
+                                with block(self, "if !self.%s.is_empty()" % field.name):
+                                    self.write(
+                                        "size += ::pb_jelly::wire_format::serialized_length(%s);"
+                                        % field.number
+                                    )
+                                    self.write(
+                                        "size += ::pb_jelly::varint::serialized_length(%s_size as u64);"
+                                        % field.name
+                                    )
+                            self.write("size += %s_size;" % field.name)
                     if msg_type.options.Extensions[
                         extensions_pb2.preserve_unrecognized
                     ]:
@@ -1250,17 +1279,17 @@ class CodeWriter(object):
                 else:
                     self.write("0")
 
-            with block(self, "fn compute_grpc_slices_size(&self) -> usize"):
-                if len(msg_type.field) > 0:
+            if impls.may_use_grpc_slices:
+                with block(self, "fn compute_grpc_slices_size(&self) -> usize"):
                     self.write("let mut size = 0;")
                     for field in msg_type.field:
-                        with field_iter(self, "val", name, msg_type, field):
-                            self.write(
-                                "size += ::pb_jelly::Message::compute_grpc_slices_size(val);"
-                            )
+                        rust_type = RustType(self.ctx, self.proto_file, msg_type, field)
+                        if rust_type.may_use_grpc_slices():
+                            with field_iter(self, "val", name, msg_type, field):
+                                self.write(
+                                    "size += ::pb_jelly::Message::compute_grpc_slices_size(val);"
+                                )
                     self.write("size")
-                else:
-                    self.write("0")
 
             with block(
                 self,
@@ -1285,18 +1314,41 @@ class CodeWriter(object):
                             )
                             self.write("::pb_jelly::varint::write(size as u64, w)?;")
 
-                    with field_iter(self, "val", name, msg_type, field):
-                        if not typ.should_serialize_packed():
-                            self.write(
-                                "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::%s, w)?;"
-                                % (field.number, typ.wire_format())
+                    if (
+                        not typ.oneof
+                        and field.type != FieldDescriptorProto.TYPE_MESSAGE
+                        and not (
+                            field.type == FieldDescriptorProto.TYPE_ENUM
+                            and enum_err_if_default_or_unknown(
+                                self.ctx.find_enum(field.type_name).typ
                             )
-                        if typ.is_length_delimited():
-                            self.write(
-                                "let l = ::pb_jelly::Message::compute_size(val);"
+                        )
+                        and not typ.is_nullable()
+                        and not typ.is_repeated()
+                        and not typ.is_boxed()
+                    ):
+                        # Special case this fairly common case to reduce codegen.
+                        self.write(
+                            "::pb_jelly::helpers::serialize_scalar::<W, {typ}>(w, &self.{escaped_name}, {field_number}, ::pb_jelly::wire_format::Type::{wire_format})?;".format(
+                                typ=typ.rust_type(),
+                                escaped_name=escape_name(field.name),
+                                field_number=field.number,
+                                wire_format=typ.wire_format(),
                             )
-                            self.write("::pb_jelly::varint::write(l as u64, w)?;")
-                        self.write("::pb_jelly::Message::serialize(val, w)?;")
+                        )
+                    else:
+                        with field_iter(self, "val", name, msg_type, field):
+                            if not typ.should_serialize_packed():
+                                self.write(
+                                    "::pb_jelly::wire_format::write(%s, ::pb_jelly::wire_format::Type::%s, w)?;"
+                                    % (field.number, typ.wire_format())
+                                )
+                            if typ.is_length_delimited():
+                                self.write(
+                                    "let l = ::pb_jelly::Message::compute_size(val);"
+                                )
+                                self.write("::pb_jelly::varint::write(l as u64, w)?;")
+                            self.write("::pb_jelly::Message::serialize(val, w)?;")
                 if msg_type.options.Extensions[extensions_pb2.preserve_unrecognized]:
                     self.write("w.write_all(&self._unrecognized)?;")
                 self.write("Ok(())")
@@ -1344,80 +1396,35 @@ class CodeWriter(object):
                             typ = self.rust_type(msg_type, field)
                             with block(self, "%s =>" % field.number):
                                 if typ.can_be_packed():
-                                    with block(self, "match typ"):
-                                        with block(
-                                            self,
-                                            "::pb_jelly::wire_format::Type::LengthDelimited =>",
-                                        ):
-                                            self.write(
-                                                "let len = ::pb_jelly::varint::ensure_read(&mut buf)?;"
-                                            )
-                                            self.write(
-                                                "let mut vals = ::pb_jelly::ensure_split(buf, len as usize)?;"
-                                            )
-                                            with block(
-                                                self, "while vals.has_remaining()"
-                                            ):
-                                                self.write(
-                                                    "let mut val: %s = ::std::default::Default::default();"
-                                                    % typ.rust_type()
-                                                )
-                                                self.write(
-                                                    "::pb_jelly::Message::deserialize(&mut val, &mut vals)?;"
-                                                )
-                                                self.write(
-                                                    "self.%s.push(val);"
-                                                    % escape_name(field.name)
-                                                )
-                                        with block(self, "_ =>"):
-                                            self.write(
-                                                '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::%s, "%s", %s)?;'
-                                                % (
-                                                    typ.wire_format(),
-                                                    name,
-                                                    field.number,
-                                                )
-                                            )
-                                            self.write(
-                                                "let mut val: %s = ::std::default::Default::default();"
-                                                % typ.rust_type()
-                                            )
-                                            self.write(
-                                                "::pb_jelly::Message::deserialize(&mut val, buf)?;"
-                                            )
-                                            self.write(
-                                                "self.%s.push(val);" % field.name
-                                            )
+                                    self.write(
+                                        '::pb_jelly::helpers::deserialize_packed::<B, {typ}>(\
+buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, "{msg_name}", {field_number}, &mut self.{escaped_name})?;'.format(
+                                            typ=typ.rust_type(),
+                                            expected_wire_format=typ.wire_format(),
+                                            msg_name=name,
+                                            field_number=field.number,
+                                            escaped_name=escape_name(field.name),
+                                        )
+                                    )
                                 else:
                                     if typ.is_length_delimited():
                                         self.write(
-                                            '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "%s", %s)?;'
-                                            % (name, field.number)
-                                        )
-                                        self.write(
-                                            "let len = ::pb_jelly::varint::ensure_read(&mut buf)?;"
-                                        )
-                                        self.write(
-                                            "let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;"
-                                        )
-                                        self.write(
-                                            "let mut val: %s = ::std::default::Default::default();"
-                                            % typ.rust_type()
-                                        )
-                                        self.write(
-                                            "::pb_jelly::Message::deserialize(&mut val, &mut next)?;"
+                                            'let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, {typ}>(\
+buf, typ, "{msg_name}", {field_number})?;'.format(
+                                                typ=typ.rust_type(),
+                                                msg_name=name,
+                                                field_number=field.number,
+                                            )
                                         )
                                     else:
                                         self.write(
-                                            '::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::%s, "%s", %s)?;'
-                                            % (typ.wire_format(), name, field.number)
-                                        )
-                                        self.write(
-                                            "let mut val: %s = ::std::default::Default::default();"
-                                            % typ.rust_type()
-                                        )
-                                        self.write(
-                                            "::pb_jelly::Message::deserialize(&mut val, buf)?;"
+                                            'let val = ::pb_jelly::helpers::deserialize_known_length::<B, {typ}>(\
+buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, "{msg_name}", {field_number})?;'.format(
+                                                typ=typ.rust_type(),
+                                                expected_wire_format=typ.wire_format(),
+                                                msg_name=name,
+                                                field_number=field.number,
+                                            )
                                         )
 
                                     if typ.is_repeated():
@@ -1677,6 +1684,7 @@ class ProtoType(Generic[M]):
 class Impls(NamedTuple):
     impls_eq: bool
     impls_copy: bool
+    may_use_grpc_slices: bool
 
 
 def box_recursive_fields(types: Dict[Text, ProtoType[DescriptorProto]]) -> None:
@@ -1744,6 +1752,7 @@ class Context(object):
     ) -> None:
         impls_eq = True
         impls_copy = True
+        may_use_grpc_slices = False
 
         for type_name in types:
             msg_type = self.find(type_name)
@@ -1761,6 +1770,7 @@ class Context(object):
                     self.extra_crates[crate].update(
                         CRATE_NAME_REGEX.findall(rust_type.custom_type())
                     )
+                    may_use_grpc_slices = True
 
                 if field.type_name:
                     field_type = self.find(field.type_name)
@@ -1781,6 +1791,7 @@ class Context(object):
                 ):
                     (impls_eq, impls_copy) = (False, False)  # Blob is not eq/copy
                     self.extra_crates[crate].add("blob_pb")
+                    may_use_grpc_slices = True
                 # If we use a Bytes type
                 elif (
                     typ == FieldDescriptorProto.TYPE_BYTES
@@ -1788,6 +1799,7 @@ class Context(object):
                 ):
                     (impls_eq, impls_copy) = (False, False)
                     self.extra_crates[crate].add("bytes")
+                    may_use_grpc_slices = True
                 elif typ in PRIMITIVE_TYPES:
                     if not PRIMITIVE_TYPES[typ][1]:
                         impls_eq = False
@@ -1813,6 +1825,9 @@ class Context(object):
                         field_impls = self.impls_by_msg[field.type_name]
                         impls_eq = impls_eq and field_impls.impls_eq
                         impls_copy = impls_copy and field_impls.impls_copy
+                        may_use_grpc_slices = (
+                            may_use_grpc_slices or field_impls.may_use_grpc_slices
+                        )
 
                     if rust_type.is_boxed():
                         impls_copy = False
@@ -1827,6 +1842,7 @@ class Context(object):
             self.impls_by_msg[type_name] = Impls(
                 impls_eq=impls_eq,
                 impls_copy=impls_copy,
+                may_use_grpc_slices=may_use_grpc_slices,
             )
 
     def feed(self, proto_file: FileDescriptorProto, to_generate: List[Text]) -> None:

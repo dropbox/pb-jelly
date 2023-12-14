@@ -48,7 +48,7 @@ impl ::pb_jelly::Message for BytesData {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       let l = ::pb_jelly::Message::compute_size(val);
       data_size += ::pb_jelly::wire_format::serialized_length(1);
       data_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -59,13 +59,13 @@ impl ::pb_jelly::Message for BytesData {
   }
   fn compute_grpc_slices_size(&self) -> usize {
     let mut size = 0;
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -77,11 +77,7 @@ impl ::pb_jelly::Message for BytesData {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "BytesData", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::pb_jelly::Lazy<::bytes::Bytes> = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::pb_jelly::Lazy<::bytes::Bytes>>(buf, typ, "BytesData", 1)?;
           self.data = Some(val);
         }
         _ => {
@@ -164,7 +160,7 @@ impl ::pb_jelly::Message for VecData {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       let l = ::pb_jelly::Message::compute_size(val);
       data_size += ::pb_jelly::wire_format::serialized_length(1);
       data_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -173,15 +169,8 @@ impl ::pb_jelly::Message for VecData {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.data {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -193,11 +182,7 @@ impl ::pb_jelly::Message for VecData {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "VecData", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::vec::Vec<u8> = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(buf, typ, "VecData", 1)?;
           self.data = Some(val);
         }
         _ => {
@@ -279,7 +264,7 @@ impl ::pb_jelly::Message for StringMessage {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       let l = ::pb_jelly::Message::compute_size(val);
       data_size += ::pb_jelly::wire_format::serialized_length(1);
       data_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -288,15 +273,8 @@ impl ::pb_jelly::Message for StringMessage {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.data {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -308,11 +286,7 @@ impl ::pb_jelly::Message for StringMessage {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "StringMessage", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "StringMessage", 1)?;
           self.data = Some(val);
         }
         _ => {
@@ -394,7 +368,7 @@ impl ::pb_jelly::Message for StringMessageSSO {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut data_size = 0;
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       let l = ::pb_jelly::Message::compute_size(val);
       data_size += ::pb_jelly::wire_format::serialized_length(1);
       data_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -403,15 +377,8 @@ impl ::pb_jelly::Message for StringMessageSSO {
     size += data_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.data {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    for val in &self.data {
+    if let Some(ref val) = self.data {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -423,11 +390,7 @@ impl ::pb_jelly::Message for StringMessageSSO {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "StringMessageSSO", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::compact_str::CompactString>(buf, typ, "StringMessageSSO", 1)?;
           self.data = Some(val);
         }
         _ => {
@@ -518,13 +481,6 @@ impl ::pb_jelly::Message for Cities {
     size += cities_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.cities {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     for val in &self.cities {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -538,11 +494,7 @@ impl ::pb_jelly::Message for Cities {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "Cities", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: City = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, City>(buf, typ, "Cities", 1)?;
           self.cities.push(val);
         }
         _ => {
@@ -756,7 +708,7 @@ impl ::pb_jelly::Message for City {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut city_size = 0;
-    for val in &self.city {
+    if let Some(ref val) = self.city {
       let l = ::pb_jelly::Message::compute_size(val);
       city_size += ::pb_jelly::wire_format::serialized_length(1);
       city_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -764,7 +716,7 @@ impl ::pb_jelly::Message for City {
     }
     size += city_size;
     let mut growth_from_2000_to_2013_size = 0;
-    for val in &self.growth_from_2000_to_2013 {
+    if let Some(ref val) = self.growth_from_2000_to_2013 {
       let l = ::pb_jelly::Message::compute_size(val);
       growth_from_2000_to_2013_size += ::pb_jelly::wire_format::serialized_length(2);
       growth_from_2000_to_2013_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -772,21 +724,21 @@ impl ::pb_jelly::Message for City {
     }
     size += growth_from_2000_to_2013_size;
     let mut latitude_size = 0;
-    for val in &self.latitude {
+    if let Some(ref val) = self.latitude {
       let l = ::pb_jelly::Message::compute_size(val);
       latitude_size += ::pb_jelly::wire_format::serialized_length(3);
       latitude_size += l;
     }
     size += latitude_size;
     let mut longitude_size = 0;
-    for val in &self.longitude {
+    if let Some(ref val) = self.longitude {
       let l = ::pb_jelly::Message::compute_size(val);
       longitude_size += ::pb_jelly::wire_format::serialized_length(4);
       longitude_size += l;
     }
     size += longitude_size;
     let mut population_size = 0;
-    for val in &self.population {
+    if let Some(ref val) = self.population {
       let l = ::pb_jelly::Message::compute_size(val);
       population_size += ::pb_jelly::wire_format::serialized_length(5);
       population_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -794,7 +746,7 @@ impl ::pb_jelly::Message for City {
     }
     size += population_size;
     let mut rank_size = 0;
-    for val in &self.rank {
+    if let Some(ref val) = self.rank {
       let l = ::pb_jelly::Message::compute_size(val);
       rank_size += ::pb_jelly::wire_format::serialized_length(6);
       rank_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -802,7 +754,7 @@ impl ::pb_jelly::Message for City {
     }
     size += rank_size;
     let mut state_size = 0;
-    for val in &self.state {
+    if let Some(ref val) = self.state {
       let l = ::pb_jelly::Message::compute_size(val);
       state_size += ::pb_jelly::wire_format::serialized_length(7);
       state_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -811,65 +763,40 @@ impl ::pb_jelly::Message for City {
     size += state_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.city {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.growth_from_2000_to_2013 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.latitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.longitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.population {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.rank {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.state {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    for val in &self.city {
+    if let Some(ref val) = self.city {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.growth_from_2000_to_2013 {
+    if let Some(ref val) = self.growth_from_2000_to_2013 {
       ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.latitude {
+    if let Some(ref val) = self.latitude {
       ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Fixed64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.longitude {
+    if let Some(ref val) = self.longitude {
       ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Fixed64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.population {
+    if let Some(ref val) = self.population {
       ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.rank {
+    if let Some(ref val) = self.rank {
       ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.state {
+    if let Some(ref val) = self.state {
       ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -881,55 +808,31 @@ impl ::pb_jelly::Message for City {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "City", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "City", 1)?;
           self.city = Some(val);
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "City", 2)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "City", 2)?;
           self.growth_from_2000_to_2013 = Some(val);
         }
         3 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "City", 3)?;
-          let mut val: f64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "City", 3)?;
           self.latitude = Some(val);
         }
         4 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "City", 4)?;
-          let mut val: f64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "City", 4)?;
           self.longitude = Some(val);
         }
         5 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "City", 5)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "City", 5)?;
           self.population = Some(val);
         }
         6 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "City", 6)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "City", 6)?;
           self.rank = Some(val);
         }
         7 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "City", 7)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::std::string::String = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "City", 7)?;
           self.state = Some(val);
         }
         _ => {
@@ -1038,13 +941,6 @@ impl ::pb_jelly::Message for CitiesSSO {
     size += cities_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.cities {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     for val in &self.cities {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
@@ -1058,11 +954,7 @@ impl ::pb_jelly::Message for CitiesSSO {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "CitiesSSO", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: CitySSO = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, CitySSO>(buf, typ, "CitiesSSO", 1)?;
           self.cities.push(val);
         }
         _ => {
@@ -1276,7 +1168,7 @@ impl ::pb_jelly::Message for CitySSO {
   fn compute_size(&self) -> usize {
     let mut size = 0;
     let mut city_size = 0;
-    for val in &self.city {
+    if let Some(ref val) = self.city {
       let l = ::pb_jelly::Message::compute_size(val);
       city_size += ::pb_jelly::wire_format::serialized_length(1);
       city_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -1284,7 +1176,7 @@ impl ::pb_jelly::Message for CitySSO {
     }
     size += city_size;
     let mut growth_from_2000_to_2013_size = 0;
-    for val in &self.growth_from_2000_to_2013 {
+    if let Some(ref val) = self.growth_from_2000_to_2013 {
       let l = ::pb_jelly::Message::compute_size(val);
       growth_from_2000_to_2013_size += ::pb_jelly::wire_format::serialized_length(2);
       growth_from_2000_to_2013_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -1292,21 +1184,21 @@ impl ::pb_jelly::Message for CitySSO {
     }
     size += growth_from_2000_to_2013_size;
     let mut latitude_size = 0;
-    for val in &self.latitude {
+    if let Some(ref val) = self.latitude {
       let l = ::pb_jelly::Message::compute_size(val);
       latitude_size += ::pb_jelly::wire_format::serialized_length(3);
       latitude_size += l;
     }
     size += latitude_size;
     let mut longitude_size = 0;
-    for val in &self.longitude {
+    if let Some(ref val) = self.longitude {
       let l = ::pb_jelly::Message::compute_size(val);
       longitude_size += ::pb_jelly::wire_format::serialized_length(4);
       longitude_size += l;
     }
     size += longitude_size;
     let mut population_size = 0;
-    for val in &self.population {
+    if let Some(ref val) = self.population {
       let l = ::pb_jelly::Message::compute_size(val);
       population_size += ::pb_jelly::wire_format::serialized_length(5);
       population_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -1314,7 +1206,7 @@ impl ::pb_jelly::Message for CitySSO {
     }
     size += population_size;
     let mut rank_size = 0;
-    for val in &self.rank {
+    if let Some(ref val) = self.rank {
       let l = ::pb_jelly::Message::compute_size(val);
       rank_size += ::pb_jelly::wire_format::serialized_length(6);
       rank_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -1322,7 +1214,7 @@ impl ::pb_jelly::Message for CitySSO {
     }
     size += rank_size;
     let mut state_size = 0;
-    for val in &self.state {
+    if let Some(ref val) = self.state {
       let l = ::pb_jelly::Message::compute_size(val);
       state_size += ::pb_jelly::wire_format::serialized_length(7);
       state_size += ::pb_jelly::varint::serialized_length(l as u64);
@@ -1331,65 +1223,40 @@ impl ::pb_jelly::Message for CitySSO {
     size += state_size;
     size
   }
-  fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
-    for val in &self.city {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.growth_from_2000_to_2013 {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.latitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.longitude {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.population {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.rank {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    for val in &self.state {
-      size += ::pb_jelly::Message::compute_grpc_slices_size(val);
-    }
-    size
-  }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
-    for val in &self.city {
+    if let Some(ref val) = self.city {
       ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.growth_from_2000_to_2013 {
+    if let Some(ref val) = self.growth_from_2000_to_2013 {
       ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.latitude {
+    if let Some(ref val) = self.latitude {
       ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Fixed64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.longitude {
+    if let Some(ref val) = self.longitude {
       ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Fixed64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.population {
+    if let Some(ref val) = self.population {
       ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.rank {
+    if let Some(ref val) = self.rank {
       ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
-    for val in &self.state {
+    if let Some(ref val) = self.state {
       ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
       let l = ::pb_jelly::Message::compute_size(val);
       ::pb_jelly::varint::write(l as u64, w)?;
@@ -1401,55 +1268,31 @@ impl ::pb_jelly::Message for CitySSO {
     while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
       match field_number {
         1 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "CitySSO", 1)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::compact_str::CompactString>(buf, typ, "CitySSO", 1)?;
           self.city = Some(val);
         }
         2 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "CitySSO", 2)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::compact_str::CompactString>(buf, typ, "CitySSO", 2)?;
           self.growth_from_2000_to_2013 = Some(val);
         }
         3 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "CitySSO", 3)?;
-          let mut val: f64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "CitySSO", 3)?;
           self.latitude = Some(val);
         }
         4 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::Fixed64, "CitySSO", 4)?;
-          let mut val: f64 = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, buf)?;
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, f64>(buf, typ, ::pb_jelly::wire_format::Type::Fixed64, "CitySSO", 4)?;
           self.longitude = Some(val);
         }
         5 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "CitySSO", 5)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::compact_str::CompactString>(buf, typ, "CitySSO", 5)?;
           self.population = Some(val);
         }
         6 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "CitySSO", 6)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::compact_str::CompactString>(buf, typ, "CitySSO", 6)?;
           self.rank = Some(val);
         }
         7 => {
-          ::pb_jelly::ensure_wire_format(typ, ::pb_jelly::wire_format::Type::LengthDelimited, "CitySSO", 7)?;
-          let len = ::pb_jelly::varint::ensure_read(&mut buf)?;
-          let mut next = ::pb_jelly::ensure_split(buf, len as usize)?;
-          let mut val: ::compact_str::CompactString = ::std::default::Default::default();
-          ::pb_jelly::Message::deserialize(&mut val, &mut next)?;
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::compact_str::CompactString>(buf, typ, "CitySSO", 7)?;
           self.state = Some(val);
         }
         _ => {
