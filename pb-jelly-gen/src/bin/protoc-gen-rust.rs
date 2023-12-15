@@ -2347,14 +2347,6 @@ impl<'a> Context<'a> {
         result
     }
 
-    fn get_build_file(&self) -> Vec<(String, String)> {
-        let mut results = vec![];
-        for crate_ in self.deps_map.borrow().keys() {
-            let build_file = BUILD_TEMPLATE.replace("{crate}", crate_);
-            results.push((crate_.clone(), build_file));
-        }
-        results
-    }
     fn get_spec_toml_file(&self, derive_serde: bool, include_sso: bool) -> Vec<(String, String)> {
         let mut results = Vec::new();
 
@@ -2481,23 +2473,6 @@ impl<'a> Context<'a> {
         (crate_name, mod_parts[1..].to_vec())
     }
 }
-
-const BUILD_TEMPLATE: &str = r#"
-package(default_visibility = ["//visibility:public"])
-
-rust_library(
-    name = "{crate}",
-    crate_type = "lib",
-    edition = "2018",
-)
-
-
-rust_doc(
-    name = "{crate}_doc",
-    crate = ":{crate}",
-    edition = "2018",
-)
-"#;
 
 const SPEC_TOML_TEMPLATE: &str = concat!(
     "# @",
@@ -2660,10 +2635,11 @@ fn generate_single_crate(
     }
 
     if request.get_parameter().contains(&"generate_build_files".to_owned()) {
-        for (crate_, build_file) in ctx.get_build_file() {
+        for crate_ in ctx.deps_map.keys() {
+            // Create a stub file for later generation
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(file_prefix.to_owned() + &crate_ + "/BUILD.in-gen-proto~"),
-                content: Some(build_file.to_owned()),
+                content: Some("".to_owned()),
                 ..Default::default()
             });
         }

@@ -1,6 +1,7 @@
 {
     "rust-analyzer.linkedProjects": [
         "./pb-jelly-gen/Cargo.toml",
+        "./pb-jelly-gen/Cargo.toml",
         "./pb-jelly-gen/Cargo.toml"
     ]
 }
