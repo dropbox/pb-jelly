@@ -2,20 +2,16 @@
 #![allow(clippy::nonminimal_bool)] // this is very stupid
 
 use std::cell::RefCell;
+use std::collections::{
+    BTreeMap,
+    BTreeSet,
+};
 use std::fmt::Write as _;
 use std::hash::Hash;
-use std::{
-    collections::{
-        BTreeMap,
-        BTreeSet,
-        HashMap,
-        HashSet,
-    },
-    io::{
-        self,
-        Read,
-        Write,
-    },
+use std::io::{
+    self,
+    Read,
+    Write,
 };
 
 use indexmap::{
@@ -47,7 +43,7 @@ use regex::Regex;
 struct StronglyConnectedComponents<T> {
     s: Vec<T>,
     b: Vec<u64>,
-    index: HashMap<T, u64>,
+    index: IndexMap<T, u64>,
     next_component: u64,
 }
 
@@ -56,7 +52,7 @@ impl<T: Eq + Hash + Clone> StronglyConnectedComponents<T> {
         StronglyConnectedComponents {
             s: vec![],
             b: vec![],
-            index: HashMap::new(),
+            index: IndexMap::new(),
             // Since we don't know the number of nodes in advance, just start counting from a reasonably high number
             next_component: 1 << 32,
         }
@@ -69,7 +65,7 @@ impl<T: Eq + Hash + Clone> StronglyConnectedComponents<T> {
     /// All nodes reachable from `node` will be processed, if they have not already been.
     ///
     /// After, `self.index` will also be populated with component IDs for each visited node.
-    fn process(&mut self, node: T, edges_from: &mut impl Fn(&T) -> Vec<T>, callback: &mut impl FnMut(HashSet<T>)) {
+    fn process(&mut self, node: T, edges_from: &mut impl Fn(&T) -> Vec<T>, callback: &mut impl FnMut(IndexSet<T>)) {
         if !self.index.contains_key(&node) {
             self.dfs(node, edges_from, callback);
         }
@@ -78,7 +74,7 @@ impl<T: Eq + Hash + Clone> StronglyConnectedComponents<T> {
     // a variant of https://en.wikipedia.org/wiki/Path-based_strong_component_algorithm;
     // see "Path-based depth-first search for strong and biconnected components" by Harold N. Gabow,
     // https://www.cs.princeton.edu/courses/archive/spr04/cos423/handouts/path%20based...pdf
-    fn dfs(&mut self, node: T, edges_from: &mut impl Fn(&T) -> Vec<T>, callback: &mut impl FnMut(HashSet<T>)) {
+    fn dfs(&mut self, node: T, edges_from: &mut impl Fn(&T) -> Vec<T>, callback: &mut impl FnMut(IndexSet<T>)) {
         self.s.push(node.clone());
         let my_index = self.s.len() as u64;
         self.index.insert(node.clone(), my_index);
@@ -96,7 +92,7 @@ impl<T: Eq + Hash + Clone> StronglyConnectedComponents<T> {
 
         if my_index == *self.b.last().unwrap() {
             self.b.pop();
-            let mut component = HashSet::new();
+            let mut component = IndexSet::new();
             while self.s.len() as u64 >= my_index {
                 let v = self.s.pop().unwrap();
                 *self.index.get_mut(&v).unwrap() = self.next_component;
@@ -849,7 +845,7 @@ struct CodeWriter<'a, 'ctx> {
     is_proto3: bool,
     uses_sso: bool,
     derive_serde: bool,
-    source_code_info_by_scl: HashMap<Vec<i32>, &'a SourceCodeInfo_Location>,
+    source_code_info_by_scl: IndexMap<Vec<i32>, &'a SourceCodeInfo_Location>,
 }
 
 impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
@@ -1193,8 +1189,8 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
 
         let escaped_name = escape_name(&name);
 
-        let mut oneof_fields: HashMap<&str, Vec<&'a FieldDescriptorProto>> = HashMap::new();
-        let proto3_optional_synthetic_oneofs: HashSet<i32> = msg_type
+        let mut oneof_fields: IndexMap<&str, Vec<&'a FieldDescriptorProto>> = IndexMap::new();
+        let proto3_optional_synthetic_oneofs: IndexSet<i32> = msg_type
             .field
             .iter()
             .filter(|f| f.get_proto3_optional())
@@ -2153,8 +2149,8 @@ struct Impls {
 /// Given message types, keyed by their `proto_name()`s, detect recursive fields
 /// that would otherwise cause an infinite-size type and add the `box_it` extension to them.
 fn box_recursive_fields(
-    types: HashMap<String, ProtoType<'_>>,
-    implicitly_boxed: &mut HashSet<*const FieldDescriptorProto>,
+    types: IndexMap<String, ProtoType<'_>>,
+    implicitly_boxed: &mut IndexSet<*const FieldDescriptorProto>,
 ) {
     let mut scc = StronglyConnectedComponents::<&str>::new();
 
@@ -2173,7 +2169,7 @@ fn box_recursive_fields(
             .collect()
     };
 
-    let mut handle_scc = |type_scc: HashSet<&str>| {
+    let mut handle_scc = |type_scc: IndexSet<&str>| {
         // For simplicity, apply box_it to all edges within the SCC.
         // Not all edges (i.e. fields) need to be boxed - just enough to cut the SCC -
         // but deciding which to box would be unintuitive and possibly not deterministic.
@@ -2195,14 +2191,14 @@ fn box_recursive_fields(
 }
 
 struct Context<'a> {
-    proto_types: HashMap<String, ProtoType<'a>>,
-    deps_map: RefCell<HashMap<String, HashSet<String>>>,
-    extra_crates: HashMap<String, HashSet<String>>,
+    proto_types: IndexMap<String, ProtoType<'a>>,
+    deps_map: RefCell<IndexMap<String, IndexSet<String>>>,
+    extra_crates: IndexMap<String, IndexSet<String>>,
     /// This is a bit hacky but RustType doesn't really know where its field descriptors came from
-    implicitly_boxed: HashSet<*const FieldDescriptorProto>,
+    implicitly_boxed: IndexSet<*const FieldDescriptorProto>,
     /// Map from msg.proto_name() => cached impls
     /// We have to build this on the fly as we process the types.
-    impls_by_msg: HashMap<String, Impls>,
+    impls_by_msg: IndexMap<String, Impls>,
     impls_scc: StronglyConnectedComponents<String>,
     /// Indicator if every directory should be their own crate.
     crate_per_dir: bool,
@@ -2214,17 +2210,17 @@ struct Context<'a> {
 impl<'a> Context<'a> {
     fn new(crate_per_dir: bool, prefix_to_clear: String) -> Self {
         Context {
-            proto_types: HashMap::new(),
-            deps_map: RefCell::new(HashMap::new()),
-            extra_crates: HashMap::new(),
-            implicitly_boxed: HashSet::new(),
-            impls_by_msg: HashMap::new(),
+            proto_types: IndexMap::new(),
+            deps_map: RefCell::new(IndexMap::new()),
+            extra_crates: IndexMap::new(),
+            implicitly_boxed: IndexSet::new(),
+            impls_by_msg: IndexMap::new(),
             impls_scc: StronglyConnectedComponents::new(),
             crate_per_dir,
             prefix_to_clear,
         }
     }
-    fn calc_impls(&mut self, types: HashSet<String>) {
+    fn calc_impls(&mut self, types: IndexSet<String>) {
         let mut impls_eq = true;
         let mut impls_copy = true;
         let mut may_use_grpc_slices = false;
@@ -2377,7 +2373,7 @@ impl<'a> Context<'a> {
             self.proto_types.insert(enum_pt.proto_name(), enum_pt);
         }
 
-        let mut message_types: HashMap<String, ProtoType<'_>> = HashMap::new();
+        let mut message_types: IndexMap<String, ProtoType<'_>> = IndexMap::new();
 
         for &(ref path, typ, _) in &messages {
             let msg_pt = ProtoType::new(self, proto_file, path.clone(), ProtoTypeDescriptor::Message(typ));
@@ -2407,7 +2403,7 @@ impl<'a> Context<'a> {
                     .collect()
             };
             let mut sccs = vec![];
-            let mut record_scc = |scc: HashSet<String>| sccs.push(scc);
+            let mut record_scc = |scc: IndexSet<String>| sccs.push(scc);
             self.impls_scc.process(msg_pt.proto_name(), &mut edges, &mut record_scc);
             for scc in sccs {
                 self.calc_impls(scc);
@@ -2500,15 +2496,15 @@ impl<'a> Context<'a> {
         let mut results = Vec::new();
 
         for (crate_name, deps) in self.deps_map.borrow().iter() {
-            let mut all_deps: HashSet<&str> = ["lazy_static", "pb-jelly"]
+            let mut all_deps: IndexSet<&str> = ["lazy_static", "pb-jelly"]
                 .iter()
                 .copied()
                 .chain(deps.iter().map(|dep| dep.as_str()))
-                .collect::<HashSet<_>>();
+                .collect::<IndexSet<_>>();
 
             all_deps.remove("std");
 
-            let mut features: HashMap<&str, &str> = [
+            let mut features: IndexMap<&str, &str> = [
                 ("serde", r#"features=["serde_derive"]"#),
                 ("compact_str", r#"features=["bytes"]"#),
             ]
@@ -2569,7 +2565,7 @@ impl<'a> Context<'a> {
                 }
             }
 
-            let mut versions: HashMap<&str, String> = HashMap::new();
+            let mut versions: IndexMap<&str, String> = IndexMap::new();
             versions.insert("lazy_static", "version = \"1.4.0\"".to_string());
             versions.insert("pb-jelly", "version = \"0.0.15\"".to_string());
             versions.insert("serde", "version = \"1.0\"".to_string());
