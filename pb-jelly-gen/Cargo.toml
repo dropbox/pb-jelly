@@ -19,8 +19,8 @@ tempfile = "3.1.0"
 walkdir = "2"
 
 pb-jelly = { path = "../pb-jelly" }
-proto_google = { path = "../pb-test/gen/pb-jelly/proto_google" }
-proto_rust = { path = "../pb-test/gen/pb-jelly/proto_rust" }
+proto_google = { path = "./proto_google" }
+proto_rust = { path = "./proto_rust" }
 regex = "1.10.2"
 lazy_static = "1.4.0"
 indexmap = "2.0.2"

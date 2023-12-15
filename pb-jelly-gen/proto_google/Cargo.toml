@@ -1,0 +1,9 @@
+# @generated, do not edit
+[package]
+name = "proto_google"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+lazy_static = { version = "1.4.0" }
+pb-jelly = { version = "0.0.15" }
