@@ -7,4 +7,4 @@ edition = "2018"
 [dependencies]
 lazy_static = { version = "1.4.0" }
 pb-jelly = { version = "0.0.15" }
-proto_google = {path = "../proto_google"}
+proto_google = { path = "../proto_google" }

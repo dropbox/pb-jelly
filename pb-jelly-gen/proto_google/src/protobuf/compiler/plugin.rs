@@ -38,9 +38,9 @@ impl ::pb_jelly::OpenProtoEnum for CodeGeneratorResponse_Feature {
   type Closed = CodeGeneratorResponse_Feature_Closed;
   fn into_known(self) -> ::std::option::Option<CodeGeneratorResponse_Feature_Closed> {
     match self {
-      CodeGeneratorResponse_Feature::FEATURE_NONE => Some(CodeGeneratorResponse_Feature_Closed::FEATURE_NONE),
-      CodeGeneratorResponse_Feature::FEATURE_PROTO3_OPTIONAL => Some(CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL),
-      CodeGeneratorResponse_Feature::FEATURE_SUPPORTS_EDITIONS => Some(CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS),
+      CodeGeneratorResponse_Feature::FEATURE_NONE => ::std::option::Option::Some(CodeGeneratorResponse_Feature_Closed::FEATURE_NONE),
+      CodeGeneratorResponse_Feature::FEATURE_PROTO3_OPTIONAL => ::std::option::Option::Some(CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL),
+      CodeGeneratorResponse_Feature::FEATURE_SUPPORTS_EDITIONS => ::std::option::Option::Some(CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS),
       _ => None,
     }
   }

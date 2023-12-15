@@ -54,15 +54,15 @@ impl ::pb_jelly::OpenProtoEnum for Edition {
   type Closed = Edition_Closed;
   fn into_known(self) -> ::std::option::Option<Edition_Closed> {
     match self {
-      Edition::EDITION_UNKNOWN => Some(Edition_Closed::EDITION_UNKNOWN),
-      Edition::EDITION_PROTO2 => Some(Edition_Closed::EDITION_PROTO2),
-      Edition::EDITION_PROTO3 => Some(Edition_Closed::EDITION_PROTO3),
-      Edition::EDITION_2023 => Some(Edition_Closed::EDITION_2023),
-      Edition::EDITION_1_TEST_ONLY => Some(Edition_Closed::EDITION_1_TEST_ONLY),
-      Edition::EDITION_2_TEST_ONLY => Some(Edition_Closed::EDITION_2_TEST_ONLY),
-      Edition::EDITION_99997_TEST_ONLY => Some(Edition_Closed::EDITION_99997_TEST_ONLY),
-      Edition::EDITION_99998_TEST_ONLY => Some(Edition_Closed::EDITION_99998_TEST_ONLY),
-      Edition::EDITION_99999_TEST_ONLY => Some(Edition_Closed::EDITION_99999_TEST_ONLY),
+      Edition::EDITION_UNKNOWN => ::std::option::Option::Some(Edition_Closed::EDITION_UNKNOWN),
+      Edition::EDITION_PROTO2 => ::std::option::Option::Some(Edition_Closed::EDITION_PROTO2),
+      Edition::EDITION_PROTO3 => ::std::option::Option::Some(Edition_Closed::EDITION_PROTO3),
+      Edition::EDITION_2023 => ::std::option::Option::Some(Edition_Closed::EDITION_2023),
+      Edition::EDITION_1_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_1_TEST_ONLY),
+      Edition::EDITION_2_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_2_TEST_ONLY),
+      Edition::EDITION_99997_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99997_TEST_ONLY),
+      Edition::EDITION_99998_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99998_TEST_ONLY),
+      Edition::EDITION_99999_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99999_TEST_ONLY),
       _ => None,
     }
   }
@@ -196,8 +196,8 @@ impl ::pb_jelly::OpenProtoEnum for ExtensionRangeOptions_VerificationState {
   type Closed = ExtensionRangeOptions_VerificationState_Closed;
   fn into_known(self) -> ::std::option::Option<ExtensionRangeOptions_VerificationState_Closed> {
     match self {
-      ExtensionRangeOptions_VerificationState::DECLARATION => Some(ExtensionRangeOptions_VerificationState_Closed::DECLARATION),
-      ExtensionRangeOptions_VerificationState::UNVERIFIED => Some(ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED),
+      ExtensionRangeOptions_VerificationState::DECLARATION => ::std::option::Option::Some(ExtensionRangeOptions_VerificationState_Closed::DECLARATION),
+      ExtensionRangeOptions_VerificationState::UNVERIFIED => ::std::option::Option::Some(ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED),
       _ => None,
     }
   }
@@ -323,24 +323,24 @@ impl ::pb_jelly::OpenProtoEnum for FieldDescriptorProto_Type {
   type Closed = FieldDescriptorProto_Type_Closed;
   fn into_known(self) -> ::std::option::Option<FieldDescriptorProto_Type_Closed> {
     match self {
-      FieldDescriptorProto_Type::TYPE_DOUBLE => Some(FieldDescriptorProto_Type_Closed::TYPE_DOUBLE),
-      FieldDescriptorProto_Type::TYPE_FLOAT => Some(FieldDescriptorProto_Type_Closed::TYPE_FLOAT),
-      FieldDescriptorProto_Type::TYPE_INT64 => Some(FieldDescriptorProto_Type_Closed::TYPE_INT64),
-      FieldDescriptorProto_Type::TYPE_UINT64 => Some(FieldDescriptorProto_Type_Closed::TYPE_UINT64),
-      FieldDescriptorProto_Type::TYPE_INT32 => Some(FieldDescriptorProto_Type_Closed::TYPE_INT32),
-      FieldDescriptorProto_Type::TYPE_FIXED64 => Some(FieldDescriptorProto_Type_Closed::TYPE_FIXED64),
-      FieldDescriptorProto_Type::TYPE_FIXED32 => Some(FieldDescriptorProto_Type_Closed::TYPE_FIXED32),
-      FieldDescriptorProto_Type::TYPE_BOOL => Some(FieldDescriptorProto_Type_Closed::TYPE_BOOL),
-      FieldDescriptorProto_Type::TYPE_STRING => Some(FieldDescriptorProto_Type_Closed::TYPE_STRING),
-      FieldDescriptorProto_Type::TYPE_GROUP => Some(FieldDescriptorProto_Type_Closed::TYPE_GROUP),
-      FieldDescriptorProto_Type::TYPE_MESSAGE => Some(FieldDescriptorProto_Type_Closed::TYPE_MESSAGE),
-      FieldDescriptorProto_Type::TYPE_BYTES => Some(FieldDescriptorProto_Type_Closed::TYPE_BYTES),
-      FieldDescriptorProto_Type::TYPE_UINT32 => Some(FieldDescriptorProto_Type_Closed::TYPE_UINT32),
-      FieldDescriptorProto_Type::TYPE_ENUM => Some(FieldDescriptorProto_Type_Closed::TYPE_ENUM),
-      FieldDescriptorProto_Type::TYPE_SFIXED32 => Some(FieldDescriptorProto_Type_Closed::TYPE_SFIXED32),
-      FieldDescriptorProto_Type::TYPE_SFIXED64 => Some(FieldDescriptorProto_Type_Closed::TYPE_SFIXED64),
-      FieldDescriptorProto_Type::TYPE_SINT32 => Some(FieldDescriptorProto_Type_Closed::TYPE_SINT32),
-      FieldDescriptorProto_Type::TYPE_SINT64 => Some(FieldDescriptorProto_Type_Closed::TYPE_SINT64),
+      FieldDescriptorProto_Type::TYPE_DOUBLE => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_DOUBLE),
+      FieldDescriptorProto_Type::TYPE_FLOAT => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_FLOAT),
+      FieldDescriptorProto_Type::TYPE_INT64 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_INT64),
+      FieldDescriptorProto_Type::TYPE_UINT64 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_UINT64),
+      FieldDescriptorProto_Type::TYPE_INT32 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_INT32),
+      FieldDescriptorProto_Type::TYPE_FIXED64 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_FIXED64),
+      FieldDescriptorProto_Type::TYPE_FIXED32 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_FIXED32),
+      FieldDescriptorProto_Type::TYPE_BOOL => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_BOOL),
+      FieldDescriptorProto_Type::TYPE_STRING => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_STRING),
+      FieldDescriptorProto_Type::TYPE_GROUP => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_GROUP),
+      FieldDescriptorProto_Type::TYPE_MESSAGE => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_MESSAGE),
+      FieldDescriptorProto_Type::TYPE_BYTES => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_BYTES),
+      FieldDescriptorProto_Type::TYPE_UINT32 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_UINT32),
+      FieldDescriptorProto_Type::TYPE_ENUM => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_ENUM),
+      FieldDescriptorProto_Type::TYPE_SFIXED32 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_SFIXED32),
+      FieldDescriptorProto_Type::TYPE_SFIXED64 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_SFIXED64),
+      FieldDescriptorProto_Type::TYPE_SINT32 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_SINT32),
+      FieldDescriptorProto_Type::TYPE_SINT64 => ::std::option::Option::Some(FieldDescriptorProto_Type_Closed::TYPE_SINT64),
       _ => None,
     }
   }
@@ -517,9 +517,9 @@ impl ::pb_jelly::OpenProtoEnum for FieldDescriptorProto_Label {
   type Closed = FieldDescriptorProto_Label_Closed;
   fn into_known(self) -> ::std::option::Option<FieldDescriptorProto_Label_Closed> {
     match self {
-      FieldDescriptorProto_Label::LABEL_OPTIONAL => Some(FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL),
-      FieldDescriptorProto_Label::LABEL_REPEATED => Some(FieldDescriptorProto_Label_Closed::LABEL_REPEATED),
-      FieldDescriptorProto_Label::LABEL_REQUIRED => Some(FieldDescriptorProto_Label_Closed::LABEL_REQUIRED),
+      FieldDescriptorProto_Label::LABEL_OPTIONAL => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL),
+      FieldDescriptorProto_Label::LABEL_REPEATED => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_REPEATED),
+      FieldDescriptorProto_Label::LABEL_REQUIRED => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_REQUIRED),
       _ => None,
     }
   }
@@ -626,9 +626,9 @@ impl ::pb_jelly::OpenProtoEnum for FileOptions_OptimizeMode {
   type Closed = FileOptions_OptimizeMode_Closed;
   fn into_known(self) -> ::std::option::Option<FileOptions_OptimizeMode_Closed> {
     match self {
-      FileOptions_OptimizeMode::SPEED => Some(FileOptions_OptimizeMode_Closed::SPEED),
-      FileOptions_OptimizeMode::CODE_SIZE => Some(FileOptions_OptimizeMode_Closed::CODE_SIZE),
-      FileOptions_OptimizeMode::LITE_RUNTIME => Some(FileOptions_OptimizeMode_Closed::LITE_RUNTIME),
+      FileOptions_OptimizeMode::SPEED => ::std::option::Option::Some(FileOptions_OptimizeMode_Closed::SPEED),
+      FileOptions_OptimizeMode::CODE_SIZE => ::std::option::Option::Some(FileOptions_OptimizeMode_Closed::CODE_SIZE),
+      FileOptions_OptimizeMode::LITE_RUNTIME => ::std::option::Option::Some(FileOptions_OptimizeMode_Closed::LITE_RUNTIME),
       _ => None,
     }
   }
@@ -738,9 +738,9 @@ impl ::pb_jelly::OpenProtoEnum for FieldOptions_CType {
   type Closed = FieldOptions_CType_Closed;
   fn into_known(self) -> ::std::option::Option<FieldOptions_CType_Closed> {
     match self {
-      FieldOptions_CType::STRING => Some(FieldOptions_CType_Closed::STRING),
-      FieldOptions_CType::CORD => Some(FieldOptions_CType_Closed::CORD),
-      FieldOptions_CType::STRING_PIECE => Some(FieldOptions_CType_Closed::STRING_PIECE),
+      FieldOptions_CType::STRING => ::std::option::Option::Some(FieldOptions_CType_Closed::STRING),
+      FieldOptions_CType::CORD => ::std::option::Option::Some(FieldOptions_CType_Closed::CORD),
+      FieldOptions_CType::STRING_PIECE => ::std::option::Option::Some(FieldOptions_CType_Closed::STRING_PIECE),
       _ => None,
     }
   }
@@ -848,9 +848,9 @@ impl ::pb_jelly::OpenProtoEnum for FieldOptions_JSType {
   type Closed = FieldOptions_JSType_Closed;
   fn into_known(self) -> ::std::option::Option<FieldOptions_JSType_Closed> {
     match self {
-      FieldOptions_JSType::JS_NORMAL => Some(FieldOptions_JSType_Closed::JS_NORMAL),
-      FieldOptions_JSType::JS_STRING => Some(FieldOptions_JSType_Closed::JS_STRING),
-      FieldOptions_JSType::JS_NUMBER => Some(FieldOptions_JSType_Closed::JS_NUMBER),
+      FieldOptions_JSType::JS_NORMAL => ::std::option::Option::Some(FieldOptions_JSType_Closed::JS_NORMAL),
+      FieldOptions_JSType::JS_STRING => ::std::option::Option::Some(FieldOptions_JSType_Closed::JS_STRING),
+      FieldOptions_JSType::JS_NUMBER => ::std::option::Option::Some(FieldOptions_JSType_Closed::JS_NUMBER),
       _ => None,
     }
   }
@@ -954,9 +954,9 @@ impl ::pb_jelly::OpenProtoEnum for FieldOptions_OptionRetention {
   type Closed = FieldOptions_OptionRetention_Closed;
   fn into_known(self) -> ::std::option::Option<FieldOptions_OptionRetention_Closed> {
     match self {
-      FieldOptions_OptionRetention::RETENTION_UNKNOWN => Some(FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN),
-      FieldOptions_OptionRetention::RETENTION_RUNTIME => Some(FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME),
-      FieldOptions_OptionRetention::RETENTION_SOURCE => Some(FieldOptions_OptionRetention_Closed::RETENTION_SOURCE),
+      FieldOptions_OptionRetention::RETENTION_UNKNOWN => ::std::option::Option::Some(FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN),
+      FieldOptions_OptionRetention::RETENTION_RUNTIME => ::std::option::Option::Some(FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME),
+      FieldOptions_OptionRetention::RETENTION_SOURCE => ::std::option::Option::Some(FieldOptions_OptionRetention_Closed::RETENTION_SOURCE),
       _ => None,
     }
   }
@@ -1068,16 +1068,16 @@ impl ::pb_jelly::OpenProtoEnum for FieldOptions_OptionTargetType {
   type Closed = FieldOptions_OptionTargetType_Closed;
   fn into_known(self) -> ::std::option::Option<FieldOptions_OptionTargetType_Closed> {
     match self {
-      FieldOptions_OptionTargetType::TARGET_TYPE_UNKNOWN => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN),
-      FieldOptions_OptionTargetType::TARGET_TYPE_FILE => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE),
-      FieldOptions_OptionTargetType::TARGET_TYPE_EXTENSION_RANGE => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE),
-      FieldOptions_OptionTargetType::TARGET_TYPE_MESSAGE => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE),
-      FieldOptions_OptionTargetType::TARGET_TYPE_FIELD => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD),
-      FieldOptions_OptionTargetType::TARGET_TYPE_ONEOF => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF),
-      FieldOptions_OptionTargetType::TARGET_TYPE_ENUM => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM),
-      FieldOptions_OptionTargetType::TARGET_TYPE_ENUM_ENTRY => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY),
-      FieldOptions_OptionTargetType::TARGET_TYPE_SERVICE => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE),
-      FieldOptions_OptionTargetType::TARGET_TYPE_METHOD => Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD),
+      FieldOptions_OptionTargetType::TARGET_TYPE_UNKNOWN => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN),
+      FieldOptions_OptionTargetType::TARGET_TYPE_FILE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE),
+      FieldOptions_OptionTargetType::TARGET_TYPE_EXTENSION_RANGE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE),
+      FieldOptions_OptionTargetType::TARGET_TYPE_MESSAGE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE),
+      FieldOptions_OptionTargetType::TARGET_TYPE_FIELD => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD),
+      FieldOptions_OptionTargetType::TARGET_TYPE_ONEOF => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF),
+      FieldOptions_OptionTargetType::TARGET_TYPE_ENUM => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM),
+      FieldOptions_OptionTargetType::TARGET_TYPE_ENUM_ENTRY => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY),
+      FieldOptions_OptionTargetType::TARGET_TYPE_SERVICE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE),
+      FieldOptions_OptionTargetType::TARGET_TYPE_METHOD => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD),
       _ => None,
     }
   }
@@ -1212,9 +1212,9 @@ impl ::pb_jelly::OpenProtoEnum for MethodOptions_IdempotencyLevel {
   type Closed = MethodOptions_IdempotencyLevel_Closed;
   fn into_known(self) -> ::std::option::Option<MethodOptions_IdempotencyLevel_Closed> {
     match self {
-      MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN => Some(MethodOptions_IdempotencyLevel_Closed::IDEMPOTENCY_UNKNOWN),
-      MethodOptions_IdempotencyLevel::NO_SIDE_EFFECTS => Some(MethodOptions_IdempotencyLevel_Closed::NO_SIDE_EFFECTS),
-      MethodOptions_IdempotencyLevel::IDEMPOTENT => Some(MethodOptions_IdempotencyLevel_Closed::IDEMPOTENT),
+      MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN => ::std::option::Option::Some(MethodOptions_IdempotencyLevel_Closed::IDEMPOTENCY_UNKNOWN),
+      MethodOptions_IdempotencyLevel::NO_SIDE_EFFECTS => ::std::option::Option::Some(MethodOptions_IdempotencyLevel_Closed::NO_SIDE_EFFECTS),
+      MethodOptions_IdempotencyLevel::IDEMPOTENT => ::std::option::Option::Some(MethodOptions_IdempotencyLevel_Closed::IDEMPOTENT),
       _ => None,
     }
   }
@@ -1318,10 +1318,10 @@ impl ::pb_jelly::OpenProtoEnum for FeatureSet_FieldPresence {
   type Closed = FeatureSet_FieldPresence_Closed;
   fn into_known(self) -> ::std::option::Option<FeatureSet_FieldPresence_Closed> {
     match self {
-      FeatureSet_FieldPresence::FIELD_PRESENCE_UNKNOWN => Some(FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN),
-      FeatureSet_FieldPresence::EXPLICIT => Some(FeatureSet_FieldPresence_Closed::EXPLICIT),
-      FeatureSet_FieldPresence::IMPLICIT => Some(FeatureSet_FieldPresence_Closed::IMPLICIT),
-      FeatureSet_FieldPresence::LEGACY_REQUIRED => Some(FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED),
+      FeatureSet_FieldPresence::FIELD_PRESENCE_UNKNOWN => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN),
+      FeatureSet_FieldPresence::EXPLICIT => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::EXPLICIT),
+      FeatureSet_FieldPresence::IMPLICIT => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::IMPLICIT),
+      FeatureSet_FieldPresence::LEGACY_REQUIRED => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED),
       _ => None,
     }
   }
@@ -1423,9 +1423,9 @@ impl ::pb_jelly::OpenProtoEnum for FeatureSet_EnumType {
   type Closed = FeatureSet_EnumType_Closed;
   fn into_known(self) -> ::std::option::Option<FeatureSet_EnumType_Closed> {
     match self {
-      FeatureSet_EnumType::ENUM_TYPE_UNKNOWN => Some(FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN),
-      FeatureSet_EnumType::OPEN => Some(FeatureSet_EnumType_Closed::OPEN),
-      FeatureSet_EnumType::CLOSED => Some(FeatureSet_EnumType_Closed::CLOSED),
+      FeatureSet_EnumType::ENUM_TYPE_UNKNOWN => ::std::option::Option::Some(FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN),
+      FeatureSet_EnumType::OPEN => ::std::option::Option::Some(FeatureSet_EnumType_Closed::OPEN),
+      FeatureSet_EnumType::CLOSED => ::std::option::Option::Some(FeatureSet_EnumType_Closed::CLOSED),
       _ => None,
     }
   }
@@ -1523,9 +1523,9 @@ impl ::pb_jelly::OpenProtoEnum for FeatureSet_RepeatedFieldEncoding {
   type Closed = FeatureSet_RepeatedFieldEncoding_Closed;
   fn into_known(self) -> ::std::option::Option<FeatureSet_RepeatedFieldEncoding_Closed> {
     match self {
-      FeatureSet_RepeatedFieldEncoding::REPEATED_FIELD_ENCODING_UNKNOWN => Some(FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN),
-      FeatureSet_RepeatedFieldEncoding::PACKED => Some(FeatureSet_RepeatedFieldEncoding_Closed::PACKED),
-      FeatureSet_RepeatedFieldEncoding::EXPANDED => Some(FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED),
+      FeatureSet_RepeatedFieldEncoding::REPEATED_FIELD_ENCODING_UNKNOWN => ::std::option::Option::Some(FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN),
+      FeatureSet_RepeatedFieldEncoding::PACKED => ::std::option::Option::Some(FeatureSet_RepeatedFieldEncoding_Closed::PACKED),
+      FeatureSet_RepeatedFieldEncoding::EXPANDED => ::std::option::Option::Some(FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED),
       _ => None,
     }
   }
@@ -1623,9 +1623,9 @@ impl ::pb_jelly::OpenProtoEnum for FeatureSet_Utf8Validation {
   type Closed = FeatureSet_Utf8Validation_Closed;
   fn into_known(self) -> ::std::option::Option<FeatureSet_Utf8Validation_Closed> {
     match self {
-      FeatureSet_Utf8Validation::UTF8_VALIDATION_UNKNOWN => Some(FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN),
-      FeatureSet_Utf8Validation::NONE => Some(FeatureSet_Utf8Validation_Closed::NONE),
-      FeatureSet_Utf8Validation::VERIFY => Some(FeatureSet_Utf8Validation_Closed::VERIFY),
+      FeatureSet_Utf8Validation::UTF8_VALIDATION_UNKNOWN => ::std::option::Option::Some(FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN),
+      FeatureSet_Utf8Validation::NONE => ::std::option::Option::Some(FeatureSet_Utf8Validation_Closed::NONE),
+      FeatureSet_Utf8Validation::VERIFY => ::std::option::Option::Some(FeatureSet_Utf8Validation_Closed::VERIFY),
       _ => None,
     }
   }
@@ -1723,9 +1723,9 @@ impl ::pb_jelly::OpenProtoEnum for FeatureSet_MessageEncoding {
   type Closed = FeatureSet_MessageEncoding_Closed;
   fn into_known(self) -> ::std::option::Option<FeatureSet_MessageEncoding_Closed> {
     match self {
-      FeatureSet_MessageEncoding::MESSAGE_ENCODING_UNKNOWN => Some(FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN),
-      FeatureSet_MessageEncoding::LENGTH_PREFIXED => Some(FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED),
-      FeatureSet_MessageEncoding::DELIMITED => Some(FeatureSet_MessageEncoding_Closed::DELIMITED),
+      FeatureSet_MessageEncoding::MESSAGE_ENCODING_UNKNOWN => ::std::option::Option::Some(FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN),
+      FeatureSet_MessageEncoding::LENGTH_PREFIXED => ::std::option::Option::Some(FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED),
+      FeatureSet_MessageEncoding::DELIMITED => ::std::option::Option::Some(FeatureSet_MessageEncoding_Closed::DELIMITED),
       _ => None,
     }
   }
@@ -1823,9 +1823,9 @@ impl ::pb_jelly::OpenProtoEnum for FeatureSet_JsonFormat {
   type Closed = FeatureSet_JsonFormat_Closed;
   fn into_known(self) -> ::std::option::Option<FeatureSet_JsonFormat_Closed> {
     match self {
-      FeatureSet_JsonFormat::JSON_FORMAT_UNKNOWN => Some(FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN),
-      FeatureSet_JsonFormat::ALLOW => Some(FeatureSet_JsonFormat_Closed::ALLOW),
-      FeatureSet_JsonFormat::LEGACY_BEST_EFFORT => Some(FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT),
+      FeatureSet_JsonFormat::JSON_FORMAT_UNKNOWN => ::std::option::Option::Some(FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN),
+      FeatureSet_JsonFormat::ALLOW => ::std::option::Option::Some(FeatureSet_JsonFormat_Closed::ALLOW),
+      FeatureSet_JsonFormat::LEGACY_BEST_EFFORT => ::std::option::Option::Some(FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT),
       _ => None,
     }
   }
@@ -1928,9 +1928,9 @@ impl ::pb_jelly::OpenProtoEnum for GeneratedCodeInfo_Annotation_Semantic {
   type Closed = GeneratedCodeInfo_Annotation_Semantic_Closed;
   fn into_known(self) -> ::std::option::Option<GeneratedCodeInfo_Annotation_Semantic_Closed> {
     match self {
-      GeneratedCodeInfo_Annotation_Semantic::NONE => Some(GeneratedCodeInfo_Annotation_Semantic_Closed::NONE),
-      GeneratedCodeInfo_Annotation_Semantic::SET => Some(GeneratedCodeInfo_Annotation_Semantic_Closed::SET),
-      GeneratedCodeInfo_Annotation_Semantic::ALIAS => Some(GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS),
+      GeneratedCodeInfo_Annotation_Semantic::NONE => ::std::option::Option::Some(GeneratedCodeInfo_Annotation_Semantic_Closed::NONE),
+      GeneratedCodeInfo_Annotation_Semantic::SET => ::std::option::Option::Some(GeneratedCodeInfo_Annotation_Semantic_Closed::SET),
+      GeneratedCodeInfo_Annotation_Semantic::ALIAS => ::std::option::Option::Some(GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS),
       _ => None,
     }
   }
