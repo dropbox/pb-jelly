@@ -37,9 +37,9 @@ impl ::pb_jelly::OpenProtoEnum for ForeignEnum {
   type Closed = ForeignEnum_Closed;
   fn into_known(self) -> ::std::option::Option<ForeignEnum_Closed> {
     match self {
-      ForeignEnum::FOREIGN_FOO => Some(ForeignEnum_Closed::FOREIGN_FOO),
-      ForeignEnum::FOREIGN_BAR => Some(ForeignEnum_Closed::FOREIGN_BAR),
-      ForeignEnum::FOREIGN_BAZ => Some(ForeignEnum_Closed::FOREIGN_BAZ),
+      ForeignEnum::FOREIGN_FOO => ::std::option::Option::Some(ForeignEnum_Closed::FOREIGN_FOO),
+      ForeignEnum::FOREIGN_BAR => ::std::option::Option::Some(ForeignEnum_Closed::FOREIGN_BAR),
+      ForeignEnum::FOREIGN_BAZ => ::std::option::Option::Some(ForeignEnum_Closed::FOREIGN_BAZ),
       _ => None,
     }
   }
@@ -135,7 +135,7 @@ impl ::pb_jelly::OpenProtoEnum for Version1Enum_TestEnum {
   type Closed = Version1Enum_TestEnum_Closed;
   fn into_known(self) -> ::std::option::Option<Version1Enum_TestEnum_Closed> {
     match self {
-      Version1Enum_TestEnum::ENUM0 => Some(Version1Enum_TestEnum_Closed::ENUM0),
+      Version1Enum_TestEnum::ENUM0 => ::std::option::Option::Some(Version1Enum_TestEnum_Closed::ENUM0),
       _ => None,
     }
   }
@@ -224,8 +224,8 @@ impl ::pb_jelly::OpenProtoEnum for Version2Enum_TestEnum {
   type Closed = Version2Enum_TestEnum_Closed;
   fn into_known(self) -> ::std::option::Option<Version2Enum_TestEnum_Closed> {
     match self {
-      Version2Enum_TestEnum::ENUM0 => Some(Version2Enum_TestEnum_Closed::ENUM0),
-      Version2Enum_TestEnum::ENUM1 => Some(Version2Enum_TestEnum_Closed::ENUM1),
+      Version2Enum_TestEnum::ENUM0 => ::std::option::Option::Some(Version2Enum_TestEnum_Closed::ENUM0),
+      Version2Enum_TestEnum::ENUM1 => ::std::option::Option::Some(Version2Enum_TestEnum_Closed::ENUM1),
       _ => None,
     }
   }
@@ -321,10 +321,10 @@ impl ::pb_jelly::OpenProtoEnum for TestMessage_NestedEnum {
   type Closed = TestMessage_NestedEnum_Closed;
   fn into_known(self) -> ::std::option::Option<TestMessage_NestedEnum_Closed> {
     match self {
-      TestMessage_NestedEnum::FOO => Some(TestMessage_NestedEnum_Closed::FOO),
-      TestMessage_NestedEnum::BAR => Some(TestMessage_NestedEnum_Closed::BAR),
-      TestMessage_NestedEnum::BAZ => Some(TestMessage_NestedEnum_Closed::BAZ),
-      TestMessage_NestedEnum::NEG => Some(TestMessage_NestedEnum_Closed::NEG),
+      TestMessage_NestedEnum::FOO => ::std::option::Option::Some(TestMessage_NestedEnum_Closed::FOO),
+      TestMessage_NestedEnum::BAR => ::std::option::Option::Some(TestMessage_NestedEnum_Closed::BAR),
+      TestMessage_NestedEnum::BAZ => ::std::option::Option::Some(TestMessage_NestedEnum_Closed::BAZ),
+      TestMessage_NestedEnum::NEG => ::std::option::Option::Some(TestMessage_NestedEnum_Closed::NEG),
       _ => None,
     }
   }

@@ -391,12 +391,13 @@ impl<'a> RustType<'a> {
 
     fn is_boxed(&self) -> bool {
         return self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_MESSAGE)
-            && self
+            && (self
                 .field
                 .get_options()
                 .get_extension(extensions::BOX_IT)
                 .unwrap()
-                .unwrap_or(false);
+                .unwrap_or(false)
+                || self.ctx.implicitly_boxed.contains(&(self.field as *const _)));
     }
 
     fn has_custom_type(&self) -> bool {
@@ -612,7 +613,7 @@ impl<'a> RustType<'a> {
                 return (
                     format!("&{}", self.rust_type()),
                     format!(
-                        "self.{}.as_ref(){} .unwrap_or(&{}_default)",
+                        "self.{}.as_ref(){}.unwrap_or(&{}_default)",
                         name,
                         deref,
                         self.rust_type()
@@ -1119,13 +1120,13 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             ctx.write(format!("type Closed = {closed_name};"));
             block(
                 ctx,
-                format!("fn into_known(self) -> ::core::option::Option<{closed_name}>"),
+                format!("fn into_known(self) -> ::std::option::Option<{closed_name}>"),
                 |ctx| {
                     block(ctx, "match self", |ctx| {
                         for (_, value) in enum_variants {
                             let variant_name = value.get_name();
                             ctx.write(format!(
-                            "{name}::{variant_name} => ::core::option::Option::Some({closed_name}::{variant_name}),",
+                            "{name}::{variant_name} => ::std::option::Option::Some({closed_name}::{variant_name}),",
                         ))
                         }
                         ctx.write("_ => None,")
@@ -1427,7 +1428,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                 ctx,
                 "fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor>",
                 |ctx| {
-                    let name = format!("{}_{}", path.join("_"), msg_type.get_name());
+                    let name = [&path[..], &[msg_type.get_name()]].concat().join("_");
                     let full_name = if let Some(ref package) = ctx.proto_file.package {
                         format!("{package}.{name}")
                     } else {
@@ -1919,7 +1920,7 @@ buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, \"{msg_name}\",
         };
 
         self.write(format!(
-            "pub const {}: ::pb_jelly::extensions::{}<{}, {}> = 
+            "pub const {}: ::pb_jelly::extensions::{}<{}, {}> =
     ::pb_jelly::extensions::{}::new(
         {},
         ::pb_jelly::wire_format::Type::{},
@@ -2159,7 +2160,10 @@ struct Impls {
 
 /// Given message types, keyed by their `proto_name()`s, detect recursive fields
 /// that would otherwise cause an infinite-size type and add the `box_it` extension to them.
-fn box_recursive_fields(types: HashMap<String, ProtoType<'_>>) {
+fn box_recursive_fields(
+    types: HashMap<String, ProtoType<'_>>,
+    implicitly_boxed: &mut HashSet<*const FieldDescriptorProto>,
+) {
     let mut scc = StronglyConnectedComponents::<&str>::new();
 
     let mut edges = |&type_name: &&str| -> Vec<&str> {
@@ -2187,8 +2191,7 @@ fn box_recursive_fields(types: HashMap<String, ProtoType<'_>>) {
                     && type_scc.contains(&field.get_type_name())
                     && field.get_label() != FieldDescriptorProto_Label::LABEL_REPEATED)
                 {
-                    // field.options.Extensions[extensions_pb2.box_it] = True
-                    // TODO
+                    implicitly_boxed.insert(field);
                 }
             }
         }
@@ -2203,6 +2206,8 @@ struct Context<'a> {
     proto_types: HashMap<String, ProtoType<'a>>,
     deps_map: RefCell<HashMap<String, HashSet<String>>>,
     extra_crates: HashMap<String, HashSet<String>>,
+    /// This is a bit hacky but RustType doesn't really know where its field descriptors came from
+    implicitly_boxed: HashSet<*const FieldDescriptorProto>,
     /// Map from msg.proto_name() => cached impls
     /// We have to build this on the fly as we process the types.
     impls_by_msg: HashMap<String, Impls>,
@@ -2220,6 +2225,7 @@ impl<'a> Context<'a> {
             proto_types: HashMap::new(),
             deps_map: RefCell::new(HashMap::new()),
             extra_crates: HashMap::new(),
+            implicitly_boxed: HashSet::new(),
             impls_by_msg: HashMap::new(),
             impls_scc: StronglyConnectedComponents::new(),
             crate_per_dir,
@@ -2379,7 +2385,7 @@ impl<'a> Context<'a> {
 
         // Note that there can't be mutual recursion across files,
         // so it suffices to examine one file at a time for the purposes of `box_recursive_fields`
-        box_recursive_fields(message_types);
+        box_recursive_fields(message_types, &mut self.implicitly_boxed);
 
         let (crate_name, _) = self.crate_from_proto_filename(proto_file.get_name());
 
@@ -2581,7 +2587,7 @@ impl<'a> Context<'a> {
                 } else {
                     fields.push(format!("path = \"../{}\"", dep));
                 }
-                deps_lines.push(format!("{} = {{{}}}", dep, fields.join(",")));
+                deps_lines.push(format!("{} = {{ {} }}", dep, fields.join(", ")));
             }
 
             let targets = CARGO_TOML_TEMPLATE
@@ -2635,7 +2641,8 @@ edition = "2018"
 
 const RS_HEADER: &str = concat!("// @", "generated, do not edit\n");
 
-const LIB_RS_HEADER: &str = r#"#![warn(rust_2018_idioms)]
+const LIB_RS_HEADER: &str = r#"
+#![warn(rust_2018_idioms)]
 #![allow(irrefutable_let_patterns)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
