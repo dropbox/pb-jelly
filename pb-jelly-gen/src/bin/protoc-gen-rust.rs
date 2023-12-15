@@ -41,10 +41,7 @@ use proto_google::protobuf::descriptor::{
     OneofDescriptorProto,
     SourceCodeInfo_Location,
 };
-use proto_rust::extensions::{
-    self,
-    PRESERVE_UNRECOGNIZED,
-};
+use proto_rust::extensions;
 use regex::Regex;
 
 struct StronglyConnectedComponents<T> {
@@ -1187,7 +1184,11 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         assert_eq!(ctx.indentation, 0);
         let name = [path, &[msg_type.get_name()]].concat().join("_");
 
-        let preserve_unrecognized = msg_type.get_options().get_extension(PRESERVE_UNRECOGNIZED).unwrap() == Some(true);
+        let preserve_unrecognized = msg_type
+            .get_options()
+            .get_extension(extensions::PRESERVE_UNRECOGNIZED)
+            .unwrap()
+            == Some(true);
         let has_extensions = !msg_type.extension_range.is_empty();
 
         let escaped_name = escape_name(&name);
@@ -2235,7 +2236,12 @@ impl<'a> Context<'a> {
 
             let (crate_, _) = self.crate_from_proto_filename(msg_type.proto_file.get_name());
 
-            if descriptor.get_options().get_extension(PRESERVE_UNRECOGNIZED).unwrap() == Some(true) {
+            if descriptor
+                .get_options()
+                .get_extension(extensions::PRESERVE_UNRECOGNIZED)
+                .unwrap()
+                == Some(true)
+            {
                 impls_copy = false; // Preserve unparsed has a Vec which is not Copy
             }
 
@@ -2308,13 +2314,18 @@ impl<'a> Context<'a> {
                     // Enums are Eq / Copy
                 } else if typ == FieldDescriptorProto_Type::TYPE_MESSAGE {
                     let field_type = field_type.unwrap();
-                    if descriptor.get_options().get_extension(PRESERVE_UNRECOGNIZED).unwrap() == Some(true) {
+                    if descriptor
+                        .get_options()
+                        .get_extension(extensions::PRESERVE_UNRECOGNIZED)
+                        .unwrap()
+                        == Some(true)
+                    {
                         // TODO: this check isn't really necessary, but it is useful
                         assert!(
                             field_type
                                 .msg_typ()
                                 .get_options()
-                                .get_extension(PRESERVE_UNRECOGNIZED)
+                                .get_extension(extensions::PRESERVE_UNRECOGNIZED)
                                 .unwrap()
                                 == Some(true),
                             "{} preserves unrecognized but child message {} does not",
