@@ -14,13 +14,14 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import descriptor_pb2 as google_dot_protobuf_dot_descriptor__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15rust/extensions.proto\x12\x04rust\x1a google/protobuf/descriptor.proto:/\n\x06\x62ox_it\x12\x1d.google.protobuf.FieldOptions\x18\xd0\x86\x03 \x01(\x08:4\n\x0bgrpc_slices\x12\x1d.google.protobuf.FieldOptions\x18\xd3\x86\x03 \x01(\x08:-\n\x04type\x12\x1d.google.protobuf.FieldOptions\x18\xd4\x86\x03 \x01(\t:2\n\tzero_copy\x12\x1d.google.protobuf.FieldOptions\x18\xd7\x86\x03 \x01(\x08:,\n\x03sso\x12\x1d.google.protobuf.FieldOptions\x18\xd9\x86\x03 \x01(\x08:7\n\x0enullable_field\x12\x1d.google.protobuf.FieldOptions\x18\xd8\x86\x03 \x01(\x08:A\n\x19\x65rr_if_default_or_unknown\x12\x1c.google.protobuf.EnumOptions\x18\xd2\x86\x03 \x01(\x08:3\n\x0b\x63losed_enum\x12\x1c.google.protobuf.EnumOptions\x18\xd8\x86\x03 \x01(\x08:@\n\x15preserve_unrecognized\x12\x1f.google.protobuf.MessageOptions\x18\xd6\x86\x03 \x01(\x08:7\n\x08nullable\x12\x1d.google.protobuf.OneofOptions\x18\xd1\x86\x03 \x01(\x08:\x04true:;\n\x0cserde_derive\x12\x1c.google.protobuf.FileOptions\x18\xd5\x86\x03 \x01(\x08:\x05\x66\x61lse')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15rust/extensions.proto\x12\x04rust\x1a google/protobuf/descriptor.proto:/\n\x06\x62ox_it\x12\x1d.google.protobuf.FieldOptions\x18\xd0\x86\x03 \x01(\x08:4\n\x0bgrpc_slices\x12\x1d.google.protobuf.FieldOptions\x18\xd3\x86\x03 \x01(\x08:-\n\x04\x62lob\x12\x1d.google.protobuf.FieldOptions\x18\xda\x86\x03 \x01(\x08:-\n\x04type\x12\x1d.google.protobuf.FieldOptions\x18\xd4\x86\x03 \x01(\t:2\n\tzero_copy\x12\x1d.google.protobuf.FieldOptions\x18\xd7\x86\x03 \x01(\x08:,\n\x03sso\x12\x1d.google.protobuf.FieldOptions\x18\xd9\x86\x03 \x01(\x08:7\n\x0enullable_field\x12\x1d.google.protobuf.FieldOptions\x18\xd8\x86\x03 \x01(\x08:A\n\x19\x65rr_if_default_or_unknown\x12\x1c.google.protobuf.EnumOptions\x18\xd2\x86\x03 \x01(\x08:3\n\x0b\x63losed_enum\x12\x1c.google.protobuf.EnumOptions\x18\xd8\x86\x03 \x01(\x08:@\n\x15preserve_unrecognized\x12\x1f.google.protobuf.MessageOptions\x18\xd6\x86\x03 \x01(\x08:7\n\x08nullable\x12\x1d.google.protobuf.OneofOptions\x18\xd1\x86\x03 \x01(\x08:\x04true:;\n\x0cserde_derive\x12\x1c.google.protobuf.FileOptions\x18\xd5\x86\x03 \x01(\x08:\x05\x66\x61lse')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'rust.extensions_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
   google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(box_it)
   google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(grpc_slices)
+  google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(blob)
   google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(type)
   google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(zero_copy)
   google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(sso)
