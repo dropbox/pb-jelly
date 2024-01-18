@@ -1,6 +1,10 @@
 # Unreleased
 ... everything has been released!
 
+# 0.0.16
+### Jan 18, 2024
+* Replace ctype=CORD with rust.blob extension field (#160)
+
 # 0.0.15
 ### Dec 14, 2023
 * Improve handling of recursive types (#157)

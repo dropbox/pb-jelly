@@ -1,6 +1,6 @@
 [project]
 name = "pb-jelly"
-version = "0.0.15"
+version = "0.0.16"
 description = "Generate rust bindings from protobuf specs"
 keywords = ["rust", "proto", "dropbox"]
 license = { text = "Apache License 2.0" }
