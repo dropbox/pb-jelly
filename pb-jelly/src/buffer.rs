@@ -17,7 +17,7 @@
 //! of copying large buffers during serialization and deserialization.
 //!
 //! To support this, messages may contain zerocopy fields using the [`Lazy`] type.
-//! `pb-jelly-gen` may generate these using the `CORD`, `grpc_slices`, or `zero_copy` options; they
+//! `pb-jelly-gen` may generate these using the `blob`, `grpc_slices`, or `zero_copy` options; they
 //! use different underlying types, which must implement [PbBuffer], but they all behave similarly.
 //!
 //! [PbBufferReader] and a [PbBufferWriter] have the opportunity to recognize [Lazy] fields.

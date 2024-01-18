@@ -13,7 +13,10 @@ import "google/protobuf/descriptor.proto";
 extend google.protobuf.FieldOptions {
     // Generate this field in a Box as opposed to inline Option
     optional bool box_it = 50000;
+    // Generates a `Lazy<VecSlice>`
     optional bool grpc_slices = 50003;
+    // Generates a `Lazy<WrappedBlob>`
+    optional bool blob = 50010;
     // Use a different Rust type which implements `pb::Message` to represent the field.
     // All paths must be fully qualified, as in `::my_crate::full::path::to::type`.
     // This only works with proto3.

@@ -30,7 +30,6 @@ from google.protobuf.descriptor_pb2 import (
     EnumDescriptorProto,
     EnumValueDescriptorProto,
     FieldDescriptorProto,
-    FieldOptions,
     FileDescriptorProto,
     OneofDescriptorProto,
     SourceCodeInfo,
@@ -324,7 +323,7 @@ class RustType(object):
     def is_blob(self) -> bool:
         return (
             self.field.type == FieldDescriptorProto.TYPE_BYTES
-            and self.field.options.ctype == FieldOptions.CORD
+            and self.field.options.Extensions[extensions_pb2.blob]
         )
 
     def is_lazy_bytes(self) -> bool:
@@ -1786,7 +1785,7 @@ class Context(object):
 
                 # If we use a Blob type, or GRPC Slice
                 if typ == FieldDescriptorProto.TYPE_BYTES and (
-                    field.options.ctype == FieldOptions.CORD
+                    field.options.Extensions[extensions_pb2.blob]
                     or field.options.Extensions[extensions_pb2.grpc_slices]
                 ):
                     (impls_eq, impls_copy) = (False, False)  # Blob is not eq/copy
