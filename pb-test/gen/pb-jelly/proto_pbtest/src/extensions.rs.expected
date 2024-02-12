@@ -23,7 +23,7 @@ impl ::std::default::Default for Msg {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Msg_default: Msg = Msg::default();
 }
 impl ::pb_jelly::Message for Msg {
@@ -184,7 +184,7 @@ impl ::std::default::Default for FakeMsg {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref FakeMsg_default: FakeMsg = FakeMsg::default();
 }
 impl ::pb_jelly::Message for FakeMsg {

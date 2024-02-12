@@ -8,7 +8,7 @@ impl ::std::default::Default for Message {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Message_default: Message = Message::default();
 }
 impl ::pb_jelly::Message for Message {

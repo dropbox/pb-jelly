@@ -10,7 +10,7 @@ impl ::std::default::Default for InpMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref InpMessage_default: InpMessage = InpMessage::default();
 }
 impl ::pb_jelly::Message for InpMessage {
@@ -88,7 +88,7 @@ impl ::std::default::Default for OutMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref OutMessage_default: OutMessage = OutMessage::default();
 }
 impl ::pb_jelly::Message for OutMessage {

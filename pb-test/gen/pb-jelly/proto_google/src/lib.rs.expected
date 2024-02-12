@@ -20,7 +20,5 @@
 // TODO: Ideally we don't allow this
 #![allow(clippy::match_single_binding)]
 
-#[macro_use]
-extern crate lazy_static;
 
 pub mod protobuf;

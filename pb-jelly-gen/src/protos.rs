@@ -187,7 +187,7 @@ pub mod google {
             }
           }
         }
-        lazy_static! {
+        ::lazy_static::lazy_static! {
           pub static ref Version_default: Version = Version::default();
         }
         impl ::pb_jelly::Message for Version {
@@ -456,7 +456,7 @@ pub mod google {
             }
           }
         }
-        lazy_static! {
+        ::lazy_static::lazy_static! {
           pub static ref CodeGeneratorRequest_default: CodeGeneratorRequest = CodeGeneratorRequest::default();
         }
         impl ::pb_jelly::Message for CodeGeneratorRequest {
@@ -716,7 +716,7 @@ pub mod google {
             }
           }
         }
-        lazy_static! {
+        ::lazy_static::lazy_static! {
           pub static ref CodeGeneratorResponse_default: CodeGeneratorResponse = CodeGeneratorResponse::default();
         }
         impl ::pb_jelly::Message for CodeGeneratorResponse {
@@ -972,7 +972,7 @@ pub mod google {
             }
           }
         }
-        lazy_static! {
+        ::lazy_static::lazy_static! {
           pub static ref CodeGeneratorResponse_File_default: CodeGeneratorResponse_File = CodeGeneratorResponse_File::default();
         }
         impl ::pb_jelly::Message for CodeGeneratorResponse_File {
@@ -3165,7 +3165,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FileDescriptorSet_default: FileDescriptorSet = FileDescriptorSet::default();
       }
       impl ::pb_jelly::Message for FileDescriptorSet {
@@ -3451,7 +3451,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FileDescriptorProto_default: FileDescriptorProto = FileDescriptorProto::default();
       }
       impl ::pb_jelly::Message for FileDescriptorProto {
@@ -4033,7 +4033,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref DescriptorProto_default: DescriptorProto = DescriptorProto::default();
       }
       impl ::pb_jelly::Message for DescriptorProto {
@@ -4431,7 +4431,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref DescriptorProto_ExtensionRange_default: DescriptorProto_ExtensionRange = DescriptorProto_ExtensionRange::default();
       }
       impl ::pb_jelly::Message for DescriptorProto_ExtensionRange {
@@ -4602,7 +4602,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref DescriptorProto_ReservedRange_default: DescriptorProto_ReservedRange = DescriptorProto_ReservedRange::default();
       }
       impl ::pb_jelly::Message for DescriptorProto_ReservedRange {
@@ -4779,7 +4779,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref ExtensionRangeOptions_default: ExtensionRangeOptions = ExtensionRangeOptions::default();
       }
       impl ::pb_jelly::Message for ExtensionRangeOptions {
@@ -5038,7 +5038,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref ExtensionRangeOptions_Declaration_default: ExtensionRangeOptions_Declaration = ExtensionRangeOptions_Declaration::default();
       }
       impl ::pb_jelly::Message for ExtensionRangeOptions_Declaration {
@@ -5419,7 +5419,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FieldDescriptorProto_default: FieldDescriptorProto = FieldDescriptorProto::default();
       }
       impl ::pb_jelly::Message for FieldDescriptorProto {
@@ -5823,7 +5823,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref OneofDescriptorProto_default: OneofDescriptorProto = OneofDescriptorProto::default();
       }
       impl ::pb_jelly::Message for OneofDescriptorProto {
@@ -6019,7 +6019,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref EnumDescriptorProto_default: EnumDescriptorProto = EnumDescriptorProto::default();
       }
       impl ::pb_jelly::Message for EnumDescriptorProto {
@@ -6259,7 +6259,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref EnumDescriptorProto_EnumReservedRange_default: EnumDescriptorProto_EnumReservedRange = EnumDescriptorProto_EnumReservedRange::default();
       }
       impl ::pb_jelly::Message for EnumDescriptorProto_EnumReservedRange {
@@ -6413,7 +6413,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref EnumValueDescriptorProto_default: EnumValueDescriptorProto = EnumValueDescriptorProto::default();
       }
       impl ::pb_jelly::Message for EnumValueDescriptorProto {
@@ -6603,7 +6603,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref ServiceDescriptorProto_default: ServiceDescriptorProto = ServiceDescriptorProto::default();
       }
       impl ::pb_jelly::Message for ServiceDescriptorProto {
@@ -6836,7 +6836,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref MethodDescriptorProto_default: MethodDescriptorProto = MethodDescriptorProto::default();
       }
       impl ::pb_jelly::Message for MethodDescriptorProto {
@@ -7446,7 +7446,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FileOptions_default: FileOptions = FileOptions::default();
       }
       impl ::pb_jelly::Message for FileOptions {
@@ -8289,7 +8289,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref MessageOptions_default: MessageOptions = MessageOptions::default();
       }
       impl ::pb_jelly::Message for MessageOptions {
@@ -8777,7 +8777,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FieldOptions_default: FieldOptions = FieldOptions::default();
       }
       impl ::pb_jelly::Message for FieldOptions {
@@ -9232,7 +9232,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FieldOptions_EditionDefault_default: FieldOptions_EditionDefault = FieldOptions_EditionDefault::default();
       }
       impl ::pb_jelly::Message for FieldOptions_EditionDefault {
@@ -9381,7 +9381,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref OneofOptions_default: OneofOptions = OneofOptions::default();
       }
       impl ::pb_jelly::Message for OneofOptions {
@@ -9588,7 +9588,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref EnumOptions_default: EnumOptions = EnumOptions::default();
       }
       impl ::pb_jelly::Message for EnumOptions {
@@ -9860,7 +9860,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref EnumValueOptions_default: EnumValueOptions = EnumValueOptions::default();
       }
       impl ::pb_jelly::Message for EnumValueOptions {
@@ -10096,7 +10096,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref ServiceOptions_default: ServiceOptions = ServiceOptions::default();
       }
       impl ::pb_jelly::Message for ServiceOptions {
@@ -10316,7 +10316,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref MethodOptions_default: MethodOptions = MethodOptions::default();
       }
       impl ::pb_jelly::Message for MethodOptions {
@@ -10597,7 +10597,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref UninterpretedOption_default: UninterpretedOption = UninterpretedOption::default();
       }
       impl ::pb_jelly::Message for UninterpretedOption {
@@ -10888,7 +10888,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref UninterpretedOption_NamePart_default: UninterpretedOption_NamePart = UninterpretedOption_NamePart::default();
       }
       impl ::pb_jelly::Message for UninterpretedOption_NamePart {
@@ -11082,7 +11082,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FeatureSet_default: FeatureSet = FeatureSet::default();
       }
       impl ::pb_jelly::Message for FeatureSet {
@@ -11358,7 +11358,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FeatureSetDefaults_default: FeatureSetDefaults = FeatureSetDefaults::default();
       }
       impl ::pb_jelly::Message for FeatureSetDefaults {
@@ -11531,7 +11531,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref FeatureSetDefaults_FeatureSetEditionDefault_default: FeatureSetDefaults_FeatureSetEditionDefault = FeatureSetDefaults_FeatureSetEditionDefault::default();
       }
       impl ::pb_jelly::Message for FeatureSetDefaults_FeatureSetEditionDefault {
@@ -11710,7 +11710,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref SourceCodeInfo_default: SourceCodeInfo = SourceCodeInfo::default();
       }
       impl ::pb_jelly::Message for SourceCodeInfo {
@@ -11945,7 +11945,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref SourceCodeInfo_Location_default: SourceCodeInfo_Location = SourceCodeInfo_Location::default();
       }
       impl ::pb_jelly::Message for SourceCodeInfo_Location {
@@ -12186,7 +12186,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref GeneratedCodeInfo_default: GeneratedCodeInfo = GeneratedCodeInfo::default();
       }
       impl ::pb_jelly::Message for GeneratedCodeInfo {
@@ -12345,7 +12345,7 @@ pub mod google {
           }
         }
       }
-      lazy_static! {
+      ::lazy_static::lazy_static! {
         pub static ref GeneratedCodeInfo_Annotation_default: GeneratedCodeInfo_Annotation = GeneratedCodeInfo_Annotation::default();
       }
       impl ::pb_jelly::Message for GeneratedCodeInfo_Annotation {

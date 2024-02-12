@@ -401,7 +401,7 @@ impl ::std::default::Default for Option {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Option_default: Option = Option::default();
 }
 impl ::pb_jelly::Message for Option {
@@ -460,7 +460,7 @@ impl ::std::default::Default for Vec {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Vec_default: Vec = Vec::default();
 }
 impl ::pb_jelly::Message for Vec {
@@ -519,7 +519,7 @@ impl ::std::default::Default for Default {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Default_default: Default = Default::default();
 }
 impl ::pb_jelly::Message for Default {
@@ -578,7 +578,7 @@ impl ::std::default::Default for String {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref String_default: String = String::default();
 }
 impl ::pb_jelly::Message for String {
@@ -643,7 +643,7 @@ impl ::std::default::Default for Version0OneOfNoneNullable {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version0OneOfNoneNullable_default: Version0OneOfNoneNullable = Version0OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version0OneOfNoneNullable {
@@ -757,7 +757,7 @@ impl ::std::default::Default for Version1OneOfNoneNullable {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version1OneOfNoneNullable_default: Version1OneOfNoneNullable = Version1OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version1OneOfNoneNullable {
@@ -920,7 +920,7 @@ impl ::std::default::Default for Version2OneOfNoneNullable {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version2OneOfNoneNullable_default: Version2OneOfNoneNullable = Version2OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version2OneOfNoneNullable {
@@ -1125,7 +1125,7 @@ impl ::std::default::Default for Version1Enum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version1Enum_default: Version1Enum = Version1Enum::default();
 }
 impl ::pb_jelly::Message for Version1Enum {
@@ -1223,7 +1223,7 @@ impl ::std::default::Default for Version2Enum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version2Enum_default: Version2Enum = Version2Enum::default();
 }
 impl ::pb_jelly::Message for Version2Enum {
@@ -1316,7 +1316,7 @@ impl ::std::default::Default for Version1OneOf {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version1OneOf_default: Version1OneOf = Version1OneOf::default();
 }
 impl ::pb_jelly::Message for Version1OneOf {
@@ -1431,7 +1431,7 @@ impl ::std::default::Default for Version2OneOf {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version2OneOf_default: Version2OneOf = Version2OneOf::default();
 }
 impl ::pb_jelly::Message for Version2OneOf {
@@ -1592,7 +1592,7 @@ impl ::std::default::Default for Version1 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version1_default: Version1 = Version1::default();
 }
 impl ::pb_jelly::Message for Version1 {
@@ -1845,7 +1845,7 @@ impl ::std::default::Default for Version2 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version2_default: Version2 = Version2::default();
 }
 impl ::pb_jelly::Message for Version2 {
@@ -2303,7 +2303,7 @@ impl ::std::default::Default for ForeignMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref ForeignMessage_default: ForeignMessage = ForeignMessage::default();
 }
 impl ::pb_jelly::Message for ForeignMessage {
@@ -2884,7 +2884,7 @@ impl ::std::default::Default for TestMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage_default: TestMessage = TestMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage {

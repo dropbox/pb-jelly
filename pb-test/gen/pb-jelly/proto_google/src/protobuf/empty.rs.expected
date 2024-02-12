@@ -17,7 +17,7 @@ impl ::std::default::Default for Empty {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Empty_default: Empty = Empty::default();
 }
 impl ::pb_jelly::Message for Empty {

@@ -1392,7 +1392,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             });
         });
 
-        block(ctx, "lazy_static!", |ctx| {
+        block(ctx, "::lazy_static::lazy_static!", |ctx| {
             ctx.write(format!(
                 "pub static ref {name}_default: {escaped_name} = {escaped_name}::default();"
             ));
@@ -2442,8 +2442,6 @@ impl<'a> Context<'a> {
 
         for crate_name in self.deps_map.borrow().keys() {
             let mut librs = String::new();
-            writeln!(&mut librs, "#[macro_use]").unwrap();
-            writeln!(&mut librs, "extern crate lazy_static;").unwrap();
             if derive_serde {
                 writeln!(&mut librs, "#[macro_use]").unwrap();
                 writeln!(&mut librs, "extern crate serde;").unwrap();

@@ -50,9 +50,6 @@ use std::{
 };
 use walkdir::WalkDir;
 
-#[macro_use]
-extern crate lazy_static;
-
 pub mod codegen;
 /// Don't depend on this module, it's only public so that `protoc-gen-jellyrust` can use it
 #[doc(hidden)]
