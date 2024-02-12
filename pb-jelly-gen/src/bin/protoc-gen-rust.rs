@@ -31,8 +31,6 @@ use proto_google::protobuf::descriptor::{
     FieldDescriptorProto,
     FieldDescriptorProto_Label,
     FieldDescriptorProto_Type,
-    FieldOptions,
-    FieldOptions_CType,
     FileDescriptorProto,
     OneofDescriptorProto,
     SourceCodeInfo_Location,
@@ -356,13 +354,12 @@ impl<'a> RustType<'a> {
 
     fn is_blob(&self) -> bool {
         self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
-            && matches!(
-                self.field.options,
-                Some(FieldOptions {
-                    ctype: Some(FieldOptions_CType::CORD),
-                    ..
-                })
-            )
+            && self
+                .field
+                .get_options()
+                .get_extension(extensions::BLOB)
+                .unwrap()
+                .unwrap_or(false)
     }
 
     fn is_lazy_bytes(&self) -> bool {
@@ -2279,7 +2276,7 @@ impl<'a> Context<'a> {
 
                 // If we use a Blob type, or GRPC Slice
                 if typ == FieldDescriptorProto_Type::TYPE_BYTES
-                    && (field.get_options().get_ctype() == FieldOptions_CType::CORD
+                    && (field.get_options().get_extension(extensions::BLOB).unwrap() == Some(true)
                         || field.get_options().get_extension(extensions::GRPC_SLICES).unwrap() == Some(true))
                 {
                     (impls_eq, impls_copy) = (false, false); // Blob is not eq/copy

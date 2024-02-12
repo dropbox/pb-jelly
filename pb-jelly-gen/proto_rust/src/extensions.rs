@@ -7,11 +7,20 @@ pub const BOX_IT: ::pb_jelly::extensions::SingularExtension<::proto_google::prot
         "box_it",
     );
 
+/// Generates a `Lazy<VecSlice>`
 pub const GRPC_SLICES: ::pb_jelly::extensions::SingularExtension<::proto_google::protobuf::descriptor::FieldOptions, bool> =
     ::pb_jelly::extensions::SingularExtension::new(
         50003,
         ::pb_jelly::wire_format::Type::Varint,
         "grpc_slices",
+    );
+
+/// Generates a `Lazy<WrappedBlob>`
+pub const BLOB: ::pb_jelly::extensions::SingularExtension<::proto_google::protobuf::descriptor::FieldOptions, bool> =
+    ::pb_jelly::extensions::SingularExtension::new(
+        50010,
+        ::pb_jelly::wire_format::Type::Varint,
+        "blob",
     );
 
 /// Use a different Rust type which implements `pb::Message` to represent the field.
