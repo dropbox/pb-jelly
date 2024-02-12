@@ -1,7 +1,11 @@
-use std::fs::metadata;
-use std::fs::File;
-use std::io::Cursor;
-use std::io::Read;
+use std::fs::{
+    metadata,
+    File,
+};
+use std::io::{
+    Cursor,
+    Read,
+};
 
 use bytes::Bytes;
 use pb_jelly::extensions::Extensible;

@@ -15,10 +15,8 @@ use indexmap::{
     IndexSet,
 };
 use lazy_static::lazy_static;
-use pb_jelly::{
-    extensions::Extensible,
-    Message,
-};
+use pb_jelly::extensions::Extensible;
+use pb_jelly::Message;
 use regex::Regex;
 
 use crate::protos::google::protobuf::compiler::plugin;

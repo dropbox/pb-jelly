@@ -1,12 +1,11 @@
-use pb_jelly_gen::GenProtos;
 use std::{
     env,
     fs,
 };
 
+use pb_jelly_gen::GenProtos;
 #[cfg(feature = "bench_prost")]
 use prost_build;
-
 #[cfg(feature = "bench_rust_protobuf")]
 use protoc_rust::Customize;
 

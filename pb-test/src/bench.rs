@@ -1,5 +1,8 @@
 #[cfg(test)]
 mod benches {
+    use std::hint::black_box;
+    use std::io::Cursor;
+
     use bytes::Bytes;
     use compact_str::CompactString;
     use pb_jelly::{
@@ -17,10 +20,6 @@ mod benches {
         VecData,
     };
     use serde::Deserialize;
-    use std::{
-        hint::black_box,
-        io::Cursor,
-    };
     use test::Bencher;
 
     #[bench]
@@ -279,16 +278,17 @@ mod prost {
 
 #[cfg(all(test, feature = "bench_rust_protobuf"))]
 mod rust_protobuf {
-    use crate::gen::rust_protobuf::bench::{
-        BytesData,
-        StringMessage,
-    };
     use bytes::Bytes;
     use protobuf::{
         CodedInputStream,
         Message,
     };
     use test::Bencher;
+
+    use crate::gen::rust_protobuf::bench::{
+        BytesData,
+        StringMessage,
+    };
 
     #[bench]
     fn bench_deserialize_rust_protobuf_bytes(b: &mut Bencher) {

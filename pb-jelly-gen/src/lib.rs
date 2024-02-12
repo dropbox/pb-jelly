@@ -31,28 +31,27 @@
 //! }
 //! ```
 
-use crate::protos::google::protobuf::{
-    compiler::plugin::CodeGeneratorRequest,
-    descriptor::FileDescriptorSet,
+use std::convert::AsRef;
+use std::error::Error;
+use std::fs;
+use std::iter::IntoIterator;
+use std::path::{
+    self,
+    Path,
+    PathBuf,
 };
+use std::process::Command;
+
 use pb_jelly::Message;
-use std::{
-    convert::AsRef,
-    error::Error,
-    fs,
-    iter::IntoIterator,
-    path::{
-        self,
-        Path,
-        PathBuf,
-    },
-    process::Command,
-};
 use walkdir::WalkDir;
+
+use crate::protos::google::protobuf::compiler::plugin::CodeGeneratorRequest;
+use crate::protos::google::protobuf::descriptor::FileDescriptorSet;
 
 pub mod codegen;
 /// Don't depend on this module, it's only public so that `protoc-gen-jellyrust` can use it
 #[doc(hidden)]
+#[rustfmt::skip]
 pub mod protos;
 
 /// A "no frills" way to generate Rust bindings for your proto files. `src_paths` is a list of

@@ -1,5 +1,7 @@
-use std::env;
-use std::fs;
+use std::{
+    env,
+    fs,
+};
 
 use pretty_assertions::assert_eq;
 use walkdir::WalkDir;
