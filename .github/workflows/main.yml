@@ -134,5 +134,5 @@ jobs:
       - name: Generate protos
         run: |
           cd pb-jelly-gen
-          rustup run nightly sh regen_gen_protos.sh
+          rustup run nightly bash regen_gen_protos.sh
           git diff --exit-code
