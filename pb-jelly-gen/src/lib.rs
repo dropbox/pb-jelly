@@ -55,10 +55,7 @@ use std::{
 };
 use walkdir::WalkDir;
 
-// We statically include the `/codegen` directory as a way to include our codegen.py and
-// extensions.proto files in the Rust library. At execution time, this directory gets
-// recreated a temp location, so `protoc` can access the files.
-const CODEGEN: Dir = include_dir!("codegen");
+pub mod codegen;
 
 /// A "no frills" way to generate Rust bindings for your proto files. `src_paths` is a list of
 /// paths to your `.proto` files, or the directories that contain them. Generated code it outputted
@@ -317,37 +314,6 @@ impl GenProtos {
     /// we recreate these in a temp directory `/tmp/codegen` that is cleaned up after.
     fn create_temp_files(&self) -> std::io::Result<tempfile::TempDir> {
         let temp_dir = tempfile::Builder::new().prefix("codegen").tempdir()?;
-
-        fn create_temp_files_helper(dir: &Dir, temp_dir: &tempfile::TempDir) -> std::io::Result<()> {
-            for file in dir.files() {
-                let blob_path = file.path();
-                let abs_path = temp_dir.path().join(blob_path);
-
-                let mut abs_file = fs::OpenOptions::new().write(true).create_new(true).open(&abs_path)?;
-                abs_file.write_all(file.contents())?;
-
-                #[cfg(not(windows))]
-                {
-                    let mut permissions = abs_file.metadata()?.permissions();
-                    permissions.set_mode(0o777);
-                    drop(abs_file);
-
-                    // Set permissions of the file so it is executable
-                    fs::set_permissions(&abs_path, permissions)?;
-                }
-            }
-
-            for dir in dir.dirs() {
-                let blob_path = dir.path();
-                let abs_path = temp_dir.path().join(blob_path);
-                fs::create_dir(&abs_path)?;
-
-                create_temp_files_helper(dir, temp_dir)?;
-            }
-
-            Ok(())
-        }
-        create_temp_files_helper(&CODEGEN, &temp_dir)?;
 
         Ok(temp_dir)
     }
