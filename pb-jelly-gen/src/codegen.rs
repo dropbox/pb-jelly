@@ -271,22 +271,22 @@ impl<'a> RustType<'a> {
         if !self.is_proto3 {
             if let Some(ref default_value) = self.field.default_value {
                 if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_STRING) {
-                    return format!("Some(\"{}\".into())", default_value);
+                    return format!("Some(\"{default_value}\".into())");
                 }
 
                 if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES) {
-                    return format!("Some(b\"{}\".to_vec())", default_value);
+                    return format!("Some(b\"{default_value}\".to_vec())");
                 }
 
                 if let Some(primitive) = self.field.r#type.and_then(get_primitive_type) {
                     let typ_name = primitive.rust_type;
                     if typ_name.contains("::pb") {
-                        return format!("Some({}({}))", typ_name, default_value);
+                        return format!("Some({typ_name}({default_value}))");
                     }
                     if typ_name.starts_with('f') && !default_value.contains('.') {
-                        return format!("Some({}.)", default_value);
+                        return format!("Some({default_value}.)");
                     }
-                    return format!("Some({})", default_value);
+                    return format!("Some({default_value})");
                 }
 
                 if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_ENUM) {
@@ -297,7 +297,7 @@ impl<'a> RustType<'a> {
                         proto_type.rust_name(self.ctx, &crate_, &mod_parts),
                         default_value
                     );
-                    return format!("Some({})", value);
+                    return format!("Some({value})");
                 }
 
                 panic!(
@@ -314,9 +314,11 @@ impl<'a> RustType<'a> {
     fn is_length_delimited(&self) -> bool {
         matches!(
             self.field.r#type,
-            Some(FieldDescriptorProto_Type::TYPE_MESSAGE)
-                | Some(FieldDescriptorProto_Type::TYPE_STRING)
-                | Some(FieldDescriptorProto_Type::TYPE_BYTES)
+            Some(
+                FieldDescriptorProto_Type::TYPE_MESSAGE
+                    | FieldDescriptorProto_Type::TYPE_STRING
+                    | FieldDescriptorProto_Type::TYPE_BYTES
+            )
         )
     }
     fn wire_format(&self) -> &str {
@@ -325,12 +327,16 @@ impl<'a> RustType<'a> {
         }
 
         match self.field.r#type {
-            Some(FieldDescriptorProto_Type::TYPE_DOUBLE)
-            | Some(FieldDescriptorProto_Type::TYPE_FIXED64)
-            | Some(FieldDescriptorProto_Type::TYPE_SFIXED64) => "Fixed64",
-            Some(FieldDescriptorProto_Type::TYPE_FLOAT)
-            | Some(FieldDescriptorProto_Type::TYPE_FIXED32)
-            | Some(FieldDescriptorProto_Type::TYPE_SFIXED32) => "Fixed32",
+            Some(
+                FieldDescriptorProto_Type::TYPE_DOUBLE
+                | FieldDescriptorProto_Type::TYPE_FIXED64
+                | FieldDescriptorProto_Type::TYPE_SFIXED64,
+            ) => "Fixed64",
+            Some(
+                FieldDescriptorProto_Type::TYPE_FLOAT
+                | FieldDescriptorProto_Type::TYPE_FIXED32
+                | FieldDescriptorProto_Type::TYPE_SFIXED32,
+            ) => "Fixed32",
             _ => "Varint",
         }
     }
@@ -538,51 +544,49 @@ impl<'a> RustType<'a> {
         let name = escape_name(self.field.get_name());
 
         match self.field.r#type {
-            Some(FieldDescriptorProto_Type::TYPE_FLOAT) => ("f32".to_string(), format!("self.{}.unwrap_or(0.)", name)),
-            Some(FieldDescriptorProto_Type::TYPE_DOUBLE) => ("f64".to_string(), format!("self.{}.unwrap_or(0.)", name)),
-            Some(FieldDescriptorProto_Type::TYPE_INT32) => ("i32".to_string(), format!("self.{}.unwrap_or(0)", name)),
-            Some(FieldDescriptorProto_Type::TYPE_INT64) => ("i64".to_string(), format!("self.{}.unwrap_or(0)", name)),
-            Some(FieldDescriptorProto_Type::TYPE_UINT32) => ("u32".to_string(), format!("self.{}.unwrap_or(0)", name)),
-            Some(FieldDescriptorProto_Type::TYPE_UINT64) => ("u64".to_string(), format!("self.{}.unwrap_or(0)", name)),
+            Some(FieldDescriptorProto_Type::TYPE_FLOAT) => ("f32".to_string(), format!("self.{name}.unwrap_or(0.)")),
+            Some(FieldDescriptorProto_Type::TYPE_DOUBLE) => ("f64".to_string(), format!("self.{name}.unwrap_or(0.)")),
+            Some(FieldDescriptorProto_Type::TYPE_INT32) => ("i32".to_string(), format!("self.{name}.unwrap_or(0)")),
+            Some(FieldDescriptorProto_Type::TYPE_INT64) => ("i64".to_string(), format!("self.{name}.unwrap_or(0)")),
+            Some(FieldDescriptorProto_Type::TYPE_UINT32) => ("u32".to_string(), format!("self.{name}.unwrap_or(0)")),
+            Some(FieldDescriptorProto_Type::TYPE_UINT64) => ("u64".to_string(), format!("self.{name}.unwrap_or(0)")),
             Some(FieldDescriptorProto_Type::TYPE_SINT32) => {
-                ("i32".to_string(), format!("self.{}.map(|v| v.0).unwrap_or(0)", name))
+                ("i32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_SINT64) => {
-                ("i64".to_string(), format!("self.{}.map(|v| v.0).unwrap_or(0)", name))
+                ("i64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_FIXED64) => {
-                ("u64".to_string(), format!("self.{}.map(|v| v.0).unwrap_or(0)", name))
+                ("u64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_SFIXED64) => {
-                ("i64".to_string(), format!("self.{}.map(|v| v.0).unwrap_or(0)", name))
+                ("i64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_FIXED32) => {
-                ("u32".to_string(), format!("self.{}.map(|v| v.0).unwrap_or(0)", name))
+                ("u32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_SFIXED32) => {
-                ("i32".to_string(), format!("self.{}.map(|v| v.0).unwrap_or(0)", name))
+                ("i32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
             },
-            Some(FieldDescriptorProto_Type::TYPE_BOOL) => {
-                ("bool".to_string(), format!("self.{}.unwrap_or(false)", name))
-            },
+            Some(FieldDescriptorProto_Type::TYPE_BOOL) => ("bool".to_string(), format!("self.{name}.unwrap_or(false)")),
             Some(FieldDescriptorProto_Type::TYPE_STRING) => {
-                ("&str".to_string(), format!("self.{}.as_deref().unwrap_or(\"\")", name))
+                ("&str".to_string(), format!("self.{name}.as_deref().unwrap_or(\"\")"))
             },
             Some(FieldDescriptorProto_Type::TYPE_BYTES) => {
                 assert!(
                     !self.is_blob() || self.is_grpc_slices() || self.is_lazy_bytes(),
                     "Can't generate get method for lazy field"
                 );
-                ("&[u8]".to_string(), format!("self.{}.as_deref().unwrap_or(&[])", name))
+                ("&[u8]".to_string(), format!("self.{name}.as_deref().unwrap_or(&[])"))
             },
             Some(FieldDescriptorProto_Type::TYPE_ENUM) => {
-                (self.rust_type(), format!("self.{}.unwrap_or_default()", name))
+                (self.rust_type(), format!("self.{name}.unwrap_or_default()"))
             },
             Some(FieldDescriptorProto_Type::TYPE_MESSAGE) => {
-                let deref = if !self.is_boxed() {
-                    ""
-                } else {
+                let deref = if self.is_boxed() {
                     ".map(::std::ops::Deref::deref)"
+                } else {
+                    ""
                 };
                 (
                     format!("&{}", self.rust_type()),
@@ -626,9 +630,10 @@ impl<'a> RustType<'a> {
         }
 
         if typ == FieldDescriptorProto_Type::TYPE_MESSAGE || typ == FieldDescriptorProto_Type::TYPE_ENUM {
-            if !self.field.get_type_name().starts_with('.') {
-                panic!("We only support fully qualified type names");
-            }
+            assert!(
+                self.field.get_type_name().starts_with('.'),
+                "We only support fully qualified type names"
+            );
 
             let proto_type = self.ctx.find(self.field.get_type_name());
             let (crate_, mod_parts) = self.ctx.crate_from_proto_filename(self.proto_file.get_name());
@@ -642,13 +647,13 @@ impl<'a> RustType<'a> {
         let mut rust_type = self.rust_type();
 
         if self.is_boxed() {
-            rust_type = format!("::std::boxed::Box<{}>", rust_type);
+            rust_type = format!("::std::boxed::Box<{rust_type}>");
         }
 
         if self.is_repeated() {
-            rust_type = format!("::std::vec::Vec<{}>", rust_type);
+            rust_type = format!("::std::vec::Vec<{rust_type}>");
         } else if self.is_nullable() {
-            rust_type = format!("::std::option::Option<{}>", rust_type);
+            rust_type = format!("::std::option::Option<{rust_type}>");
         }
 
         rust_type
@@ -668,7 +673,7 @@ impl<'a> RustType<'a> {
         let oneofv = format!("{}::{}", oneof_msg_name(msg_name, oneof), self.oneof_field_match(var));
 
         if oneof_nullable(oneof) {
-            return format!("Some({})", oneofv);
+            return format!("Some({oneofv})");
         }
 
         oneofv
@@ -724,7 +729,7 @@ fn block_with<'a, 'ctx>(
     ctx.write(close);
 }
 fn block<'a, 'ctx>(ctx: &mut CodeWriter<'a, 'ctx>, header: impl AsRef<str>, f: impl FnOnce(&mut CodeWriter<'a, 'ctx>)) {
-    block_with(ctx, header, " {", "}", f)
+    block_with(ctx, header, " {", "}", f);
 }
 
 fn field_iter<'a, 'ctx, F>(
@@ -742,7 +747,7 @@ fn field_iter<'a, 'ctx, F>(
     if let Some(oneof) = typ.oneof {
         // For oneofs, we always emit, even if the primitive field is set to a 0 value
         // This is so we can distinguish which field of oneof is set.
-        let oneof_val = typ.oneof_val(msg_name, &format!("ref {}", var));
+        let oneof_val = typ.oneof_val(msg_name, &format!("ref {var}"));
         block(
             &mut *ctx,
             &format!("if let {} = self.{}", oneof_val, escape_name(oneof.get_name())),
@@ -808,7 +813,7 @@ fn field_iter<'a, 'ctx, F>(
                 if typ.is_boxed() {
                     ctx.write(format!("let {var} = &**{var};"));
                 }
-                f(ctx)
+                f(ctx);
             },
         );
     } else {
@@ -819,7 +824,7 @@ fn field_iter<'a, 'ctx, F>(
                 if typ.is_boxed() {
                     ctx.write(format!("let {var} = &**{var};"));
                 }
-                f(ctx)
+                f(ctx);
             },
         );
     }
@@ -873,7 +878,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         for _ in 0..self.indentation {
             write!(&mut self.content, "  ").unwrap();
         }
-        writeln!(&mut self.content, "{}", s).unwrap();
+        writeln!(&mut self.content, "{s}").unwrap();
     }
 
     fn write_line_broken_text_with_prefix(&mut self, text_block: &str, prefix: &str) {
@@ -882,7 +887,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         }
         for l in text_block.trim_end().split('\n') {
             if !l.is_empty() {
-                self.write(&format!("{}{}", prefix, l));
+                self.write(&format!("{prefix}{l}"));
             } else {
                 self.write("");
             }
@@ -922,7 +927,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]");
         }
         ctx.write("#[repr(i32)]");
-        block(ctx, format!("pub enum {}", name), |ctx| {
+        block(ctx, format!("pub enum {name}"), |ctx| {
             for &(idx, value) in enum_variants {
                 let vfn = EnumDescriptorProto::default()
                     .descriptor()
@@ -937,7 +942,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             }
         });
 
-        block(ctx, format!("impl {}", name), |ctx| {
+        block(ctx, format!("impl {name}"), |ctx| {
             ctx.write(format!(
                 "pub const KNOWN_VARIANTS: [{}; {}] = [{}];",
                 name,
@@ -950,7 +955,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             ));
         });
 
-        block(ctx, &format!("impl ::std::default::Default for {}", name), |ctx| {
+        block(ctx, &format!("impl ::std::default::Default for {name}"), |ctx| {
             block(ctx, "fn default() -> Self", |ctx| {
                 // It's not actually clear what to do in this case. We take the first-defined
                 // value that isn't 0-valued.
@@ -958,8 +963,8 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             });
         });
 
-        block(ctx, &format!("impl From<{}> for i32", name), |ctx| {
-            block(ctx, &format!("fn from(v: {}) -> i32", name), |ctx| {
+        block(ctx, &format!("impl From<{name}> for i32"), |ctx| {
+            block(ctx, &format!("fn from(v: {name}) -> i32"), |ctx| {
                 block(ctx, "match v", |ctx| {
                     for (_, value) in enum_variants {
                         ctx.write(&format!("{}::{} => {},", name, value.get_name(), value.get_number()));
@@ -968,7 +973,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             });
         });
 
-        block(ctx, &format!("impl ::std::convert::TryFrom<i32> for {}", name), |ctx| {
+        block(ctx, &format!("impl ::std::convert::TryFrom<i32> for {name}"), |ctx| {
             ctx.write("type Error = i32;");
             block(ctx, "fn try_from(v: i32) -> ::std::result::Result<Self, i32>", |ctx| {
                 block(ctx, "match v", |ctx| {
@@ -985,9 +990,9 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             });
         });
 
-        block(ctx, &format!("impl ::pb_jelly::ProtoEnum for {}", name), |_ctx| {});
+        block(ctx, &format!("impl ::pb_jelly::ProtoEnum for {name}"), |_ctx| {});
 
-        block(ctx, &format!("impl ::pb_jelly::ClosedProtoEnum for {}", name), |ctx| {
+        block(ctx, &format!("impl ::pb_jelly::ClosedProtoEnum for {name}"), |ctx| {
             block(ctx, "fn name(self) -> &'static str", |ctx| {
                 block(ctx, "match self", |ctx| {
                     for (_, value) in enum_variants {
@@ -1005,7 +1010,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         scl: &SourceCodeLocation,
     ) {
         let ctx = self;
-        let closed_name = format!("{}_Closed", name);
+        let closed_name = format!("{name}_Closed");
 
         // Generate an open enum
         ctx.write_comments(ctx.source_code_info_by_scl.get(scl).copied());
@@ -1015,7 +1020,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]");
         }
         ctx.write("#[repr(transparent)]");
-        ctx.write(format!("pub struct {}(i32);", name));
+        ctx.write(format!("pub struct {name}(i32);"));
         block(ctx, format!("impl {name}"), |ctx| {
             for &(idx, value) in enum_variants {
                 let vfn = EnumDescriptorProto::default()
@@ -1056,29 +1061,29 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                 // Under proto2, the default value is the first defined.
                 // Under proto3, the default value is the 0-valued variant, but it's required to
                 // be defined first.
-                ctx.write(format!("{}::{}", name, enum_variants[0].1.get_name()))
+                ctx.write(format!("{}::{}", name, enum_variants[0].1.get_name()));
             });
         });
 
-        block(ctx, format!("impl From<{}> for i32", name), |ctx| {
-            block(ctx, format!("fn from(v: {}) -> i32", name), |ctx| ctx.write("v.0"));
+        block(ctx, format!("impl From<{name}> for i32"), |ctx| {
+            block(ctx, format!("fn from(v: {name}) -> i32"), |ctx| ctx.write("v.0"));
         });
 
-        block(ctx, format!("impl From<i32> for {}", name), |ctx| {
-            block(ctx, format!("fn from(v: i32) -> {}", name), |ctx| {
-                ctx.write(format!("{}(v)", name))
+        block(ctx, format!("impl From<i32> for {name}"), |ctx| {
+            block(ctx, format!("fn from(v: i32) -> {name}"), |ctx| {
+                ctx.write(format!("{name}(v)"));
             });
         });
 
-        block(ctx, format!("impl From<{}> for {}", closed_name, name), |ctx| {
-            block(ctx, format!("fn from(v: {}) -> {}", closed_name, name), |ctx| {
-                ctx.write(format!("{}(v as i32)", name))
+        block(ctx, format!("impl From<{closed_name}> for {name}"), |ctx| {
+            block(ctx, format!("fn from(v: {closed_name}) -> {name}"), |ctx| {
+                ctx.write(format!("{name}(v as i32)"));
             });
         });
 
-        block(ctx, format!("impl ::pb_jelly::ProtoEnum for {}", name), |_ctx| {});
+        block(ctx, format!("impl ::pb_jelly::ProtoEnum for {name}"), |_ctx| {});
 
-        block(ctx, format!("impl ::pb_jelly::OpenProtoEnum for {}", name), |ctx| {
+        block(ctx, format!("impl ::pb_jelly::OpenProtoEnum for {name}"), |ctx| {
             ctx.write(format!("type Closed = {closed_name};"));
             block(
                 ctx,
@@ -1089,9 +1094,9 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                             let variant_name = value.get_name();
                             ctx.write(format!(
                                 "{name}::{variant_name} => ::std::option::Option::Some({closed_name}::{variant_name}),",
-                            ))
+                            ));
                         }
-                        ctx.write("_ => None,")
+                        ctx.write("_ => None,");
                     });
                 },
             );
@@ -1104,7 +1109,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                 |ctx| {
                     block(ctx, "match <Self as ::pb_jelly::OpenProtoEnum>::name(*self)", |ctx| {
                         ctx.write("Some(s) => write!(f, \"{}\", s),");
-                        ctx.write("None => write!(f, \"Unknown({})\", self.0),")
+                        ctx.write("None => write!(f, \"Unknown({})\", self.0),");
                     });
                 },
             );
@@ -1172,7 +1177,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             .field
             .iter()
             .filter(|f| f.get_proto3_optional())
-            .map(|f| f.get_oneof_index())
+            .map(proto_google::protobuf::descriptor::FieldDescriptorProto::get_oneof_index)
             .collect();
         // Filter out oneofs synthesized by proto3 optional; we treat these as plain `Option`al fields, not oneofs
         let oneof_decls: Vec<_> = msg_type
@@ -1247,11 +1252,11 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             }
 
             if preserve_unrecognized {
-                ctx.write("pub _unrecognized: Vec<u8>,")
+                ctx.write("pub _unrecognized: Vec<u8>,");
             }
 
             if has_extensions {
-                ctx.write("pub _extensions: ::pb_jelly::Unrecognized,")
+                ctx.write("pub _extensions: ::pb_jelly::Unrecognized,");
             }
         });
 
@@ -1364,19 +1369,19 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                     for field in &msg_type.field {
                         let typ = ctx.rust_type(Some(msg_type), field);
                         if typ.oneof.is_none() {
-                            ctx.write(format!("{}: {},", escape_name(field.get_name()), typ.default(&name)))
+                            ctx.write(format!("{}: {},", escape_name(field.get_name()), typ.default(&name)));
                         }
                     }
                     for &oneof in &oneof_decls {
                         let oneof_field = oneof_fields[oneof.get_name()][0];
                         let typ = ctx.rust_type(Some(msg_type), oneof_field);
-                        ctx.write(format!("{}: {},", escape_name(oneof.get_name()), typ.default(&name)))
+                        ctx.write(format!("{}: {},", escape_name(oneof.get_name()), typ.default(&name)));
                     }
                     if preserve_unrecognized {
-                        ctx.write("_unrecognized: Vec::new(),")
+                        ctx.write("_unrecognized: Vec::new(),");
                     }
                     if has_extensions {
-                        ctx.write("_extensions: ::pb_jelly::Unrecognized::default(),")
+                        ctx.write("_extensions: ::pb_jelly::Unrecognized::default(),");
                     }
                 });
             });
@@ -1384,8 +1389,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
 
         block(ctx, "lazy_static!", |ctx| {
             ctx.write(format!(
-                "pub static ref {}_default: {} = {}::default();",
-                name, escaped_name, escaped_name
+                "pub static ref {name}_default: {escaped_name} = {escaped_name}::default();"
             ));
         });
 
@@ -1402,8 +1406,8 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                     };
 
                     block_with(ctx, "Some(::pb_jelly::MessageDescriptor", " {", "})", |ctx| {
-                        ctx.write(format!("name: \"{}\",", name));
-                        ctx.write(format!("full_name: \"{}\",", full_name));
+                        ctx.write(format!("name: \"{name}\","));
+                        ctx.write(format!("full_name: \"{full_name}\","));
                         block_with(ctx, "fields:", " &[", "],", |ctx| {
                             for (i, field) in msg_type.field.iter().enumerate() {
                                 block_with(ctx, "::pb_jelly::FieldDescriptor", " {", "},", |ctx| {
@@ -1415,20 +1419,20 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
 
                                     let typ = ctx.rust_type(Some(msg_type), field);
                                     ctx.write(format!("name: \"{}\",", field.get_name()));
-                                    ctx.write(format!("full_name: \"{}\",", full_name));
-                                    ctx.write(format!("index: {},", i));
+                                    ctx.write(format!("full_name: \"{full_name}\","));
+                                    ctx.write(format!("index: {i},"));
                                     ctx.write(format!("number: {},", field.get_number()));
                                     ctx.write(format!("typ: ::pb_jelly::wire_format::Type::{},", typ.wire_format()));
                                     if field.get_label() == FieldDescriptorProto_Label::LABEL_OPTIONAL {
-                                        ctx.write("label: ::pb_jelly::Label::Optional,")
+                                        ctx.write("label: ::pb_jelly::Label::Optional,");
                                     } else if field.get_label() == FieldDescriptorProto_Label::LABEL_REQUIRED {
-                                        ctx.write("label: ::pb_jelly::Label::Required,")
+                                        ctx.write("label: ::pb_jelly::Label::Required,");
                                     } else if field.get_label() == FieldDescriptorProto_Label::LABEL_REPEATED {
-                                        ctx.write("label: ::pb_jelly::Label::Repeated,")
+                                        ctx.write("label: ::pb_jelly::Label::Repeated,");
                                     }
 
                                     if field.has_oneof_index() && !field.get_proto3_optional() {
-                                        ctx.write(format!("oneof_index: Some({}),", field.get_oneof_index()))
+                                        ctx.write(format!("oneof_index: Some({}),", field.get_oneof_index()));
                                     } else {
                                         ctx.write("oneof_index: None,");
                                     }
@@ -1524,7 +1528,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                         let rust_type = RustType::new(ctx.ctx, ctx.proto_file, Some(msg_type), field);
                         if rust_type.may_use_grpc_slices() {
                             field_iter(ctx, "val", &name, msg_type, field, |ctx| {
-                                ctx.write("size += ::pb_jelly::Message::compute_grpc_slices_size(val);")
+                                ctx.write("size += ::pb_jelly::Message::compute_grpc_slices_size(val);");
                             });
                         }
                     }
@@ -1549,7 +1553,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                                 |ctx| {
                                     ctx.write("let mut size = 0;");
                                     field_iter(ctx, "val", &name, msg_type, field, |ctx| {
-                                        ctx.write("size += ::pb_jelly::Message::compute_size(val);")
+                                        ctx.write("size += ::pb_jelly::Message::compute_size(val);");
                                     });
                                     ctx.write(format!("::pb_jelly::wire_format::write({}, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;", field.get_number()));
                                     ctx.write("::pb_jelly::varint::write(size as u64, w)?;");
@@ -1672,7 +1676,7 @@ buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, \"{msg_name}\",
                                             }
 
                                             if typ.is_repeated() {
-                                                ctx.write(format!("self.{}.push(val);", escape_name(field.get_name())))
+                                                ctx.write(format!("self.{}.push(val);", escape_name(field.get_name())));
                                             } else {
                                                 let field_val = if typ.is_boxed() { "Box::new(val)" } else { "val" };
 
@@ -1688,7 +1692,7 @@ buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, \"{msg_name}\",
                                                             "oneof_{} = Some({});",
                                                             oneof.get_name(),
                                                             typ.oneof_val(&name, field_val)
-                                                        ))
+                                                        ));
                                                     }
                                                 } else if typ.is_nullable() {
                                                     ctx.write(format!(
@@ -1738,7 +1742,7 @@ buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, \"{msg_name}\",
                         if !oneof_nullable(oneof) {
                             block(ctx, format!("match oneof_{}", oneof.get_name()), |ctx| {
                                 ctx.write(format!("Some(v) => self.{} = v,", escape_name(oneof.get_name())));
-                                ctx.write(format!("None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, \"missing value for non-nullable oneof '{}' while parsing message {}.{}\")),", oneof.get_name(), ctx.proto_file.get_package(), msg_type.get_name()))
+                                ctx.write(format!("None => return Err(::std::io::Error::new(::std::io::ErrorKind::InvalidInput, \"missing value for non-nullable oneof '{}' while parsing message {}.{}\")),", oneof.get_name(), ctx.proto_file.get_package(), msg_type.get_name()));
                             });
                         }
                     }
@@ -1968,7 +1972,7 @@ fn walk(proto: &FileDescriptorProto) -> WalkResult<'_> {
                 .number as i32;
             let mut scl2 = scl_prefix.clone();
             scl2.extend_from_slice(&[extfn, i as i32]);
-            result.extensions.push((parents.clone(), nested_extension, scl2))
+            result.extensions.push((parents.clone(), nested_extension, scl2));
         }
     }
 
@@ -2024,7 +2028,7 @@ fn walk(proto: &FileDescriptorProto) -> WalkResult<'_> {
                 .number as i32;
             let mut scl2 = scl_prefix.clone();
             scl2.extend_from_slice(&[extfn, i as i32]);
-            result.extensions.push((parents2.clone(), nested_extension, scl2))
+            result.extensions.push((parents2.clone(), nested_extension, scl2));
         }
     }
 
@@ -2068,7 +2072,7 @@ impl<'a> ProtoType<'a> {
         r.push('.');
         r.push_str(self.typ.get_name());
         if let Some(ref package) = self.proto_file.package {
-            r = format!(".{}{}", package, r);
+            r = format!(".{package}{r}");
         }
         r
     }
@@ -2078,8 +2082,8 @@ impl<'a> ProtoType<'a> {
         if my_crate == other_crate
             && my_mod_parts
                 .iter()
-                .map(|s| s.as_str())
-                .eq(other_mod_parts.iter().map(|s| s.as_ref()))
+                .map(String::as_str)
+                .eq(other_mod_parts.iter().map(std::convert::AsRef::as_ref))
         {
             // In the same Rust binary, directly use typename
             return [&self.path[..], &[self.typ.get_name()]].concat().join("_");
@@ -2088,14 +2092,14 @@ impl<'a> ProtoType<'a> {
         let mut mod_parts = self.mod_parts.clone();
         mod_parts.push([&self.path[..], &[self.typ.get_name()]].concat().join("_"));
         mod_parts.iter_mut().for_each(|part| *part = escape_name(&*part));
-        if other_crate != self.crate_ {
-            // Different crate. Insert crate name in fully qualified module.
-            mod_parts.insert(0, "::".to_owned() + &self.crate_);
-        } else {
+        if other_crate == self.crate_ {
             // Same crate. Use super::<module_name>::<local_type>
             let num_supers = other_mod_parts.len();
             let supers = vec!["super"; num_supers].join("::");
             mod_parts.insert(0, supers);
+        } else {
+            // Different crate. Insert crate name in fully qualified module.
+            mod_parts.insert(0, "::".to_owned() + &self.crate_);
         }
         mod_parts.join("::")
     }
@@ -2140,7 +2144,7 @@ fn box_recursive_fields(
                     && field.get_label() != FieldDescriptorProto_Label::LABEL_REPEATED
                     && field.get_options().get_extension(extensions::BOX_IT).unwrap() != Some(true)
             })
-            .map(|field| field.get_type_name())
+            .map(proto_google::protobuf::descriptor::FieldDescriptorProto::get_type_name)
             .collect()
     };
 
@@ -2440,7 +2444,7 @@ impl<'a> Context<'a> {
                     return result;
                 }
 
-                let filename = format!("{}/mod.rs", mod_prefix_path);
+                let filename = format!("{mod_prefix_path}/mod.rs");
                 let content = concat!("// @", "generated, do not edit\n\n").to_string()
                     + &sub_mod_tree
                         .0
@@ -2449,8 +2453,8 @@ impl<'a> Context<'a> {
                         .collect::<String>();
                 result.push((filename, content));
 
-                for (child_mod_name, child_mod_tree) in sub_mod_tree.0.iter() {
-                    for res in mod_tree_dfs(&format!("{}/{}", mod_prefix_path, child_mod_name), child_mod_tree) {
+                for (child_mod_name, child_mod_tree) in &sub_mod_tree.0 {
+                    for res in mod_tree_dfs(&format!("{mod_prefix_path}/{child_mod_name}"), child_mod_tree) {
                         result.push(res);
                     }
                 }
@@ -2459,16 +2463,16 @@ impl<'a> Context<'a> {
             }
 
             let crate_mod_tree = &mod_tree.0[crate_name];
-            for (mod_name, child_mod_tree) in crate_mod_tree.0.iter() {
+            for (mod_name, child_mod_tree) in &crate_mod_tree.0 {
                 writeln!(&mut librs, "pub mod {};", escape_name(mod_name)).unwrap();
 
-                for res in mod_tree_dfs(&format!("{}/src/{}", crate_name, mod_name), child_mod_tree) {
+                for res in mod_tree_dfs(&format!("{crate_name}/src/{mod_name}"), child_mod_tree) {
                     result.push(res);
                 }
             }
 
-            let filename = format!("{}/src/lib.rs", crate_name);
-            let content = format!("{}{}{}", RS_HEADER, LIB_RS_HEADER, librs);
+            let filename = format!("{crate_name}/src/lib.rs");
+            let content = format!("{RS_HEADER}{LIB_RS_HEADER}{librs}");
             result.push((filename, content));
         }
 
@@ -2482,7 +2486,7 @@ impl<'a> Context<'a> {
             let mut all_deps: BTreeSet<&str> = ["lazy_static", "pb-jelly"]
                 .iter()
                 .copied()
-                .chain(deps.iter().map(|dep| dep.as_str()))
+                .chain(deps.iter().map(String::as_str))
                 .collect::<BTreeSet<_>>();
 
             all_deps.remove("std");
@@ -2492,7 +2496,7 @@ impl<'a> Context<'a> {
                 ("compact_str", r#"features=["bytes"]"#),
             ]
             .iter()
-            .cloned()
+            .copied()
             .collect();
 
             if derive_serde {
@@ -2519,11 +2523,11 @@ impl<'a> Context<'a> {
         let mut result = Vec::new();
 
         for (crate_name, deps) in &*self.deps_map.borrow() {
-            let mut all_deps: BTreeSet<&str> = deps.iter().map(|dep| dep.as_str()).collect();
+            let mut all_deps: BTreeSet<&str> = deps.iter().map(String::as_str).collect();
             all_deps.insert("lazy_static");
             all_deps.insert("pb-jelly");
             if let Some(extra_crates) = self.extra_crates.get(crate_name) {
-                all_deps.extend(extra_crates.iter().map(|dep| dep.as_str()));
+                all_deps.extend(extra_crates.iter().map(String::as_str));
             }
             all_deps.remove("std");
 
@@ -2552,7 +2556,7 @@ impl<'a> Context<'a> {
                 if let Some(version) = versions.get(&dep) {
                     fields.push(version.to_owned());
                 } else {
-                    fields.push(format!("path = \"../{}\"", dep));
+                    fields.push(format!("path = \"../{dep}\""));
                 }
                 deps_lines.push(format!("{} = {{ {} }}", dep, fields.join(", ")));
             }
@@ -2644,19 +2648,19 @@ fn generate_single_crate(
     let mut processed_files: BTreeSet<String> = BTreeSet::new();
     let mut derive_serde = false;
 
-    for &proto_file_name in file_to_generate.iter() {
+    for &proto_file_name in file_to_generate {
         // Detect packages which collide with filenames. The rust codegen does not support those due
         // to the rust module structure.
         //
         // eg. edgestore/engine.proto and edgestore/engine/service.proto
         // engine would be both a file and container module
         let package_path = proto_file_name.rsplit('/').next().unwrap();
-        if processed_files.contains(package_path) {
-            panic!(
-                "Unable to process proto {}. It collides with package {}.",
-                proto_file_name, package_path
-            );
-        }
+        assert!(
+            !processed_files.contains(package_path),
+            "Unable to process proto {}. It collides with package {}.",
+            proto_file_name,
+            package_path
+        );
         processed_files.insert(proto_file_name[..proto_file_name.len() - 6].to_owned()); // Strip the .proto
 
         let (crate_name, mod_parts) = ctx.crate_from_proto_filename(proto_file_name);
@@ -2720,7 +2724,7 @@ fn generate_single_crate(
     for (filename, content) in ctx.get_lib_and_mod_rs(mod_tree, derive_serde) {
         response.file.push(plugin::CodeGeneratorResponse_File {
             name: Some(file_prefix.to_owned() + &filename),
-            content: Some(content.to_owned()),
+            content: Some(content.clone()),
             ..Default::default()
         });
     }
@@ -2730,7 +2734,7 @@ fn generate_single_crate(
             // Create a stub file for later generation
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(file_prefix.to_owned() + &crate_ + "/BUILD.in-gen-proto~"),
-                content: Some("".to_owned()),
+                content: Some(String::new()),
                 ..Default::default()
             });
         }
@@ -2738,7 +2742,7 @@ fn generate_single_crate(
         for (crate_, spec_toml_file) in ctx.get_spec_toml_file(derive_serde) {
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(file_prefix.to_owned() + &crate_ + "/Spec.toml"),
-                content: Some(spec_toml_file.to_owned()),
+                content: Some(spec_toml_file.clone()),
                 ..Default::default()
             });
         }
@@ -2747,20 +2751,21 @@ fn generate_single_crate(
         for (crate_, cargo_toml_file) in ctx.get_cargo_toml_file(derive_serde) {
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(file_prefix.to_owned() + &crate_ + "/Cargo.toml"),
-                content: Some(cargo_toml_file.to_owned()),
+                content: Some(cargo_toml_file.clone()),
                 ..Default::default()
             });
         }
     }
 }
 
+#[must_use]
 pub fn generate_code(request: &plugin::CodeGeneratorRequest) -> plugin::CodeGeneratorResponse {
     let mut response = plugin::CodeGeneratorResponse {
         supported_features: Some(plugin::CodeGeneratorResponse_Feature::FEATURE_PROTO3_OPTIONAL.value() as u64),
         ..Default::default()
     };
 
-    let to_generate: Vec<&str> = request.get_file_to_generate().iter().map(|s| s.as_str()).collect();
+    let to_generate: Vec<&str> = request.get_file_to_generate().iter().map(String::as_str).collect();
 
     let mut prefix_to_clear = String::new();
     if request.get_parameter().contains("prefix_to_clear") {

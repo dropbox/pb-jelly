@@ -13,7 +13,8 @@
 //!
 //! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct,
 //! or the `gen_protos` convience function to specify where your protos live, and where the generated code should be
-//! put. ```no_run
+//! put.
+//! ```no_run
 //! use pb_jelly_gen::GenProtos;
 //!
 //! fn main() -> std::io::Result<()> {
@@ -59,6 +60,7 @@ pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> Result<(), Box<dyn Error
 }
 
 /// A builder struct to configure the way your protos are generated, create one with `GenProtos::builder()`
+#[must_use]
 pub struct GenProtos {
     gen_path: PathBuf,
     src_paths: Vec<PathBuf>,
@@ -173,7 +175,7 @@ impl GenProtos {
         let mut protoc_cmd = Command::new("protoc");
 
         // Directories that contain protos
-        for path in self.src_paths.iter() {
+        for path in &self.src_paths {
             protoc_cmd.arg("-I");
             protoc_cmd.arg(path);
         }
@@ -188,7 +190,7 @@ impl GenProtos {
         }
 
         // Include any protos from our include paths
-        for path in self.include_paths.iter() {
+        for path in &self.include_paths {
             protoc_cmd.arg("-I");
             protoc_cmd.arg(path);
         }
@@ -230,17 +232,17 @@ impl GenProtos {
         let protoc_status = protoc_cmd.status().expect("something went wrong in running protoc");
 
         if !protoc_status.success() {
-            return Err(format!("protoc exited with status {}", protoc_status).into());
+            return Err(format!("protoc exited with status {protoc_status}").into());
         }
 
-        let fds = FileDescriptorSet::deserialize_from_slice(
+        let file_descriptor_set = FileDescriptorSet::deserialize_from_slice(
             &fs::read(file_descriptor_set_path).expect("Failed to read protoc output"),
         )
         .expect("Failed to deserialize FileDescriptorSet");
 
         let plugin_input = CodeGeneratorRequest {
             file_to_generate: proto_paths,
-            proto_file: fds.file,
+            proto_file: file_descriptor_set.file,
             ..Default::default()
         };
         let out = codegen::generate_code(&plugin_input);
