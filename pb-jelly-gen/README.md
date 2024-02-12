@@ -6,27 +6,35 @@ This crate provides a tool to generate [`Rust`](https://www.rust-lang.org/) code
 
 ### How To Use
 
-##### `python` + `protoc`
-The core of this crate is a python script `codegen.py` that is provided to the protobuf compiler, `protoc` as a plugin.
-
 You'll need the protobuf compiler which you can get by:
 1. Running `brew install protobuf` or...
 2. Download or build from source [`protobuf`](https://github.com/protocolbuffers/protobuf)
 
-Once you've completed the above steps, you should include this crate as a build-dependency in your `Cargo.toml` and then call the API of this crate from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) files in the root of your repo.
+#### As a plugin for protoc
+
+A binary is included that can be passed directly to `protoc`:
+
+```
+% cargo build --bin protoc-gen-jellyrust
+% protoc --plugin=protoc-gen-jellyrust=target/debug/protoc-gen-jellyrust --jellyrust_out=out foo/bar.proto...
+```
+
+#### As a library
+
+Add this crate as a dependency in your `Cargo.toml` and then call `gen_protos`:
 
 ##### `Cargo.toml`
 ```
-[build-dependencies]
+[dependencies]
 pb-jelly-gen = "0.0.16"
 ```
 
-##### `build.rs`
+##### `main.rs`
 ```
 use pb_jelly_gen::gen_protos;
 
-fn main() -> std::io::Result<()> {
+fn main() {
     // Replace `./protos` with a path to your proto files.
-    gen_protos(vec!["./protos"])
+    gen_protos(vec!["./protos"]).unwrap()
 }
 ```
