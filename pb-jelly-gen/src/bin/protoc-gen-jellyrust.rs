@@ -1,3 +1,5 @@
+//! A codegen plugin for use with `protoc --jellyrust_out=...`
+
 use std::io::{
     self,
     Read,
