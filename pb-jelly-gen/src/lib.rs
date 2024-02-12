@@ -17,7 +17,7 @@
 //! ```no_run
 //! use pb_jelly_gen::GenProtos;
 //!
-//! fn main() -> std::io::Result<()> {
+//! fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!    GenProtos::builder()
 //!        // output path for our generated code
 //!        .out_path("./gen")
