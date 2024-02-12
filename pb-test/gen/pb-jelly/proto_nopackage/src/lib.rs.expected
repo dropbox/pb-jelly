@@ -1,6 +1,5 @@
 // @generated, do not edit
 
-#![warn(rust_2018_idioms)]
 #![allow(irrefutable_let_patterns)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
