@@ -737,7 +737,6 @@ class CodeWriter(object):
         self.indentation = 0
         self.content = StringIO()
         self.is_proto3 = proto_file and proto_file.syntax == "proto3"
-        self.uses_sso = False
         if proto_file and proto_file.options.Extensions[extensions_pb2.serde_derive]:
             self.derive_serde = True
         else:
@@ -787,13 +786,7 @@ class CodeWriter(object):
     def rust_type(
         self, msg_type: DescriptorProto, field: FieldDescriptorProto
     ) -> RustType:
-        rust_type = RustType(self.ctx, self.proto_file, msg_type, field)
-
-        # checks if any of our types use a small string optimization
-        if not self.uses_sso and rust_type.is_small_string_optimization():
-            self.uses_sso = True
-
-        return rust_type
+        return RustType(self.ctx, self.proto_file, msg_type, field)
 
     def gen_closed_enum(
         self,
@@ -1799,6 +1792,12 @@ class Context(object):
                     (impls_eq, impls_copy) = (False, False)
                     self.extra_crates[crate].add("bytes")
                     may_use_grpc_slices = True
+                elif (
+                    typ == FieldDescriptorProto.TYPE_STRING
+                    and field.options.Extensions[extensions_pb2.sso]
+                ):
+                    impls_copy = False
+                    self.extra_crates[crate].add("compact_str")
                 elif typ in PRIMITIVE_TYPES:
                     if not PRIMITIVE_TYPES[typ][1]:
                         impls_eq = False
@@ -1944,9 +1943,7 @@ class Context(object):
             content = RS_HEADER + LIB_RS_HEADER + librs.content.getvalue()
             yield filename, content
 
-    def get_spec_toml_file(
-        self, derive_serde: bool, include_sso: bool
-    ) -> Iterator[Tuple[Text, Text]]:
+    def get_spec_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
@@ -1955,13 +1952,9 @@ class Context(object):
                 "serde": 'features=["serde_derive"]',
                 "compact_str": 'features=["bytes"]',
             }
-
             if derive_serde:
                 all_deps.update({"serde"})
-            if include_sso:
-                all_deps.update({"compact_str"})
-                if derive_serde:
-                    features.update({"compact_str": 'features=["bytes", "serde"]'})
+                features.update({"compact_str": 'features=["bytes", "serde"]'})
 
             deps_str = "\n".join(
                 "{dep} = {{{feat}}}".format(dep=dep, feat=features.get(dep, ""))
@@ -1970,9 +1963,7 @@ class Context(object):
             targets = SPEC_TOML_TEMPLATE.format(crate=crate, deps=deps_str)
             yield crate, targets
 
-    def get_cargo_toml_file(
-        self, derive_serde: bool, include_sso: bool
-    ) -> Iterator[Tuple[Text, Text]]:
+    def get_cargo_toml_file(self, derive_serde: bool) -> Iterator[Tuple[Text, Text]]:
         for crate, deps in self.deps_map.items():
             all_deps = (
                 {"lazy_static", "pb-jelly"} | deps | self.extra_crates[crate]
@@ -1981,20 +1972,16 @@ class Context(object):
                 "serde": 'features=["serde_derive"]',
                 "compact_str": 'features=["bytes"]',
             }
-
             if derive_serde:
                 all_deps.update({"serde"})
-            if include_sso:
-                all_deps.update({"compact_str"})
-                if derive_serde:
-                    features.update({"compact_str": 'features=["bytes", "serde"]'})
+                features.update({"compact_str": 'features=["bytes", "serde"]'})
 
             versions = {
-                "lazy_static": ' version = "1.4.0" ',
-                "pb-jelly": ' version = "0.0.16" ',
-                "serde": ' version = "1.0" ',
-                "bytes": ' version = "1.0" ',
-                "compact_str": ' version = "0.5" ',
+                "lazy_static": 'version = "1.4.0"',
+                "pb-jelly": 'version = "0.0.16"',
+                "serde": 'version = "1.0"',
+                "bytes": 'version = "1.0"',
+                "compact_str": 'version = "0.5"',
             }
 
             deps_lines = []
@@ -2007,7 +1994,7 @@ class Context(object):
                 else:
                     fields.append('path = "../{dep}"'.format(dep=dep))
                 deps_lines.append(
-                    "{dep} = {{{fields}}}".format(dep=dep, fields=",".join(fields))
+                    "{dep} = {{ {fields} }}".format(dep=dep, fields=", ".join(fields))
                 )
 
             targets = CARGO_TOML_TEMPLATE.format(
@@ -2098,7 +2085,6 @@ def generate_single_crate(
     # Set iteration order is nondeterministic, but this is ok, because we never iterate through this
     processed_files: Set[Text] = set()
     derive_serde = False
-    include_sso = False
 
     for proto_file_name in file_to_generate:
         # Detect packages which collide with filenames. The rust codegen does not support those due
@@ -2150,10 +2136,6 @@ def generate_single_crate(
 
         add_mod(writer=writer)
 
-        # check if the writer ever used a small string optimization
-        if writer.uses_sso:
-            include_sso = True
-
     # Note that output filenames must use "/" even on windows. It is part of the
     # protoc plugin protocol. The plugin speaks os-independent in "/". Thus, we
     # should not use os.path.sep or os.path.join
@@ -2170,15 +2152,13 @@ def generate_single_crate(
             output.name = file_prefix + crate + "/BUILD.in-gen-proto~"
             output.content = ""
     elif "generate_spec_toml" in request.parameter:
-        for crate, spec_toml_file in ctx.get_spec_toml_file(derive_serde, include_sso):
+        for crate, spec_toml_file in ctx.get_spec_toml_file(derive_serde):
             output = response.file.add()
             output.name = file_prefix + crate + "/Spec.toml"
             output.content = spec_toml_file
     else:
         # Generate good ol Cargo.toml files
-        for crate, cargo_toml_file in ctx.get_cargo_toml_file(
-            derive_serde, include_sso
-        ):
+        for crate, cargo_toml_file in ctx.get_cargo_toml_file(derive_serde):
             output = response.file.add()
             output.name = file_prefix + crate + "/Cargo.toml"
             output.content = cargo_toml_file
