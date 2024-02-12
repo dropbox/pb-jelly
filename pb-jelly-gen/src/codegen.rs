@@ -476,7 +476,7 @@ impl<'a> RustType<'a> {
                     ("::std::vec::Vec<u8>".to_string(), "v".to_string())
                 }
             },
-            FieldDescriptorProto_Type::TYPE_ENUM => (self.rust_type().to_string(), "v".to_string()),
+            FieldDescriptorProto_Type::TYPE_ENUM => (self.rust_type(), "v".to_string()),
             FieldDescriptorProto_Type::TYPE_MESSAGE => {
                 if self.is_boxed() {
                     (
@@ -484,7 +484,7 @@ impl<'a> RustType<'a> {
                         "v".to_string(),
                     )
                 } else {
-                    (self.rust_type().to_string(), "v".to_string())
+                    (self.rust_type(), "v".to_string())
                 }
             },
             _ => panic!("Unexpected field type"),
@@ -576,7 +576,7 @@ impl<'a> RustType<'a> {
                 ("&[u8]".to_string(), format!("self.{}.as_deref().unwrap_or(&[])", name))
             },
             Some(FieldDescriptorProto_Type::TYPE_ENUM) => {
-                (self.rust_type().clone(), format!("self.{}.unwrap_or_default()", name))
+                (self.rust_type(), format!("self.{}.unwrap_or_default()", name))
             },
             Some(FieldDescriptorProto_Type::TYPE_MESSAGE) => {
                 let deref = if !self.is_boxed() {
@@ -602,7 +602,7 @@ impl<'a> RustType<'a> {
         let typ = self.field.get_type();
 
         if let Some(rust_type) = self.custom_type() {
-            return rust_type.to_string();
+            return rust_type;
         }
 
         if self.is_blob() {
@@ -632,14 +632,14 @@ impl<'a> RustType<'a> {
 
             let proto_type = self.ctx.find(self.field.get_type_name());
             let (crate_, mod_parts) = self.ctx.crate_from_proto_filename(self.proto_file.get_name());
-            return proto_type.rust_name(self.ctx, &crate_, &mod_parts).to_string();
+            return proto_type.rust_name(self.ctx, &crate_, &mod_parts);
         }
 
         panic!("Unsupported type: {:?}", typ);
     }
 
     fn storage_type(&self) -> String {
-        let mut rust_type = self.rust_type().to_string();
+        let mut rust_type = self.rust_type();
 
         if self.is_boxed() {
             rust_type = format!("::std::boxed::Box<{}>", rust_type);
@@ -2798,7 +2798,7 @@ pub fn generate_code(request: &plugin::CodeGeneratorRequest) -> plugin::CodeGene
             generate_single_crate(&mut ctx, &file_prefix, &to_generate, request, &mut response);
         }
     } else {
-        let mut ctx = Context::new(false, prefix_to_clear.clone(), &to_generate);
+        let mut ctx = Context::new(false, prefix_to_clear, &to_generate);
         for proto_file in request.get_proto_file() {
             ctx.feed(proto_file);
         }
