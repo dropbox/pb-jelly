@@ -928,7 +928,7 @@ class CodeWriter(object):
                 with block(self, "match self"):
                     for _, value in enum_variants:
                         self.write(
-                            "%s::%s => Some(%s::%s),"
+                            "%s::%s => ::std::option::Option::Some(%s::%s),"
                             % (name, value.name, closed_name, value.name)
                         )
                     self.write("_ => None,")
