@@ -2248,7 +2248,7 @@ impl<'a> Context<'a> {
                     extra_crates
                         .entry(crate_.to_string())
                         .or_default()
-                        .extend(CRATE_NAME_REGEX.find_iter(&custom_type).map(|m| m.as_str().to_owned()));
+                        .extend(CRATE_NAME_REGEX.captures_iter(&custom_type).map(|m| m[1].to_owned()));
                     may_use_grpc_slices = true;
                 }
 
