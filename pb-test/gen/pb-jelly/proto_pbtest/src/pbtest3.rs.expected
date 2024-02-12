@@ -37,9 +37,9 @@ impl ::pb_jelly::OpenProtoEnum for ForeignEnum3 {
   type Closed = ForeignEnum3_Closed;
   fn into_known(self) -> ::std::option::Option<ForeignEnum3_Closed> {
     match self {
-      ForeignEnum3::FOREIGN3_FOO => Some(ForeignEnum3_Closed::FOREIGN3_FOO),
-      ForeignEnum3::FOREIGN3_BAR => Some(ForeignEnum3_Closed::FOREIGN3_BAR),
-      ForeignEnum3::FOREIGN3_BAZ => Some(ForeignEnum3_Closed::FOREIGN3_BAZ),
+      ForeignEnum3::FOREIGN3_FOO => ::std::option::Option::Some(ForeignEnum3_Closed::FOREIGN3_FOO),
+      ForeignEnum3::FOREIGN3_BAR => ::std::option::Option::Some(ForeignEnum3_Closed::FOREIGN3_BAR),
+      ForeignEnum3::FOREIGN3_BAZ => ::std::option::Option::Some(ForeignEnum3_Closed::FOREIGN3_BAZ),
       _ => None,
     }
   }
@@ -135,7 +135,7 @@ impl ::pb_jelly::OpenProtoEnum for Version31Enum_TestEnum {
   type Closed = Version31Enum_TestEnum_Closed;
   fn into_known(self) -> ::std::option::Option<Version31Enum_TestEnum_Closed> {
     match self {
-      Version31Enum_TestEnum::ENUM0 => Some(Version31Enum_TestEnum_Closed::ENUM0),
+      Version31Enum_TestEnum::ENUM0 => ::std::option::Option::Some(Version31Enum_TestEnum_Closed::ENUM0),
       _ => None,
     }
   }
@@ -224,8 +224,8 @@ impl ::pb_jelly::OpenProtoEnum for Version32Enum_TestEnum {
   type Closed = Version32Enum_TestEnum_Closed;
   fn into_known(self) -> ::std::option::Option<Version32Enum_TestEnum_Closed> {
     match self {
-      Version32Enum_TestEnum::ENUM0 => Some(Version32Enum_TestEnum_Closed::ENUM0),
-      Version32Enum_TestEnum::ENUM1 => Some(Version32Enum_TestEnum_Closed::ENUM1),
+      Version32Enum_TestEnum::ENUM0 => ::std::option::Option::Some(Version32Enum_TestEnum_Closed::ENUM0),
+      Version32Enum_TestEnum::ENUM1 => ::std::option::Option::Some(Version32Enum_TestEnum_Closed::ENUM1),
       _ => None,
     }
   }
@@ -321,10 +321,10 @@ impl ::pb_jelly::OpenProtoEnum for TestMessage3_NestedEnum3 {
   type Closed = TestMessage3_NestedEnum3_Closed;
   fn into_known(self) -> ::std::option::Option<TestMessage3_NestedEnum3_Closed> {
     match self {
-      TestMessage3_NestedEnum3::FOO => Some(TestMessage3_NestedEnum3_Closed::FOO),
-      TestMessage3_NestedEnum3::BAR => Some(TestMessage3_NestedEnum3_Closed::BAR),
-      TestMessage3_NestedEnum3::BAZ => Some(TestMessage3_NestedEnum3_Closed::BAZ),
-      TestMessage3_NestedEnum3::NEG => Some(TestMessage3_NestedEnum3_Closed::NEG),
+      TestMessage3_NestedEnum3::FOO => ::std::option::Option::Some(TestMessage3_NestedEnum3_Closed::FOO),
+      TestMessage3_NestedEnum3::BAR => ::std::option::Option::Some(TestMessage3_NestedEnum3_Closed::BAR),
+      TestMessage3_NestedEnum3::BAZ => ::std::option::Option::Some(TestMessage3_NestedEnum3_Closed::BAZ),
+      TestMessage3_NestedEnum3::NEG => ::std::option::Option::Some(TestMessage3_NestedEnum3_Closed::NEG),
       _ => None,
     }
   }
@@ -425,7 +425,7 @@ impl ::pb_jelly::OpenProtoEnum for TestMessage3_NestedMessage_Enum {
   type Closed = TestMessage3_NestedMessage_Enum_Closed;
   fn into_known(self) -> ::std::option::Option<TestMessage3_NestedMessage_Enum_Closed> {
     match self {
-      TestMessage3_NestedMessage_Enum::ENUM_VARIANT_ONE => Some(TestMessage3_NestedMessage_Enum_Closed::ENUM_VARIANT_ONE),
+      TestMessage3_NestedMessage_Enum::ENUM_VARIANT_ONE => ::std::option::Option::Some(TestMessage3_NestedMessage_Enum_Closed::ENUM_VARIANT_ONE),
       _ => None,
     }
   }
@@ -695,7 +695,7 @@ impl ::std::default::Default for ForeignMessage3 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref ForeignMessage3_default: ForeignMessage3 = ForeignMessage3::default();
 }
 impl ::pb_jelly::Message for ForeignMessage3 {
@@ -778,7 +778,7 @@ impl ::std::default::Default for Version31OneOfNoneNullable {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version31OneOfNoneNullable_default: Version31OneOfNoneNullable = Version31OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version31OneOfNoneNullable {
@@ -939,7 +939,7 @@ impl ::std::default::Default for Version32OneOfNoneNullable {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version32OneOfNoneNullable_default: Version32OneOfNoneNullable = Version32OneOfNoneNullable::default();
 }
 impl ::pb_jelly::Message for Version32OneOfNoneNullable {
@@ -1133,7 +1133,7 @@ impl ::std::default::Default for Version31Enum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version31Enum_default: Version31Enum = Version31Enum::default();
 }
 impl ::pb_jelly::Message for Version31Enum {
@@ -1211,7 +1211,7 @@ impl ::std::default::Default for Version32Enum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version32Enum_default: Version32Enum = Version32Enum::default();
 }
 impl ::pb_jelly::Message for Version32Enum {
@@ -1293,7 +1293,7 @@ impl ::std::default::Default for Version31OneOf {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version31OneOf_default: Version31OneOf = Version31OneOf::default();
 }
 impl ::pb_jelly::Message for Version31OneOf {
@@ -1406,7 +1406,7 @@ impl ::std::default::Default for Version32OneOf {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version32OneOf_default: Version32OneOf = Version32OneOf::default();
 }
 impl ::pb_jelly::Message for Version32OneOf {
@@ -1553,7 +1553,7 @@ impl ::std::default::Default for Version31 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version31_default: Version31 = Version31::default();
 }
 impl ::pb_jelly::Message for Version31 {
@@ -1631,7 +1631,7 @@ impl ::std::default::Default for Version31SSO {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version31SSO_default: Version31SSO = Version31SSO::default();
 }
 impl ::pb_jelly::Message for Version31SSO {
@@ -1735,7 +1735,7 @@ impl ::std::default::Default for Version32 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Version32_default: Version32 = Version32::default();
 }
 impl ::pb_jelly::Message for Version32 {
@@ -2185,7 +2185,7 @@ impl ::std::default::Default for TestMessage3 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3_default: TestMessage3 = TestMessage3::default();
 }
 impl ::pb_jelly::Message for TestMessage3 {
@@ -4123,7 +4123,7 @@ impl ::std::default::Default for TestMessage3_NestedMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3_NestedMessage_default: TestMessage3_NestedMessage = TestMessage3_NestedMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage {
@@ -4358,7 +4358,7 @@ impl ::std::default::Default for TestMessage3_NestedMessage_File {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3_NestedMessage_File_default: TestMessage3_NestedMessage_File = TestMessage3_NestedMessage_File::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
@@ -4464,7 +4464,7 @@ impl ::std::default::Default for TestMessage3_NestedMessage_Dir {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3_NestedMessage_Dir_default: TestMessage3_NestedMessage_Dir = TestMessage3_NestedMessage_Dir::default();
 }
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
@@ -4523,7 +4523,7 @@ impl ::std::default::Default for TestBoxedNonnullable {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestBoxedNonnullable_default: TestBoxedNonnullable = TestBoxedNonnullable::default();
 }
 impl ::pb_jelly::Message for TestBoxedNonnullable {
@@ -4622,7 +4622,7 @@ impl ::std::default::Default for TestMessage3NonNullableOneof {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3NonNullableOneof_default: TestMessage3NonNullableOneof = TestMessage3NonNullableOneof::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
@@ -4789,7 +4789,7 @@ impl ::std::default::Default for TestMessage3ErrIfDefaultEnum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3ErrIfDefaultEnum_default: TestMessage3ErrIfDefaultEnum = TestMessage3ErrIfDefaultEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
@@ -4885,7 +4885,7 @@ impl ::std::default::Default for TestMessage3ErrIfDefaultEnumOneof {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3ErrIfDefaultEnumOneof_default: TestMessage3ErrIfDefaultEnumOneof = TestMessage3ErrIfDefaultEnumOneof::default();
 }
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
@@ -5020,7 +5020,7 @@ impl ::std::default::Default for TestMessage3RepeatedErrIfDefaultEnum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3RepeatedErrIfDefaultEnum_default: TestMessage3RepeatedErrIfDefaultEnum = TestMessage3RepeatedErrIfDefaultEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
@@ -5116,7 +5116,7 @@ impl ::std::default::Default for TestMessage3ClosedEnum {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3ClosedEnum_default: TestMessage3ClosedEnum = TestMessage3ClosedEnum::default();
 }
 impl ::pb_jelly::Message for TestMessage3ClosedEnum {
@@ -5194,7 +5194,7 @@ impl ::std::default::Default for TestMessage3ClosedEnum2 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3ClosedEnum2_default: TestMessage3ClosedEnum2 = TestMessage3ClosedEnum2::default();
 }
 impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
@@ -5272,7 +5272,7 @@ impl ::std::default::Default for TestMessage3NonOptionalBoxedMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3NonOptionalBoxedMessage_default: TestMessage3NonOptionalBoxedMessage = TestMessage3NonOptionalBoxedMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
@@ -5364,7 +5364,7 @@ impl ::std::default::Default for TestMessage3NonOptionalBoxedMessage_InnerMessag
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestMessage3NonOptionalBoxedMessage_InnerMessage_default: TestMessage3NonOptionalBoxedMessage_InnerMessage = TestMessage3NonOptionalBoxedMessage_InnerMessage::default();
 }
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
@@ -5444,7 +5444,7 @@ impl ::std::default::Default for TestPreserveUnrecognized1 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestPreserveUnrecognized1_default: TestPreserveUnrecognized1 = TestPreserveUnrecognized1::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
@@ -5555,7 +5555,7 @@ impl ::std::default::Default for TestPreserveUnrecognized2 {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestPreserveUnrecognized2_default: TestPreserveUnrecognized2 = TestPreserveUnrecognized2::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
@@ -5872,7 +5872,7 @@ impl ::std::default::Default for TestPreserveUnrecognizedEmpty {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestPreserveUnrecognizedEmpty_default: TestPreserveUnrecognizedEmpty = TestPreserveUnrecognizedEmpty::default();
 }
 impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
@@ -5937,7 +5937,7 @@ impl ::std::default::Default for TestSmallString {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestSmallString_default: TestSmallString = TestSmallString::default();
 }
 impl ::pb_jelly::Message for TestSmallString {
@@ -6015,7 +6015,7 @@ impl ::std::default::Default for TestBoxedSmallString {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestBoxedSmallString_default: TestBoxedSmallString = TestBoxedSmallString::default();
 }
 impl ::pb_jelly::Message for TestBoxedSmallString {
@@ -6093,7 +6093,7 @@ impl ::std::default::Default for TestNonOptionalSmallString {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestNonOptionalSmallString_default: TestNonOptionalSmallString = TestNonOptionalSmallString::default();
 }
 impl ::pb_jelly::Message for TestNonOptionalSmallString {
@@ -6173,7 +6173,7 @@ impl ::std::default::Default for TestSmallStringPreserveUnrecognized {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestSmallStringPreserveUnrecognized_default: TestSmallStringPreserveUnrecognized = TestSmallStringPreserveUnrecognized::default();
 }
 impl ::pb_jelly::Message for TestSmallStringPreserveUnrecognized {
@@ -6297,7 +6297,7 @@ impl ::std::default::Default for TestProto3Optional {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestProto3Optional_default: TestProto3Optional = TestProto3Optional::default();
 }
 impl ::pb_jelly::Message for TestProto3Optional {
@@ -6931,7 +6931,7 @@ impl ::std::default::Default for TestProto3Zerocopy {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestProto3Zerocopy_default: TestProto3Zerocopy = TestProto3Zerocopy::default();
 }
 impl ::pb_jelly::Message for TestProto3Zerocopy {
@@ -7039,7 +7039,7 @@ impl ::std::default::Default for TestProto3ContainsZerocopy {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref TestProto3ContainsZerocopy_default: TestProto3ContainsZerocopy = TestProto3ContainsZerocopy::default();
 }
 impl ::pb_jelly::Message for TestProto3ContainsZerocopy {
@@ -7146,7 +7146,7 @@ impl ::std::default::Default for RecursiveOneof {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref RecursiveOneof_default: RecursiveOneof = RecursiveOneof::default();
 }
 impl ::pb_jelly::Message for RecursiveOneof {
@@ -7434,7 +7434,7 @@ impl ::std::default::Default for MentionsKeywordPath {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MentionsKeywordPath_default: MentionsKeywordPath = MentionsKeywordPath::default();
 }
 impl ::pb_jelly::Message for MentionsKeywordPath {
@@ -7528,7 +7528,7 @@ impl ::std::default::Default for NonNullableOneofKeyword {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref NonNullableOneofKeyword_default: NonNullableOneofKeyword = NonNullableOneofKeyword::default();
 }
 impl ::pb_jelly::Message for NonNullableOneofKeyword {
@@ -7632,7 +7632,7 @@ impl ::std::default::Default for NonNullableEnumKeyword {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref NonNullableEnumKeyword_default: NonNullableEnumKeyword = NonNullableEnumKeyword::default();
 }
 impl ::pb_jelly::Message for NonNullableEnumKeyword {
@@ -7722,7 +7722,7 @@ impl ::std::default::Default for MutuallyRecursiveA {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MutuallyRecursiveA_default: MutuallyRecursiveA = MutuallyRecursiveA::default();
 }
 impl ::pb_jelly::Message for MutuallyRecursiveA {
@@ -7814,7 +7814,7 @@ impl ::std::default::Default for MutuallyRecursiveB {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MutuallyRecursiveB_default: MutuallyRecursiveB = MutuallyRecursiveB::default();
 }
 impl ::pb_jelly::Message for MutuallyRecursiveB {
@@ -7906,7 +7906,7 @@ impl ::std::default::Default for MutuallyRecursiveWithRepeatedA {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MutuallyRecursiveWithRepeatedA_default: MutuallyRecursiveWithRepeatedA = MutuallyRecursiveWithRepeatedA::default();
 }
 impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedA {
@@ -7998,7 +7998,7 @@ impl ::std::default::Default for MutuallyRecursiveWithRepeatedB {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MutuallyRecursiveWithRepeatedB_default: MutuallyRecursiveWithRepeatedB = MutuallyRecursiveWithRepeatedB::default();
 }
 impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedB {
@@ -8088,7 +8088,7 @@ impl ::std::default::Default for MutuallyRecursiveWithBoxedA {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MutuallyRecursiveWithBoxedA_default: MutuallyRecursiveWithBoxedA = MutuallyRecursiveWithBoxedA::default();
 }
 impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedA {
@@ -8181,7 +8181,7 @@ impl ::std::default::Default for MutuallyRecursiveWithBoxedB {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref MutuallyRecursiveWithBoxedB_default: MutuallyRecursiveWithBoxedB = MutuallyRecursiveWithBoxedB::default();
 }
 impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedB {

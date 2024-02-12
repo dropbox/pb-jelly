@@ -22,7 +22,7 @@ impl ::std::default::Default for BytesData {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref BytesData_default: BytesData = BytesData::default();
 }
 impl ::pb_jelly::Message for BytesData {
@@ -134,7 +134,7 @@ impl ::std::default::Default for VecData {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref VecData_default: VecData = VecData::default();
 }
 impl ::pb_jelly::Message for VecData {
@@ -238,7 +238,7 @@ impl ::std::default::Default for StringMessage {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref StringMessage_default: StringMessage = StringMessage::default();
 }
 impl ::pb_jelly::Message for StringMessage {
@@ -342,7 +342,7 @@ impl ::std::default::Default for StringMessageSSO {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref StringMessageSSO_default: StringMessageSSO = StringMessageSSO::default();
 }
 impl ::pb_jelly::Message for StringMessageSSO {
@@ -446,7 +446,7 @@ impl ::std::default::Default for Cities {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref Cities_default: Cities = Cities::default();
 }
 impl ::pb_jelly::Message for Cities {
@@ -628,7 +628,7 @@ impl ::std::default::Default for City {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref City_default: City = City::default();
 }
 impl ::pb_jelly::Message for City {
@@ -906,7 +906,7 @@ impl ::std::default::Default for CitiesSSO {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref CitiesSSO_default: CitiesSSO = CitiesSSO::default();
 }
 impl ::pb_jelly::Message for CitiesSSO {
@@ -1088,7 +1088,7 @@ impl ::std::default::Default for CitySSO {
     }
   }
 }
-lazy_static! {
+::lazy_static::lazy_static! {
   pub static ref CitySSO_default: CitySSO = CitySSO::default();
 }
 impl ::pb_jelly::Message for CitySSO {

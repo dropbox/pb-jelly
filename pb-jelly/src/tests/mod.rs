@@ -12,9 +12,6 @@ use bytes::{
     BufMut,
 };
 
-use crate::varint;
-use crate::wire_format;
-
 use super::{
     ensure_split,
     ensure_wire_format,
@@ -25,6 +22,10 @@ use super::{
     PbBuffer,
     PbBufferReader,
     PbBufferWriter,
+};
+use crate::{
+    varint,
+    wire_format,
 };
 
 /// A wrapper around a `Vec` which owns its contents.

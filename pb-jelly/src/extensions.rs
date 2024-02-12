@@ -65,7 +65,7 @@ impl<T: Extensible, U: Message> Extension for SingularExtension<T, U> {
     type Value = Option<U>;
 
     fn get(&self, m: &Self::Extendee) -> io::Result<Option<U>> {
-        Ok(match dbg!(m._extensions().get_singular_field(self.field_number)) {
+        Ok(match m._extensions().get_singular_field(self.field_number) {
             Some((field, wire_format)) => {
                 let mut buf = io::Cursor::new(field);
                 ensure_wire_format(wire_format, self.wire_format, self.name, self.field_number)?;

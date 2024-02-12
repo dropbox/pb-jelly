@@ -54,3 +54,10 @@ pub enum Label {
 pub struct OneofDescriptor {
     pub name: &'static str,
 }
+
+impl MessageDescriptor {
+    /// Gets a field by name.
+    pub fn get_field(&self, name: &str) -> Option<&FieldDescriptor> {
+        self.fields.iter().find(|f| f.name == name)
+    }
+}

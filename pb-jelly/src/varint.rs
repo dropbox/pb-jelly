@@ -1,9 +1,10 @@
-use bytes::Buf;
 use std::cmp::min;
 use std::io::{
     self,
     Write,
 };
+
+use bytes::Buf;
 
 #[inline]
 pub const fn serialized_length(mut val: u64) -> usize {
@@ -93,8 +94,9 @@ pub fn ensure_read<B: Buf>(buf: &mut B) -> io::Result<u64> {
 
 #[test]
 fn test_basic() {
-    use crate::Message;
     use std::io::Cursor;
+
+    use crate::Message;
 
     let from_vec = |vec| read(&mut Cursor::new(vec)).unwrap().unwrap();
 

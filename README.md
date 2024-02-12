@@ -68,7 +68,7 @@ pb-jelly = "0.0.16"
 ##### `pb-jelly-gen`
 
 A framework for generating Rust structs and implementations for `.proto` files.
-In order to use pb-jelly, you need to add the pb-jelly-gen/codegen/codegen.py as a plugin to your protoc invocation.
+In order to use pb-jelly, you need to add the pb-jelly-gen as a plugin to your protoc invocation.
 
 We added some code here to handle the protoc invocation if you choose to use it.
 You'll need to add a generation crate (see `examples_gen` for an example)
@@ -86,18 +86,17 @@ Note that you can always invoke protoc on your own (for example if you are alrea
 with `--rust_out=codegen.py` as a plugin for rust.
 
 ### Generating Rust Code
-1. Install `protoc` - The protobuf compiler, this can be downloaded or built from source [`protobuf`](https://github.com/protocolbuffers/protobuf) or installed (mac) via `brew install protobuf`.
-2. `python3` - The codegen plugin used with `protoc` is written in Python3.
+1. Install `protoc`, the protobuf compiler.
+  - See [the upstream project](https://github.com/protocolbuffers/protobuf). Precompiled binaries can be found at their [releases page](https://github.com/protocolbuffers/protobuf/releases).
+  - On macOS, `protoc` can be installed via Homebrew: `brew install protobuf`.
 
 #### To generate with pb-jelly-gen
 3. Create an inner (build-step) crate which depends on pb-jelly-gen. [Example](https://github.com/dropbox/pb-jelly/tree/main/examples/examples_gen)
 4. `cargo run` in the directory of the inner generation crate
 
 #### To generate manually with protoc
-3. Create venv [optional] `python3 -m venv .pb_jelly_venv ; source .pb_jelly_venv/bin/activate`
-4. [Recommended] `python3 -m pip install protobuf==[same_version_as_your protoc]`
-5. Install `python3 -m pip install -e pb-jelly-gen/codegen`  (installs protoc-gen-rust into the venv)
-6. `protoc --rust_out=generated/ input.proto`
+1. `cargo build` in `pb-jelly-gen`
+2. `protoc --plugin=protoc-gen-jellyrust=pb-jelly-gen/target/debug/protoc-gen-jellyrust --jellyrust_out=generated/ input.proto`
 
 ## Example
 
@@ -158,8 +157,7 @@ Service Generation
     - protoc - part of Google's [protobuf tools](https://github.com/protocolbuffers/protobuf/)
         - macos: `brew install protobuf`
         - Linux (Fedora/CentOS/RHEL): `dnf install protobuf protobuf-devel`
-    - Install Python
-        - [if necessary] macos: `brew install python3`
+        - Linux (Ubuntu): `apt install protobuf-compiler`
 3. **pb-jelly** currently uses an experimental test framework that requires a nightly build of rust.
 	-  `rustup default nightly`
 4. `cd pb-test`

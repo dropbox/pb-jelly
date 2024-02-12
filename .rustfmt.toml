@@ -22,3 +22,6 @@ match_block_trailing_comma = true
 # We prefer it already so just do it here
 use_try_shorthand = true
 use_field_init_shorthand = true
+
+imports_granularity = "Module"
+group_imports = "StdExternalCrate"

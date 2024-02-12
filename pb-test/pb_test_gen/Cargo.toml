@@ -17,3 +17,7 @@ protoc-rust = { version = "2.17", optional = true }
 [features]
 bench_prost = ["prost-build"]
 bench_rust_protobuf = ["protoc-rust"]
+
+# Override pb-jelly dependency for generated crates as well
+[patch.crates-io]
+pb-jelly = { path = "../../pb-jelly" }

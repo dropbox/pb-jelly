@@ -17,27 +17,6 @@ jobs:
       - name: Run rustfmt
         run: rustup run nightly ci/run_rustfmt.sh
 
-  black:
-    name: Run black formatter on codegen.py
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-python@v2
-      - uses: actions/checkout@v2
-      - run: ci/run_black.sh
-
-  mypy:
-    name: Run mypy on codegen.py
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v1
-        with:
-          version: ${{env.PROTOBUF_VER}}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-python@v2
-      - uses: actions/checkout@v2
-      - run: ci/run_mypy.sh
-
   pb-jelly-unit:
     name: pb-jelly unit tests
     runs-on: ubuntu-latest
@@ -68,7 +47,6 @@ jobs:
     runs-on: ${{matrix.plat}}
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
       - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
@@ -89,7 +67,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
       - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
@@ -108,7 +85,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
       - run: rustup update nightly
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
@@ -127,7 +103,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
       - run: rustup update nightly
       - run: rustup component add clippy --toolchain nightly
       - name: Install Protoc
@@ -143,3 +118,21 @@ jobs:
           rustup run nightly cargo run
           cd ..
           rustup run nightly cargo clippy -p proto_pbtest
+
+  gen_gen:
+    name: Generate pb-jelly-gen/src/protos.rs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: rustup update nightly
+      - run: rustup component add clippy --toolchain nightly
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate protos
+        run: |
+          cd pb-jelly-gen
+          rustup run nightly bash regen_gen_protos.sh
+          git diff --exit-code

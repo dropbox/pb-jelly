@@ -1,10 +1,11 @@
+use std::io::Cursor;
+
 use bytes::Bytes;
 use pb_jelly::{
     Lazy,
     Message,
 };
 use proto_zero_copy::basic::BytesMessage;
-use std::io::Cursor;
 
 fn main() -> std::io::Result<()> {
     // Create 1kb of Data
