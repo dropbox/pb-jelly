@@ -25,6 +25,7 @@
 extern crate lazy_static;
 
 pub mod bench;
+pub mod extensions;
 pub mod r#mod;
 pub mod pbtest2;
 pub mod pbtest3;

@@ -1,0 +1,26 @@
+syntax = "proto2";
+package pbtest;
+
+import "pbtest/pbtest3.proto";
+
+message Msg {
+    optional int32 base_field = 250;
+    extensions 100 to 200;
+    extensions 300 to max;
+}
+
+extend Msg {
+    optional int32 singular_primitive = 101;
+    optional ForeignMessage3 singular_message = 301;
+    repeated int32 repeated_primitive = 300;
+    repeated ForeignMessage3 repeated_message = 200;
+}
+
+message FakeMsg {
+    optional int32 base_field = 250;
+
+    optional int32 singular_primitive = 101;
+    optional ForeignMessage3 singular_message = 301;
+    repeated int32 repeated_primitive = 300;
+    repeated ForeignMessage3 repeated_message = 200;
+}

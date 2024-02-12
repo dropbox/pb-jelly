@@ -15,7 +15,7 @@ pub fn deserialize_packed<B: PbBufferReader, T: Message>(
     typ: wire_format::Type,
     expected_wire_format: wire_format::Type,
     msg_name: &'static str,
-    field_number: usize,
+    field_number: u32,
     out: &mut Vec<T>,
 ) -> io::Result<()> {
     match typ {
@@ -42,7 +42,7 @@ pub fn deserialize_length_delimited<B: PbBufferReader, T: Message>(
     buf: &mut B,
     typ: wire_format::Type,
     msg_name: &'static str,
-    field_number: usize,
+    field_number: u32,
 ) -> io::Result<T> {
     ensure_wire_format(typ, wire_format::Type::LengthDelimited, msg_name, field_number)?;
     let len = varint::ensure_read(buf)?;
@@ -57,7 +57,7 @@ pub fn deserialize_known_length<B: PbBufferReader, T: Message>(
     typ: wire_format::Type,
     expected_wire_format: wire_format::Type,
     msg_name: &'static str,
-    field_number: usize,
+    field_number: u32,
 ) -> io::Result<T> {
     ensure_wire_format(typ, expected_wire_format, msg_name, field_number)?;
     let mut val: T = Default::default();

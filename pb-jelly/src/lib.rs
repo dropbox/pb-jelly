@@ -9,7 +9,10 @@ extern crate serde;
 use std::any::Any;
 use std::collections::BTreeMap;
 use std::default::Default;
-use std::fmt::Debug;
+use std::fmt::{
+    self,
+    Debug,
+};
 use std::io::{
     Cursor,
     Error,
@@ -24,6 +27,7 @@ use bytes::buf::{
 };
 
 pub mod erased;
+pub mod extensions;
 pub mod helpers;
 pub mod varint;
 pub mod wire_format;
@@ -129,7 +133,7 @@ pub fn ensure_wire_format(
     format: wire_format::Type,
     expected: wire_format::Type,
     msg_name: &str,
-    field_number: usize,
+    field_number: u32,
 ) -> Result<()> {
     if format != expected {
         return Err(Error::new(
@@ -148,29 +152,45 @@ pub fn unexpected_eof() -> Error {
     Error::new(ErrorKind::UnexpectedEof, "unexpected EOF")
 }
 
-#[derive(Default)]
+// XXX: arguably this should not impl PartialEq since we cannot canonicalize the unparsed field contents
+#[derive(Clone, Default, PartialEq)]
 pub struct Unrecognized {
     by_field_number: BTreeMap<u32, Vec<u8>>,
 }
 
+impl fmt::Debug for Unrecognized {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_map()
+            .entries(self.by_field_number.keys().map(|k| (k, ..)))
+            .finish()
+    }
+}
+
 impl Unrecognized {
-    pub fn serialize(self, unrecognized_buf: &mut Vec<u8>) -> Result<()> {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn serialize(&self, unrecognized_buf: &mut impl PbBufferWriter) -> Result<()> {
         // Write out sorted by field number
-        unrecognized_buf.reserve(self.by_field_number.values().map(|v| v.len()).sum());
         for serialized_field in self.by_field_number.values() {
             unrecognized_buf.write_all(&serialized_field)?;
         }
         Ok(())
     }
 
-    pub fn gather<B: Buf>(&mut self, field_number: u32, typ: wire_format::Type, buf: &mut B) -> Result<()> {
-        let mut unrecognized_buf = vec![];
+    pub fn compute_size(&self) -> usize {
+        self.by_field_number.values().map(|v| v.len()).sum()
+    }
 
-        wire_format::write(field_number, typ, &mut unrecognized_buf)?;
+    pub fn gather<B: Buf>(&mut self, field_number: u32, typ: wire_format::Type, buf: &mut B) -> Result<()> {
+        let unrecognized_buf = self.by_field_number.entry(field_number).or_default();
+
+        wire_format::write(field_number, typ, unrecognized_buf)?;
         let advance = match typ {
             wire_format::Type::Varint => {
                 if let Some(num) = varint::read(buf)? {
-                    varint::write(num, &mut unrecognized_buf)?;
+                    varint::write(num, unrecognized_buf)?;
                 } else {
                     return Err(unexpected_eof());
                 };
@@ -181,7 +201,7 @@ impl Unrecognized {
             wire_format::Type::Fixed32 => 4,
             wire_format::Type::LengthDelimited => match varint::read(buf)? {
                 Some(n) => {
-                    varint::write(n, &mut unrecognized_buf)?;
+                    varint::write(n, unrecognized_buf)?;
                     n as usize
                 },
                 None => return Err(unexpected_eof()),
@@ -194,9 +214,26 @@ impl Unrecognized {
 
         unrecognized_buf.put(buf.take(advance));
 
-        self.by_field_number.insert(field_number, unrecognized_buf);
-
         Ok(())
+    }
+
+    pub(crate) fn get_singular_field(&self, field_number: u32) -> Option<(&[u8], wire_format::Type)> {
+        let mut buf = Cursor::new(&self.by_field_number.get(&field_number)?[..]);
+        let mut result = None;
+        // It's technically legal for a singular field to occur multiple times on the wire,
+        // so skip over all but the last instance.
+        while let Some((_field_number, wire_format)) =
+            wire_format::read(&mut buf).expect("self.by_field_number malformed")
+        {
+            result = Some((&buf.get_ref()[buf.position() as usize..], wire_format));
+
+            skip(wire_format, &mut buf).expect("self.by_field_number malformed");
+        }
+        result
+    }
+
+    pub(crate) fn get_fields(&self, field_number: u32) -> &[u8] {
+        self.by_field_number.get(&field_number).map_or(&[], Vec::as_ref)
     }
 }
 
