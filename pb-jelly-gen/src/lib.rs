@@ -1,14 +1,14 @@
-//! `pb_gen` generates Rust bindings for `proto2` and `proto3` files. It's intended to be used with [`pb_rs`](https://github.com/dropbox/pb-rs).
+//! `pb-jelly-gen` generates Rust bindings for `proto` files. It's intended to be used with [`pb-jelly`](https://github.com/dropbox/pb-jelly).
 //!
 //! ## Examples
 //! Complete examples can be found in the [`examples`](https://github.com/dropbox/pb-jelly/tree/main/examples) crate,
-//! or the [`pb-test`](https://github.com/dropbox/pb-jelly/tree/main/pb-test) crate of the [`protobuf_rs`](https://github.com/dropbox/pb-rs) workspace.
+//! or the [`pb-test`](https://github.com/dropbox/pb-jelly/tree/main/pb-test) crate of the [`pb-jelly`](https://github.com/dropbox/pb-jelly) workspace.
 //!
 //! ## In a nutshell 🥜
-//! You can include `pb_gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
+//! You can include `pb-jelly-gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
 //! ```toml
 //! [build-dependencies]
-//! pb-gen = "0.1"
+//! pb-jelly-gen = "0.0.16"
 //! ```
 //!
 //! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct,

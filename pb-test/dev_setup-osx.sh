@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Welcome Messages
-printf "Thanks for your interest in developing on \e[34mpb-rs\e[0m!\n\n"
+printf "Thanks for your interest in developing on \e[34mpb-jelly\e[0m!\n\n"
 printf "This script will run the following commands to install the necessary packages, and generate necessary code, for development\n\n"
 
 # Describing the packages we install
