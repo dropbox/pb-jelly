@@ -1977,11 +1977,11 @@ class Context(object):
                 features.update({"compact_str": 'features=["bytes", "serde"]'})
 
             versions = {
-                "lazy_static": ' version = "1.4.0" ',
-                "pb-jelly": ' version = "0.0.16" ',
-                "serde": ' version = "1.0" ',
-                "bytes": ' version = "1.0" ',
-                "compact_str": ' version = "0.5" ',
+                "lazy_static": 'version = "1.4.0"',
+                "pb-jelly": 'version = "0.0.16"',
+                "serde": 'version = "1.0"',
+                "bytes": 'version = "1.0"',
+                "compact_str": 'version = "0.5"',
             }
 
             deps_lines = []
@@ -1994,7 +1994,7 @@ class Context(object):
                 else:
                     fields.append('path = "../{dep}"'.format(dep=dep))
                 deps_lines.append(
-                    "{dep} = {{{fields}}}".format(dep=dep, fields=",".join(fields))
+                    "{dep} = {{ {fields} }}".format(dep=dep, fields=", ".join(fields))
                 )
 
             targets = CARGO_TOML_TEMPLATE.format(
