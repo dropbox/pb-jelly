@@ -248,7 +248,7 @@ impl<'a> RustType<'a> {
         msg_type: Option<&'a DescriptorProto>,
         field: &'a FieldDescriptorProto,
     ) -> Self {
-        let is_proto3 = proto_file.syntax == Some("proto3".to_string());
+        let is_proto3 = proto_file.syntax.as_deref() == Some("proto3");
         let oneof = if field.has_oneof_index() && !field.get_proto3_optional() {
             msg_type.map(|msg_type| &msg_type.get_oneof_decl()[field.get_oneof_index() as usize])
         } else {
@@ -840,7 +840,6 @@ struct CodeWriter<'a, 'ctx> {
     indentation: u32,
     content: String,
     is_proto3: bool,
-    uses_sso: bool,
     derive_serde: bool,
     source_code_info_by_scl: IndexMap<Vec<i32>, &'a SourceCodeInfo_Location>,
 }
@@ -860,7 +859,6 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             indentation: 0,
             content: String::new(),
             is_proto3: proto_file.get_syntax() == "proto3",
-            uses_sso: false,
             derive_serde: proto_file
                 .get_options()
                 .get_extension(extensions::SERDE_DERIVE)
@@ -916,14 +914,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         }
     }
     fn rust_type(&mut self, msg_type: Option<&'a DescriptorProto>, field: &'a FieldDescriptorProto) -> RustType<'ctx> {
-        let rust_type = RustType::new(self.ctx, self.proto_file, msg_type, field);
-
-        // checks if any of our types use a small string optimization
-        if !self.uses_sso && rust_type.is_small_string_optimization() {
-            self.uses_sso = true;
-        }
-
-        rust_type
+        RustType::new(self.ctx, self.proto_file, msg_type, field)
     }
 
     /// Generate a closed enum
@@ -2296,6 +2287,14 @@ impl<'a> Context<'a> {
                         .or_default()
                         .insert("bytes".to_owned());
                     may_use_grpc_slices = true;
+                } else if typ == FieldDescriptorProto_Type::TYPE_STRING
+                    && field.get_options().get_extension(extensions::SSO).unwrap() == Some(true)
+                {
+                    impls_copy = false;
+                    self.extra_crates
+                        .entry(crate_.to_string())
+                        .or_default()
+                        .insert("compact_str".to_owned());
                 } else if let Some(primitive_type) = get_primitive_type(typ) {
                     if !primitive_type.impls_eq {
                         impls_eq = false;
@@ -2489,7 +2488,7 @@ impl<'a> Context<'a> {
         result
     }
 
-    fn get_spec_toml_file(&self, derive_serde: bool, include_sso: bool) -> Vec<(String, String)> {
+    fn get_spec_toml_file(&self, derive_serde: bool) -> Vec<(String, String)> {
         let mut results = Vec::new();
 
         for (crate_name, deps) in self.deps_map.borrow().iter() {
@@ -2511,14 +2510,7 @@ impl<'a> Context<'a> {
 
             if derive_serde {
                 all_deps.insert("serde");
-            }
-
-            if include_sso {
-                all_deps.insert("compact_str");
-
-                if derive_serde {
-                    features.insert("compact_str", r#"features=["bytes", "serde"]"#);
-                }
+                features.insert("compact_str", r#"features=["bytes", "serde"]"#);
             }
 
             let deps_str = all_deps
@@ -2536,7 +2528,7 @@ impl<'a> Context<'a> {
 
         results
     }
-    fn get_cargo_toml_file(&self, derive_serde: bool, include_sso: bool) -> Vec<(String, String)> {
+    fn get_cargo_toml_file(&self, derive_serde: bool) -> Vec<(String, String)> {
         let mut result = Vec::new();
 
         for (crate_name, deps) in &*self.deps_map.borrow() {
@@ -2554,12 +2546,7 @@ impl<'a> Context<'a> {
 
             if derive_serde {
                 all_deps.insert("serde");
-            }
-            if include_sso {
-                all_deps.insert("compact_str");
-                if derive_serde {
-                    features.insert("compact_str", "features=[\"bytes\", \"serde\"]".to_string());
-                }
+                features.insert("compact_str", "features=[\"bytes\", \"serde\"]".to_string());
             }
 
             let mut versions: IndexMap<&str, String> = IndexMap::new();
@@ -2669,7 +2656,6 @@ fn generate_single_crate(
 
     let mut processed_files: BTreeSet<String> = BTreeSet::new();
     let mut derive_serde = false;
-    let mut include_sso = false;
 
     for &proto_file_name in file_to_generate.iter() {
         // Detect packages which collide with filenames. The rust codegen does not support those due
@@ -2739,11 +2725,6 @@ fn generate_single_crate(
         }
 
         add_mod(&mut writer);
-
-        // check if the writer ever used a small string optimization
-        if writer.uses_sso {
-            include_sso = true;
-        }
     }
     // Note that output filenames must use "/" even on windows. It is part of the
     // protoc plugin protocol. The plugin speaks os-independent in "/". Thus, we
@@ -2767,7 +2748,7 @@ fn generate_single_crate(
             });
         }
     } else if request.get_parameter().contains(&"generate_spec_toml".to_owned()) {
-        for (crate_, spec_toml_file) in ctx.get_spec_toml_file(derive_serde, include_sso) {
+        for (crate_, spec_toml_file) in ctx.get_spec_toml_file(derive_serde) {
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(file_prefix.to_owned() + &crate_ + "/Spec.toml"),
                 content: Some(spec_toml_file.to_owned()),
@@ -2776,7 +2757,7 @@ fn generate_single_crate(
         }
     } else {
         // Generate good ol Cargo.toml files
-        for (crate_, cargo_toml_file) in ctx.get_cargo_toml_file(derive_serde, include_sso) {
+        for (crate_, cargo_toml_file) in ctx.get_cargo_toml_file(derive_serde) {
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(file_prefix.to_owned() + &crate_ + "/Cargo.toml"),
                 content: Some(cargo_toml_file.to_owned()),
