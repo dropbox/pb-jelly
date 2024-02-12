@@ -118,3 +118,21 @@ jobs:
           rustup run nightly cargo run
           cd ..
           rustup run nightly cargo clippy -p proto_pbtest
+
+  gen_gen:
+    name: Generate pb-jelly-gen/src/protos.rs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: rustup update nightly
+      - run: rustup component add clippy --toolchain nightly
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: ${{env.PROTOBUF_VER}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate protos
+        run: |
+          cd pb-jelly-gen
+          rustup run nightly sh regen_gen_protos.sh
+          git diff --exit-code
