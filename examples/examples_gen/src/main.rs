@@ -6,7 +6,8 @@ fn main() -> std::io::Result<()> {
         .src_path("../protos")
         .include_path("../includes")
         .cleanup_out_path(true)
-        .gen_protos();
+        .gen_protos()
+        .expect("Failed to generate protos");
 
     Ok(())
 }

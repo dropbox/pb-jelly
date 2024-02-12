@@ -24,34 +24,28 @@
 //!        .src_path("./protos")
 //!        // delete and recreate the `out_path` directory every time
 //!        .cleanup_out_path(true)
-//!        .gen_protos();
+//!        .gen_protos()?;
 //!
 //!    Ok(())
 //! }
 //! ```
 
-use include_dir::{
-    include_dir,
-    Dir,
+use pb_jelly::Message;
+use proto_google::protobuf::{
+    compiler::plugin::CodeGeneratorRequest,
+    descriptor::FileDescriptorSet,
 };
-#[cfg(not(windows))]
-use std::os::unix::fs::PermissionsExt;
 use std::{
     convert::AsRef,
-    ffi::OsStr,
+    error::Error,
     fs,
-    io::Write,
     iter::IntoIterator,
     path::{
+        self,
         Path,
         PathBuf,
     },
-    process::{
-        Command,
-        Output,
-        Stdio,
-    },
-    str::from_utf8,
+    process::Command,
 };
 use walkdir::WalkDir;
 
@@ -60,7 +54,7 @@ pub mod codegen;
 /// A "no frills" way to generate Rust bindings for your proto files. `src_paths` is a list of
 /// paths to your `.proto` files, or the directories that contain them. Generated code it outputted
 /// to `<current crate's manifest>/gen`.
-pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) {
+pub fn gen_protos<P: AsRef<Path>>(src_paths: Vec<P>) -> Result<(), Box<dyn Error>> {
     GenProtos::builder().src_paths(src_paths).gen_protos()
 }
 
@@ -162,162 +156,108 @@ impl GenProtos {
     }
 
     /// Consumes the builder and generates Rust bindings to your proto files.
-    pub fn gen_protos(self) {
-        let output = self.gen_protos_helper();
+    pub fn gen_protos(self) -> Result<(), Box<dyn Error>> {
+        // TODO: change expect()s to propagate errors.
 
-        if !output.status.success() {
-            dbg!(output.status.code());
-            eprintln!("stdout={}", from_utf8(&output.stdout).unwrap_or("cant decode stdout"));
-            eprintln!("stderr={}", from_utf8(&output.stderr).unwrap_or("cant decode stderr"));
-            panic!("Failed to generate Rust bindings to proto files!")
-        }
-
-        dbg!("Protos Generated Successfully");
-    }
-}
-
-// Private functions
-impl GenProtos {
-    fn gen_protos_helper(self) -> Output {
         // Clean up root generated directory
         if self.cleanup_out_path && self.gen_path.exists() && self.gen_path.is_dir() {
-            dbg!("Cleaning up existing gen path", &self.gen_path);
             fs::remove_dir_all(&self.gen_path).expect("Failed to clean");
         }
 
-        // Re-create essential files
-        if !self.gen_path.exists() {
-            dbg!("Creating gen path", &self.gen_path);
-            fs::create_dir_all(&self.gen_path).expect("Failed to create dir");
-        }
-        let temp_dir = self.create_temp_files().expect("Failed to package codegen script");
+        let temp_dir = tempfile::Builder::new()
+            .prefix("codegen")
+            .tempdir()
+            .expect("Failed to create temp dir");
 
-        // Generate Rust protos
-        self.gen_rust_protos(temp_dir)
-    }
-
-    fn create_venv(&self, temp_dir: &tempfile::TempDir) -> PathBuf {
-        // Create venv
-        let venv = temp_dir.path().join(".codegen_venv");
-        let status = Command::new(if cfg!(windows) { "python.exe" } else { "python3" })
-            .args(&["-m", "venv"])
-            .arg(&venv)
-            .status()
-            .expect("Failed to create venv");
-        assert!(status.success(), "Failed to create venv");
-        let bin_dir = venv.join(if cfg!(windows) { "Scripts" } else { "bin" });
-
-        // pip install -r requirements.txt
-        let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "python.exe" } else { "python" }));
-        cmd.args(&["-m", "pip", "install", "-r"]);
-        cmd.arg(temp_dir.path().join("requirements.txt"));
-        dbg!(&cmd);
-        let status = cmd.status().expect("Failed to pip install requirements");
-        assert!(status.success(), "Failed to pip install requirements");
-
-        // pip install -e .
-        let mut cmd = Command::new(bin_dir.join(if cfg!(windows) { "pip.exe" } else { "pip" }));
-        cmd.args(&["install", "-e"]);
-        cmd.arg(temp_dir.path());
-        dbg!(&cmd);
-        let status = cmd.status().expect("Failed to pip install pb-jelly");
-        assert!(status.success(), "Failed to pip install pb-jelly");
-
-        bin_dir
-    }
-
-    fn gen_rust_protos(&self, temp_dir: tempfile::TempDir) -> Output {
-        let venv_bin = self.create_venv(&temp_dir);
-        let new_path = {
-            let mut path: Vec<_> = std::env::split_paths(&std::env::var_os("PATH").unwrap()).collect();
-            path.insert(0, venv_bin.clone());
-            std::env::join_paths(path).unwrap()
-        };
-        dbg!(&new_path);
-
-        // Create protoc cmd in the venv
+        // Construct protoc command line
         let mut protoc_cmd = Command::new("protoc");
-        protoc_cmd.stderr(Stdio::inherit());
-        protoc_cmd.env("PATH", &new_path);
-        protoc_cmd.env("PYTHONPATH", temp_dir.path());
 
         // Directories that contain protos
-        dbg!("Include paths");
         for path in self.src_paths.iter() {
             protoc_cmd.arg("-I");
             protoc_cmd.arg(path);
-            dbg!(path);
         }
 
         // If we want to include our `extensions.proto` file for Rust extentions
         if self.include_extensions {
-            let ext_path = temp_dir.path();
+            fs::create_dir_all(temp_dir.path().join("rust")).expect("failed to create rust/");
+            fs::write(temp_dir.path().join("rust").join("extensions.proto"), EXTENSIONS_PROTO)
+                .expect("failed to create rust/extensions.proto");
             protoc_cmd.arg("-I");
-            protoc_cmd.arg(ext_path);
-            dbg!(ext_path);
+            protoc_cmd.arg(temp_dir.path());
         }
 
         // Include any protos from our include paths
         for path in self.include_paths.iter() {
             protoc_cmd.arg("-I");
             protoc_cmd.arg(path);
-            dbg!(path);
         }
 
-        protoc_cmd.arg(
-            [
-                OsStr::new("--plugin=protoc-gen-rust_pb_jelly="),
-                venv_bin
-                    .join(if cfg!(windows) {
-                        "protoc-gen-rust.exe"
-                    } else {
-                        "protoc-gen-rust"
-                    })
-                    .as_os_str(),
-            ]
-            .join(OsStr::new("")),
-        );
-
-        // Set the Rust out path
-        // (Don't use "rust" as the name of the plugin because protoc now has (broken) upstream Rust support that
-        // overrides the plugin)
-        protoc_cmd.arg("--rust_pb_jelly_out");
-        protoc_cmd.arg(&self.gen_path);
+        // Ideally we'd just invoke protoc with our plugin,
+        // but without artifact dependencies in Cargo it's hard to depend on a binary Rust target.
+        // Instead we'll invoke the guts of the plugin manually.
+        let file_descriptor_set_path = temp_dir.path().join("file_descriptor_set.pb");
+        protoc_cmd.arg("-o").arg(&file_descriptor_set_path);
+        protoc_cmd.arg("--include_imports");
+        protoc_cmd.arg("--include_source_info");
 
         // Get paths of our Protos
-        let proto_paths = self
+        let proto_paths: Vec<String> = self
             .src_paths
             .iter()
-            .map(|path| {
+            .flat_map(|path| {
                 WalkDir::new(path)
                     .into_iter()
                     .filter_map(Result::ok)
                     .filter(|file| file.path().extension().unwrap_or_default() == "proto")
-                    .map(|file| file.into_path())
+                    .map(move |file| {
+                        let relative_path = file
+                            .path()
+                            .strip_prefix(path)
+                            .expect("Walked file didn't have root as a prefix");
+                        // Convert all paths into Unix-style, relative paths
+                        relative_path
+                            .to_str()
+                            .unwrap_or_else(|| panic!("File path is not UTF-8: {}", file.path().display()))
+                            .replace(path::MAIN_SEPARATOR, "/")
+                    })
             })
-            .flatten();
+            .collect();
 
         // Set each proto file as an argument
-        dbg!("Proto paths");
-        for path in proto_paths {
-            dbg!(&path);
-            protoc_cmd.arg(path);
+        protoc_cmd.args(&proto_paths);
+
+        let protoc_status = protoc_cmd.status().expect("something went wrong in running protoc");
+
+        if !protoc_status.success() {
+            return Err(format!("protoc exited with status {}", protoc_status).into());
         }
 
-        dbg!(&protoc_cmd);
-        protoc_cmd
-            .output()
-            .expect("something went wrong in running protoc to generate Rust bindings 🤮")
-    }
+        let fds = FileDescriptorSet::deserialize_from_slice(
+            &fs::read(file_descriptor_set_path).expect("Failed to read protoc output"),
+        )
+        .expect("Failed to deserialize FileDescriptorSet");
 
-    /// We bundle all non-Rust, but necessary files into a static CODEGEN blob. When we run the codegen script,
-    /// we recreate these in a temp directory `/tmp/codegen` that is cleaned up after.
-    fn create_temp_files(&self) -> std::io::Result<tempfile::TempDir> {
-        let temp_dir = tempfile::Builder::new().prefix("codegen").tempdir()?;
-
-        Ok(temp_dir)
+        let plugin_input = CodeGeneratorRequest {
+            file_to_generate: proto_paths,
+            proto_file: fds.file,
+            ..Default::default()
+        };
+        let out = codegen::generate_code(&plugin_input);
+        if let Some(error) = out.error {
+            panic!("Codegen error: {}", error);
+        }
+        for file in out.file {
+            let path = self.gen_path.join(file.get_name());
+            fs::create_dir_all(path.parent().expect("generated path should have parent"))
+                .expect("Failed to create dir");
+            fs::write(path, file.get_content()).expect("Failed to write output");
+        }
+        Ok(())
     }
 }
+
+const EXTENSIONS_PROTO: &str = include_str!("../proto/rust/extensions.proto");
 
 /// Helper function to get the path of the current Cargo.toml
 ///

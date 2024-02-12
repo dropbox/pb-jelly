@@ -18,8 +18,8 @@ fn main() -> std::io::Result<()> {
     GenProtos::builder()
         .out_path("../gen/pb-jelly")
         .src_path("../proto/packages")
-        .src_path("../proto/includes")
-        .gen_protos();
+        .gen_protos()
+        .expect("Failed to generate protos");
 
     // compile the protos we use for bench marking, if we want to benchmark against PROST!
     if cfg!(feature = "bench_prost") {

@@ -68,7 +68,7 @@ pb-jelly = "0.0.16"
 ##### `pb-jelly-gen`
 
 A framework for generating Rust structs and implementations for `.proto` files.
-In order to use pb-jelly, you need to add the pb-jelly-gen/codegen/codegen.py as a plugin to your protoc invocation.
+In order to use pb-jelly, you need to add the pb-jelly-gen as a plugin to your protoc invocation.
 
 We added some code here to handle the protoc invocation if you choose to use it.
 You'll need to add a generation crate (see `examples_gen` for an example)

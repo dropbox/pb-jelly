@@ -8,11 +8,6 @@ use std::collections::{
 };
 use std::fmt::Write as _;
 use std::hash::Hash;
-use std::io::{
-    self,
-    Read,
-    Write,
-};
 
 use indexmap::{
     IndexMap,
@@ -2196,8 +2191,8 @@ struct Context<'a> {
 }
 
 impl<'a> Context<'a> {
-    fn new(crate_per_dir: bool, prefix_to_clear: String) -> Self {
-        Context {
+    fn new(crate_per_dir: bool, prefix_to_clear: String, to_generate: &[&str]) -> Self {
+        let this = Context {
             proto_types: IndexMap::new(),
             deps_map: RefCell::new(IndexMap::new()),
             extra_crates: IndexMap::new(),
@@ -2206,7 +2201,12 @@ impl<'a> Context<'a> {
             impls_scc: StronglyConnectedComponents::new(),
             crate_per_dir,
             prefix_to_clear,
+        };
+        for name in to_generate {
+            let (crate_name, _) = this.crate_from_proto_filename(name);
+            this.deps_map.borrow_mut().entry(crate_name).or_default();
         }
+        this
     }
     fn calc_impls(&mut self, types: IndexSet<String>) {
         let mut impls_eq = true;
@@ -2352,17 +2352,12 @@ impl<'a> Context<'a> {
             );
         }
     }
-    fn feed(&mut self, proto_file: &'a FileDescriptorProto, to_generate: &[&str]) {
+    fn feed(&mut self, proto_file: &'a FileDescriptorProto) {
         let WalkResult {
             enums,
             messages,
             extensions,
         } = walk(proto_file);
-
-        for name in to_generate {
-            let (crate_name, _) = self.crate_from_proto_filename(name);
-            self.deps_map.borrow_mut().entry(crate_name).or_default();
-        }
 
         for (enum_path, enum_typ, _) in enums {
             let enum_pt = ProtoType::new(self, proto_file, enum_path, ProtoTypeDescriptor::Enum(enum_typ));
@@ -2672,11 +2667,11 @@ fn generate_single_crate(
         }
         processed_files.insert(proto_file_name[..proto_file_name.len() - 6].to_owned()); // Strip the .proto
 
-        let (crate_name, mod_parts) = ctx.crate_from_proto_filename(dbg!(proto_file_name));
+        let (crate_name, mod_parts) = ctx.crate_from_proto_filename(proto_file_name);
         let (mod_name, parent_mods) = mod_parts.split_last().unwrap_or((&crate_name, &[]));
 
         let mut add_mod = |writer: &mut CodeWriter| {
-            let rs_file_name = format!("{}/{}/src/{}.rs", file_prefix, crate_name, writer.mod_parts.join("/"));
+            let rs_file_name = format!("{}{}/src/{}.rs", file_prefix, crate_name, writer.mod_parts.join("/"));
 
             response.file.push(plugin::CodeGeneratorResponse_File {
                 name: Some(rs_file_name),
@@ -2804,16 +2799,16 @@ pub fn generate_code(request: &plugin::CodeGeneratorRequest) -> plugin::CodeGene
                 .unwrap()
                 .to_string()
                 + "/";
-            let mut ctx = Context::new(true, prefix_to_clear.clone());
+            let mut ctx = Context::new(true, prefix_to_clear.clone(), &to_generate);
             for proto_file in request.get_proto_file() {
-                ctx.feed(proto_file, &to_generate);
+                ctx.feed(proto_file);
             }
             generate_single_crate(&mut ctx, &file_prefix, &to_generate, request, &mut response);
         }
     } else {
-        let mut ctx = Context::new(false, prefix_to_clear.clone());
+        let mut ctx = Context::new(false, prefix_to_clear.clone(), &to_generate);
         for proto_file in request.get_proto_file() {
-            ctx.feed(proto_file, &to_generate);
+            ctx.feed(proto_file);
         }
         generate_single_crate(&mut ctx, "", &to_generate, request, &mut response);
     }

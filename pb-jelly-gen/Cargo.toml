@@ -14,11 +14,10 @@ categories = ["encoding", "parsing", "web-programming"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-include_dir = "0.6"
 tempfile = "3.1.0"
 walkdir = "2"
 
-pb-jelly = { path = "../pb-jelly" }
+pb-jelly = { version = "0.0.16" }
 proto_google = { path = "./proto_google" }
 proto_rust = { path = "./proto_rust" }
 regex = "1.10.2"
