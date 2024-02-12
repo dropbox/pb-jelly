@@ -2,6 +2,7 @@
 #![allow(clippy::nonminimal_bool)] // this is very stupid
 
 use std::cell::RefCell;
+use std::collections::btree_map::Entry;
 use std::collections::{
     BTreeMap,
     BTreeSet,
@@ -18,8 +19,10 @@ use pb_jelly::{
     extensions::Extensible,
     Message,
 };
-use proto_google::protobuf::compiler::plugin;
-use proto_google::protobuf::descriptor::{
+use regex::Regex;
+
+use crate::protos::google::protobuf::compiler::plugin;
+use crate::protos::google::protobuf::descriptor::{
     DescriptorProto,
     EnumDescriptorProto,
     EnumValueDescriptorProto,
@@ -30,8 +33,7 @@ use proto_google::protobuf::descriptor::{
     OneofDescriptorProto,
     SourceCodeInfo_Location,
 };
-use proto_rust::extensions;
-use regex::Regex;
+use crate::protos::rust::extensions;
 
 struct StronglyConnectedComponents<T> {
     s: Vec<T>,
@@ -212,8 +214,11 @@ fn escape_name(s: impl AsRef<str>) -> String {
 }
 
 type SourceCodeLocation = Vec<i32>;
-#[derive(Default)]
-struct ModTree(BTreeMap<String, ModTree>);
+#[derive(Debug)]
+enum ModTree {
+    Package { children: BTreeMap<String, ModTree> },
+    Leaf { proto_file_path: String, code: String },
+}
 
 fn camelcase(underscored: &str) -> String {
     underscored
@@ -1177,7 +1182,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             .field
             .iter()
             .filter(|f| f.get_proto3_optional())
-            .map(proto_google::protobuf::descriptor::FieldDescriptorProto::get_oneof_index)
+            .map(FieldDescriptorProto::get_oneof_index)
             .collect();
         // Filter out oneofs synthesized by proto3 optional; we treat these as plain `Option`al fields, not oneofs
         let oneof_decls: Vec<_> = msg_type
@@ -2144,7 +2149,7 @@ fn box_recursive_fields(
                     && field.get_label() != FieldDescriptorProto_Label::LABEL_REPEATED
                     && field.get_options().get_extension(extensions::BOX_IT).unwrap() != Some(true)
             })
-            .map(proto_google::protobuf::descriptor::FieldDescriptorProto::get_type_name)
+            .map(FieldDescriptorProto::get_type_name)
             .collect()
     };
 
@@ -2169,6 +2174,15 @@ fn box_recursive_fields(
     }
 }
 
+enum CrateMode {
+    /// The default mode. Generate one crate per proto package.
+    CratePerPackage,
+    /// Indicator if every directory should be their own crate.
+    CratePerDir,
+    /// Generate one big module, suitable for embedding into another crate.
+    SingleFile,
+}
+
 struct Context<'a> {
     proto_types: IndexMap<String, ProtoType<'a>>,
     deps_map: RefCell<IndexMap<String, IndexSet<String>>>,
@@ -2179,15 +2193,14 @@ struct Context<'a> {
     /// We have to build this on the fly as we process the types.
     impls_by_msg: IndexMap<String, Impls>,
     impls_scc: StronglyConnectedComponents<String>,
-    /// Indicator if every directory should be their own crate.
-    crate_per_dir: bool,
+    crate_mode: CrateMode,
     /// Prefix of the crate path which should be cleared before making a determination
     /// of how to split the crates apart.
     prefix_to_clear: String,
 }
 
 impl<'a> Context<'a> {
-    fn new(crate_per_dir: bool, prefix_to_clear: String, to_generate: &[&str]) -> Self {
+    fn new(crate_mode: CrateMode, prefix_to_clear: String, to_generate: &[&str]) -> Self {
         let this = Context {
             proto_types: IndexMap::new(),
             deps_map: RefCell::new(IndexMap::new()),
@@ -2195,7 +2208,7 @@ impl<'a> Context<'a> {
             implicitly_boxed: IndexSet::new(),
             impls_by_msg: IndexMap::new(),
             impls_scc: StronglyConnectedComponents::new(),
-            crate_per_dir,
+            crate_mode,
             prefix_to_clear,
         };
         for name in to_generate {
@@ -2424,7 +2437,7 @@ impl<'a> Context<'a> {
         })
     }
 
-    fn get_lib_and_mod_rs(&self, mod_tree: ModTree, derive_serde: bool) -> Vec<(String, String)> {
+    fn get_source_tree(&self, mod_tree: BTreeMap<String, ModTree>, derive_serde: bool) -> Vec<(String, String)> {
         let mut result: Vec<(String, String)> = Vec::new();
 
         for crate_name in self.deps_map.borrow().keys() {
@@ -2437,38 +2450,37 @@ impl<'a> Context<'a> {
             }
             writeln!(&mut librs).unwrap();
 
-            fn mod_tree_dfs(mod_prefix_path: &str, sub_mod_tree: &ModTree) -> Vec<(String, String)> {
-                let mut result: Vec<(String, String)> = Vec::new();
+            fn mod_tree_dfs(mod_prefix_path: &str, sub_mod_tree: &ModTree, result: &mut Vec<(String, String)>) {
+                match sub_mod_tree {
+                    ModTree::Package { children } => {
+                        let filename = format!("{mod_prefix_path}/mod.rs");
+                        let content = format!("{RS_HEADER}\n")
+                            + &children
+                                .keys()
+                                .map(|k| format!("pub mod {};\n", escape_name(k)))
+                                .collect::<String>();
+                        result.push((filename, content));
 
-                if sub_mod_tree.0.is_empty() {
-                    return result;
+                        for (child_mod_name, child_mod_tree) in children {
+                            mod_tree_dfs(&format!("{mod_prefix_path}/{child_mod_name}"), child_mod_tree, result);
+                        }
+                    },
+                    ModTree::Leaf { code, .. } => {
+                        result.push((format!("{mod_prefix_path}.rs"), format!("{RS_HEADER}{code}")));
+                    },
                 }
-
-                let filename = format!("{mod_prefix_path}/mod.rs");
-                let content = concat!("// @", "generated, do not edit\n\n").to_string()
-                    + &sub_mod_tree
-                        .0
-                        .keys()
-                        .map(|k| format!("pub mod {};\n", escape_name(k)))
-                        .collect::<String>();
-                result.push((filename, content));
-
-                for (child_mod_name, child_mod_tree) in &sub_mod_tree.0 {
-                    for res in mod_tree_dfs(&format!("{mod_prefix_path}/{child_mod_name}"), child_mod_tree) {
-                        result.push(res);
-                    }
-                }
-
-                result
             }
 
-            let crate_mod_tree = &mod_tree.0[crate_name];
-            for (mod_name, child_mod_tree) in &crate_mod_tree.0 {
+            let ModTree::Package {
+                children: crate_mod_tree,
+            } = &mod_tree[crate_name]
+            else {
+                panic!("top level must contain packages")
+            };
+            for (mod_name, child_mod_tree) in crate_mod_tree {
                 writeln!(&mut librs, "pub mod {};", escape_name(mod_name)).unwrap();
 
-                for res in mod_tree_dfs(&format!("{crate_name}/src/{mod_name}"), child_mod_tree) {
-                    result.push(res);
-                }
+                mod_tree_dfs(&format!("{crate_name}/src/{mod_name}"), child_mod_tree, &mut result);
             }
 
             let filename = format!("{crate_name}/src/lib.rs");
@@ -2476,6 +2488,31 @@ impl<'a> Context<'a> {
             result.push((filename, content));
         }
 
+        result
+    }
+
+    fn render_single_file(&self, mod_tree: &ModTree) -> String {
+        fn mod_tree_dfs(mod_tree: &ModTree, indent: usize, result: &mut String) {
+            let indent_str = "  ".repeat(indent);
+            match mod_tree {
+                ModTree::Package { children } => {
+                    for (child_mod_name, child_mod_tree) in children {
+                        let _ = writeln!(result, "{indent_str}pub mod {child_mod_name} {{");
+                        mod_tree_dfs(child_mod_tree, indent + 1, result);
+                        let _ = writeln!(result, "}}");
+                    }
+                },
+                ModTree::Leaf { code, .. } => {
+                    let code = code.trim_end();
+                    if !code.is_empty() {
+                        result.push_str(&indent_str);
+                        result.push_str(&code.replace('\n', &format!("\n{indent_str}")));
+                    }
+                },
+            }
+        }
+        let mut result = format!("{RS_HEADER}{LIB_RS_HEADER}");
+        mod_tree_dfs(mod_tree, 0, &mut result);
         result
     }
 
@@ -2575,13 +2612,17 @@ impl<'a> Context<'a> {
 
         let mod_parts: Vec<_> = filename.split('/').collect();
 
-        if self.crate_per_dir {
-            let crate_name = format!("proto_{}", mod_parts[..mod_parts.len() - 1].join("_"));
-            return (crate_name, vec![mod_parts[mod_parts.len() - 1].to_owned()]);
+        match self.crate_mode {
+            CrateMode::CratePerPackage => {
+                let crate_name = format!("proto_{}", mod_parts[0]);
+                (crate_name, mod_parts[1..].iter().map(|&x| x.to_owned()).collect())
+            },
+            CrateMode::CratePerDir => {
+                let crate_name = format!("proto_{}", mod_parts[..mod_parts.len() - 1].join("_"));
+                (crate_name, vec![mod_parts[mod_parts.len() - 1].to_owned()])
+            },
+            CrateMode::SingleFile => (String::new(), mod_parts.iter().map(|&x| x.to_owned()).collect()),
         }
-
-        let crate_name = format!("proto_{}", mod_parts[0]);
-        (crate_name, mod_parts[1..].iter().map(|&x| x.to_owned()).collect())
     }
 }
 
@@ -2613,7 +2654,6 @@ edition = "2018"
 const RS_HEADER: &str = concat!("// @", "generated, do not edit\n");
 
 const LIB_RS_HEADER: &str = r#"
-#![warn(rust_2018_idioms)]
 #![allow(irrefutable_let_patterns)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
@@ -2643,50 +2683,18 @@ fn generate_single_crate(
     request: &plugin::CodeGeneratorRequest,
     response: &mut plugin::CodeGeneratorResponse,
 ) {
-    let mut mod_tree = ModTree(BTreeMap::new());
+    let mut mod_tree = BTreeMap::new();
 
-    let mut processed_files: BTreeSet<String> = BTreeSet::new();
     let mut derive_serde = false;
+    let proto_files_by_path: IndexMap<&str, &FileDescriptorProto> =
+        request.proto_file.iter().map(|f| (f.get_name(), f)).collect();
 
     for &proto_file_name in file_to_generate {
-        // Detect packages which collide with filenames. The rust codegen does not support those due
-        // to the rust module structure.
-        //
-        // eg. edgestore/engine.proto and edgestore/engine/service.proto
-        // engine would be both a file and container module
-        let package_path = proto_file_name.rsplit('/').next().unwrap();
-        assert!(
-            !processed_files.contains(package_path),
-            "Unable to process proto {}. It collides with package {}.",
-            proto_file_name,
-            package_path
-        );
-        processed_files.insert(proto_file_name[..proto_file_name.len() - 6].to_owned()); // Strip the .proto
-
         let (crate_name, mod_parts) = ctx.crate_from_proto_filename(proto_file_name);
         let (mod_name, parent_mods) = mod_parts.split_last().unwrap_or((&crate_name, &[]));
 
-        let mut add_mod = |writer: &mut CodeWriter| {
-            let rs_file_name = format!("{}{}/src/{}.rs", file_prefix, crate_name, writer.mod_parts.join("/"));
-
-            response.file.push(plugin::CodeGeneratorResponse_File {
-                name: Some(rs_file_name),
-                content: Some(format!("{}{}", RS_HEADER, writer.content)),
-                ..Default::default()
-            });
-
-            let mut curr = mod_tree.0.entry(crate_name.clone()).or_default();
-            for mod_name in writer.mod_parts {
-                curr = curr.0.entry(mod_name.to_owned()).or_default();
-            }
-        };
-
         // Now generate code!
-        let proto_file = request
-            .proto_file
-            .iter()
-            .find(|f| f.get_name() == proto_file_name)
-            .unwrap();
+        let proto_file = proto_files_by_path[proto_file_name];
         let mod_parts = &[parent_mods, &[mod_name.clone()]].concat();
         let mut writer = CodeWriter::new(ctx, proto_file, mod_parts);
         if writer.derive_serde {
@@ -2715,13 +2723,62 @@ fn generate_single_crate(
             writer.write("");
         }
 
-        add_mod(&mut writer);
+        // let rs_file_name = format!("{}{}/src/{}.rs", file_prefix, crate_name, writer.mod_parts.join("/"));
+
+        let mut curr = mod_tree.entry(crate_name.clone());
+        // Detect packages which collide with filenames. The rust codegen does not support those due
+        // to the rust module structure.
+        //
+        // eg. edgestore/engine.proto and edgestore/engine/service.proto
+        // engine would be both a file and container module
+        for (i, mod_name) in writer.mod_parts.iter().enumerate() {
+            match curr.or_insert_with(|| ModTree::Package {
+                children: BTreeMap::new(),
+            }) {
+                ModTree::Package { children } => {
+                    curr = children.entry(mod_name.to_owned());
+                },
+                ModTree::Leaf {
+                    proto_file_path: path, ..
+                } => panic!(
+                    "Proto {} collides with package ::{}::{} from {}.",
+                    path,
+                    crate_name,
+                    writer.mod_parts[..i + 1].join("::"),
+                    writer.proto_file.get_name(),
+                ),
+            }
+        }
+        match curr {
+            Entry::Occupied(_) => panic!(
+                "Proto {} collides with package ::{}::{}.",
+                writer.proto_file.get_name(),
+                crate_name,
+                writer.mod_parts.join("::"),
+            ),
+            Entry::Vacant(v) => {
+                v.insert(ModTree::Leaf {
+                    proto_file_path: writer.proto_file.get_name().to_owned(),
+                    code: writer.content,
+                });
+            },
+        }
     }
+
+    if let CrateMode::SingleFile = ctx.crate_mode {
+        response.file.push(plugin::CodeGeneratorResponse_File {
+            name: Some(format!("{file_prefix}protos.rs")),
+            // hax: we are using empty string as the crate_name...
+            content: Some(ctx.render_single_file(&mod_tree[""])),
+            ..Default::default()
+        });
+        return;
+    }
+
     // Note that output filenames must use "/" even on windows. It is part of the
     // protoc plugin protocol. The plugin speaks os-independent in "/". Thus, we
     // should not use std::path::Path::new() or std::path::PathBuf::push()
-
-    for (filename, content) in ctx.get_lib_and_mod_rs(mod_tree, derive_serde) {
+    for (filename, content) in ctx.get_source_tree(mod_tree, derive_serde) {
         response.file.push(plugin::CodeGeneratorResponse_File {
             name: Some(file_prefix.to_owned() + &filename),
             content: Some(content.clone()),
@@ -2796,14 +2853,19 @@ pub fn generate_code(request: &plugin::CodeGeneratorRequest) -> plugin::CodeGene
                 .unwrap()
                 .to_string()
                 + "/";
-            let mut ctx = Context::new(true, prefix_to_clear.clone(), &to_generate);
+            let mut ctx = Context::new(CrateMode::CratePerDir, prefix_to_clear.clone(), &to_generate);
             for proto_file in request.get_proto_file() {
                 ctx.feed(proto_file);
             }
             generate_single_crate(&mut ctx, &file_prefix, &to_generate, request, &mut response);
         }
     } else {
-        let mut ctx = Context::new(false, prefix_to_clear, &to_generate);
+        let crate_mode = if request.get_parameter().contains("single_file") {
+            CrateMode::SingleFile
+        } else {
+            CrateMode::CratePerPackage
+        };
+        let mut ctx = Context::new(crate_mode, prefix_to_clear, &to_generate);
         for proto_file in request.get_proto_file() {
             ctx.feed(proto_file);
         }

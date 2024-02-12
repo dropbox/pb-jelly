@@ -6,7 +6,7 @@ use std::io::{
 
 use pb_jelly::Message;
 use pb_jelly_gen::codegen::generate_code;
-use proto_google::protobuf::compiler::plugin;
+use pb_jelly_gen::protos::google::protobuf::compiler::plugin;
 
 fn main() -> io::Result<()> {
     // Read request message from stdin
