@@ -2049,9 +2049,6 @@ impl<'a> ProtoType<'a> {
         typ: ProtoTypeDescriptor<'a>,
     ) -> ProtoType<'a> {
         let (crate_, mod_parts) = ctx.crate_from_proto_filename(proto_file.get_name());
-        if typ.get_name() == "Label" {
-            assert!(!path.is_empty());
-        }
 
         ProtoType {
             proto_file,
