@@ -230,7 +230,6 @@ fn camelcase(underscored: &str) -> String {
 struct RustType<'a> {
     ctx: &'a Context<'a>,
     proto_file: &'a FileDescriptorProto,
-    msg_type: Option<&'a DescriptorProto>,
     field: &'a FieldDescriptorProto,
     is_proto3: bool,
     oneof: Option<&'a OneofDescriptorProto>,
@@ -253,7 +252,6 @@ impl<'a> RustType<'a> {
         RustType {
             ctx,
             proto_file,
-            msg_type,
             field,
             is_proto3,
             oneof,
@@ -830,7 +828,6 @@ fn field_iter<'a, 'ctx, F>(
 struct CodeWriter<'a, 'ctx> {
     ctx: &'ctx Context<'a>,
     proto_file: &'a FileDescriptorProto,
-    crate_name: &'a str,
     mod_parts: &'a [String],
     indentation: u32,
     content: String,
@@ -843,13 +840,11 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
     fn new(
         ctx: &'ctx Context<'a>,
         proto_file: &'a FileDescriptorProto,
-        crate_name: &'a str,
         mod_parts: &'a [String],
     ) -> CodeWriter<'a, 'ctx> {
         CodeWriter {
             ctx,
             proto_file,
-            crate_name,
             mod_parts,
             indentation: 0,
             content: String::new(),
@@ -2692,7 +2687,7 @@ fn generate_single_crate(
             .find(|f| f.get_name() == proto_file_name)
             .unwrap();
         let mod_parts = &[parent_mods, &[mod_name.clone()]].concat();
-        let mut writer = CodeWriter::new(ctx, proto_file, &crate_name, mod_parts);
+        let mut writer = CodeWriter::new(ctx, proto_file, mod_parts);
         if writer.derive_serde {
             derive_serde = true;
         }
