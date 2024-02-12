@@ -9,6 +9,7 @@ use std::collections::{
 };
 use std::fmt::Write as _;
 use std::hash::Hash;
+use std::mem;
 
 use indexmap::{
     IndexMap,
@@ -345,13 +346,13 @@ impl<'a> RustType<'a> {
     }
 
     fn is_grpc_slices(&self) -> bool {
-        return self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
+        self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
             && self
                 .field
                 .get_options()
                 .get_extension(extensions::GRPC_SLICES)
                 .unwrap()
-                .unwrap_or(false);
+                .unwrap_or(false)
     }
 
     fn is_blob(&self) -> bool {
@@ -365,34 +366,34 @@ impl<'a> RustType<'a> {
     }
 
     fn is_lazy_bytes(&self) -> bool {
-        return self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
+        self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
             && self
                 .field
                 .get_options()
                 .get_extension(extensions::ZERO_COPY)
                 .unwrap()
-                .unwrap_or(false);
+                .unwrap_or(false)
     }
 
     fn is_small_string_optimization(&self) -> bool {
-        return self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_STRING)
+        self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_STRING)
             && self
                 .field
                 .get_options()
                 .get_extension(extensions::SSO)
                 .unwrap()
-                .unwrap_or(false);
+                .unwrap_or(false)
     }
 
     fn is_boxed(&self) -> bool {
-        return self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_MESSAGE)
+        self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_MESSAGE)
             && (self
                 .field
                 .get_options()
                 .get_extension(extensions::BOX_IT)
                 .unwrap()
                 .unwrap_or(false)
-                || self.ctx.implicitly_boxed.contains(&(self.field as *const _)));
+                || self.ctx.implicitly_boxed.contains(&(self.field as *const _)))
     }
 
     fn has_custom_type(&self) -> bool {
@@ -434,7 +435,7 @@ impl<'a> RustType<'a> {
 
     fn is_empty_oneof_field(&self) -> bool {
         assert!(self.oneof.is_some());
-        return self.field.type_name.as_deref() == Some(".google.protobuf.Empty") && !self.is_boxed();
+        self.field.type_name.as_deref() == Some(".google.protobuf.Empty") && !self.is_boxed()
     }
 
     fn can_be_packed(&self) -> bool {
@@ -692,8 +693,7 @@ fn oneof_nullable(oneof: &OneofDescriptorProto) -> bool {
         .get_options()
         .get_extension(extensions::NULLABLE)
         .unwrap()
-        .is_none()
-        || oneof.get_options().get_extension(extensions::NULLABLE).unwrap() == Some(true)
+        .unwrap_or(true)
 }
 
 fn enum_err_if_default_or_unknown(enum_: &EnumDescriptorProto) -> bool {
@@ -701,12 +701,7 @@ fn enum_err_if_default_or_unknown(enum_: &EnumDescriptorProto) -> bool {
         .get_options()
         .get_extension(extensions::ERR_IF_DEFAULT_OR_UNKNOWN)
         .unwrap()
-        .is_some()
-        && enum_
-            .get_options()
-            .get_extension(extensions::ERR_IF_DEFAULT_OR_UNKNOWN)
-            .unwrap()
-            == Some(true)
+        .unwrap_or(false)
 }
 
 fn enum_closed(enum_: &EnumDescriptorProto) -> bool {
@@ -714,8 +709,7 @@ fn enum_closed(enum_: &EnumDescriptorProto) -> bool {
         .get_options()
         .get_extension(extensions::CLOSED_ENUM)
         .unwrap()
-        .is_some()
-        && enum_.get_options().get_extension(extensions::CLOSED_ENUM).unwrap() == Some(true)
+        .unwrap_or(false)
 }
 
 fn block_with<'a, 'ctx>(
@@ -2220,6 +2214,10 @@ impl<'a> Context<'a> {
         let mut impls_copy = true;
         let mut may_use_grpc_slices = false;
 
+        // pull out `extra_crates` so we can mutate it even if `self` is borrowed.
+        // TODO: this is hacky, refactor extra_crates out of Context instead.
+        let mut extra_crates = mem::take(&mut self.extra_crates);
+
         for type_name in &types {
             let msg_type = self.find(type_name);
             let proto_file = msg_type.proto_file;
@@ -2247,7 +2245,7 @@ impl<'a> Context<'a> {
                 let rust_type = RustType::new(self, proto_file, Some(descriptor), field);
                 let is_boxed = rust_type.is_boxed();
                 if let Some(custom_type) = rust_type.custom_type() {
-                    self.extra_crates
+                    extra_crates
                         .entry(crate_.to_string())
                         .or_default()
                         .extend(CRATE_NAME_REGEX.find_iter(&custom_type).map(|m| m.as_str().to_owned()));
@@ -2273,32 +2271,25 @@ impl<'a> Context<'a> {
                 }
 
                 // If we use a Blob type, or GRPC Slice
-                if typ == FieldDescriptorProto_Type::TYPE_BYTES
-                    && (field.get_options().get_extension(extensions::BLOB).unwrap() == Some(true)
-                        || field.get_options().get_extension(extensions::GRPC_SLICES).unwrap() == Some(true))
-                {
+                if rust_type.is_grpc_slices() || rust_type.is_blob() {
                     (impls_eq, impls_copy) = (false, false); // Blob is not eq/copy
-                    self.extra_crates
+                    extra_crates
                         .entry(crate_.to_string())
                         .or_default()
                         .insert("blob_pb".to_owned());
                     may_use_grpc_slices = true;
                 }
                 // If we use a Bytes type
-                else if typ == FieldDescriptorProto_Type::TYPE_BYTES
-                    && field.get_options().get_extension(extensions::ZERO_COPY).unwrap() == Some(true)
-                {
+                else if rust_type.is_lazy_bytes() {
                     (impls_eq, impls_copy) = (false, false);
-                    self.extra_crates
+                    extra_crates
                         .entry(crate_.to_string())
                         .or_default()
                         .insert("bytes".to_owned());
                     may_use_grpc_slices = true;
-                } else if typ == FieldDescriptorProto_Type::TYPE_STRING
-                    && field.get_options().get_extension(extensions::SSO).unwrap() == Some(true)
-                {
+                } else if rust_type.is_small_string_optimization() {
                     impls_copy = false;
-                    self.extra_crates
+                    extra_crates
                         .entry(crate_.to_string())
                         .or_default()
                         .insert("compact_str".to_owned());
@@ -2358,6 +2349,8 @@ impl<'a> Context<'a> {
                 },
             );
         }
+
+        self.extra_crates = extra_crates;
     }
     fn feed(&mut self, proto_file: &'a FileDescriptorProto) {
         let WalkResult {
@@ -2521,6 +2514,9 @@ impl<'a> Context<'a> {
                 .copied()
                 .chain(deps.iter().map(String::as_str))
                 .collect::<BTreeSet<_>>();
+            if let Some(extra_crates) = self.extra_crates.get(crate_name) {
+                all_deps.extend(extra_crates.iter().map(String::as_str));
+            }
 
             all_deps.remove("std");
 
@@ -2556,12 +2552,15 @@ impl<'a> Context<'a> {
         let mut result = Vec::new();
 
         for (crate_name, deps) in &*self.deps_map.borrow() {
-            let mut all_deps: BTreeSet<&str> = deps.iter().map(String::as_str).collect();
-            all_deps.insert("lazy_static");
-            all_deps.insert("pb-jelly");
+            let mut all_deps: BTreeSet<&str> = ["lazy_static", "pb-jelly"]
+                .iter()
+                .copied()
+                .chain(deps.iter().map(String::as_str))
+                .collect::<BTreeSet<_>>();
             if let Some(extra_crates) = self.extra_crates.get(crate_name) {
                 all_deps.extend(extra_crates.iter().map(String::as_str));
             }
+
             all_deps.remove("std");
 
             let mut features: BTreeMap<&str, String> = BTreeMap::new();
