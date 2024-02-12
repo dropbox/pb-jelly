@@ -2493,11 +2493,11 @@ impl<'a> Context<'a> {
         let mut results = Vec::new();
 
         for (crate_name, deps) in self.deps_map.borrow().iter() {
-            let mut all_deps: IndexSet<&str> = ["lazy_static", "pb-jelly"]
+            let mut all_deps: BTreeSet<&str> = ["lazy_static", "pb-jelly"]
                 .iter()
                 .copied()
                 .chain(deps.iter().map(|dep| dep.as_str()))
-                .collect::<IndexSet<_>>();
+                .collect::<BTreeSet<_>>();
 
             all_deps.remove("std");
 
