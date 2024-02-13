@@ -254,6 +254,14 @@ fn camelcase(underscored: &str) -> String {
         })
         .collect()
 }
+#[test]
+fn test_camelcase() {
+    assert_eq!(camelcase("foo"), "Foo");
+    assert_eq!(camelcase("foo_bar"), "FooBar");
+    assert_eq!(camelcase("FOO_BAR"), "FooBar");
+    assert_eq!(camelcase("OHNO128"), "Ohno128");
+}
+
 struct RustType<'a> {
     ctx: &'a Context<'a>,
     proto_file: &'a FileDescriptorProto,
