@@ -249,11 +249,19 @@ fn camelcase(underscored: &str) -> String {
             let mut chars = s.chars();
             match chars.next() {
                 None => String::new(),
-                Some(first_char) => first_char.to_uppercase().collect::<String>() + chars.as_str(),
+                Some(first_char) => format!("{}{}", first_char.to_uppercase(), chars.as_str().to_lowercase()),
             }
         })
         .collect()
 }
+#[test]
+fn test_camelcase() {
+    assert_eq!(camelcase("foo"), "Foo");
+    assert_eq!(camelcase("foo_bar"), "FooBar");
+    assert_eq!(camelcase("FOO_BAR"), "FooBar");
+    assert_eq!(camelcase("OHNO128"), "Ohno128");
+}
+
 struct RustType<'a> {
     ctx: &'a Context<'a>,
     proto_file: &'a FileDescriptorProto,
