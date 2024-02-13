@@ -212,7 +212,7 @@ impl Message for i64 {
 
 impl Reflection for i64 {}
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Signed64(pub i64);
 
 impl Signed64 {
@@ -259,7 +259,7 @@ impl DerefMut for Signed64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Signed32(pub i32);
 
 impl Signed32 {
@@ -306,7 +306,7 @@ impl DerefMut for Signed32 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Fixed64(pub u64);
 
 impl Message for Fixed64 {
@@ -342,7 +342,7 @@ impl DerefMut for Fixed64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Fixed32(pub u32);
 
 impl Message for Fixed32 {
@@ -378,7 +378,7 @@ impl DerefMut for Fixed32 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Sfixed64(pub i64);
 
 impl Message for Sfixed64 {
@@ -414,7 +414,7 @@ impl DerefMut for Sfixed64 {
     }
 }
 
-#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Sfixed32(pub i32);
 
 impl Message for Sfixed32 {
