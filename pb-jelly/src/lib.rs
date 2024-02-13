@@ -3,9 +3,6 @@
 #![allow(clippy::cast_possible_truncation)]
 #![allow(clippy::cast_possible_wrap)]
 
-#[macro_use]
-extern crate serde;
-
 use std::any::Any;
 use std::collections::BTreeMap;
 use std::default::Default;

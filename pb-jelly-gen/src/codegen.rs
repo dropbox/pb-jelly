@@ -942,7 +942,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         let ctx = self;
         ctx.write_comments(ctx.source_code_info_by_scl.get(scl).copied());
         if ctx.derive_serde {
-            ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash, Deserialize, Serialize)]");
+            ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash, ::serde_derive::Deserialize, ::serde_derive::Serialize)]");
         } else {
             ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]");
         }
@@ -1035,7 +1035,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         // Generate an open enum
         ctx.write_comments(ctx.source_code_info_by_scl.get(scl).copied());
         if ctx.derive_serde {
-            ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize, Serialize)]");
+            ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, ::serde_derive::Deserialize, ::serde_derive::Serialize)]");
         } else {
             ctx.write("#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]");
         }
@@ -1210,7 +1210,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
 
         let mut derives = vec!["Clone", "Debug", "PartialEq"];
         if ctx.derive_serde {
-            derives.extend(["Deserialize", "Serialize"]);
+            derives.extend(["::serde_derive::Deserialize", "::serde_derive::Serialize"]);
         }
 
         let impls = &ctx.ctx.impls_by_msg[&ProtoType::new(
@@ -2544,16 +2544,12 @@ impl<'a> Context<'a> {
 
             all_deps.remove("std");
 
-            let mut features: IndexMap<&str, &str> = [
-                ("serde", r#"features=["serde_derive"]"#),
-                ("compact_str", r#"features=["bytes"]"#),
-            ]
-            .iter()
-            .copied()
-            .collect();
+            let mut features: IndexMap<&str, &str> =
+                [("compact_str", r#"features=["bytes"]"#)].iter().copied().collect();
 
             if derive_serde {
                 all_deps.insert("serde");
+                all_deps.insert("serde_derive");
                 features.insert("compact_str", r#"features=["bytes", "serde"]"#);
             }
 
@@ -2588,11 +2584,11 @@ impl<'a> Context<'a> {
             all_deps.remove("std");
 
             let mut features: BTreeMap<&str, String> = BTreeMap::new();
-            features.insert("serde", "features=[\"serde_derive\"]".to_string());
             features.insert("compact_str", "features=[\"bytes\"]".to_string());
 
             if derive_serde {
                 all_deps.insert("serde");
+                all_deps.insert("serde_derive");
                 features.insert("compact_str", "features=[\"bytes\", \"serde\"]".to_string());
             }
 
@@ -2600,6 +2596,7 @@ impl<'a> Context<'a> {
             versions.insert("lazy_static", "version = \"1.4.0\"".to_string());
             versions.insert("pb-jelly", "version = \"0.0.16\"".to_string());
             versions.insert("serde", "version = \"1.0\"".to_string());
+            versions.insert("serde_derive", "version = \"1.0\"".to_string());
             versions.insert("bytes", "version = \"1.0\"".to_string());
             versions.insert("compact_str", "version = \"0.5\"".to_string());
 
