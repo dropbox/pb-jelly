@@ -15,10 +15,8 @@ use indexmap::{
     IndexMap,
     IndexSet,
 };
-use lazy_static::lazy_static;
 use pb_jelly::extensions::Extensible;
 use pb_jelly::Message;
-use regex::Regex;
 
 use crate::protos::google::protobuf::compiler::plugin;
 use crate::protos::google::protobuf::descriptor::{
@@ -190,8 +188,33 @@ static VEC_SLICE_TYPE: &str = "::pb_jelly::Lazy<::blob_pb::VecSlice>";
 static LAZY_BYTES_TYPE: &str = "::pb_jelly::Lazy<::bytes::Bytes>";
 static SMALL_STRING_OPT_TYPE: &str = "::compact_str::CompactString";
 
-lazy_static! {
-    static ref CRATE_NAME_REGEX: Regex = Regex::new(r"(?:^|\W)::(\w+)(?:::\w+)*").unwrap();
+/// Try to divine crate names used inside a type.
+/// We're assuming all paths are fully qualified, i.e. start with `::` and then the crate name.
+/// Properly this should parse the string using `syn` or similar,
+/// but we don't want to take such a heavy dependency so we're just using an approximation.
+fn extract_crate_names_from_custom_type(custom_type: &str) -> Vec<&str> {
+    fn is_ident_char(c: char) -> bool {
+        c.is_ascii_alphanumeric() || c == '_'
+    }
+    let mut r = vec![];
+    let mut last: Option<&str> = None;
+    for component in custom_type.split("::") {
+        if !component.is_empty()
+            && component.chars().all(is_ident_char)
+            && last.map_or(false, |last| !last.chars().next_back().map_or(false, is_ident_char))
+        {
+            r.push(component);
+        }
+        last = Some(component);
+    }
+    r
+}
+#[test]
+fn test_extract_crate_names_from_custom_type() {
+    assert_eq!(
+        extract_crate_names_from_custom_type("::foo::bar::Bar<::a::b, [::c::d; 32]>"),
+        vec!["foo", "a", "c"]
+    );
 }
 
 /// Keywords in rust which cannot be module names.
@@ -2245,10 +2268,11 @@ impl<'a> Context<'a> {
                 let rust_type = RustType::new(self, proto_file, Some(descriptor), field);
                 let is_boxed = rust_type.is_boxed();
                 if let Some(custom_type) = rust_type.custom_type() {
-                    extra_crates
-                        .entry(crate_.to_string())
-                        .or_default()
-                        .extend(CRATE_NAME_REGEX.captures_iter(&custom_type).map(|m| m[1].to_owned()));
+                    extra_crates.entry(crate_.to_string()).or_default().extend(
+                        extract_crate_names_from_custom_type(&custom_type)
+                            .into_iter()
+                            .map(str::to_owned),
+                    );
                     may_use_grpc_slices = true;
                 }
 
