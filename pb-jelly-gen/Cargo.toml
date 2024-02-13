@@ -13,9 +13,13 @@ categories = ["encoding", "parsing", "web-programming"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = ["generate"]
+generate = ["walkdir", "tempfile"]
+
 [dependencies]
-tempfile = "3.1.0"
-walkdir = "2"
+tempfile = { version = "3.1.0", optional = true }
+walkdir = { version = "2", optional = true }
 
 pb-jelly = { version = "0.0.16" }
 lazy_static = "1.4.0"
