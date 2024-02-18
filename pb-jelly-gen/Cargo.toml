@@ -11,6 +11,8 @@ readme = "README.md"
 keywords = ["google", "protobuf", "proto", "dropbox"]
 categories = ["encoding", "parsing", "web-programming"]
 
+include = ["src/**/*.rs", "README.md", "LICENSE", "proto"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
