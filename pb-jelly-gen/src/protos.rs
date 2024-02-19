@@ -15,6 +15,8 @@
 #![allow(clippy::derivable_impls)]
 // For enums with many variants, the matches!(...) macro isn't obviously better
 #![allow(clippy::match_like_matches_macro)]
+// Used by extension codegen
+#![allow(clippy::redundant_closure)]
 // TODO: Ideally we don't allow this
 #![allow(clippy::option_as_ref_deref)]
 // TODO: Ideally we don't allow this
@@ -5079,8 +5081,8 @@ pub mod google {
             input_type: ::std::default::Default::default(),
             output_type: ::std::default::Default::default(),
             options: ::std::default::Default::default(),
-            client_streaming: Some(false),
-            server_streaming: Some(false),
+            client_streaming: ::std::option::Option::Some(false),
+            server_streaming: ::std::option::Option::Some(false),
           }
         }
       }
@@ -5656,17 +5658,17 @@ pub mod google {
           FileOptions {
             java_package: ::std::default::Default::default(),
             java_outer_classname: ::std::default::Default::default(),
-            java_multiple_files: Some(false),
+            java_multiple_files: ::std::option::Option::Some(false),
             java_generate_equals_and_hash: ::std::default::Default::default(),
-            java_string_check_utf8: Some(false),
-            optimize_for: Some(FileOptions_OptimizeMode::SPEED),
+            java_string_check_utf8: ::std::option::Option::Some(false),
+            optimize_for: ::std::option::Option::Some(FileOptions_OptimizeMode::SPEED),
             go_package: ::std::default::Default::default(),
-            cc_generic_services: Some(false),
-            java_generic_services: Some(false),
-            py_generic_services: Some(false),
-            php_generic_services: Some(false),
-            deprecated: Some(false),
-            cc_enable_arenas: Some(true),
+            cc_generic_services: ::std::option::Option::Some(false),
+            java_generic_services: ::std::option::Option::Some(false),
+            py_generic_services: ::std::option::Option::Some(false),
+            php_generic_services: ::std::option::Option::Some(false),
+            deprecated: ::std::option::Option::Some(false),
+            cc_enable_arenas: ::std::option::Option::Some(true),
             objc_class_prefix: ::std::default::Default::default(),
             csharp_namespace: ::std::default::Default::default(),
             swift_prefix: ::std::default::Default::default(),
@@ -6447,9 +6449,9 @@ pub mod google {
       impl ::std::default::Default for MessageOptions {
         fn default() -> Self {
           MessageOptions {
-            message_set_wire_format: Some(false),
-            no_standard_descriptor_accessor: Some(false),
-            deprecated: Some(false),
+            message_set_wire_format: ::std::option::Option::Some(false),
+            no_standard_descriptor_accessor: ::std::option::Option::Some(false),
+            deprecated: ::std::option::Option::Some(false),
             map_entry: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
@@ -6789,12 +6791,12 @@ pub mod google {
       impl ::std::default::Default for FieldOptions {
         fn default() -> Self {
           FieldOptions {
-            ctype: Some(FieldOptions_CType::STRING),
+            ctype: ::std::option::Option::Some(FieldOptions_CType::STRING),
             packed: ::std::default::Default::default(),
-            jstype: Some(FieldOptions_JSType::JS_NORMAL),
-            lazy: Some(false),
-            deprecated: Some(false),
-            weak: Some(false),
+            jstype: ::std::option::Option::Some(FieldOptions_JSType::JS_NORMAL),
+            lazy: ::std::option::Option::Some(false),
+            deprecated: ::std::option::Option::Some(false),
+            weak: ::std::option::Option::Some(false),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -7218,7 +7220,7 @@ pub mod google {
         fn default() -> Self {
           EnumOptions {
             allow_alias: ::std::default::Default::default(),
-            deprecated: Some(false),
+            deprecated: ::std::option::Option::Some(false),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -7404,7 +7406,7 @@ pub mod google {
       impl ::std::default::Default for EnumValueOptions {
         fn default() -> Self {
           EnumValueOptions {
-            deprecated: Some(false),
+            deprecated: ::std::option::Option::Some(false),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -7568,7 +7570,7 @@ pub mod google {
       impl ::std::default::Default for ServiceOptions {
         fn default() -> Self {
           ServiceOptions {
-            deprecated: Some(false),
+            deprecated: ::std::option::Option::Some(false),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -7742,8 +7744,8 @@ pub mod google {
       impl ::std::default::Default for MethodOptions {
         fn default() -> Self {
           MethodOptions {
-            deprecated: Some(false),
-            idempotency_level: Some(MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN),
+            deprecated: ::std::option::Option::Some(false),
+            idempotency_level: ::std::option::Option::Some(MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -9268,53 +9270,65 @@ pub mod rust {
   pub mod extensions {
     /// Generate this field in a Box as opposed to inline Option
     pub const BOX_IT: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50000,
-            ::pb_jelly::wire_format::Type::Varint,
-            "box_it",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50000,
+        ::pb_jelly::wire_format::Type::Varint,
+        "box_it",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Generates a `Lazy<VecSlice>`
     pub const GRPC_SLICES: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50003,
-            ::pb_jelly::wire_format::Type::Varint,
-            "grpc_slices",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50003,
+        ::pb_jelly::wire_format::Type::Varint,
+        "grpc_slices",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Generates a `Lazy<WrappedBlob>`
     pub const BLOB: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50010,
-            ::pb_jelly::wire_format::Type::Varint,
-            "blob",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50010,
+        ::pb_jelly::wire_format::Type::Varint,
+        "blob",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Use a different Rust type which implements `pb::Message` to represent the field.
     /// All paths must be fully qualified, as in `::my_crate::full::path::to::type`.
     /// This only works with proto3.
     pub const TYPE: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, ::std::string::String> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50004,
-            ::pb_jelly::wire_format::Type::LengthDelimited,
-            "type",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50004,
+        ::pb_jelly::wire_format::Type::LengthDelimited,
+        "type",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Generate this `bytes` field using a Lazy<bytes::Bytes> to enable zero-copy deserialization.
     pub const ZERO_COPY: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50007,
-            ::pb_jelly::wire_format::Type::Varint,
-            "zero_copy",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50007,
+        ::pb_jelly::wire_format::Type::Varint,
+        "zero_copy",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Generate this `string` field using a type that supports a small string optimization.
     pub const SSO: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50009,
-            ::pb_jelly::wire_format::Type::Varint,
-            "sso",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50009,
+        ::pb_jelly::wire_format::Type::Varint,
+        "sso",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// If false, make this field's Rust type non-Optional. If the field is
     /// missing on the wire during deserialization, it will remain as
@@ -9322,8 +9336,8 @@ pub mod rust {
     
     /// It doesn't make sense to specify this option for a repeating field, as a
     /// missing field always deserializes as an empty Vec.
-    /// In proto3, this option is also ignored for primitive types, which are
-    /// always non-nullable
+    /// In proto3, this option is also ignored for non-`optional` primitive types,
+    /// which are already non-nullable.
     
     /// Beware that Default may not make sense for all message types. In
     /// particular, fields using `OneofOptions.nullable=false` or
@@ -9331,11 +9345,13 @@ pub mod rust {
     /// first variant, and will _not_ trigger a deserialization error. That
     /// behaviour may change in the future (TODO).
     pub const NULLABLE_FIELD: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FieldOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50008,
-            ::pb_jelly::wire_format::Type::Varint,
-            "nullable_field",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50008,
+        ::pb_jelly::wire_format::Type::Varint,
+        "nullable_field",
+        || true,
+      );
+    
     
     /// Setting this to true on an enum means the generated enum won't even have a value for the
     /// 0-value, and any message that would've parsed to having the value be 0 fail instead.
@@ -9349,11 +9365,13 @@ pub mod rust {
     /// more desirable to just fail at parse time. If the client has updated *past* the server, it may
     /// send a value that the server does not know how to handle. We *also* fail this at parse time.
     pub const ERR_IF_DEFAULT_OR_UNKNOWN: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::EnumOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50002,
-            ::pb_jelly::wire_format::Type::Varint,
-            "err_if_default_or_unknown",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50002,
+        ::pb_jelly::wire_format::Type::Varint,
+        "err_if_default_or_unknown",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Setting this to true means that an enum's variants are considered exhaustive.
     /// A Rust `enum` will be generated, rather than a wrapper around `i32`. This
@@ -9366,11 +9384,13 @@ pub mod rust {
     /// values are still allowed. The two options are incompatible, as
     /// `err_if_default_or_unknown` is strictly stronger.
     pub const CLOSED_ENUM: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::EnumOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50008,
-            ::pb_jelly::wire_format::Type::Varint,
-            "closed_enum",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50008,
+        ::pb_jelly::wire_format::Type::Varint,
+        "closed_enum",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// Setting this to true adds an extra field to the deserialized message, which includes
     /// a serialized representation of unrecognized fields.
@@ -9380,25 +9400,30 @@ pub mod rust {
     ///   _unrecognized: Vec<u8>,
     /// }
     pub const PRESERVE_UNRECOGNIZED: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::MessageOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50006,
-            ::pb_jelly::wire_format::Type::Varint,
-            "preserve_unrecognized",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50006,
+        ::pb_jelly::wire_format::Type::Varint,
+        "preserve_unrecognized",
+        || ::std::default::Default::default(),
+      );
+    
     
     /// If false, this oneof must have a field set. Parse error if no variant (or unrecognized
     /// variant) is set.
     pub const NULLABLE: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::OneofOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50001,
-            ::pb_jelly::wire_format::Type::Varint,
-            "nullable",
-        );
+      ::pb_jelly::extensions::SingularExtension::new(
+        50001,
+        ::pb_jelly::wire_format::Type::Varint,
+        "nullable",
+        || true,
+      );
+    
     
     pub const SERDE_DERIVE: ::pb_jelly::extensions::SingularExtension<super::super::google::protobuf::descriptor::FileOptions, bool> =
-        ::pb_jelly::extensions::SingularExtension::new(
-            50005,
-            ::pb_jelly::wire_format::Type::Varint,
-            "serde_derive",
-        );}
+      ::pb_jelly::extensions::SingularExtension::new(
+        50005,
+        ::pb_jelly::wire_format::Type::Varint,
+        "serde_derive",
+        || false,
+      );}
 }

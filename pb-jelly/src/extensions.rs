@@ -15,8 +15,17 @@ use crate::{
 pub trait Extensible: Message {
     /// Attempts to read the given extension field from `self`.
     ///
+    /// If the field was not present, or any value failed to deserialize, returns the
+    /// default value for the extension field. This is either the declared default if
+    /// specified, or the empty value.
+    fn get_extension<E: Extension<Extendee = Self>>(&self, extension: E) -> E::Value {
+        extension.get_or_default(self)
+    }
+
+    /// Attempts to read the given extension field from `self`.
+    ///
     /// Returns `Err(_)` if the field was found but could not be deserialized as the declared field type.
-    fn get_extension<E: Extension<Extendee = Self>>(&self, extension: E) -> io::Result<E::Value> {
+    fn get_extension_opt<E: Extension<Extendee = Self>>(&self, extension: E) -> io::Result<E::MaybeValue> {
         extension.get(self)
     }
 
@@ -30,8 +39,10 @@ pub trait Extensible: Message {
 /// Abstracts over [SingularExtension]/[RepeatedExtension].
 pub trait Extension {
     type Extendee: Extensible;
+    type MaybeValue;
     type Value;
-    fn get(&self, m: &Self::Extendee) -> io::Result<Self::Value>;
+    fn get(&self, m: &Self::Extendee) -> io::Result<Self::MaybeValue>;
+    fn get_or_default(&self, m: &Self::Extendee) -> Self::Value;
 }
 
 /// An extension field. See <https://protobuf.dev/programming-guides/proto2/#extensions> for details.
@@ -39,15 +50,22 @@ pub struct SingularExtension<T, U> {
     pub field_number: u32,
     pub wire_format: wire_format::Type,
     pub name: &'static str,
+    pub default: fn() -> U,
     _phantom: PhantomData<fn(&T) -> U>,
 }
 
 impl<T, U> SingularExtension<T, U> {
-    pub const fn new(field_number: u32, wire_format: wire_format::Type, name: &'static str) -> Self {
+    pub const fn new(
+        field_number: u32,
+        wire_format: wire_format::Type,
+        name: &'static str,
+        default: fn() -> U,
+    ) -> Self {
         Self {
             field_number,
             wire_format,
             name,
+            default,
             _phantom: PhantomData,
         }
     }
@@ -62,7 +80,8 @@ impl<T, U> Clone for SingularExtension<T, U> {
 
 impl<T: Extensible, U: Message> Extension for SingularExtension<T, U> {
     type Extendee = T;
-    type Value = Option<U>;
+    type MaybeValue = Option<U>;
+    type Value = U;
 
     fn get(&self, m: &Self::Extendee) -> io::Result<Option<U>> {
         Ok(match m._extensions().get_singular_field(self.field_number) {
@@ -79,6 +98,10 @@ impl<T: Extensible, U: Message> Extension for SingularExtension<T, U> {
             },
             None => None,
         })
+    }
+
+    fn get_or_default(&self, m: &Self::Extendee) -> Self::Value {
+        self.get(m).ok().flatten().unwrap_or_else(self.default)
     }
 }
 
@@ -110,6 +133,7 @@ impl<T, U> Clone for RepeatedExtension<T, U> {
 
 impl<T: Extensible, U: Message> Extension for RepeatedExtension<T, U> {
     type Extendee = T;
+    type MaybeValue = Vec<U>;
     type Value = Vec<U>;
 
     fn get(&self, m: &Self::Extendee) -> io::Result<Vec<U>> {
@@ -129,5 +153,9 @@ impl<T: Extensible, U: Message> Extension for RepeatedExtension<T, U> {
             result.push(msg);
         }
         Ok(result)
+    }
+
+    fn get_or_default(&self, m: &Self::Extendee) -> Self::Value {
+        self.get(m).unwrap_or_default()
     }
 }
