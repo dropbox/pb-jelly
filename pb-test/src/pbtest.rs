@@ -946,35 +946,53 @@ fn test_mutual_recursion() {
 
 #[test]
 fn test_extensions() {
-    check_roundtrip(extensions::FakeMsg::default());
-    check_roundtrip(extensions::FakeMsg {
+    let default_msg = check_roundtrip(extensions::FakeMsg::default());
+    assert_eq!(default_msg.get_extension(extensions::SINGULAR_PRIMITIVE), 0);
+    assert_eq!(
+        default_msg.get_extension(extensions::SINGULAR_PRIMITIVE_WITH_DEFAULT),
+        123
+    );
+
+    let defined_msg = check_roundtrip(extensions::FakeMsg {
         base_field: Some(39),
         singular_primitive: Some(123),
+        singular_primitive_with_default: Some(1234),
         singular_message: Some(ForeignMessage3 { c: 321 }),
         repeated_primitive: vec![456, 789],
         repeated_message: vec![ForeignMessage3 { c: 654 }, ForeignMessage3 { c: 987 }],
     });
+    assert_eq!(defined_msg.get_extension(extensions::SINGULAR_PRIMITIVE), 123);
+    assert_eq!(
+        defined_msg.get_extension(extensions::SINGULAR_PRIMITIVE_WITH_DEFAULT),
+        1234
+    );
 
     // Check that serializing a FakeMsg and deserializing into Msg preserves the extension fields,
     // and that those fields can be read using `get_extension()`.
-    fn check_roundtrip(orig: extensions::FakeMsg) {
+    fn check_roundtrip(orig: extensions::FakeMsg) -> extensions::Msg {
         let m = extensions::Msg::deserialize_from_slice(&orig.serialize_to_vec()).unwrap();
         assert_eq!(m.base_field, orig.base_field);
         assert_eq!(
-            m.get_extension(extensions::SINGULAR_PRIMITIVE).unwrap(),
+            m.get_extension_opt(extensions::SINGULAR_PRIMITIVE).unwrap(),
             orig.singular_primitive
         );
         assert_eq!(
-            m.get_extension(extensions::SINGULAR_MESSAGE).unwrap(),
+            m.get_extension_opt(extensions::SINGULAR_PRIMITIVE_WITH_DEFAULT)
+                .unwrap(),
+            orig.singular_primitive_with_default
+        );
+        assert_eq!(
+            m.get_extension_opt(extensions::SINGULAR_MESSAGE).unwrap(),
             orig.singular_message,
         );
         assert_eq!(
-            m.get_extension(extensions::REPEATED_PRIMITIVE).unwrap(),
+            m.get_extension_opt(extensions::REPEATED_PRIMITIVE).unwrap(),
             orig.repeated_primitive,
         );
         assert_eq!(
-            m.get_extension(extensions::REPEATED_MESSAGE).unwrap(),
+            m.get_extension_opt(extensions::REPEATED_MESSAGE).unwrap(),
             orig.repeated_message
         );
+        m
     }
 }

@@ -11,6 +11,7 @@ message Msg {
 
 extend Msg {
     optional int32 singular_primitive = 101;
+    optional int32 singular_primitive_with_default = 102 [default=123];
     optional ForeignMessage3 singular_message = 301;
     repeated int32 repeated_primitive = 300;
     repeated ForeignMessage3 repeated_message = 200;
@@ -20,6 +21,7 @@ message FakeMsg {
     optional int32 base_field = 250;
 
     optional int32 singular_primitive = 101;
+    optional int32 singular_primitive_with_default = 102;
     optional ForeignMessage3 singular_message = 301;
     repeated int32 repeated_primitive = 300;
     repeated ForeignMessage3 repeated_message = 200;

@@ -293,54 +293,54 @@ impl<'a> RustType<'a> {
         }
     }
 
-    fn default(&self, msg_name: &str) -> String {
-        if let Some(oneof) = self.oneof {
-            if oneof_nullable(oneof) {
-                return "None".to_string();
-            } else {
-                return self.oneof_val(msg_name, "::std::default::Default::default()");
+    fn proto2_default(&self) -> String {
+        if let Some(ref default_value) = self.field.default_value {
+            if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_STRING) {
+                return format!("\"{default_value}\".into()");
             }
-        }
 
-        // Proto 3 doesn't have configurable default values.
-        if !self.is_proto3 {
-            if let Some(ref default_value) = self.field.default_value {
-                if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_STRING) {
-                    return format!("Some(\"{default_value}\".into())");
+            if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES) {
+                return format!("b\"{default_value}\".to_vec()");
+            }
+
+            if let Some(primitive) = self.field.r#type.and_then(get_primitive_type) {
+                let typ_name = primitive.rust_type;
+                if typ_name.contains("::pb") {
+                    return format!("{typ_name}({default_value})");
                 }
-
-                if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES) {
-                    return format!("Some(b\"{default_value}\".to_vec())");
+                if typ_name.starts_with('f') && !default_value.contains('.') {
+                    return format!("{default_value}.");
                 }
+                return default_value.to_string();
+            }
 
-                if let Some(primitive) = self.field.r#type.and_then(get_primitive_type) {
-                    let typ_name = primitive.rust_type;
-                    if typ_name.contains("::pb") {
-                        return format!("Some({typ_name}({default_value}))");
-                    }
-                    if typ_name.starts_with('f') && !default_value.contains('.') {
-                        return format!("Some({default_value}.)");
-                    }
-                    return format!("Some({default_value})");
-                }
-
-                if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_ENUM) {
-                    let proto_type = self.ctx.find(self.field.get_type_name());
-                    let (crate_, mod_parts) = self.ctx.crate_from_proto_filename(self.proto_file.get_name());
-                    let value = format!(
-                        "{}::{}",
-                        proto_type.rust_name(self.ctx, &crate_, &mod_parts),
-                        default_value
-                    );
-                    return format!("Some({value})");
-                }
-
-                panic!(
-                    "Default not supported on field {:?} of type {:?}",
-                    self.field.get_name(),
-                    self.field.r#type
+            if self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_ENUM) {
+                let proto_type = self.ctx.find(self.field.get_type_name());
+                let (crate_, mod_parts) = self.ctx.crate_from_proto_filename(self.proto_file.get_name());
+                return format!(
+                    "{}::{}",
+                    proto_type.rust_name(self.ctx, &crate_, &mod_parts),
+                    default_value
                 );
             }
+
+            panic!(
+                "Default not supported on field {:?} of type {:?}",
+                self.field.get_name(),
+                self.field.r#type
+            );
+        } else {
+            "::std::default::Default::default()".to_string()
+        }
+    }
+
+    fn default(&self) -> String {
+        assert!(self.oneof.is_none());
+
+        // Proto 3 doesn't have configurable default values.
+        if !self.is_proto3 && self.field.default_value.is_some() {
+            // TODO: this is incorrect; defaults are specified to be inserted at get-time.
+            return format!("::std::option::Option::Some({})", self.proto2_default());
         }
 
         "::std::default::Default::default()".to_string()
@@ -378,65 +378,41 @@ impl<'a> RustType<'a> {
 
     fn is_grpc_slices(&self) -> bool {
         self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
-            && self
-                .field
-                .get_options()
-                .get_extension(extensions::GRPC_SLICES)
-                .unwrap()
-                .unwrap_or(false)
+            && self.field.get_options().get_extension(extensions::GRPC_SLICES)
     }
 
     fn is_blob(&self) -> bool {
         self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
-            && self
-                .field
-                .get_options()
-                .get_extension(extensions::BLOB)
-                .unwrap()
-                .unwrap_or(false)
+            && self.field.get_options().get_extension(extensions::BLOB)
     }
 
     fn is_lazy_bytes(&self) -> bool {
         self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_BYTES)
-            && self
-                .field
-                .get_options()
-                .get_extension(extensions::ZERO_COPY)
-                .unwrap()
-                .unwrap_or(false)
+            && self.field.get_options().get_extension(extensions::ZERO_COPY)
     }
 
     fn is_small_string_optimization(&self) -> bool {
         self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_STRING)
-            && self
-                .field
-                .get_options()
-                .get_extension(extensions::SSO)
-                .unwrap()
-                .unwrap_or(false)
+            && self.field.get_options().get_extension(extensions::SSO)
     }
 
     fn is_boxed(&self) -> bool {
         self.field.r#type == Some(FieldDescriptorProto_Type::TYPE_MESSAGE)
-            && (self
-                .field
-                .get_options()
-                .get_extension(extensions::BOX_IT)
-                .unwrap()
-                .unwrap_or(false)
+            && (self.field.get_options().get_extension(extensions::BOX_IT)
                 || self.ctx.implicitly_boxed.contains(&(self.field as *const _)))
     }
 
     fn has_custom_type(&self) -> bool {
-        self.field
-            .get_options()
-            .get_extension(extensions::TYPE)
-            .unwrap()
-            .is_some()
+        self.custom_type().is_some()
     }
 
     fn custom_type(&self) -> Option<String> {
-        self.field.get_options().get_extension(extensions::TYPE).unwrap()
+        let ty = self.field.get_options().get_extension(extensions::TYPE);
+        if ty.is_empty() {
+            None
+        } else {
+            Some(ty)
+        }
     }
 
     fn is_nullable(&self) -> bool {
@@ -453,7 +429,7 @@ impl<'a> RustType<'a> {
         if let Some(nullable_field) = self
             .field
             .get_options()
-            .get_extension(extensions::NULLABLE_FIELD)
+            .get_extension_opt(extensions::NULLABLE_FIELD)
             .unwrap()
         {
             // We still allow overriding nullability as an extension
@@ -485,7 +461,7 @@ impl<'a> RustType<'a> {
 
     fn set_method(&self) -> (String, String) {
         assert!(!self.is_repeated());
-        match self.field.r#type.unwrap() {
+        match self.field.get_type() {
             FieldDescriptorProto_Type::TYPE_FLOAT => ("f32".to_string(), "v".to_string()),
             FieldDescriptorProto_Type::TYPE_DOUBLE => ("f64".to_string(), "v".to_string()),
             FieldDescriptorProto_Type::TYPE_INT32 => ("i32".to_string(), "v".to_string()),
@@ -578,6 +554,7 @@ impl<'a> RustType<'a> {
         assert!(!self.is_repeated());
         let name = escape_name(self.field.get_name());
 
+        // TODO: this does not respect default values
         match self.field.r#type {
             Some(FieldDescriptorProto_Type::TYPE_FLOAT) => ("f32".to_string(), format!("self.{name}.unwrap_or(0.)")),
             Some(FieldDescriptorProto_Type::TYPE_DOUBLE) => ("f64".to_string(), format!("self.{name}.unwrap_or(0.)")),
@@ -720,27 +697,15 @@ fn oneof_msg_name(parent_msg_name: &str, oneof: &OneofDescriptorProto) -> String
 }
 
 fn oneof_nullable(oneof: &OneofDescriptorProto) -> bool {
-    oneof
-        .get_options()
-        .get_extension(extensions::NULLABLE)
-        .unwrap()
-        .unwrap_or(true)
+    oneof.get_options().get_extension(extensions::NULLABLE)
 }
 
 fn enum_err_if_default_or_unknown(enum_: &EnumDescriptorProto) -> bool {
-    enum_
-        .get_options()
-        .get_extension(extensions::ERR_IF_DEFAULT_OR_UNKNOWN)
-        .unwrap()
-        .unwrap_or(false)
+    enum_.get_options().get_extension(extensions::ERR_IF_DEFAULT_OR_UNKNOWN)
 }
 
 fn enum_closed(enum_: &EnumDescriptorProto) -> bool {
-    enum_
-        .get_options()
-        .get_extension(extensions::CLOSED_ENUM)
-        .unwrap()
-        .unwrap_or(false)
+    enum_.get_options().get_extension(extensions::CLOSED_ENUM)
 }
 
 fn block_with<'a, 'ctx>(
@@ -882,11 +847,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             indentation: 0,
             content: String::new(),
             is_proto3: proto_file.get_syntax() == "proto3",
-            derive_serde: proto_file
-                .get_options()
-                .get_extension(extensions::SERDE_DERIVE)
-                .unwrap()
-                .unwrap_or(false),
+            derive_serde: proto_file.get_options().get_extension(extensions::SERDE_DERIVE),
             source_code_info_by_scl: proto_file
                 .get_source_code_info()
                 .location
@@ -1191,11 +1152,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
         assert_eq!(ctx.indentation, 0);
         let name = [path, &[msg_type.get_name()]].concat().join("_");
 
-        let preserve_unrecognized = msg_type
-            .get_options()
-            .get_extension(extensions::PRESERVE_UNRECOGNIZED)
-            .unwrap()
-            == Some(true);
+        let preserve_unrecognized = msg_type.get_options().get_extension(extensions::PRESERVE_UNRECOGNIZED);
         let has_extensions = !msg_type.extension_range.is_empty();
 
         let escaped_name = escape_name(&name);
@@ -1397,13 +1354,22 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                     for field in &msg_type.field {
                         let typ = ctx.rust_type(Some(msg_type), field);
                         if typ.oneof.is_none() {
-                            ctx.write(format!("{}: {},", escape_name(field.get_name()), typ.default(&name)));
+                            ctx.write(format!("{}: {},", escape_name(field.get_name()), typ.default()));
                         }
                     }
                     for &oneof in &oneof_decls {
-                        let oneof_field = oneof_fields[oneof.get_name()][0];
-                        let typ = ctx.rust_type(Some(msg_type), oneof_field);
-                        ctx.write(format!("{}: {},", escape_name(oneof.get_name()), typ.default(&name)));
+                        let default_value = if oneof_nullable(oneof) {
+                            "None".into()
+                        } else {
+                            let oneof_field = oneof_fields[oneof.get_name()][0];
+                            let typ = ctx.rust_type(Some(msg_type), oneof_field);
+                            typ.oneof_val(&name, "::std::default::Default::default()")
+                        };
+
+                        ctx.write(format!(
+                            "{oneof_name}: {default_value},",
+                            oneof_name = escape_name(oneof.get_name())
+                        ));
                     }
                     if preserve_unrecognized {
                         ctx.write("_unrecognized: Vec::new(),");
@@ -1911,28 +1877,36 @@ buf, typ, ::pb_jelly::wire_format::Type::{expected_wire_format}, \"{msg_name}\",
             .join("_");
         let rust_type = self.rust_type(None, extension_field);
         let extendee = self.ctx.find(extension_field.get_extendee());
-        let kind = if extension_field.get_label() == FieldDescriptorProto_Label::LABEL_REPEATED {
+        let is_repeated = extension_field.get_label() == FieldDescriptorProto_Label::LABEL_REPEATED;
+        let kind = if is_repeated {
             "RepeatedExtension"
         } else {
             "SingularExtension"
         };
 
-        self.write(format!(
-            "pub const {}: ::pb_jelly::extensions::{}<{}, {}> =
-    ::pb_jelly::extensions::{}::new(
-        {},
-        ::pb_jelly::wire_format::Type::{},
-        \"{}\",
-    );",
-            name,
-            kind,
-            extendee.rust_name(self.ctx, &crate_, &mod_parts),
-            rust_type.rust_type(),
-            kind,
-            extension_field.get_number(),
-            rust_type.wire_format(),
-            extension_field.get_name(),
-        ));
+        block_with(
+            self,
+            format!(
+                "pub const {name}: ::pb_jelly::extensions::{kind}<{extendee}, {field_type}> =",
+                extendee = extendee.rust_name(self.ctx, &crate_, &mod_parts),
+                field_type = rust_type.rust_type(),
+            ),
+            "",
+            "",
+            |ctx| {
+                block_with(ctx, format!("::pb_jelly::extensions::{kind}::new"), "(", ");", |ctx| {
+                    ctx.write(format!("{field_number},", field_number = extension_field.get_number()));
+                    ctx.write(format!(
+                        "::pb_jelly::wire_format::Type::{wire_format},",
+                        wire_format = rust_type.wire_format()
+                    ));
+                    ctx.write(format!("\"{field_name}\",", field_name = extension_field.get_name(),));
+                    if !is_repeated {
+                        ctx.write(format!("|| {},", rust_type.proto2_default()));
+                    }
+                });
+            },
+        );
     }
 }
 
@@ -2154,7 +2128,7 @@ struct Impls {
 }
 
 /// Given message types, keyed by their `proto_name()`s, detect recursive fields
-/// that would otherwise cause an infinite-size type and add the `box_it` extension to them.
+/// that would otherwise cause an infinite-size type and mark them as `implicitly_boxed`.
 fn box_recursive_fields(
     types: IndexMap<String, ProtoType<'_>>,
     implicitly_boxed: &mut IndexSet<*const FieldDescriptorProto>,
@@ -2170,7 +2144,7 @@ fn box_recursive_fields(
                 field.get_type() == FieldDescriptorProto_Type::TYPE_MESSAGE
                     && types.contains_key(field.get_type_name())
                     && field.get_label() != FieldDescriptorProto_Label::LABEL_REPEATED
-                    && field.get_options().get_extension(extensions::BOX_IT).unwrap() != Some(true)
+                    && !field.get_options().get_extension(extensions::BOX_IT)
             })
             .map(FieldDescriptorProto::get_type_name)
             .collect()
@@ -2259,8 +2233,6 @@ impl<'a> Context<'a> {
             if descriptor
                 .get_options()
                 .get_extension(extensions::PRESERVE_UNRECOGNIZED)
-                .unwrap()
-                == Some(true)
             {
                 impls_copy = false; // Preserve unparsed has a Vec which is not Copy
             }
@@ -2339,17 +2311,13 @@ impl<'a> Context<'a> {
                     if descriptor
                         .get_options()
                         .get_extension(extensions::PRESERVE_UNRECOGNIZED)
-                        .unwrap()
-                        == Some(true)
                     {
                         // TODO: this check isn't really necessary, but it is useful
                         assert!(
                             field_type
                                 .msg_typ()
                                 .get_options()
-                                .get_extension(extensions::PRESERVE_UNRECOGNIZED)
-                                .unwrap()
-                                == Some(true),
+                                .get_extension(extensions::PRESERVE_UNRECOGNIZED),
                             "{} preserves unrecognized but child message {} does not",
                             type_name,
                             field_type.proto_name(),
@@ -2693,6 +2661,8 @@ const LIB_RS_HEADER: &str = r#"
 #![allow(clippy::derivable_impls)]
 // For enums with many variants, the matches!(...) macro isn't obviously better
 #![allow(clippy::match_like_matches_macro)]
+// Used by extension codegen
+#![allow(clippy::redundant_closure)]
 // TODO: Ideally we don't allow this
 #![allow(clippy::option_as_ref_deref)]
 // TODO: Ideally we don't allow this

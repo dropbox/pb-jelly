@@ -33,15 +33,15 @@ extend google.protobuf.FieldOptions {
     //
     // It doesn't make sense to specify this option for a repeating field, as a
     // missing field always deserializes as an empty Vec.
-    // In proto3, this option is also ignored for primitive types, which are
-    // always non-nullable
+    // In proto3, this option is also ignored for non-`optional` primitive types,
+    // which are already non-nullable.
     //
     // Beware that Default may not make sense for all message types. In
     // particular, fields using `OneofOptions.nullable=false` or
     // `EnumOptions.err_if_default_or_unknown=true` will simply default to their
     // first variant, and will _not_ trigger a deserialization error. That
     // behaviour may change in the future (TODO).
-    optional bool nullable_field = 50008;
+    optional bool nullable_field = 50008 [default=true];
 }
 
 extend google.protobuf.EnumOptions {

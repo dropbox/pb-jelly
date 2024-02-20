@@ -1,7 +1,5 @@
-use std::convert::AsRef;
 use std::error::Error;
 use std::fs;
-use std::iter::IntoIterator;
 use std::path::{
     self,
     Path,

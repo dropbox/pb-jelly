@@ -30,7 +30,7 @@ fn main() -> std::io::Result<()> {
         #[cfg(feature = "bench_prost")]
         prost_build::compile_protos(
             &["../proto/packages/pbtest/bench.proto"],
-            &["../proto/packages", "../proto/includes"],
+            &["../proto/packages", "../../pb-jelly-gen/proto"],
         )
         .unwrap();
     }
@@ -45,7 +45,7 @@ fn main() -> std::io::Result<()> {
         protoc_rust::Codegen::new()
             .out_dir("../gen/rust_protobuf")
             .inputs(&["../proto/packages/pbtest/bench.proto"])
-            .include("../proto/includes")
+            .include("../../pb-jelly-gen/proto")
             .include("../proto/packages")
             .customize(Customize {
                 carllerche_bytes_for_bytes: Some(true),

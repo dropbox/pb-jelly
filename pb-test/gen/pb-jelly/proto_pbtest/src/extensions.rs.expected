@@ -113,6 +113,7 @@ impl ::pb_jelly::extensions::Extensible for Msg {
 pub struct FakeMsg {
   pub base_field: ::std::option::Option<i32>,
   pub singular_primitive: ::std::option::Option<i32>,
+  pub singular_primitive_with_default: ::std::option::Option<i32>,
   pub singular_message: ::std::option::Option<super::pbtest3::ForeignMessage3>,
   pub repeated_primitive: ::std::vec::Vec<i32>,
   pub repeated_message: ::std::vec::Vec<super::pbtest3::ForeignMessage3>,
@@ -135,6 +136,15 @@ impl FakeMsg {
   }
   pub fn get_singular_primitive(&self) -> i32 {
     self.singular_primitive.unwrap_or(0)
+  }
+  pub fn has_singular_primitive_with_default(&self) -> bool {
+    self.singular_primitive_with_default.is_some()
+  }
+  pub fn set_singular_primitive_with_default(&mut self, v: i32) {
+    self.singular_primitive_with_default = Some(v);
+  }
+  pub fn get_singular_primitive_with_default(&self) -> i32 {
+    self.singular_primitive_with_default.unwrap_or(0)
   }
   pub fn has_singular_message(&self) -> bool {
     self.singular_message.is_some()
@@ -178,6 +188,7 @@ impl ::std::default::Default for FakeMsg {
     FakeMsg {
       base_field: ::std::default::Default::default(),
       singular_primitive: ::std::default::Default::default(),
+      singular_primitive_with_default: ::std::default::Default::default(),
       singular_message: ::std::default::Default::default(),
       repeated_primitive: ::std::default::Default::default(),
       repeated_message: ::std::default::Default::default(),
@@ -212,9 +223,18 @@ impl ::pb_jelly::Message for FakeMsg {
           oneof_index: None,
         },
         ::pb_jelly::FieldDescriptor {
+          name: "singular_primitive_with_default",
+          full_name: "pbtest.FakeMsg.singular_primitive_with_default",
+          index: 2,
+          number: 102,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
           name: "singular_message",
           full_name: "pbtest.FakeMsg.singular_message",
-          index: 2,
+          index: 3,
           number: 301,
           typ: ::pb_jelly::wire_format::Type::LengthDelimited,
           label: ::pb_jelly::Label::Optional,
@@ -223,7 +243,7 @@ impl ::pb_jelly::Message for FakeMsg {
         ::pb_jelly::FieldDescriptor {
           name: "repeated_primitive",
           full_name: "pbtest.FakeMsg.repeated_primitive",
-          index: 3,
+          index: 4,
           number: 300,
           typ: ::pb_jelly::wire_format::Type::Varint,
           label: ::pb_jelly::Label::Repeated,
@@ -232,7 +252,7 @@ impl ::pb_jelly::Message for FakeMsg {
         ::pb_jelly::FieldDescriptor {
           name: "repeated_message",
           full_name: "pbtest.FakeMsg.repeated_message",
-          index: 4,
+          index: 5,
           number: 200,
           typ: ::pb_jelly::wire_format::Type::LengthDelimited,
           label: ::pb_jelly::Label::Repeated,
@@ -259,6 +279,13 @@ impl ::pb_jelly::Message for FakeMsg {
       singular_primitive_size += l;
     }
     size += singular_primitive_size;
+    let mut singular_primitive_with_default_size = 0;
+    if let Some(ref val) = self.singular_primitive_with_default {
+      let l = ::pb_jelly::Message::compute_size(val);
+      singular_primitive_with_default_size += ::pb_jelly::wire_format::serialized_length(102);
+      singular_primitive_with_default_size += l;
+    }
+    size += singular_primitive_with_default_size;
     let mut singular_message_size = 0;
     if let Some(ref val) = self.singular_message {
       let l = ::pb_jelly::Message::compute_size(val);
@@ -287,6 +314,10 @@ impl ::pb_jelly::Message for FakeMsg {
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.singular_primitive {
       ::pb_jelly::wire_format::write(101, ::pb_jelly::wire_format::Type::Varint, w)?;
+      ::pb_jelly::Message::serialize(val, w)?;
+    }
+    if let Some(ref val) = self.singular_primitive_with_default {
+      ::pb_jelly::wire_format::write(102, ::pb_jelly::wire_format::Type::Varint, w)?;
       ::pb_jelly::Message::serialize(val, w)?;
     }
     for val in &self.repeated_message {
@@ -321,6 +352,10 @@ impl ::pb_jelly::Message for FakeMsg {
         101 => {
           let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FakeMsg", 101)?;
           self.singular_primitive = Some(val);
+        }
+        102 => {
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FakeMsg", 102)?;
+          self.singular_primitive_with_default = Some(val);
         }
         301 => {
           let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, super::pbtest3::ForeignMessage3>(buf, typ, "FakeMsg", 301)?;
@@ -357,6 +392,9 @@ impl ::pb_jelly::Reflection for FakeMsg {
       "singular_primitive" => {
         ::pb_jelly::reflection::FieldMut::Value(self.singular_primitive.get_or_insert_with(::std::default::Default::default))
       }
+      "singular_primitive_with_default" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.singular_primitive_with_default.get_or_insert_with(::std::default::Default::default))
+      }
       "singular_message" => {
         ::pb_jelly::reflection::FieldMut::Value(self.singular_message.get_or_insert_with(::std::default::Default::default))
       }
@@ -374,30 +412,45 @@ impl ::pb_jelly::Reflection for FakeMsg {
 }
 
 pub const SINGULAR_PRIMITIVE: ::pb_jelly::extensions::SingularExtension<Msg, i32> =
-    ::pb_jelly::extensions::SingularExtension::new(
-        101,
-        ::pb_jelly::wire_format::Type::Varint,
-        "singular_primitive",
-    );
+  ::pb_jelly::extensions::SingularExtension::new(
+    101,
+    ::pb_jelly::wire_format::Type::Varint,
+    "singular_primitive",
+    || ::std::default::Default::default(),
+  );
+
+
+pub const SINGULAR_PRIMITIVE_WITH_DEFAULT: ::pb_jelly::extensions::SingularExtension<Msg, i32> =
+  ::pb_jelly::extensions::SingularExtension::new(
+    102,
+    ::pb_jelly::wire_format::Type::Varint,
+    "singular_primitive_with_default",
+    || 123,
+  );
+
 
 pub const SINGULAR_MESSAGE: ::pb_jelly::extensions::SingularExtension<Msg, super::pbtest3::ForeignMessage3> =
-    ::pb_jelly::extensions::SingularExtension::new(
-        301,
-        ::pb_jelly::wire_format::Type::LengthDelimited,
-        "singular_message",
-    );
+  ::pb_jelly::extensions::SingularExtension::new(
+    301,
+    ::pb_jelly::wire_format::Type::LengthDelimited,
+    "singular_message",
+    || ::std::default::Default::default(),
+  );
+
 
 pub const REPEATED_PRIMITIVE: ::pb_jelly::extensions::RepeatedExtension<Msg, i32> =
-    ::pb_jelly::extensions::RepeatedExtension::new(
-        300,
-        ::pb_jelly::wire_format::Type::Varint,
-        "repeated_primitive",
-    );
+  ::pb_jelly::extensions::RepeatedExtension::new(
+    300,
+    ::pb_jelly::wire_format::Type::Varint,
+    "repeated_primitive",
+  );
+
 
 pub const REPEATED_MESSAGE: ::pb_jelly::extensions::RepeatedExtension<Msg, super::pbtest3::ForeignMessage3> =
-    ::pb_jelly::extensions::RepeatedExtension::new(
-        200,
-        ::pb_jelly::wire_format::Type::LengthDelimited,
-        "repeated_message",
-    );
+  ::pb_jelly::extensions::RepeatedExtension::new(
+    200,
+    ::pb_jelly::wire_format::Type::LengthDelimited,
+    "repeated_message",
+  );
+
 
