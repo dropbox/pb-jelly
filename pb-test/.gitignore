@@ -1,1 +1,1 @@
-!src/gen/
+!/src/gen/**/*.rs
