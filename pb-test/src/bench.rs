@@ -313,7 +313,7 @@ mod rust_protobuf {
 
         b.iter(|| {
             // Deserialize our proto
-            let mut input_stream = CodedInputStream::from_carllerche_bytes(&bytes_buf);
+            let mut input_stream = CodedInputStream::from_tokio_bytes(&bytes_buf);
             let mut de_proto = BytesData::default();
             de_proto
                 .merge_from(&mut input_stream)
@@ -344,7 +344,7 @@ mod rust_protobuf {
 
         b.iter(|| {
             // Deserialize our proto
-            let mut input_stream = CodedInputStream::from_carllerche_bytes(&bytes_buf);
+            let mut input_stream = CodedInputStream::from_tokio_bytes(&bytes_buf);
             let mut de_proto = StringMessage::default();
             de_proto
                 .merge_from(&mut input_stream)

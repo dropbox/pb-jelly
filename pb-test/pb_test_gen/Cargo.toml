@@ -12,11 +12,11 @@ pb-jelly-gen = { path = "../../pb-jelly-gen" }
 # only used when benchmarking PROST!
 prost-build = { version = "0.6", optional = true }
 # only used when benchmarking rust-protobuf
-protoc-rust = { version = "2.17", optional = true }
+protobuf-codegen = { version = "3.3", optional = true }
 
 [features]
 bench_prost = ["prost-build"]
-bench_rust_protobuf = ["protoc-rust"]
+bench_rust_protobuf = ["protobuf-codegen"]
 
 # Override pb-jelly dependency for generated crates as well
 [patch.crates-io]
