@@ -3,6 +3,7 @@ name = "pb-test"
 version = "0.1.0"
 authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>", "Parker Timmerman <parkertimmerman@dropbox.com>"]
 edition = "2018"
+publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -26,7 +27,3 @@ serde_json = "1"
 [features]
 bench_prost = ["prost"]
 bench_rust_protobuf = ["protobuf"]
-
-# Override pb-jelly dependency for generated crates as well
-[patch.crates-io]
-pb-jelly = { path = "../pb-jelly" }
