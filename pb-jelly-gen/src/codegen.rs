@@ -1453,7 +1453,30 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                     for field in &msg_type.field {
                         let typ = ctx.rust_type(Some(msg_type), field);
 
-                        if typ.oneof.is_none()
+                        if typ.should_serialize_packed() {
+                            block(
+                                ctx,
+                                format!("if !self.{}.is_empty()", escape_name(field.get_name())),
+                                |ctx| {
+                                    ctx.write(format!("let mut {}_size = 0;", field.get_name()));
+                                    field_iter(ctx, "val", &name, msg_type, field, |ctx| {
+                                        ctx.write(format!(
+                                            "{}_size += ::pb_jelly::Message::compute_size(val);",
+                                            field.get_name()
+                                        ));
+                                    });
+                                    ctx.write(format!(
+                                        "size += ::pb_jelly::wire_format::serialized_length({});",
+                                        field.get_number()
+                                    ));
+                                    ctx.write(format!(
+                                        "size += ::pb_jelly::varint::serialized_length({}_size as u64);",
+                                        field.get_name()
+                                    ));
+                                    ctx.write(format!("size += {}_size;", field.get_name()));
+                                },
+                            );
+                        } else if typ.oneof.is_none()
                             && field.get_type() != FieldDescriptorProto_Type::TYPE_MESSAGE
                             && !(field.get_type() == FieldDescriptorProto_Type::TYPE_ENUM
                                 && enum_err_if_default_or_unknown(ctx.ctx.find(field.get_type_name()).enum_typ()))
@@ -1470,37 +1493,14 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                                 wire_format=typ.wire_format(),
                             ));
                         } else {
-                            ctx.write(format!("let mut {}_size = 0;", field.get_name()));
                             field_iter(ctx, "val", &name, msg_type, field, |ctx| {
-                                ctx.write("let l = ::pb_jelly::Message::compute_size(val);");
-                                if !typ.should_serialize_packed() {
-                                    ctx.write(format!(
-                                        "{}_size += ::pb_jelly::wire_format::serialized_length({});",
-                                        field.get_name(),
-                                        field.get_number()
-                                    ));
-                                }
-                                if typ.is_length_delimited() {
-                                    ctx.write(format!(
-                                        "{}_size += ::pb_jelly::varint::serialized_length(l as u64);",
-                                        field.get_name()
-                                    ));
-                                }
-                                ctx.write(format!("{}_size += l;", field.get_name()));
+                                ctx.write(format!(
+                                    "size += ::pb_jelly::helpers::compute_size_field::<{typ}>(val, {field_number}, ::pb_jelly::wire_format::Type::{wire_format});",
+                                    typ=typ.rust_type(),
+                                    field_number=field.get_number(),
+                                    wire_format=typ.wire_format(),
+                                ));
                             });
-                            if typ.should_serialize_packed() {
-                                block(ctx, format!("if !self.{}.is_empty()", field.get_name()), |ctx| {
-                                    ctx.write(format!(
-                                        "size += ::pb_jelly::wire_format::serialized_length({});",
-                                        field.get_number()
-                                    ));
-                                    ctx.write(format!(
-                                        "size += ::pb_jelly::varint::serialized_length({}_size as u64);",
-                                        field.get_name()
-                                    ));
-                                });
-                            }
-                            ctx.write(format!("size += {}_size;", field.get_name()));
                         }
                     }
                     if preserve_unrecognized {
@@ -1551,11 +1551,12 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                                     });
                                     ctx.write(format!("::pb_jelly::wire_format::write({}, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;", field.get_number()));
                                     ctx.write("::pb_jelly::varint::write(size as u64, w)?;");
+                                    field_iter(ctx, "val", &name, msg_type, field, |ctx| {
+                                        ctx.write("::pb_jelly::Message::serialize(val, w)?;");
+                                    });
                                 },
                             );
-                        }
-
-                        if typ.oneof.is_none()
+                        } else if typ.oneof.is_none()
                             && field.get_type() != FieldDescriptorProto_Type::TYPE_MESSAGE
                             && !(field.get_type() == FieldDescriptorProto_Type::TYPE_ENUM
                                 && enum_err_if_default_or_unknown(ctx.ctx.find(field.get_type_name()).enum_typ()))
@@ -1575,18 +1576,14 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                             );
                         } else {
                             field_iter(ctx, "val", &name, msg_type, field, |ctx| {
-                                if !typ.should_serialize_packed() {
-                                    ctx.write(format!(
-                                        "::pb_jelly::wire_format::write({}, ::pb_jelly::wire_format::Type::{}, w)?;",
-                                        field.get_number(),
-                                        typ.wire_format()
-                                    ));
-                                }
-                                if typ.is_length_delimited() {
-                                    ctx.write("let l = ::pb_jelly::Message::compute_size(val);");
-                                    ctx.write("::pb_jelly::varint::write(l as u64, w)?;");
-                                }
-                                ctx.write("::pb_jelly::Message::serialize(val, w)?;");
+                                ctx.write(
+                                    format!(
+                                        "::pb_jelly::helpers::serialize_field::<W, {typ}>(w, val, {field_number}, ::pb_jelly::wire_format::Type::{wire_format})?;",
+                                        typ=typ.rust_type(),
+                                        field_number=field.get_number(),
+                                        wire_format=typ.wire_format(),
+                                    )
+                                );
                             });
                         }
                     }
