@@ -2634,6 +2634,7 @@ const CARGO_TOML_TEMPLATE: &str = concat!(
 name = "{crate}"
 version = "0.0.1"
 edition = "2018"
+publish = false
 
 [dependencies]
 {deps}

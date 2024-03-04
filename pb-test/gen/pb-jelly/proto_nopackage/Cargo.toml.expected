@@ -3,6 +3,7 @@
 name = "proto_nopackage"
 version = "0.0.1"
 edition = "2018"
+publish = false
 
 [dependencies]
 lazy_static = { version = "1.4.0" }

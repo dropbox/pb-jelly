@@ -26,7 +26,3 @@ walkdir = { version = "2", optional = true }
 pb-jelly = { version = "0.0.16" }
 lazy_static = "1.4.0"
 indexmap = "2.0.2"
-
-# Override pb-jelly dependency for generated crates as well
-[patch.crates-io]
-pb-jelly = { path = "../pb-jelly" }
