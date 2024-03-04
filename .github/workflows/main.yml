@@ -4,7 +4,7 @@ env:
   PROTOBUF_VER: 3.17.3
 
 # Run on git push, PR, or manually from the Actions tab
-on: [push, pull_request, workflow_dispatch]
+on: [push, pull_request, workflow_dispatch, merge_group]
 
 jobs:
   rustfmt:
