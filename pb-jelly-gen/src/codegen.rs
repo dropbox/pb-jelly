@@ -556,29 +556,29 @@ impl<'a> RustType<'a> {
 
         // TODO: this does not respect default values
         match self.field.r#type {
-            Some(FieldDescriptorProto_Type::TYPE_FLOAT) => ("f32".to_string(), format!("self.{name}.unwrap_or(0.)")),
-            Some(FieldDescriptorProto_Type::TYPE_DOUBLE) => ("f64".to_string(), format!("self.{name}.unwrap_or(0.)")),
-            Some(FieldDescriptorProto_Type::TYPE_INT32) => ("i32".to_string(), format!("self.{name}.unwrap_or(0)")),
-            Some(FieldDescriptorProto_Type::TYPE_INT64) => ("i64".to_string(), format!("self.{name}.unwrap_or(0)")),
-            Some(FieldDescriptorProto_Type::TYPE_UINT32) => ("u32".to_string(), format!("self.{name}.unwrap_or(0)")),
-            Some(FieldDescriptorProto_Type::TYPE_UINT64) => ("u64".to_string(), format!("self.{name}.unwrap_or(0)")),
+            Some(FieldDescriptorProto_Type::TYPE_FLOAT) => ("f32".to_string(), format!("self.{name}.unwrap_or(0f32)")),
+            Some(FieldDescriptorProto_Type::TYPE_DOUBLE) => ("f64".to_string(), format!("self.{name}.unwrap_or(0f64)")),
+            Some(FieldDescriptorProto_Type::TYPE_INT32) => ("i32".to_string(), format!("self.{name}.unwrap_or(0i32)")),
+            Some(FieldDescriptorProto_Type::TYPE_INT64) => ("i64".to_string(), format!("self.{name}.unwrap_or(0i64)")),
+            Some(FieldDescriptorProto_Type::TYPE_UINT32) => ("u32".to_string(), format!("self.{name}.unwrap_or(0u32)")),
+            Some(FieldDescriptorProto_Type::TYPE_UINT64) => ("u64".to_string(), format!("self.{name}.unwrap_or(0u64)")),
             Some(FieldDescriptorProto_Type::TYPE_SINT32) => {
-                ("i32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
+                ("i32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0i32)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_SINT64) => {
-                ("i64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
+                ("i64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0i64)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_FIXED64) => {
-                ("u64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
+                ("u64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0u64)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_SFIXED64) => {
-                ("i64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
+                ("i64".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0i64)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_FIXED32) => {
-                ("u32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
+                ("u32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0u32)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_SFIXED32) => {
-                ("i32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0)"))
+                ("i32".to_string(), format!("self.{name}.map(|v| v.0).unwrap_or(0i32)"))
             },
             Some(FieldDescriptorProto_Type::TYPE_BOOL) => ("bool".to_string(), format!("self.{name}.unwrap_or(false)")),
             Some(FieldDescriptorProto_Type::TYPE_STRING) => {
@@ -1449,7 +1449,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
 
             block(ctx, "fn compute_size(&self) -> usize", |ctx| {
                 if !msg_type.field.is_empty() || preserve_unrecognized || has_extensions {
-                    ctx.write("let mut size = 0;");
+                    ctx.write("let mut size = 0usize;");
                     for field in &msg_type.field {
                         let typ = ctx.rust_type(Some(msg_type), field);
 
@@ -1458,7 +1458,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                                 ctx,
                                 format!("if !self.{}.is_empty()", escape_name(field.get_name())),
                                 |ctx| {
-                                    ctx.write(format!("let mut {}_size = 0;", field.get_name()));
+                                    ctx.write(format!("let mut {}_size = 0usize;", field.get_name()));
                                     field_iter(ctx, "val", &name, msg_type, field, |ctx| {
                                         ctx.write(format!(
                                             "{}_size += ::pb_jelly::Message::compute_size(val);",
@@ -1511,13 +1511,13 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                     }
                     ctx.write("size");
                 } else {
-                    ctx.write("0");
+                    ctx.write("0usize");
                 }
             });
 
             if impls.may_use_grpc_slices {
                 block(ctx, "fn compute_grpc_slices_size(&self) -> usize", |ctx| {
-                    ctx.write("let mut size = 0;");
+                    ctx.write("let mut size = 0usize;");
                     for field in &msg_type.field {
                         let rust_type = RustType::new(ctx.ctx, ctx.proto_file, Some(msg_type), field);
                         if rust_type.may_use_grpc_slices() {
@@ -1545,7 +1545,7 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
                                 ctx,
                                 format!("if !self.{}.is_empty()", escape_name(field.get_name())),
                                 |ctx| {
-                                    ctx.write("let mut size = 0;");
+                                    ctx.write("let mut size = 0usize;");
                                     field_iter(ctx, "val", &name, msg_type, field, |ctx| {
                                         ctx.write("size += ::pb_jelly::Message::compute_size(val);");
                                     });
