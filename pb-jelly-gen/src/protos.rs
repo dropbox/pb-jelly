@@ -235,55 +235,32 @@ pub mod google {
           }
           fn compute_size(&self) -> usize {
             let mut size = 0;
-            let mut major_size = 0;
             if let Some(ref val) = self.major {
-              let l = ::pb_jelly::Message::compute_size(val);
-              major_size += ::pb_jelly::wire_format::serialized_length(1);
-              major_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
             }
-            size += major_size;
-            let mut minor_size = 0;
             if let Some(ref val) = self.minor {
-              let l = ::pb_jelly::Message::compute_size(val);
-              minor_size += ::pb_jelly::wire_format::serialized_length(2);
-              minor_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 2, ::pb_jelly::wire_format::Type::Varint);
             }
-            size += minor_size;
-            let mut patch_size = 0;
             if let Some(ref val) = self.patch {
-              let l = ::pb_jelly::Message::compute_size(val);
-              patch_size += ::pb_jelly::wire_format::serialized_length(3);
-              patch_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 3, ::pb_jelly::wire_format::Type::Varint);
             }
-            size += patch_size;
-            let mut suffix_size = 0;
             if let Some(ref val) = self.suffix {
-              let l = ::pb_jelly::Message::compute_size(val);
-              suffix_size += ::pb_jelly::wire_format::serialized_length(4);
-              suffix_size += ::pb_jelly::varint::serialized_length(l as u64);
-              suffix_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += suffix_size;
             size
           }
           fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
             if let Some(ref val) = self.major {
-              ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
             }
             if let Some(ref val) = self.minor {
-              ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
             }
             if let Some(ref val) = self.patch {
-              ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
             }
             if let Some(ref val) = self.suffix {
-              ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             Ok(())
           }
@@ -482,64 +459,32 @@ pub mod google {
           }
           fn compute_size(&self) -> usize {
             let mut size = 0;
-            let mut file_to_generate_size = 0;
             for val in &self.file_to_generate {
-              let l = ::pb_jelly::Message::compute_size(val);
-              file_to_generate_size += ::pb_jelly::wire_format::serialized_length(1);
-              file_to_generate_size += ::pb_jelly::varint::serialized_length(l as u64);
-              file_to_generate_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += file_to_generate_size;
-            let mut parameter_size = 0;
             if let Some(ref val) = self.parameter {
-              let l = ::pb_jelly::Message::compute_size(val);
-              parameter_size += ::pb_jelly::wire_format::serialized_length(2);
-              parameter_size += ::pb_jelly::varint::serialized_length(l as u64);
-              parameter_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += parameter_size;
-            let mut proto_file_size = 0;
             for val in &self.proto_file {
-              let l = ::pb_jelly::Message::compute_size(val);
-              proto_file_size += ::pb_jelly::wire_format::serialized_length(15);
-              proto_file_size += ::pb_jelly::varint::serialized_length(l as u64);
-              proto_file_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(val, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += proto_file_size;
-            let mut compiler_version_size = 0;
             if let Some(ref val) = self.compiler_version {
-              let l = ::pb_jelly::Message::compute_size(val);
-              compiler_version_size += ::pb_jelly::wire_format::serialized_length(3);
-              compiler_version_size += ::pb_jelly::varint::serialized_length(l as u64);
-              compiler_version_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<Version>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += compiler_version_size;
             size
           }
           fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
             for val in &self.file_to_generate {
-              ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             if let Some(ref val) = self.parameter {
-              ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             if let Some(ref val) = self.compiler_version {
-              ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, Version>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             for val in &self.proto_file {
-              ::pb_jelly::wire_format::write(15, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(w, val, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             Ok(())
           }
@@ -703,47 +648,26 @@ pub mod google {
           }
           fn compute_size(&self) -> usize {
             let mut size = 0;
-            let mut error_size = 0;
             if let Some(ref val) = self.error {
-              let l = ::pb_jelly::Message::compute_size(val);
-              error_size += ::pb_jelly::wire_format::serialized_length(1);
-              error_size += ::pb_jelly::varint::serialized_length(l as u64);
-              error_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += error_size;
-            let mut supported_features_size = 0;
             if let Some(ref val) = self.supported_features {
-              let l = ::pb_jelly::Message::compute_size(val);
-              supported_features_size += ::pb_jelly::wire_format::serialized_length(2);
-              supported_features_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<u64>(val, 2, ::pb_jelly::wire_format::Type::Varint);
             }
-            size += supported_features_size;
-            let mut file_size = 0;
             for val in &self.file {
-              let l = ::pb_jelly::Message::compute_size(val);
-              file_size += ::pb_jelly::wire_format::serialized_length(15);
-              file_size += ::pb_jelly::varint::serialized_length(l as u64);
-              file_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<CodeGeneratorResponse_File>(val, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += file_size;
             size
           }
           fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
             if let Some(ref val) = self.error {
-              ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             if let Some(ref val) = self.supported_features {
-              ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, u64>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
             }
             for val in &self.file {
-              ::pb_jelly::wire_format::write(15, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, CodeGeneratorResponse_File>(w, val, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             Ok(())
           }
@@ -968,64 +892,32 @@ pub mod google {
           }
           fn compute_size(&self) -> usize {
             let mut size = 0;
-            let mut name_size = 0;
             if let Some(ref val) = self.name {
-              let l = ::pb_jelly::Message::compute_size(val);
-              name_size += ::pb_jelly::wire_format::serialized_length(1);
-              name_size += ::pb_jelly::varint::serialized_length(l as u64);
-              name_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += name_size;
-            let mut insertion_point_size = 0;
             if let Some(ref val) = self.insertion_point {
-              let l = ::pb_jelly::Message::compute_size(val);
-              insertion_point_size += ::pb_jelly::wire_format::serialized_length(2);
-              insertion_point_size += ::pb_jelly::varint::serialized_length(l as u64);
-              insertion_point_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += insertion_point_size;
-            let mut content_size = 0;
             if let Some(ref val) = self.content {
-              let l = ::pb_jelly::Message::compute_size(val);
-              content_size += ::pb_jelly::wire_format::serialized_length(15);
-              content_size += ::pb_jelly::varint::serialized_length(l as u64);
-              content_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += content_size;
-            let mut generated_code_info_size = 0;
             if let Some(ref val) = self.generated_code_info {
-              let l = ::pb_jelly::Message::compute_size(val);
-              generated_code_info_size += ::pb_jelly::wire_format::serialized_length(16);
-              generated_code_info_size += ::pb_jelly::varint::serialized_length(l as u64);
-              generated_code_info_size += l;
+              size += ::pb_jelly::helpers::compute_size_field::<super::super::super::super::google::protobuf::descriptor::GeneratedCodeInfo>(val, 16, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
-            size += generated_code_info_size;
             size
           }
           fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
             if let Some(ref val) = self.name {
-              ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             if let Some(ref val) = self.insertion_point {
-              ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             if let Some(ref val) = self.content {
-              ::pb_jelly::wire_format::write(15, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             if let Some(ref val) = self.generated_code_info {
-              ::pb_jelly::wire_format::write(16, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-              let l = ::pb_jelly::Message::compute_size(val);
-              ::pb_jelly::varint::write(l as u64, w)?;
-              ::pb_jelly::Message::serialize(val, w)?;
+              ::pb_jelly::helpers::serialize_field::<W, super::super::super::super::google::protobuf::descriptor::GeneratedCodeInfo>(w, val, 16, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
             Ok(())
           }
@@ -1886,22 +1778,14 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut file_size = 0;
           for val in &self.file {
-            let l = ::pb_jelly::Message::compute_size(val);
-            file_size += ::pb_jelly::wire_format::serialized_length(1);
-            file_size += ::pb_jelly::varint::serialized_length(l as u64);
-            file_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FileDescriptorProto>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += file_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.file {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FileDescriptorProto>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -2257,170 +2141,80 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut package_size = 0;
           if let Some(ref val) = self.package {
-            let l = ::pb_jelly::Message::compute_size(val);
-            package_size += ::pb_jelly::wire_format::serialized_length(2);
-            package_size += ::pb_jelly::varint::serialized_length(l as u64);
-            package_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += package_size;
-          let mut dependency_size = 0;
           for val in &self.dependency {
-            let l = ::pb_jelly::Message::compute_size(val);
-            dependency_size += ::pb_jelly::wire_format::serialized_length(3);
-            dependency_size += ::pb_jelly::varint::serialized_length(l as u64);
-            dependency_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += dependency_size;
-          let mut public_dependency_size = 0;
           for val in &self.public_dependency {
-            let l = ::pb_jelly::Message::compute_size(val);
-            public_dependency_size += ::pb_jelly::wire_format::serialized_length(10);
-            public_dependency_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 10, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += public_dependency_size;
-          let mut weak_dependency_size = 0;
           for val in &self.weak_dependency {
-            let l = ::pb_jelly::Message::compute_size(val);
-            weak_dependency_size += ::pb_jelly::wire_format::serialized_length(11);
-            weak_dependency_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 11, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += weak_dependency_size;
-          let mut message_type_size = 0;
           for val in &self.message_type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            message_type_size += ::pb_jelly::wire_format::serialized_length(4);
-            message_type_size += ::pb_jelly::varint::serialized_length(l as u64);
-            message_type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<DescriptorProto>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += message_type_size;
-          let mut enum_type_size = 0;
           for val in &self.enum_type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            enum_type_size += ::pb_jelly::wire_format::serialized_length(5);
-            enum_type_size += ::pb_jelly::varint::serialized_length(l as u64);
-            enum_type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<EnumDescriptorProto>(val, 5, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += enum_type_size;
-          let mut service_size = 0;
           for val in &self.service {
-            let l = ::pb_jelly::Message::compute_size(val);
-            service_size += ::pb_jelly::wire_format::serialized_length(6);
-            service_size += ::pb_jelly::varint::serialized_length(l as u64);
-            service_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<ServiceDescriptorProto>(val, 6, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += service_size;
-          let mut extension_size = 0;
           for val in &self.extension {
-            let l = ::pb_jelly::Message::compute_size(val);
-            extension_size += ::pb_jelly::wire_format::serialized_length(7);
-            extension_size += ::pb_jelly::varint::serialized_length(l as u64);
-            extension_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldDescriptorProto>(val, 7, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += extension_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(8);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FileOptions>(val, 8, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
-          let mut source_code_info_size = 0;
           if let Some(ref val) = self.source_code_info {
-            let l = ::pb_jelly::Message::compute_size(val);
-            source_code_info_size += ::pb_jelly::wire_format::serialized_length(9);
-            source_code_info_size += ::pb_jelly::varint::serialized_length(l as u64);
-            source_code_info_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<SourceCodeInfo>(val, 9, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += source_code_info_size;
-          let mut syntax_size = 0;
           if let Some(ref val) = self.syntax {
-            let l = ::pb_jelly::Message::compute_size(val);
-            syntax_size += ::pb_jelly::wire_format::serialized_length(12);
-            syntax_size += ::pb_jelly::varint::serialized_length(l as u64);
-            syntax_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 12, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += syntax_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.package {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.dependency {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.message_type {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, DescriptorProto>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.enum_type {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, EnumDescriptorProto>(w, val, 5, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.service {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ServiceDescriptorProto>(w, val, 6, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.extension {
-            ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldDescriptorProto>(w, val, 7, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FileOptions>(w, val, 8, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.source_code_info {
-            ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, SourceCodeInfo>(w, val, 9, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.public_dependency {
-            ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 10, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.weak_dependency {
-            ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 11, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.syntax {
-            ::pb_jelly::wire_format::write(12, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 12, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -2794,148 +2588,68 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut field_size = 0;
           for val in &self.field {
-            let l = ::pb_jelly::Message::compute_size(val);
-            field_size += ::pb_jelly::wire_format::serialized_length(2);
-            field_size += ::pb_jelly::varint::serialized_length(l as u64);
-            field_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldDescriptorProto>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += field_size;
-          let mut extension_size = 0;
           for val in &self.extension {
-            let l = ::pb_jelly::Message::compute_size(val);
-            extension_size += ::pb_jelly::wire_format::serialized_length(6);
-            extension_size += ::pb_jelly::varint::serialized_length(l as u64);
-            extension_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldDescriptorProto>(val, 6, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += extension_size;
-          let mut nested_type_size = 0;
           for val in &self.nested_type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            nested_type_size += ::pb_jelly::wire_format::serialized_length(3);
-            nested_type_size += ::pb_jelly::varint::serialized_length(l as u64);
-            nested_type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<DescriptorProto>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += nested_type_size;
-          let mut enum_type_size = 0;
           for val in &self.enum_type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            enum_type_size += ::pb_jelly::wire_format::serialized_length(4);
-            enum_type_size += ::pb_jelly::varint::serialized_length(l as u64);
-            enum_type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<EnumDescriptorProto>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += enum_type_size;
-          let mut extension_range_size = 0;
           for val in &self.extension_range {
-            let l = ::pb_jelly::Message::compute_size(val);
-            extension_range_size += ::pb_jelly::wire_format::serialized_length(5);
-            extension_range_size += ::pb_jelly::varint::serialized_length(l as u64);
-            extension_range_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<DescriptorProto_ExtensionRange>(val, 5, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += extension_range_size;
-          let mut oneof_decl_size = 0;
           for val in &self.oneof_decl {
-            let l = ::pb_jelly::Message::compute_size(val);
-            oneof_decl_size += ::pb_jelly::wire_format::serialized_length(8);
-            oneof_decl_size += ::pb_jelly::varint::serialized_length(l as u64);
-            oneof_decl_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<OneofDescriptorProto>(val, 8, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += oneof_decl_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(7);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<MessageOptions>(val, 7, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
-          let mut reserved_range_size = 0;
           for val in &self.reserved_range {
-            let l = ::pb_jelly::Message::compute_size(val);
-            reserved_range_size += ::pb_jelly::wire_format::serialized_length(9);
-            reserved_range_size += ::pb_jelly::varint::serialized_length(l as u64);
-            reserved_range_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<DescriptorProto_ReservedRange>(val, 9, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += reserved_range_size;
-          let mut reserved_name_size = 0;
           for val in &self.reserved_name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            reserved_name_size += ::pb_jelly::wire_format::serialized_length(10);
-            reserved_name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            reserved_name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 10, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += reserved_name_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.field {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldDescriptorProto>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.nested_type {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, DescriptorProto>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.enum_type {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, EnumDescriptorProto>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.extension_range {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, DescriptorProto_ExtensionRange>(w, val, 5, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.extension {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldDescriptorProto>(w, val, 6, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, MessageOptions>(w, val, 7, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.oneof_decl {
-            ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, OneofDescriptorProto>(w, val, 8, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.reserved_range {
-            ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, DescriptorProto_ReservedRange>(w, val, 9, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.reserved_name {
-            ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 10, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -3129,44 +2843,26 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut start_size = 0;
           if let Some(ref val) = self.start {
-            let l = ::pb_jelly::Message::compute_size(val);
-            start_size += ::pb_jelly::wire_format::serialized_length(1);
-            start_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += start_size;
-          let mut end_size = 0;
           if let Some(ref val) = self.end {
-            let l = ::pb_jelly::Message::compute_size(val);
-            end_size += ::pb_jelly::wire_format::serialized_length(2);
-            end_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += end_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(3);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<ExtensionRangeOptions>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.start {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.end {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ExtensionRangeOptions>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -3291,30 +2987,20 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut start_size = 0;
           if let Some(ref val) = self.start {
-            let l = ::pb_jelly::Message::compute_size(val);
-            start_size += ::pb_jelly::wire_format::serialized_length(1);
-            start_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += start_size;
-          let mut end_size = 0;
           if let Some(ref val) = self.end {
-            let l = ::pb_jelly::Message::compute_size(val);
-            end_size += ::pb_jelly::wire_format::serialized_length(2);
-            end_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += end_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.start {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.end {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -3413,23 +3099,15 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -3784,147 +3462,74 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut number_size = 0;
           if let Some(ref val) = self.number {
-            let l = ::pb_jelly::Message::compute_size(val);
-            number_size += ::pb_jelly::wire_format::serialized_length(3);
-            number_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += number_size;
-          let mut label_size = 0;
           if let Some(ref val) = self.label {
-            let l = ::pb_jelly::Message::compute_size(val);
-            label_size += ::pb_jelly::wire_format::serialized_length(4);
-            label_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldDescriptorProto_Label>(val, 4, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += label_size;
-          let mut type_size = 0;
           if let Some(ref val) = self.r#type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            type_size += ::pb_jelly::wire_format::serialized_length(5);
-            type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldDescriptorProto_Type>(val, 5, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += type_size;
-          let mut type_name_size = 0;
           if let Some(ref val) = self.type_name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            type_name_size += ::pb_jelly::wire_format::serialized_length(6);
-            type_name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            type_name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 6, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += type_name_size;
-          let mut extendee_size = 0;
           if let Some(ref val) = self.extendee {
-            let l = ::pb_jelly::Message::compute_size(val);
-            extendee_size += ::pb_jelly::wire_format::serialized_length(2);
-            extendee_size += ::pb_jelly::varint::serialized_length(l as u64);
-            extendee_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += extendee_size;
-          let mut default_value_size = 0;
           if let Some(ref val) = self.default_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            default_value_size += ::pb_jelly::wire_format::serialized_length(7);
-            default_value_size += ::pb_jelly::varint::serialized_length(l as u64);
-            default_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 7, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += default_value_size;
-          let mut oneof_index_size = 0;
           if let Some(ref val) = self.oneof_index {
-            let l = ::pb_jelly::Message::compute_size(val);
-            oneof_index_size += ::pb_jelly::wire_format::serialized_length(9);
-            oneof_index_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 9, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += oneof_index_size;
-          let mut json_name_size = 0;
           if let Some(ref val) = self.json_name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            json_name_size += ::pb_jelly::wire_format::serialized_length(10);
-            json_name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            json_name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 10, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += json_name_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(8);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions>(val, 8, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
-          let mut proto3_optional_size = 0;
           if let Some(ref val) = self.proto3_optional {
-            let l = ::pb_jelly::Message::compute_size(val);
-            proto3_optional_size += ::pb_jelly::wire_format::serialized_length(17);
-            proto3_optional_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 17, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += proto3_optional_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.extendee {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.number {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.label {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldDescriptorProto_Label>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.r#type {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldDescriptorProto_Type>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.type_name {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 6, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.default_value {
-            ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 7, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions>(w, val, 8, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.oneof_index {
-            ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 9, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.json_name {
-            ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 10, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.proto3_optional {
-            ::pb_jelly::wire_format::write(17, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 17, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -4107,36 +3712,20 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(2);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<OneofOptions>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, OneofOptions>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -4330,78 +3919,38 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut value_size = 0;
           for val in &self.value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            value_size += ::pb_jelly::wire_format::serialized_length(2);
-            value_size += ::pb_jelly::varint::serialized_length(l as u64);
-            value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<EnumValueDescriptorProto>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += value_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(3);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<EnumOptions>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
-          let mut reserved_range_size = 0;
           for val in &self.reserved_range {
-            let l = ::pb_jelly::Message::compute_size(val);
-            reserved_range_size += ::pb_jelly::wire_format::serialized_length(4);
-            reserved_range_size += ::pb_jelly::varint::serialized_length(l as u64);
-            reserved_range_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<EnumDescriptorProto_EnumReservedRange>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += reserved_range_size;
-          let mut reserved_name_size = 0;
           for val in &self.reserved_name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            reserved_name_size += ::pb_jelly::wire_format::serialized_length(5);
-            reserved_name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            reserved_name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 5, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += reserved_name_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.value {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, EnumValueDescriptorProto>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, EnumOptions>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.reserved_range {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, EnumDescriptorProto_EnumReservedRange>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.reserved_name {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 5, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -4543,30 +4092,20 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut start_size = 0;
           if let Some(ref val) = self.start {
-            let l = ::pb_jelly::Message::compute_size(val);
-            start_size += ::pb_jelly::wire_format::serialized_length(1);
-            start_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += start_size;
-          let mut end_size = 0;
           if let Some(ref val) = self.end {
-            let l = ::pb_jelly::Message::compute_size(val);
-            end_size += ::pb_jelly::wire_format::serialized_length(2);
-            end_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += end_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.start {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.end {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -4706,47 +4245,26 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut number_size = 0;
           if let Some(ref val) = self.number {
-            let l = ::pb_jelly::Message::compute_size(val);
-            number_size += ::pb_jelly::wire_format::serialized_length(2);
-            number_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += number_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(3);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<EnumValueOptions>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.number {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, EnumValueOptions>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -4896,50 +4414,26 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut method_size = 0;
           for val in &self.method {
-            let l = ::pb_jelly::Message::compute_size(val);
-            method_size += ::pb_jelly::wire_format::serialized_length(2);
-            method_size += ::pb_jelly::varint::serialized_length(l as u64);
-            method_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<MethodDescriptorProto>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += method_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(3);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<ServiceOptions>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.method {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, MethodDescriptorProto>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ServiceOptions>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -5156,86 +4650,44 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           if let Some(ref val) = self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut input_type_size = 0;
           if let Some(ref val) = self.input_type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            input_type_size += ::pb_jelly::wire_format::serialized_length(2);
-            input_type_size += ::pb_jelly::varint::serialized_length(l as u64);
-            input_type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += input_type_size;
-          let mut output_type_size = 0;
           if let Some(ref val) = self.output_type {
-            let l = ::pb_jelly::Message::compute_size(val);
-            output_type_size += ::pb_jelly::wire_format::serialized_length(3);
-            output_type_size += ::pb_jelly::varint::serialized_length(l as u64);
-            output_type_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += output_type_size;
-          let mut options_size = 0;
           if let Some(ref val) = self.options {
-            let l = ::pb_jelly::Message::compute_size(val);
-            options_size += ::pb_jelly::wire_format::serialized_length(4);
-            options_size += ::pb_jelly::varint::serialized_length(l as u64);
-            options_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<MethodOptions>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += options_size;
-          let mut client_streaming_size = 0;
           if let Some(ref val) = self.client_streaming {
-            let l = ::pb_jelly::Message::compute_size(val);
-            client_streaming_size += ::pb_jelly::wire_format::serialized_length(5);
-            client_streaming_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 5, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += client_streaming_size;
-          let mut server_streaming_size = 0;
           if let Some(ref val) = self.server_streaming {
-            let l = ::pb_jelly::Message::compute_size(val);
-            server_streaming_size += ::pb_jelly::wire_format::serialized_length(6);
-            server_streaming_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 6, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += server_streaming_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.input_type {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.output_type {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.options {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, MethodOptions>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.client_streaming {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.server_streaming {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -5886,273 +5338,135 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut java_package_size = 0;
           if let Some(ref val) = self.java_package {
-            let l = ::pb_jelly::Message::compute_size(val);
-            java_package_size += ::pb_jelly::wire_format::serialized_length(1);
-            java_package_size += ::pb_jelly::varint::serialized_length(l as u64);
-            java_package_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += java_package_size;
-          let mut java_outer_classname_size = 0;
           if let Some(ref val) = self.java_outer_classname {
-            let l = ::pb_jelly::Message::compute_size(val);
-            java_outer_classname_size += ::pb_jelly::wire_format::serialized_length(8);
-            java_outer_classname_size += ::pb_jelly::varint::serialized_length(l as u64);
-            java_outer_classname_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 8, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += java_outer_classname_size;
-          let mut java_multiple_files_size = 0;
           if let Some(ref val) = self.java_multiple_files {
-            let l = ::pb_jelly::Message::compute_size(val);
-            java_multiple_files_size += ::pb_jelly::wire_format::serialized_length(10);
-            java_multiple_files_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 10, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += java_multiple_files_size;
-          let mut java_generate_equals_and_hash_size = 0;
           if let Some(ref val) = self.java_generate_equals_and_hash {
-            let l = ::pb_jelly::Message::compute_size(val);
-            java_generate_equals_and_hash_size += ::pb_jelly::wire_format::serialized_length(20);
-            java_generate_equals_and_hash_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 20, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += java_generate_equals_and_hash_size;
-          let mut java_string_check_utf8_size = 0;
           if let Some(ref val) = self.java_string_check_utf8 {
-            let l = ::pb_jelly::Message::compute_size(val);
-            java_string_check_utf8_size += ::pb_jelly::wire_format::serialized_length(27);
-            java_string_check_utf8_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 27, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += java_string_check_utf8_size;
-          let mut optimize_for_size = 0;
           if let Some(ref val) = self.optimize_for {
-            let l = ::pb_jelly::Message::compute_size(val);
-            optimize_for_size += ::pb_jelly::wire_format::serialized_length(9);
-            optimize_for_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FileOptions_OptimizeMode>(val, 9, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += optimize_for_size;
-          let mut go_package_size = 0;
           if let Some(ref val) = self.go_package {
-            let l = ::pb_jelly::Message::compute_size(val);
-            go_package_size += ::pb_jelly::wire_format::serialized_length(11);
-            go_package_size += ::pb_jelly::varint::serialized_length(l as u64);
-            go_package_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 11, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += go_package_size;
-          let mut cc_generic_services_size = 0;
           if let Some(ref val) = self.cc_generic_services {
-            let l = ::pb_jelly::Message::compute_size(val);
-            cc_generic_services_size += ::pb_jelly::wire_format::serialized_length(16);
-            cc_generic_services_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 16, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += cc_generic_services_size;
-          let mut java_generic_services_size = 0;
           if let Some(ref val) = self.java_generic_services {
-            let l = ::pb_jelly::Message::compute_size(val);
-            java_generic_services_size += ::pb_jelly::wire_format::serialized_length(17);
-            java_generic_services_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 17, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += java_generic_services_size;
-          let mut py_generic_services_size = 0;
           if let Some(ref val) = self.py_generic_services {
-            let l = ::pb_jelly::Message::compute_size(val);
-            py_generic_services_size += ::pb_jelly::wire_format::serialized_length(18);
-            py_generic_services_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 18, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += py_generic_services_size;
-          let mut php_generic_services_size = 0;
           if let Some(ref val) = self.php_generic_services {
-            let l = ::pb_jelly::Message::compute_size(val);
-            php_generic_services_size += ::pb_jelly::wire_format::serialized_length(42);
-            php_generic_services_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 42, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += php_generic_services_size;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(23);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 23, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut cc_enable_arenas_size = 0;
           if let Some(ref val) = self.cc_enable_arenas {
-            let l = ::pb_jelly::Message::compute_size(val);
-            cc_enable_arenas_size += ::pb_jelly::wire_format::serialized_length(31);
-            cc_enable_arenas_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 31, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += cc_enable_arenas_size;
-          let mut objc_class_prefix_size = 0;
           if let Some(ref val) = self.objc_class_prefix {
-            let l = ::pb_jelly::Message::compute_size(val);
-            objc_class_prefix_size += ::pb_jelly::wire_format::serialized_length(36);
-            objc_class_prefix_size += ::pb_jelly::varint::serialized_length(l as u64);
-            objc_class_prefix_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 36, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += objc_class_prefix_size;
-          let mut csharp_namespace_size = 0;
           if let Some(ref val) = self.csharp_namespace {
-            let l = ::pb_jelly::Message::compute_size(val);
-            csharp_namespace_size += ::pb_jelly::wire_format::serialized_length(37);
-            csharp_namespace_size += ::pb_jelly::varint::serialized_length(l as u64);
-            csharp_namespace_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 37, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += csharp_namespace_size;
-          let mut swift_prefix_size = 0;
           if let Some(ref val) = self.swift_prefix {
-            let l = ::pb_jelly::Message::compute_size(val);
-            swift_prefix_size += ::pb_jelly::wire_format::serialized_length(39);
-            swift_prefix_size += ::pb_jelly::varint::serialized_length(l as u64);
-            swift_prefix_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 39, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += swift_prefix_size;
-          let mut php_class_prefix_size = 0;
           if let Some(ref val) = self.php_class_prefix {
-            let l = ::pb_jelly::Message::compute_size(val);
-            php_class_prefix_size += ::pb_jelly::wire_format::serialized_length(40);
-            php_class_prefix_size += ::pb_jelly::varint::serialized_length(l as u64);
-            php_class_prefix_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 40, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += php_class_prefix_size;
-          let mut php_namespace_size = 0;
           if let Some(ref val) = self.php_namespace {
-            let l = ::pb_jelly::Message::compute_size(val);
-            php_namespace_size += ::pb_jelly::wire_format::serialized_length(41);
-            php_namespace_size += ::pb_jelly::varint::serialized_length(l as u64);
-            php_namespace_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 41, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += php_namespace_size;
-          let mut php_metadata_namespace_size = 0;
           if let Some(ref val) = self.php_metadata_namespace {
-            let l = ::pb_jelly::Message::compute_size(val);
-            php_metadata_namespace_size += ::pb_jelly::wire_format::serialized_length(44);
-            php_metadata_namespace_size += ::pb_jelly::varint::serialized_length(l as u64);
-            php_metadata_namespace_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 44, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += php_metadata_namespace_size;
-          let mut ruby_package_size = 0;
           if let Some(ref val) = self.ruby_package {
-            let l = ::pb_jelly::Message::compute_size(val);
-            ruby_package_size += ::pb_jelly::wire_format::serialized_length(45);
-            ruby_package_size += ::pb_jelly::varint::serialized_length(l as u64);
-            ruby_package_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 45, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += ruby_package_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.java_package {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.java_outer_classname {
-            ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 8, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.optimize_for {
-            ::pb_jelly::wire_format::write(9, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FileOptions_OptimizeMode>(w, val, 9, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.java_multiple_files {
-            ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 10, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.go_package {
-            ::pb_jelly::wire_format::write(11, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 11, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.cc_generic_services {
-            ::pb_jelly::wire_format::write(16, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 16, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.java_generic_services {
-            ::pb_jelly::wire_format::write(17, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 17, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.py_generic_services {
-            ::pb_jelly::wire_format::write(18, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 18, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.java_generate_equals_and_hash {
-            ::pb_jelly::wire_format::write(20, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 20, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(23, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 23, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.java_string_check_utf8 {
-            ::pb_jelly::wire_format::write(27, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 27, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.cc_enable_arenas {
-            ::pb_jelly::wire_format::write(31, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 31, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.objc_class_prefix {
-            ::pb_jelly::wire_format::write(36, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 36, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.csharp_namespace {
-            ::pb_jelly::wire_format::write(37, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 37, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.swift_prefix {
-            ::pb_jelly::wire_format::write(39, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 39, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.php_class_prefix {
-            ::pb_jelly::wire_format::write(40, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 40, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.php_namespace {
-            ::pb_jelly::wire_format::write(41, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 41, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.php_generic_services {
-            ::pb_jelly::wire_format::write(42, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 42, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.php_metadata_namespace {
-            ::pb_jelly::wire_format::write(44, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 44, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.ruby_package {
-            ::pb_jelly::wire_format::write(45, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 45, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -6519,67 +5833,39 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut message_set_wire_format_size = 0;
           if let Some(ref val) = self.message_set_wire_format {
-            let l = ::pb_jelly::Message::compute_size(val);
-            message_set_wire_format_size += ::pb_jelly::wire_format::serialized_length(1);
-            message_set_wire_format_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += message_set_wire_format_size;
-          let mut no_standard_descriptor_accessor_size = 0;
           if let Some(ref val) = self.no_standard_descriptor_accessor {
-            let l = ::pb_jelly::Message::compute_size(val);
-            no_standard_descriptor_accessor_size += ::pb_jelly::wire_format::serialized_length(2);
-            no_standard_descriptor_accessor_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += no_standard_descriptor_accessor_size;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(3);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut map_entry_size = 0;
           if let Some(ref val) = self.map_entry {
-            let l = ::pb_jelly::Message::compute_size(val);
-            map_entry_size += ::pb_jelly::wire_format::serialized_length(7);
-            map_entry_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 7, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += map_entry_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.message_set_wire_format {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.no_standard_descriptor_accessor {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.map_entry {
-            ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 7, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -6881,89 +6167,51 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut ctype_size = 0;
           if let Some(ref val) = self.ctype {
-            let l = ::pb_jelly::Message::compute_size(val);
-            ctype_size += ::pb_jelly::wire_format::serialized_length(1);
-            ctype_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_CType>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += ctype_size;
-          let mut packed_size = 0;
           if let Some(ref val) = self.packed {
-            let l = ::pb_jelly::Message::compute_size(val);
-            packed_size += ::pb_jelly::wire_format::serialized_length(2);
-            packed_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += packed_size;
-          let mut jstype_size = 0;
           if let Some(ref val) = self.jstype {
-            let l = ::pb_jelly::Message::compute_size(val);
-            jstype_size += ::pb_jelly::wire_format::serialized_length(6);
-            jstype_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_JSType>(val, 6, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += jstype_size;
-          let mut lazy_size = 0;
           if let Some(ref val) = self.lazy {
-            let l = ::pb_jelly::Message::compute_size(val);
-            lazy_size += ::pb_jelly::wire_format::serialized_length(5);
-            lazy_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 5, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += lazy_size;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(3);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut weak_size = 0;
           if let Some(ref val) = self.weak {
-            let l = ::pb_jelly::Message::compute_size(val);
-            weak_size += ::pb_jelly::wire_format::serialized_length(10);
-            weak_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 10, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += weak_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.ctype {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_CType>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.packed {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.lazy {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.jstype {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_JSType>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.weak {
-            ::pb_jelly::wire_format::write(10, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 10, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -7106,23 +6354,15 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -7269,45 +6509,27 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut allow_alias_size = 0;
           if let Some(ref val) = self.allow_alias {
-            let l = ::pb_jelly::Message::compute_size(val);
-            allow_alias_size += ::pb_jelly::wire_format::serialized_length(2);
-            allow_alias_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += allow_alias_size;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(3);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.allow_alias {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -7446,34 +6668,21 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(1);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -7610,34 +6819,21 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(33);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 33, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(33, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 33, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -7794,45 +6990,27 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut deprecated_size = 0;
           if let Some(ref val) = self.deprecated {
-            let l = ::pb_jelly::Message::compute_size(val);
-            deprecated_size += ::pb_jelly::wire_format::serialized_length(33);
-            deprecated_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 33, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += deprecated_size;
-          let mut idempotency_level_size = 0;
           if let Some(ref val) = self.idempotency_level {
-            let l = ::pb_jelly::Message::compute_size(val);
-            idempotency_level_size += ::pb_jelly::wire_format::serialized_length(34);
-            idempotency_level_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<MethodOptions_IdempotencyLevel>(val, 34, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += idempotency_level_size;
-          let mut uninterpreted_option_size = 0;
           for val in &self.uninterpreted_option {
-            let l = ::pb_jelly::Message::compute_size(val);
-            uninterpreted_option_size += ::pb_jelly::wire_format::serialized_length(999);
-            uninterpreted_option_size += ::pb_jelly::varint::serialized_length(l as u64);
-            uninterpreted_option_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += uninterpreted_option_size;
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.deprecated {
-            ::pb_jelly::wire_format::write(33, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 33, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.idempotency_level {
-            ::pb_jelly::wire_format::write(34, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, MethodOptions_IdempotencyLevel>(w, val, 34, ::pb_jelly::wire_format::Type::Varint)?;
           }
           for val in &self.uninterpreted_option {
-            ::pb_jelly::wire_format::write(999, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -8081,97 +7259,50 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_size = 0;
           for val in &self.name {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_size += ::pb_jelly::wire_format::serialized_length(2);
-            name_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption_NamePart>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_size;
-          let mut identifier_value_size = 0;
           if let Some(ref val) = self.identifier_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            identifier_value_size += ::pb_jelly::wire_format::serialized_length(3);
-            identifier_value_size += ::pb_jelly::varint::serialized_length(l as u64);
-            identifier_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += identifier_value_size;
-          let mut positive_int_value_size = 0;
           if let Some(ref val) = self.positive_int_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            positive_int_value_size += ::pb_jelly::wire_format::serialized_length(4);
-            positive_int_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<u64>(val, 4, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += positive_int_value_size;
-          let mut negative_int_value_size = 0;
           if let Some(ref val) = self.negative_int_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            negative_int_value_size += ::pb_jelly::wire_format::serialized_length(5);
-            negative_int_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i64>(val, 5, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += negative_int_value_size;
-          let mut double_value_size = 0;
           if let Some(ref val) = self.double_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            double_value_size += ::pb_jelly::wire_format::serialized_length(6);
-            double_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<f64>(val, 6, ::pb_jelly::wire_format::Type::Fixed64);
           }
-          size += double_value_size;
-          let mut string_value_size = 0;
           if let Some(ref val) = self.string_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            string_value_size += ::pb_jelly::wire_format::serialized_length(7);
-            string_value_size += ::pb_jelly::varint::serialized_length(l as u64);
-            string_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::vec::Vec<u8>>(val, 7, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += string_value_size;
-          let mut aggregate_value_size = 0;
           if let Some(ref val) = self.aggregate_value {
-            let l = ::pb_jelly::Message::compute_size(val);
-            aggregate_value_size += ::pb_jelly::wire_format::serialized_length(8);
-            aggregate_value_size += ::pb_jelly::varint::serialized_length(l as u64);
-            aggregate_value_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 8, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += aggregate_value_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.name {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption_NamePart>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.identifier_value {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.positive_int_value {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, u64>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.negative_int_value {
-            ::pb_jelly::wire_format::write(5, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i64>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.double_value {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::Fixed64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, f64>(w, val, 6, ::pb_jelly::wire_format::Type::Fixed64)?;
           }
           if let Some(ref val) = self.string_value {
-            ::pb_jelly::wire_format::write(7, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::vec::Vec<u8>>(w, val, 7, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.aggregate_value {
-            ::pb_jelly::wire_format::write(8, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 8, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -8327,33 +7458,20 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut name_part_size = 0;
           if let Some(ref val) = self.name_part {
-            let l = ::pb_jelly::Message::compute_size(val);
-            name_part_size += ::pb_jelly::wire_format::serialized_length(1);
-            name_part_size += ::pb_jelly::varint::serialized_length(l as u64);
-            name_part_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += name_part_size;
-          let mut is_extension_size = 0;
           if let Some(ref val) = self.is_extension {
-            let l = ::pb_jelly::Message::compute_size(val);
-            is_extension_size += ::pb_jelly::wire_format::serialized_length(2);
-            is_extension_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += is_extension_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.name_part {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.is_extension {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -8497,22 +7615,14 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut location_size = 0;
           for val in &self.location {
-            let l = ::pb_jelly::Message::compute_size(val);
-            location_size += ::pb_jelly::wire_format::serialized_length(1);
-            location_size += ::pb_jelly::varint::serialized_length(l as u64);
-            location_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<SourceCodeInfo_Location>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += location_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.location {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, SourceCodeInfo_Location>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -8768,50 +7878,33 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut path_size = 0;
-          for val in &self.path {
-            let l = ::pb_jelly::Message::compute_size(val);
-            path_size += l;
-          }
           if !self.path.is_empty() {
+            let mut path_size = 0;
+            for val in &self.path {
+              path_size += ::pb_jelly::Message::compute_size(val);
+            }
             size += ::pb_jelly::wire_format::serialized_length(1);
             size += ::pb_jelly::varint::serialized_length(path_size as u64);
-          }
-          size += path_size;
-          let mut span_size = 0;
-          for val in &self.span {
-            let l = ::pb_jelly::Message::compute_size(val);
-            span_size += l;
+            size += path_size;
           }
           if !self.span.is_empty() {
+            let mut span_size = 0;
+            for val in &self.span {
+              span_size += ::pb_jelly::Message::compute_size(val);
+            }
             size += ::pb_jelly::wire_format::serialized_length(2);
             size += ::pb_jelly::varint::serialized_length(span_size as u64);
+            size += span_size;
           }
-          size += span_size;
-          let mut leading_comments_size = 0;
           if let Some(ref val) = self.leading_comments {
-            let l = ::pb_jelly::Message::compute_size(val);
-            leading_comments_size += ::pb_jelly::wire_format::serialized_length(3);
-            leading_comments_size += ::pb_jelly::varint::serialized_length(l as u64);
-            leading_comments_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += leading_comments_size;
-          let mut trailing_comments_size = 0;
           if let Some(ref val) = self.trailing_comments {
-            let l = ::pb_jelly::Message::compute_size(val);
-            trailing_comments_size += ::pb_jelly::wire_format::serialized_length(4);
-            trailing_comments_size += ::pb_jelly::varint::serialized_length(l as u64);
-            trailing_comments_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += trailing_comments_size;
-          let mut leading_detached_comments_size = 0;
           for val in &self.leading_detached_comments {
-            let l = ::pb_jelly::Message::compute_size(val);
-            leading_detached_comments_size += ::pb_jelly::wire_format::serialized_length(6);
-            leading_detached_comments_size += ::pb_jelly::varint::serialized_length(l as u64);
-            leading_detached_comments_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 6, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += leading_detached_comments_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -8822,9 +7915,9 @@ pub mod google {
             }
             ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
             ::pb_jelly::varint::write(size as u64, w)?;
-          }
-          for val in &self.path {
-            ::pb_jelly::Message::serialize(val, w)?;
+            for val in &self.path {
+              ::pb_jelly::Message::serialize(val, w)?;
+            }
           }
           if !self.span.is_empty() {
             let mut size = 0;
@@ -8833,27 +7926,18 @@ pub mod google {
             }
             ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
             ::pb_jelly::varint::write(size as u64, w)?;
-          }
-          for val in &self.span {
-            ::pb_jelly::Message::serialize(val, w)?;
+            for val in &self.span {
+              ::pb_jelly::Message::serialize(val, w)?;
+            }
           }
           if let Some(ref val) = self.leading_comments {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.trailing_comments {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.leading_detached_comments {
-            ::pb_jelly::wire_format::write(6, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 6, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -8973,22 +8057,14 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut annotation_size = 0;
           for val in &self.annotation {
-            let l = ::pb_jelly::Message::compute_size(val);
-            annotation_size += ::pb_jelly::wire_format::serialized_length(1);
-            annotation_size += ::pb_jelly::varint::serialized_length(l as u64);
-            annotation_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<GeneratedCodeInfo_Annotation>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += annotation_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.annotation {
-            ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, GeneratedCodeInfo_Annotation>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -9148,38 +8224,24 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0;
-          let mut path_size = 0;
-          for val in &self.path {
-            let l = ::pb_jelly::Message::compute_size(val);
-            path_size += l;
-          }
           if !self.path.is_empty() {
+            let mut path_size = 0;
+            for val in &self.path {
+              path_size += ::pb_jelly::Message::compute_size(val);
+            }
             size += ::pb_jelly::wire_format::serialized_length(1);
             size += ::pb_jelly::varint::serialized_length(path_size as u64);
+            size += path_size;
           }
-          size += path_size;
-          let mut source_file_size = 0;
           if let Some(ref val) = self.source_file {
-            let l = ::pb_jelly::Message::compute_size(val);
-            source_file_size += ::pb_jelly::wire_format::serialized_length(2);
-            source_file_size += ::pb_jelly::varint::serialized_length(l as u64);
-            source_file_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
-          size += source_file_size;
-          let mut begin_size = 0;
           if let Some(ref val) = self.begin {
-            let l = ::pb_jelly::Message::compute_size(val);
-            begin_size += ::pb_jelly::wire_format::serialized_length(3);
-            begin_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += begin_size;
-          let mut end_size = 0;
           if let Some(ref val) = self.end {
-            let l = ::pb_jelly::Message::compute_size(val);
-            end_size += ::pb_jelly::wire_format::serialized_length(4);
-            end_size += l;
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 4, ::pb_jelly::wire_format::Type::Varint);
           }
-          size += end_size;
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -9190,23 +8252,18 @@ pub mod google {
             }
             ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
             ::pb_jelly::varint::write(size as u64, w)?;
-          }
-          for val in &self.path {
-            ::pb_jelly::Message::serialize(val, w)?;
+            for val in &self.path {
+              ::pb_jelly::Message::serialize(val, w)?;
+            }
           }
           if let Some(ref val) = self.source_file {
-            ::pb_jelly::wire_format::write(2, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-            let l = ::pb_jelly::Message::compute_size(val);
-            ::pb_jelly::varint::write(l as u64, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.begin {
-            ::pb_jelly::wire_format::write(3, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
           }
           if let Some(ref val) = self.end {
-            ::pb_jelly::wire_format::write(4, ::pb_jelly::wire_format::Type::Varint, w)?;
-            ::pb_jelly::Message::serialize(val, w)?;
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
