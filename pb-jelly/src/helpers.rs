@@ -65,6 +65,20 @@ pub fn deserialize_known_length<B: PbBufferReader, T: Message>(
     Ok(val)
 }
 
+pub fn serialize_field<W: PbBufferWriter, T: Message>(
+    w: &mut W,
+    val: &T,
+    field_number: u32,
+    wire_format: wire_format::Type,
+) -> io::Result<()> {
+    wire_format::write(field_number, wire_format, w)?;
+    if let wire_format::Type::LengthDelimited = wire_format {
+        let l = val.compute_size();
+        varint::write(l as u64, w)?;
+    }
+    val.serialize(w)
+}
+
 pub fn serialize_scalar<W: PbBufferWriter, T: Message>(
     w: &mut W,
     val: &T,
@@ -72,25 +86,24 @@ pub fn serialize_scalar<W: PbBufferWriter, T: Message>(
     wire_format: wire_format::Type,
 ) -> io::Result<()> {
     if *val != T::default() {
-        wire_format::write(field_number, wire_format, w)?;
-        if let wire_format::Type::LengthDelimited = wire_format {
-            let l = val.compute_size();
-            varint::write(l as u64, w)?;
-        }
-        val.serialize(w)?;
+        serialize_field(w, val, field_number, wire_format)?;
     }
     Ok(())
 }
 
-pub fn compute_size_scalar<T: Message>(val: &T, field_number: u32, wire_format: wire_format::Type) -> usize {
-    let mut size = 0;
-    if *val != T::default() {
-        size += wire_format::serialized_length(field_number);
-        let l = val.compute_size();
-        if let wire_format::Type::LengthDelimited = wire_format {
-            size += varint::serialized_length(l as u64);
-        }
-        size += l;
+pub fn compute_size_field<T: Message>(val: &T, field_number: u32, wire_format: wire_format::Type) -> usize {
+    let mut size = wire_format::serialized_length(field_number);
+    let l = val.compute_size();
+    if let wire_format::Type::LengthDelimited = wire_format {
+        size += varint::serialized_length(l as u64);
     }
-    size
+    size + l
+}
+
+pub fn compute_size_scalar<T: Message>(val: &T, field_number: u32, wire_format: wire_format::Type) -> usize {
+    if *val != T::default() {
+        compute_size_field(val, field_number, wire_format)
+    } else {
+        0
+    }
 }

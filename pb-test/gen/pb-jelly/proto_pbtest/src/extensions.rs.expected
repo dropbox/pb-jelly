@@ -48,20 +48,15 @@ impl ::pb_jelly::Message for Msg {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut base_field_size = 0;
     if let Some(ref val) = self.base_field {
-      let l = ::pb_jelly::Message::compute_size(val);
-      base_field_size += ::pb_jelly::wire_format::serialized_length(250);
-      base_field_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 250, ::pb_jelly::wire_format::Type::Varint);
     }
-    size += base_field_size;
     size += self._extensions.compute_size();
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.base_field {
-      ::pb_jelly::wire_format::write(250, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 250, ::pb_jelly::wire_format::Type::Varint)?;
     }
     self._extensions.serialize(w)?;
     Ok(())
@@ -265,80 +260,44 @@ impl ::pb_jelly::Message for FakeMsg {
   }
   fn compute_size(&self) -> usize {
     let mut size = 0;
-    let mut base_field_size = 0;
     if let Some(ref val) = self.base_field {
-      let l = ::pb_jelly::Message::compute_size(val);
-      base_field_size += ::pb_jelly::wire_format::serialized_length(250);
-      base_field_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 250, ::pb_jelly::wire_format::Type::Varint);
     }
-    size += base_field_size;
-    let mut singular_primitive_size = 0;
     if let Some(ref val) = self.singular_primitive {
-      let l = ::pb_jelly::Message::compute_size(val);
-      singular_primitive_size += ::pb_jelly::wire_format::serialized_length(101);
-      singular_primitive_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 101, ::pb_jelly::wire_format::Type::Varint);
     }
-    size += singular_primitive_size;
-    let mut singular_primitive_with_default_size = 0;
     if let Some(ref val) = self.singular_primitive_with_default {
-      let l = ::pb_jelly::Message::compute_size(val);
-      singular_primitive_with_default_size += ::pb_jelly::wire_format::serialized_length(102);
-      singular_primitive_with_default_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 102, ::pb_jelly::wire_format::Type::Varint);
     }
-    size += singular_primitive_with_default_size;
-    let mut singular_message_size = 0;
     if let Some(ref val) = self.singular_message {
-      let l = ::pb_jelly::Message::compute_size(val);
-      singular_message_size += ::pb_jelly::wire_format::serialized_length(301);
-      singular_message_size += ::pb_jelly::varint::serialized_length(l as u64);
-      singular_message_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<super::pbtest3::ForeignMessage3>(val, 301, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
-    size += singular_message_size;
-    let mut repeated_primitive_size = 0;
     for val in &self.repeated_primitive {
-      let l = ::pb_jelly::Message::compute_size(val);
-      repeated_primitive_size += ::pb_jelly::wire_format::serialized_length(300);
-      repeated_primitive_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 300, ::pb_jelly::wire_format::Type::Varint);
     }
-    size += repeated_primitive_size;
-    let mut repeated_message_size = 0;
     for val in &self.repeated_message {
-      let l = ::pb_jelly::Message::compute_size(val);
-      repeated_message_size += ::pb_jelly::wire_format::serialized_length(200);
-      repeated_message_size += ::pb_jelly::varint::serialized_length(l as u64);
-      repeated_message_size += l;
+      size += ::pb_jelly::helpers::compute_size_field::<super::pbtest3::ForeignMessage3>(val, 200, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
-    size += repeated_message_size;
     size
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if let Some(ref val) = self.singular_primitive {
-      ::pb_jelly::wire_format::write(101, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 101, ::pb_jelly::wire_format::Type::Varint)?;
     }
     if let Some(ref val) = self.singular_primitive_with_default {
-      ::pb_jelly::wire_format::write(102, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 102, ::pb_jelly::wire_format::Type::Varint)?;
     }
     for val in &self.repeated_message {
-      ::pb_jelly::wire_format::write(200, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, super::pbtest3::ForeignMessage3>(w, val, 200, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     }
     if let Some(ref val) = self.base_field {
-      ::pb_jelly::wire_format::write(250, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 250, ::pb_jelly::wire_format::Type::Varint)?;
     }
     for val in &self.repeated_primitive {
-      ::pb_jelly::wire_format::write(300, ::pb_jelly::wire_format::Type::Varint, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 300, ::pb_jelly::wire_format::Type::Varint)?;
     }
     if let Some(ref val) = self.singular_message {
-      ::pb_jelly::wire_format::write(301, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
-      let l = ::pb_jelly::Message::compute_size(val);
-      ::pb_jelly::varint::write(l as u64, w)?;
-      ::pb_jelly::Message::serialize(val, w)?;
+      ::pb_jelly::helpers::serialize_field::<W, super::pbtest3::ForeignMessage3>(w, val, 301, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     }
     Ok(())
   }
