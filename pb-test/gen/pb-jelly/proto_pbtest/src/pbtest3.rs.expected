@@ -719,7 +719,7 @@ impl ::pb_jelly::Message for ForeignMessage3 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.c, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
@@ -814,7 +814,7 @@ impl ::pb_jelly::Message for Version31OneOfNoneNullable {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Version31OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -968,7 +968,7 @@ impl ::pb_jelly::Message for Version32OneOfNoneNullable {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Version32OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1120,7 +1120,7 @@ impl ::pb_jelly::Message for Version31Enum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<Version31Enum_TestEnum>(&self.enum_field, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
@@ -1198,7 +1198,7 @@ impl ::pb_jelly::Message for Version32Enum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<Version32Enum_TestEnum>(&self.enum_field, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
@@ -1283,7 +1283,7 @@ impl ::pb_jelly::Message for Version31OneOf {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(Version31OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1397,7 +1397,7 @@ impl ::pb_jelly::Message for Version32OneOf {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(Version32OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1519,7 +1519,7 @@ impl ::pb_jelly::Message for Version31 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
@@ -1597,7 +1597,7 @@ impl ::pb_jelly::Message for Version31SSO {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
@@ -1818,7 +1818,7 @@ impl ::pb_jelly::Message for Version32 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.optional_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.optional_int32, 2, ::pb_jelly::wire_format::Type::Varint);
     size += ::pb_jelly::helpers::compute_size_scalar::<i64>(&self.optional_int64, 3, ::pb_jelly::wire_format::Type::Varint);
@@ -2694,7 +2694,7 @@ impl ::pb_jelly::Message for TestMessage3 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.optional_int32, 1, ::pb_jelly::wire_format::Type::Varint);
     size += ::pb_jelly::helpers::compute_size_scalar::<i64>(&self.optional_int64, 2, ::pb_jelly::wire_format::Type::Varint);
     size += ::pb_jelly::helpers::compute_size_scalar::<u32>(&self.optional_uint32, 3, ::pb_jelly::wire_format::Type::Varint);
@@ -2714,7 +2714,7 @@ impl ::pb_jelly::Message for TestMessage3 {
     size += ::pb_jelly::helpers::compute_size_scalar::<TestMessage3_NestedEnum3>(&self.optional_nested_enum, 21, ::pb_jelly::wire_format::Type::Varint);
     size += ::pb_jelly::helpers::compute_size_scalar::<ForeignEnum3>(&self.optional_foreign_enum, 22, ::pb_jelly::wire_format::Type::Varint);
     if !self.repeated_int32.is_empty() {
-      let mut repeated_int32_size = 0;
+      let mut repeated_int32_size = 0usize;
       for val in &self.repeated_int32 {
         repeated_int32_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2723,7 +2723,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_int32_size;
     }
     if !self.repeated_int64.is_empty() {
-      let mut repeated_int64_size = 0;
+      let mut repeated_int64_size = 0usize;
       for val in &self.repeated_int64 {
         repeated_int64_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2732,7 +2732,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_int64_size;
     }
     if !self.repeated_uint32.is_empty() {
-      let mut repeated_uint32_size = 0;
+      let mut repeated_uint32_size = 0usize;
       for val in &self.repeated_uint32 {
         repeated_uint32_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2741,7 +2741,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_uint32_size;
     }
     if !self.repeated_uint64.is_empty() {
-      let mut repeated_uint64_size = 0;
+      let mut repeated_uint64_size = 0usize;
       for val in &self.repeated_uint64 {
         repeated_uint64_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2750,7 +2750,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_uint64_size;
     }
     if !self.repeated_fixed64.is_empty() {
-      let mut repeated_fixed64_size = 0;
+      let mut repeated_fixed64_size = 0usize;
       for val in &self.repeated_fixed64 {
         repeated_fixed64_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2759,7 +2759,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_fixed64_size;
     }
     if !self.repeated_fixed32.is_empty() {
-      let mut repeated_fixed32_size = 0;
+      let mut repeated_fixed32_size = 0usize;
       for val in &self.repeated_fixed32 {
         repeated_fixed32_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2768,7 +2768,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_fixed32_size;
     }
     if !self.repeated_sfixed64.is_empty() {
-      let mut repeated_sfixed64_size = 0;
+      let mut repeated_sfixed64_size = 0usize;
       for val in &self.repeated_sfixed64 {
         repeated_sfixed64_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2777,7 +2777,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_sfixed64_size;
     }
     if !self.repeated_sfixed32.is_empty() {
-      let mut repeated_sfixed32_size = 0;
+      let mut repeated_sfixed32_size = 0usize;
       for val in &self.repeated_sfixed32 {
         repeated_sfixed32_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2786,7 +2786,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_sfixed32_size;
     }
     if !self.repeated_double.is_empty() {
-      let mut repeated_double_size = 0;
+      let mut repeated_double_size = 0usize;
       for val in &self.repeated_double {
         repeated_double_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2795,7 +2795,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_double_size;
     }
     if !self.repeated_bool.is_empty() {
-      let mut repeated_bool_size = 0;
+      let mut repeated_bool_size = 0usize;
       for val in &self.repeated_bool {
         repeated_bool_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2810,7 +2810,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += ::pb_jelly::helpers::compute_size_field::<::std::vec::Vec<u8>>(val, 45, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
     if !self.repeated_float.is_empty() {
-      let mut repeated_float_size = 0;
+      let mut repeated_float_size = 0usize;
       for val in &self.repeated_float {
         repeated_float_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2822,7 +2822,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += ::pb_jelly::helpers::compute_size_field::<ForeignMessage3>(val, 49, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
     if !self.repeated_nested_enum.is_empty() {
-      let mut repeated_nested_enum_size = 0;
+      let mut repeated_nested_enum_size = 0usize;
       for val in &self.repeated_nested_enum {
         repeated_nested_enum_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2831,7 +2831,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       size += repeated_nested_enum_size;
     }
     if !self.repeated_foreign_enum.is_empty() {
-      let mut repeated_foreign_enum_size = 0;
+      let mut repeated_foreign_enum_size = 0usize;
       for val in &self.repeated_foreign_enum {
         repeated_foreign_enum_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2924,7 +2924,7 @@ impl ::pb_jelly::Message for TestMessage3 {
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if self.fixed_length != <[u8; 4] as ::std::default::Default>::default() {
       let val = &self.fixed_length;
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -2961,7 +2961,7 @@ impl ::pb_jelly::Message for TestMessage3 {
     ::pb_jelly::helpers::serialize_scalar::<W, TestMessage3_NestedEnum3>(w, &self.optional_nested_enum, 21, ::pb_jelly::wire_format::Type::Varint)?;
     ::pb_jelly::helpers::serialize_scalar::<W, ForeignEnum3>(w, &self.optional_foreign_enum, 22, ::pb_jelly::wire_format::Type::Varint)?;
     if !self.repeated_int32.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_int32 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2972,7 +2972,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_int64.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_int64 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2983,7 +2983,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_uint32.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_uint32 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -2994,7 +2994,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_uint64.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_uint64 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3005,7 +3005,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_fixed64.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_fixed64 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3016,7 +3016,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_fixed32.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_fixed32 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3027,7 +3027,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_sfixed64.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_sfixed64 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3038,7 +3038,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_sfixed32.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_sfixed32 {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3049,7 +3049,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_double.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_double {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3060,7 +3060,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_bool.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_bool {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3077,7 +3077,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       ::pb_jelly::helpers::serialize_field::<W, ::std::vec::Vec<u8>>(w, val, 45, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     }
     if !self.repeated_float.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_float {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3091,7 +3091,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       ::pb_jelly::helpers::serialize_field::<W, ForeignMessage3>(w, val, 49, ::pb_jelly::wire_format::Type::LengthDelimited)?;
     }
     if !self.repeated_nested_enum.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_nested_enum {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3102,7 +3102,7 @@ impl ::pb_jelly::Message for TestMessage3 {
       }
     }
     if !self.repeated_foreign_enum.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.repeated_foreign_enum {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -3898,7 +3898,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let TestMessage3_NestedMessage_NestedOneof::F(ref val) = self.nested_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<TestMessage3_NestedMessage_File>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -4086,7 +4086,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     for val in &self.blocklist {
       size += ::pb_jelly::helpers::compute_size_field::<::std::vec::Vec<u8>>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -4166,7 +4166,7 @@ impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
     })
   }
   fn compute_size(&self) -> usize {
-    0
+    0usize
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
@@ -4234,7 +4234,7 @@ impl ::pb_jelly::Message for TestBoxedNonnullable {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
      {
       let val = &*self.field;
       size += ::pb_jelly::helpers::compute_size_field::<ForeignMessage3>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -4346,7 +4346,7 @@ impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let TestMessage3NonNullableOneof_NonNullableOneof::A(ref val) = self.non_nullable_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -4482,7 +4482,7 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     let val = &self.field;
     size += ::pb_jelly::helpers::compute_size_field::<TestMessage3ErrIfDefaultEnum_ErrIfDefaultEnum>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     size
@@ -4585,7 +4585,7 @@ impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(TestMessage3ErrIfDefaultEnumOneof_Maybe::Something(ref val)) = self.maybe {
       size += ::pb_jelly::helpers::compute_size_field::<TestMessage3ErrIfDefaultEnumOneof_ErrIfDefaultEnum>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -4695,9 +4695,9 @@ impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if !self.field.is_empty() {
-      let mut field_size = 0;
+      let mut field_size = 0usize;
       for val in &self.field {
         field_size += ::pb_jelly::Message::compute_size(val);
       }
@@ -4709,7 +4709,7 @@ impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     if !self.field.is_empty() {
-      let mut size = 0;
+      let mut size = 0usize;
       for val in &self.field {
         size += ::pb_jelly::Message::compute_size(val);
       }
@@ -4790,7 +4790,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<TestMessage3ClosedEnum_ClosedEnum>(&self.value, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
@@ -4868,7 +4868,7 @@ impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<TestMessage3ClosedEnum2_ClosedEnum>(&self.value, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
@@ -4946,7 +4946,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
      {
       let val = &*self.msg;
       size += ::pb_jelly::helpers::compute_size_field::<TestMessage3NonOptionalBoxedMessage_InnerMessage>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -5030,7 +5030,7 @@ impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.name, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
@@ -5110,7 +5110,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += self._unrecognized.len();
     size
@@ -5338,7 +5338,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.a_string1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.a_int32, 2, ::pb_jelly::wire_format::Type::Varint);
     size += ::pb_jelly::helpers::compute_size_scalar::<i64>(&self.a_int64, 3, ::pb_jelly::wire_format::Type::Varint);
@@ -5529,7 +5529,7 @@ impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += self._unrecognized.len();
     size
   }
@@ -5603,7 +5603,7 @@ impl ::pb_jelly::Message for TestSmallString {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
@@ -5681,7 +5681,7 @@ impl ::pb_jelly::Message for TestBoxedSmallString {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
@@ -5759,7 +5759,7 @@ impl ::pb_jelly::Message for TestNonOptionalSmallString {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::compact_str::CompactString>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
@@ -5839,7 +5839,7 @@ impl ::pb_jelly::Message for TestSmallStringPreserveUnrecognized {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.compact, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += self._unrecognized.len();
     size
@@ -6122,7 +6122,7 @@ impl ::pb_jelly::Message for TestProto3Optional {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.a_message {
       size += ::pb_jelly::helpers::compute_size_field::<ForeignMessage3>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -6495,13 +6495,13 @@ impl ::pb_jelly::Message for TestProto3Zerocopy {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Lazy<::bytes::Bytes>>(&self.data1, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size += ::pb_jelly::helpers::compute_size_scalar::<::pb_jelly::Lazy<::bytes::Bytes>>(&self.data2, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if self.data1 != <::pb_jelly::Lazy<::bytes::Bytes> as ::std::default::Default>::default() {
       let val = &self.data1;
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
@@ -6594,14 +6594,14 @@ impl ::pb_jelly::Message for TestProto3ContainsZerocopy {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       size += ::pb_jelly::helpers::compute_size_field::<TestProto3Zerocopy>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
@@ -6732,7 +6732,7 @@ impl ::pb_jelly::Message for RecursiveOneof {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(RecursiveOneof_OneofField::Field(ref val)) = self.oneof_field {
       let val: &RecursiveOneof = &**val;
       size += ::pb_jelly::helpers::compute_size_field::<RecursiveOneof>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -6941,7 +6941,7 @@ impl ::pb_jelly::Message for MentionsKeywordPath {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.message {
       size += ::pb_jelly::helpers::compute_size_field::<super::r#mod::r#struct::Message>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -7030,7 +7030,7 @@ impl ::pb_jelly::Message for NonNullableOneofKeyword {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let NonNullableOneofKeyword_Async::A(ref val) = self.r#async {
       size += ::pb_jelly::helpers::compute_size_field::<i64>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -7126,7 +7126,7 @@ impl ::pb_jelly::Message for NonNullableEnumKeyword {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     let val = &self.r#enum;
     size += ::pb_jelly::helpers::compute_size_field::<TestMessage3_NestedMessage_NonNullableEnum>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     size
@@ -7211,7 +7211,7 @@ impl ::pb_jelly::Message for MutuallyRecursiveA {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       let val = &**val;
       size += ::pb_jelly::helpers::compute_size_field::<MutuallyRecursiveB>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -7295,7 +7295,7 @@ impl ::pb_jelly::Message for MutuallyRecursiveB {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       let val = &**val;
       size += ::pb_jelly::helpers::compute_size_field::<MutuallyRecursiveA>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -7379,7 +7379,7 @@ impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedA {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     for val in &self.inner {
       size += ::pb_jelly::helpers::compute_size_field::<MutuallyRecursiveWithRepeatedB>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -7463,7 +7463,7 @@ impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedB {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       size += ::pb_jelly::helpers::compute_size_field::<MutuallyRecursiveWithRepeatedA>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -7545,7 +7545,7 @@ impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedA {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       let val = &**val;
       size += ::pb_jelly::helpers::compute_size_field::<MutuallyRecursiveWithBoxedB>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -7630,7 +7630,7 @@ impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedB {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.inner {
       size += ::pb_jelly::helpers::compute_size_field::<MutuallyRecursiveWithBoxedA>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }

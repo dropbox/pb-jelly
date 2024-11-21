@@ -12,7 +12,7 @@ impl Msg {
     self.base_field = Some(v);
   }
   pub fn get_base_field(&self) -> i32 {
-    self.base_field.unwrap_or(0)
+    self.base_field.unwrap_or(0i32)
   }
 }
 impl ::std::default::Default for Msg {
@@ -47,7 +47,7 @@ impl ::pb_jelly::Message for Msg {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.base_field {
       size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 250, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -121,7 +121,7 @@ impl FakeMsg {
     self.base_field = Some(v);
   }
   pub fn get_base_field(&self) -> i32 {
-    self.base_field.unwrap_or(0)
+    self.base_field.unwrap_or(0i32)
   }
   pub fn has_singular_primitive(&self) -> bool {
     self.singular_primitive.is_some()
@@ -130,7 +130,7 @@ impl FakeMsg {
     self.singular_primitive = Some(v);
   }
   pub fn get_singular_primitive(&self) -> i32 {
-    self.singular_primitive.unwrap_or(0)
+    self.singular_primitive.unwrap_or(0i32)
   }
   pub fn has_singular_primitive_with_default(&self) -> bool {
     self.singular_primitive_with_default.is_some()
@@ -139,7 +139,7 @@ impl FakeMsg {
     self.singular_primitive_with_default = Some(v);
   }
   pub fn get_singular_primitive_with_default(&self) -> i32 {
-    self.singular_primitive_with_default.unwrap_or(0)
+    self.singular_primitive_with_default.unwrap_or(0i32)
   }
   pub fn has_singular_message(&self) -> bool {
     self.singular_message.is_some()
@@ -259,7 +259,7 @@ impl ::pb_jelly::Message for FakeMsg {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.base_field {
       size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 250, ::pb_jelly::wire_format::Type::Varint);
     }

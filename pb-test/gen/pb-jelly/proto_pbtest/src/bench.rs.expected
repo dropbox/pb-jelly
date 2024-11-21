@@ -46,14 +46,14 @@ impl ::pb_jelly::Message for BytesData {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.data {
       size += ::pb_jelly::helpers::compute_size_field::<::pb_jelly::Lazy<::bytes::Bytes>>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
     size
   }
   fn compute_grpc_slices_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.data {
       size += ::pb_jelly::Message::compute_grpc_slices_size(val);
     }
@@ -150,7 +150,7 @@ impl ::pb_jelly::Message for VecData {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.data {
       size += ::pb_jelly::helpers::compute_size_field::<::std::vec::Vec<u8>>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -246,7 +246,7 @@ impl ::pb_jelly::Message for StringMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.data {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -342,7 +342,7 @@ impl ::pb_jelly::Message for StringMessageSSO {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.data {
       size += ::pb_jelly::helpers::compute_size_field::<::compact_str::CompactString>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -438,7 +438,7 @@ impl ::pb_jelly::Message for Cities {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     for val in &self.cities {
       size += ::pb_jelly::helpers::compute_size_field::<City>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -527,7 +527,7 @@ impl City {
     self.latitude = Some(v);
   }
   pub fn get_latitude(&self) -> f64 {
-    self.latitude.unwrap_or(0.)
+    self.latitude.unwrap_or(0f64)
   }
   pub fn has_longitude(&self) -> bool {
     self.longitude.is_some()
@@ -536,7 +536,7 @@ impl City {
     self.longitude = Some(v);
   }
   pub fn get_longitude(&self) -> f64 {
-    self.longitude.unwrap_or(0.)
+    self.longitude.unwrap_or(0f64)
   }
   pub fn has_population(&self) -> bool {
     self.population.is_some()
@@ -666,7 +666,7 @@ impl ::pb_jelly::Message for City {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.city {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -840,7 +840,7 @@ impl ::pb_jelly::Message for CitiesSSO {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     for val in &self.cities {
       size += ::pb_jelly::helpers::compute_size_field::<CitySSO>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -929,7 +929,7 @@ impl CitySSO {
     self.latitude = Some(v);
   }
   pub fn get_latitude(&self) -> f64 {
-    self.latitude.unwrap_or(0.)
+    self.latitude.unwrap_or(0f64)
   }
   pub fn has_longitude(&self) -> bool {
     self.longitude.is_some()
@@ -938,7 +938,7 @@ impl CitySSO {
     self.longitude = Some(v);
   }
   pub fn get_longitude(&self) -> f64 {
-    self.longitude.unwrap_or(0.)
+    self.longitude.unwrap_or(0f64)
   }
   pub fn has_population(&self) -> bool {
     self.population.is_some()
@@ -1068,7 +1068,7 @@ impl ::pb_jelly::Message for CitySSO {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.city {
       size += ::pb_jelly::helpers::compute_size_field::<::compact_str::CompactString>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }

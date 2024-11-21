@@ -34,7 +34,7 @@ impl ::pb_jelly::Message for InpMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.i, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }
@@ -112,7 +112,7 @@ impl ::pb_jelly::Message for OutMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<i32>(&self.o, 1, ::pb_jelly::wire_format::Type::Varint);
     size
   }

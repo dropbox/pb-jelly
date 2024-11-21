@@ -34,7 +34,7 @@ impl ::pb_jelly::Message for NoPackage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     size += ::pb_jelly::helpers::compute_size_scalar::<::std::string::String>(&self.field, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     size
   }

@@ -23,7 +23,7 @@ impl ::pb_jelly::Message for Message {
     })
   }
   fn compute_size(&self) -> usize {
-    0
+    0usize
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())

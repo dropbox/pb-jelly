@@ -416,7 +416,7 @@ impl ::pb_jelly::Message for Option {
     })
   }
   fn compute_size(&self) -> usize {
-    0
+    0usize
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
@@ -475,7 +475,7 @@ impl ::pb_jelly::Message for Vec {
     })
   }
   fn compute_size(&self) -> usize {
-    0
+    0usize
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
@@ -534,7 +534,7 @@ impl ::pb_jelly::Message for Default {
     })
   }
   fn compute_size(&self) -> usize {
-    0
+    0usize
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
@@ -593,7 +593,7 @@ impl ::pb_jelly::Message for String {
     })
   }
   fn compute_size(&self) -> usize {
-    0
+    0usize
   }
   fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
     Ok(())
@@ -670,7 +670,7 @@ impl ::pb_jelly::Message for Version0OneOfNoneNullable {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Version0OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -785,7 +785,7 @@ impl ::pb_jelly::Message for Version1OneOfNoneNullable {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Version1OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -941,7 +941,7 @@ impl ::pb_jelly::Message for Version2OneOfNoneNullable {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Version2OneOfNoneNullable_TestOneof::StringOneOf(ref val) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1104,7 +1104,7 @@ impl ::pb_jelly::Message for Version1Enum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.enum_field {
       size += ::pb_jelly::helpers::compute_size_field::<Version1Enum_TestEnum>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -1197,7 +1197,7 @@ impl ::pb_jelly::Message for Version2Enum {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.enum_field {
       size += ::pb_jelly::helpers::compute_size_field::<Version2Enum_TestEnum>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -1288,7 +1288,7 @@ impl ::pb_jelly::Message for Version1OneOf {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(Version1OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1404,7 +1404,7 @@ impl ::pb_jelly::Message for Version2OneOf {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(Version2OneOf_TestOneof::StringOneOf(ref val)) = self.test_oneof {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1540,7 +1540,7 @@ impl ::pb_jelly::Message for Version1 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.required_string {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -1624,7 +1624,7 @@ impl Version2 {
     self.optional_int32 = Some(v);
   }
   pub fn get_optional_int32(&self) -> i32 {
-    self.optional_int32.unwrap_or(0)
+    self.optional_int32.unwrap_or(0i32)
   }
   pub fn has_optional_int64(&self) -> bool {
     self.optional_int64.is_some()
@@ -1633,7 +1633,7 @@ impl Version2 {
     self.optional_int64 = Some(v);
   }
   pub fn get_optional_int64(&self) -> i64 {
-    self.optional_int64.unwrap_or(0)
+    self.optional_int64.unwrap_or(0i64)
   }
   pub fn has_optional_uint32(&self) -> bool {
     self.optional_uint32.is_some()
@@ -1642,7 +1642,7 @@ impl Version2 {
     self.optional_uint32 = Some(v);
   }
   pub fn get_optional_uint32(&self) -> u32 {
-    self.optional_uint32.unwrap_or(0)
+    self.optional_uint32.unwrap_or(0u32)
   }
   pub fn has_optional_uint64(&self) -> bool {
     self.optional_uint64.is_some()
@@ -1651,7 +1651,7 @@ impl Version2 {
     self.optional_uint64 = Some(v);
   }
   pub fn get_optional_uint64(&self) -> u64 {
-    self.optional_uint64.unwrap_or(0)
+    self.optional_uint64.unwrap_or(0u64)
   }
   pub fn has_optional_fixed64(&self) -> bool {
     self.optional_fixed64.is_some()
@@ -1660,7 +1660,7 @@ impl Version2 {
     self.optional_fixed64 = Some(::pb_jelly::Fixed64(v));
   }
   pub fn get_optional_fixed64(&self) -> u64 {
-    self.optional_fixed64.map(|v| v.0).unwrap_or(0)
+    self.optional_fixed64.map(|v| v.0).unwrap_or(0u64)
   }
   pub fn has_optional_fixed32(&self) -> bool {
     self.optional_fixed32.is_some()
@@ -1669,7 +1669,7 @@ impl Version2 {
     self.optional_fixed32 = Some(::pb_jelly::Fixed32(v));
   }
   pub fn get_optional_fixed32(&self) -> u32 {
-    self.optional_fixed32.map(|v| v.0).unwrap_or(0)
+    self.optional_fixed32.map(|v| v.0).unwrap_or(0u32)
   }
   pub fn has_optional_sfixed64(&self) -> bool {
     self.optional_sfixed64.is_some()
@@ -1678,7 +1678,7 @@ impl Version2 {
     self.optional_sfixed64 = Some(::pb_jelly::Sfixed64(v));
   }
   pub fn get_optional_sfixed64(&self) -> i64 {
-    self.optional_sfixed64.map(|v| v.0).unwrap_or(0)
+    self.optional_sfixed64.map(|v| v.0).unwrap_or(0i64)
   }
   pub fn has_optional_sfixed32(&self) -> bool {
     self.optional_sfixed32.is_some()
@@ -1687,7 +1687,7 @@ impl Version2 {
     self.optional_sfixed32 = Some(::pb_jelly::Sfixed32(v));
   }
   pub fn get_optional_sfixed32(&self) -> i32 {
-    self.optional_sfixed32.map(|v| v.0).unwrap_or(0)
+    self.optional_sfixed32.map(|v| v.0).unwrap_or(0i32)
   }
   pub fn has_optional_double(&self) -> bool {
     self.optional_double.is_some()
@@ -1696,7 +1696,7 @@ impl Version2 {
     self.optional_double = Some(v);
   }
   pub fn get_optional_double(&self) -> f64 {
-    self.optional_double.unwrap_or(0.)
+    self.optional_double.unwrap_or(0f64)
   }
   pub fn has_optional_bool(&self) -> bool {
     self.optional_bool.is_some()
@@ -1738,7 +1738,7 @@ impl Version2 {
     self.optional_float = Some(v);
   }
   pub fn get_optional_float(&self) -> f32 {
-    self.optional_float.unwrap_or(0.)
+    self.optional_float.unwrap_or(0f32)
   }
 }
 impl ::std::default::Default for Version2 {
@@ -1902,7 +1902,7 @@ impl ::pb_jelly::Message for Version2 {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.required_string {
       size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
     }
@@ -2130,7 +2130,7 @@ impl ForeignMessage {
     self.c = Some(v);
   }
   pub fn get_c(&self) -> i32 {
-    self.c.unwrap_or(0)
+    self.c.unwrap_or(0i32)
   }
 }
 impl ::std::default::Default for ForeignMessage {
@@ -2164,7 +2164,7 @@ impl ::pb_jelly::Message for ForeignMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.c {
       size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
@@ -2307,7 +2307,7 @@ impl TestMessage {
     self.optional_int32 = Some(v);
   }
   pub fn get_optional_int32(&self) -> i32 {
-    self.optional_int32.unwrap_or(0)
+    self.optional_int32.unwrap_or(0i32)
   }
   pub fn has_optional_int64(&self) -> bool {
     self.optional_int64.is_some()
@@ -2316,7 +2316,7 @@ impl TestMessage {
     self.optional_int64 = Some(v);
   }
   pub fn get_optional_int64(&self) -> i64 {
-    self.optional_int64.unwrap_or(0)
+    self.optional_int64.unwrap_or(0i64)
   }
   pub fn has_optional_uint32(&self) -> bool {
     self.optional_uint32.is_some()
@@ -2325,7 +2325,7 @@ impl TestMessage {
     self.optional_uint32 = Some(v);
   }
   pub fn get_optional_uint32(&self) -> u32 {
-    self.optional_uint32.unwrap_or(0)
+    self.optional_uint32.unwrap_or(0u32)
   }
   pub fn has_optional_uint64(&self) -> bool {
     self.optional_uint64.is_some()
@@ -2334,7 +2334,7 @@ impl TestMessage {
     self.optional_uint64 = Some(v);
   }
   pub fn get_optional_uint64(&self) -> u64 {
-    self.optional_uint64.unwrap_or(0)
+    self.optional_uint64.unwrap_or(0u64)
   }
   pub fn has_optional_fixed64(&self) -> bool {
     self.optional_fixed64.is_some()
@@ -2343,7 +2343,7 @@ impl TestMessage {
     self.optional_fixed64 = Some(::pb_jelly::Fixed64(v));
   }
   pub fn get_optional_fixed64(&self) -> u64 {
-    self.optional_fixed64.map(|v| v.0).unwrap_or(0)
+    self.optional_fixed64.map(|v| v.0).unwrap_or(0u64)
   }
   pub fn has_optional_fixed32(&self) -> bool {
     self.optional_fixed32.is_some()
@@ -2352,7 +2352,7 @@ impl TestMessage {
     self.optional_fixed32 = Some(::pb_jelly::Fixed32(v));
   }
   pub fn get_optional_fixed32(&self) -> u32 {
-    self.optional_fixed32.map(|v| v.0).unwrap_or(0)
+    self.optional_fixed32.map(|v| v.0).unwrap_or(0u32)
   }
   pub fn has_optional_sfixed64(&self) -> bool {
     self.optional_sfixed64.is_some()
@@ -2361,7 +2361,7 @@ impl TestMessage {
     self.optional_sfixed64 = Some(::pb_jelly::Sfixed64(v));
   }
   pub fn get_optional_sfixed64(&self) -> i64 {
-    self.optional_sfixed64.map(|v| v.0).unwrap_or(0)
+    self.optional_sfixed64.map(|v| v.0).unwrap_or(0i64)
   }
   pub fn has_optional_sfixed32(&self) -> bool {
     self.optional_sfixed32.is_some()
@@ -2370,7 +2370,7 @@ impl TestMessage {
     self.optional_sfixed32 = Some(::pb_jelly::Sfixed32(v));
   }
   pub fn get_optional_sfixed32(&self) -> i32 {
-    self.optional_sfixed32.map(|v| v.0).unwrap_or(0)
+    self.optional_sfixed32.map(|v| v.0).unwrap_or(0i32)
   }
   pub fn has_optional_double(&self) -> bool {
     self.optional_double.is_some()
@@ -2379,7 +2379,7 @@ impl TestMessage {
     self.optional_double = Some(v);
   }
   pub fn get_optional_double(&self) -> f64 {
-    self.optional_double.unwrap_or(0.)
+    self.optional_double.unwrap_or(0f64)
   }
   pub fn has_optional_bool(&self) -> bool {
     self.optional_bool.is_some()
@@ -2421,7 +2421,7 @@ impl TestMessage {
     self.optional_float = Some(v);
   }
   pub fn get_optional_float(&self) -> f32 {
-    self.optional_float.unwrap_or(0.)
+    self.optional_float.unwrap_or(0f32)
   }
   pub fn has_optional_foreign_message(&self) -> bool {
     self.optional_foreign_message.is_some()
@@ -3223,7 +3223,7 @@ impl ::pb_jelly::Message for TestMessage {
     })
   }
   fn compute_size(&self) -> usize {
-    let mut size = 0;
+    let mut size = 0usize;
     if let Some(ref val) = self.optional_int32 {
       size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
     }
