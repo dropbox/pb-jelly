@@ -5,6 +5,8 @@
 ### Nov 20, 2024
 * Add read-only support for proto2 extension fields (#163, #170)
 * Remove Python dependency by rewriting pb-jelly-gen in Rust (#164)
+* Make pb-jelly-gen Rust API optional (#166)
+  * This is a breaking change: if you were using pb-jelly-gen as a library, turn on the `generate` feature flag
 * Remove serde impls for Fixed/Signed types (#168)
 * Various optimizations around the generated code (#173, #175)
 
