@@ -8,7 +8,7 @@
 //! You can include `pb-jelly-gen` in your Cargo project, by including it as a `[build-dependency]` in your `Cargo.toml`
 //! ```toml
 //! [build-dependencies]
-//! pb-jelly-gen = "0.0.16"
+//! pb-jelly-gen = "0.0.17"
 //! ```
 //!
 //! Then from a [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html) script, use either the `GenProtos` builder struct,

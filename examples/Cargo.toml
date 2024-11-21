@@ -10,7 +10,7 @@ publish = false
 [dependencies]
 bytes = "1.0"
 compact_str = "0.5"
-pb-jelly = "0.0.16"
+pb-jelly = "0.0.17"
 proto_box_it = { path = "gen/rust/proto/proto_box_it" }
 proto_custom_type = { path = "gen/rust/proto/proto_custom_type" }
 proto_linked_list = { path = "gen/rust/proto/proto_linked_list" }

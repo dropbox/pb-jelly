@@ -1,6 +1,13 @@
 # Unreleased
 ... everything has been released!
 
+# 0.0.17
+### Nov 20, 2024
+* Add read-only support for proto2 extension fields (#163, #170)
+* Remove Python dependency by rewriting pb-jelly-gen in Rust (#164)
+* Remove serde impls for Fixed/Signed types (#168)
+* Various optimizations around the generated code (#173, #175)
+
 # 0.0.16
 ### Jan 18, 2024
 * Replace ctype=CORD with rust.blob extension field (#160)

@@ -62,7 +62,7 @@ There are only two crates you'll need: `pb-jelly` and `pb-jelly-gen`. <br />
 Contains all of the important traits and structs that power our generated code, e.g. `Message` and `Lazy`. Include this as a dependency, e.g.
 ```
 [dependencies]
-pb-jelly = "0.0.16"
+pb-jelly = "0.0.17"
 ```
 
 ##### `pb-jelly-gen`
@@ -75,7 +75,7 @@ You'll need to add a generation crate (see `examples_gen` for an example)
 Include `pb-jelly-gen` as a dependency of your generation crate, and `cargo run` to invoke protoc for you.
 ```
 [dependencies]
-pb-jelly-gen = "0.0.16"
+pb-jelly-gen = "0.0.17"
 ```
 
 Eventually, we hope to eliminate the need for a generation crate, and simply have generation occur

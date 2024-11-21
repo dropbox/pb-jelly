@@ -26,7 +26,7 @@ Add this crate as a dependency in your `Cargo.toml` and then call `gen_protos`:
 ##### `Cargo.toml`
 ```
 [dependencies]
-pb-jelly-gen = "0.0.16"
+pb-jelly-gen = "0.0.17"
 ```
 
 ##### `main.rs`
