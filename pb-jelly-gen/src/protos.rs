@@ -140,7 +140,7 @@ pub mod google {
             self.major = Some(v);
           }
           pub fn get_major(&self) -> i32 {
-            self.major.unwrap_or(0)
+            self.major.unwrap_or(0i32)
           }
           pub fn has_minor(&self) -> bool {
             self.minor.is_some()
@@ -149,7 +149,7 @@ pub mod google {
             self.minor = Some(v);
           }
           pub fn get_minor(&self) -> i32 {
-            self.minor.unwrap_or(0)
+            self.minor.unwrap_or(0i32)
           }
           pub fn has_patch(&self) -> bool {
             self.patch.is_some()
@@ -158,7 +158,7 @@ pub mod google {
             self.patch = Some(v);
           }
           pub fn get_patch(&self) -> i32 {
-            self.patch.unwrap_or(0)
+            self.patch.unwrap_or(0i32)
           }
           pub fn has_suffix(&self) -> bool {
             self.suffix.is_some()
@@ -234,7 +234,7 @@ pub mod google {
             })
           }
           fn compute_size(&self) -> usize {
-            let mut size = 0;
+            let mut size = 0usize;
             if let Some(ref val) = self.major {
               size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
             }
@@ -458,7 +458,7 @@ pub mod google {
             })
           }
           fn compute_size(&self) -> usize {
-            let mut size = 0;
+            let mut size = 0usize;
             for val in &self.file_to_generate {
               size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
@@ -581,7 +581,7 @@ pub mod google {
             self.supported_features = Some(v);
           }
           pub fn get_supported_features(&self) -> u64 {
-            self.supported_features.unwrap_or(0)
+            self.supported_features.unwrap_or(0u64)
           }
           pub fn set_file(&mut self, v: ::std::vec::Vec<CodeGeneratorResponse_File>) {
             self.file = v;
@@ -647,7 +647,7 @@ pub mod google {
             })
           }
           fn compute_size(&self) -> usize {
-            let mut size = 0;
+            let mut size = 0usize;
             if let Some(ref val) = self.error {
               size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
@@ -891,7 +891,7 @@ pub mod google {
             })
           }
           fn compute_size(&self) -> usize {
-            let mut size = 0;
+            let mut size = 0usize;
             if let Some(ref val) = self.name {
               size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
@@ -1777,7 +1777,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           for val in &self.file {
             size += ::pb_jelly::helpers::compute_size_field::<FileDescriptorProto>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -2140,7 +2140,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -2587,7 +2587,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -2767,7 +2767,7 @@ pub mod google {
           self.start = Some(v);
         }
         pub fn get_start(&self) -> i32 {
-          self.start.unwrap_or(0)
+          self.start.unwrap_or(0i32)
         }
         pub fn has_end(&self) -> bool {
           self.end.is_some()
@@ -2776,7 +2776,7 @@ pub mod google {
           self.end = Some(v);
         }
         pub fn get_end(&self) -> i32 {
-          self.end.unwrap_or(0)
+          self.end.unwrap_or(0i32)
         }
         pub fn has_options(&self) -> bool {
           self.options.is_some()
@@ -2842,7 +2842,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.start {
             size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -2933,7 +2933,7 @@ pub mod google {
           self.start = Some(v);
         }
         pub fn get_start(&self) -> i32 {
-          self.start.unwrap_or(0)
+          self.start.unwrap_or(0i32)
         }
         pub fn has_end(&self) -> bool {
           self.end.is_some()
@@ -2942,7 +2942,7 @@ pub mod google {
           self.end = Some(v);
         }
         pub fn get_end(&self) -> i32 {
-          self.end.unwrap_or(0)
+          self.end.unwrap_or(0i32)
         }
       }
       impl ::std::default::Default for DescriptorProto_ReservedRange {
@@ -2986,7 +2986,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.start {
             size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -3098,7 +3098,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -3231,7 +3231,7 @@ pub mod google {
           self.number = Some(v);
         }
         pub fn get_number(&self) -> i32 {
-          self.number.unwrap_or(0)
+          self.number.unwrap_or(0i32)
         }
         pub fn has_label(&self) -> bool {
           self.label.is_some()
@@ -3294,7 +3294,7 @@ pub mod google {
           self.oneof_index = Some(v);
         }
         pub fn get_oneof_index(&self) -> i32 {
-          self.oneof_index.unwrap_or(0)
+          self.oneof_index.unwrap_or(0i32)
         }
         pub fn has_json_name(&self) -> bool {
           self.json_name.is_some()
@@ -3461,7 +3461,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -3711,7 +3711,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -3918,7 +3918,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -4038,7 +4038,7 @@ pub mod google {
           self.start = Some(v);
         }
         pub fn get_start(&self) -> i32 {
-          self.start.unwrap_or(0)
+          self.start.unwrap_or(0i32)
         }
         pub fn has_end(&self) -> bool {
           self.end.is_some()
@@ -4047,7 +4047,7 @@ pub mod google {
           self.end = Some(v);
         }
         pub fn get_end(&self) -> i32 {
-          self.end.unwrap_or(0)
+          self.end.unwrap_or(0i32)
         }
       }
       impl ::std::default::Default for EnumDescriptorProto_EnumReservedRange {
@@ -4091,7 +4091,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.start {
             size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -4178,7 +4178,7 @@ pub mod google {
           self.number = Some(v);
         }
         pub fn get_number(&self) -> i32 {
-          self.number.unwrap_or(0)
+          self.number.unwrap_or(0i32)
         }
         pub fn has_options(&self) -> bool {
           self.options.is_some()
@@ -4244,7 +4244,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -4413,7 +4413,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -4649,7 +4649,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -5337,7 +5337,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.java_package {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -5832,7 +5832,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.message_set_wire_format {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -6166,7 +6166,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.ctype {
             size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_CType>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -6353,7 +6353,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -6508,7 +6508,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.allow_alias {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 2, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -6667,7 +6667,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -6818,7 +6818,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 33, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -6989,7 +6989,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 33, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -7122,7 +7122,7 @@ pub mod google {
           self.positive_int_value = Some(v);
         }
         pub fn get_positive_int_value(&self) -> u64 {
-          self.positive_int_value.unwrap_or(0)
+          self.positive_int_value.unwrap_or(0u64)
         }
         pub fn has_negative_int_value(&self) -> bool {
           self.negative_int_value.is_some()
@@ -7131,7 +7131,7 @@ pub mod google {
           self.negative_int_value = Some(v);
         }
         pub fn get_negative_int_value(&self) -> i64 {
-          self.negative_int_value.unwrap_or(0)
+          self.negative_int_value.unwrap_or(0i64)
         }
         pub fn has_double_value(&self) -> bool {
           self.double_value.is_some()
@@ -7140,7 +7140,7 @@ pub mod google {
           self.double_value = Some(v);
         }
         pub fn get_double_value(&self) -> f64 {
-          self.double_value.unwrap_or(0.)
+          self.double_value.unwrap_or(0f64)
         }
         pub fn has_string_value(&self) -> bool {
           self.string_value.is_some()
@@ -7258,7 +7258,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           for val in &self.name {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption_NamePart>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -7457,7 +7457,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if let Some(ref val) = self.name_part {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -7614,7 +7614,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           for val in &self.location {
             size += ::pb_jelly::helpers::compute_size_field::<SourceCodeInfo_Location>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -7877,9 +7877,9 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if !self.path.is_empty() {
-            let mut path_size = 0;
+            let mut path_size = 0usize;
             for val in &self.path {
               path_size += ::pb_jelly::Message::compute_size(val);
             }
@@ -7888,7 +7888,7 @@ pub mod google {
             size += path_size;
           }
           if !self.span.is_empty() {
-            let mut span_size = 0;
+            let mut span_size = 0usize;
             for val in &self.span {
               span_size += ::pb_jelly::Message::compute_size(val);
             }
@@ -7909,7 +7909,7 @@ pub mod google {
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if !self.path.is_empty() {
-            let mut size = 0;
+            let mut size = 0usize;
             for val in &self.path {
               size += ::pb_jelly::Message::compute_size(val);
             }
@@ -7920,7 +7920,7 @@ pub mod google {
             }
           }
           if !self.span.is_empty() {
-            let mut size = 0;
+            let mut size = 0usize;
             for val in &self.span {
               size += ::pb_jelly::Message::compute_size(val);
             }
@@ -8056,7 +8056,7 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           for val in &self.annotation {
             size += ::pb_jelly::helpers::compute_size_field::<GeneratedCodeInfo_Annotation>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -8150,7 +8150,7 @@ pub mod google {
           self.begin = Some(v);
         }
         pub fn get_begin(&self) -> i32 {
-          self.begin.unwrap_or(0)
+          self.begin.unwrap_or(0i32)
         }
         pub fn has_end(&self) -> bool {
           self.end.is_some()
@@ -8159,7 +8159,7 @@ pub mod google {
           self.end = Some(v);
         }
         pub fn get_end(&self) -> i32 {
-          self.end.unwrap_or(0)
+          self.end.unwrap_or(0i32)
         }
       }
       impl ::std::default::Default for GeneratedCodeInfo_Annotation {
@@ -8223,9 +8223,9 @@ pub mod google {
           })
         }
         fn compute_size(&self) -> usize {
-          let mut size = 0;
+          let mut size = 0usize;
           if !self.path.is_empty() {
-            let mut path_size = 0;
+            let mut path_size = 0usize;
             for val in &self.path {
               path_size += ::pb_jelly::Message::compute_size(val);
             }
@@ -8246,7 +8246,7 @@ pub mod google {
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if !self.path.is_empty() {
-            let mut size = 0;
+            let mut size = 0usize;
             for val in &self.path {
               size += ::pb_jelly::Message::compute_size(val);
             }
