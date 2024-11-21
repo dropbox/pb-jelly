@@ -1,0 +1,8 @@
+[workspace]
+members = ["pb-jelly", "pb-jelly-gen", "pb-test", "pb-test/pb_test_gen", "examples/examples_gen"]
+# Generated protos for examples aren't checked in, which interferes with the workspace
+exclude = ["examples", "pb-test/gen/pb-jelly"]
+
+# Override pb-jelly dependency for generated crates as well
+[patch.crates-io]
+pb-jelly = { path = "pb-jelly" }

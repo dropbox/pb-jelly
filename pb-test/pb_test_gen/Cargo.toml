@@ -1,5 +1,5 @@
 [package]
-name = "examples_gen"
+name = "pb_test_gen"
 version = "0.1.0"
 authors = ["Parker Timmerman <parkertimmerman@dropbox.com>"]
 edition = "2018"
@@ -17,7 +17,3 @@ protobuf-codegen = { version = "3.3", optional = true }
 [features]
 bench_prost = ["prost-build"]
 bench_rust_protobuf = ["protobuf-codegen"]
-
-# Override pb-jelly dependency for generated crates as well
-[patch.crates-io]
-pb-jelly = { path = "../../pb-jelly" }
