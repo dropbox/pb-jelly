@@ -144,7 +144,7 @@ impl<T: Extensible, U: Message> Extension for RepeatedExtension<T, U> {
             let mut msg = U::default();
             if wire_format == wire_format::Type::LengthDelimited {
                 let length = varint::read(&mut buf)?.expect("corrupted Unrecognized");
-                msg.deserialize(&mut buf.split(length as usize))?;
+                msg.deserialize(&mut PbBufferReader::split(&mut buf, length as usize))?;
             } else {
                 // we rely on the fact that the appropriate `Message` impls for i32/Fixed32/etc. only read the prefix of
                 // `buf`. this is a little dirty
