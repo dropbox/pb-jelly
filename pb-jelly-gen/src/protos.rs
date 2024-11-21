@@ -33,7 +33,8 @@ pub mod google {
         impl CodeGeneratorResponse_Feature {
           pub const FEATURE_NONE: CodeGeneratorResponse_Feature = CodeGeneratorResponse_Feature(0);
           pub const FEATURE_PROTO3_OPTIONAL: CodeGeneratorResponse_Feature = CodeGeneratorResponse_Feature(1);
-          pub const KNOWN_VARIANTS: [CodeGeneratorResponse_Feature; 2] = [CodeGeneratorResponse_Feature::FEATURE_NONE, CodeGeneratorResponse_Feature::FEATURE_PROTO3_OPTIONAL];
+          pub const FEATURE_SUPPORTS_EDITIONS: CodeGeneratorResponse_Feature = CodeGeneratorResponse_Feature(2);
+          pub const KNOWN_VARIANTS: [CodeGeneratorResponse_Feature; 3] = [CodeGeneratorResponse_Feature::FEATURE_NONE, CodeGeneratorResponse_Feature::FEATURE_PROTO3_OPTIONAL, CodeGeneratorResponse_Feature::FEATURE_SUPPORTS_EDITIONS];
           pub const fn value(self) -> i32 {
             self.0
           }
@@ -66,6 +67,7 @@ pub mod google {
             match self {
               CodeGeneratorResponse_Feature::FEATURE_NONE => ::std::option::Option::Some(CodeGeneratorResponse_Feature_Closed::FEATURE_NONE),
               CodeGeneratorResponse_Feature::FEATURE_PROTO3_OPTIONAL => ::std::option::Option::Some(CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL),
+              CodeGeneratorResponse_Feature::FEATURE_SUPPORTS_EDITIONS => ::std::option::Option::Some(CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS),
               _ => None,
             }
           }
@@ -84,9 +86,10 @@ pub mod google {
         pub enum CodeGeneratorResponse_Feature_Closed {
           FEATURE_NONE = 0,
           FEATURE_PROTO3_OPTIONAL = 1,
+          FEATURE_SUPPORTS_EDITIONS = 2,
         }
         impl CodeGeneratorResponse_Feature_Closed {
-          pub const KNOWN_VARIANTS: [CodeGeneratorResponse_Feature_Closed; 2] = [CodeGeneratorResponse_Feature_Closed::FEATURE_NONE, CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL];
+          pub const KNOWN_VARIANTS: [CodeGeneratorResponse_Feature_Closed; 3] = [CodeGeneratorResponse_Feature_Closed::FEATURE_NONE, CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL, CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS];
         }
         impl ::std::default::Default for CodeGeneratorResponse_Feature_Closed {
           fn default() -> Self {
@@ -98,6 +101,7 @@ pub mod google {
             match v {
               CodeGeneratorResponse_Feature_Closed::FEATURE_NONE => 0,
               CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL => 1,
+              CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS => 2,
             }
           }
         }
@@ -107,6 +111,7 @@ pub mod google {
             match v {
               0 => Ok(CodeGeneratorResponse_Feature_Closed::FEATURE_NONE),
               1 => Ok(CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL),
+              2 => Ok(CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS),
               _ => Err(v),
             }
           }
@@ -118,6 +123,7 @@ pub mod google {
             match self {
               CodeGeneratorResponse_Feature_Closed::FEATURE_NONE => "FEATURE_NONE",
               CodeGeneratorResponse_Feature_Closed::FEATURE_PROTO3_OPTIONAL => "FEATURE_PROTO3_OPTIONAL",
+              CodeGeneratorResponse_Feature_Closed::FEATURE_SUPPORTS_EDITIONS => "FEATURE_SUPPORTS_EDITIONS",
             }
           }
         }
@@ -333,6 +339,11 @@ pub mod google {
           /// they import.  The files will appear in topological order, so each file
           /// appears before any file that imports it.
         
+          /// Note: the files listed in files_to_generate will include runtime-retention
+          /// options only, but all other files will include source-retention options.
+          /// The source_file_descriptors field below is available in case you need
+          /// source-retention options for files_to_generate.
+        
           /// protoc guarantees that all proto_files will be written after
           /// the fields above, even though this is not technically guaranteed by the
           /// protobuf wire format.  This theoretically could allow a plugin to stream
@@ -344,6 +355,10 @@ pub mod google {
           /// Type names of fields and extensions in the FileDescriptorProto are always
           /// fully qualified.
           pub proto_file: ::std::vec::Vec<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>,
+          /// File descriptors with all options, including source-retention options.
+          /// These descriptors are only provided for the files listed in
+          /// files_to_generate.
+          pub source_file_descriptors: ::std::vec::Vec<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>,
           /// The version number of protocol compiler.
           pub compiler_version: ::std::option::Option<Version>,
         }
@@ -384,6 +399,18 @@ pub mod google {
           pub fn mut_proto_file(&mut self) -> &mut ::std::vec::Vec<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto> {
             &mut self.proto_file
           }
+          pub fn set_source_file_descriptors(&mut self, v: ::std::vec::Vec<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>) {
+            self.source_file_descriptors = v;
+          }
+          pub fn take_source_file_descriptors(&mut self) -> ::std::vec::Vec<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto> {
+            ::std::mem::take(&mut self.source_file_descriptors)
+          }
+          pub fn get_source_file_descriptors(&self) -> &[super::super::super::super::google::protobuf::descriptor::FileDescriptorProto] {
+            &self.source_file_descriptors
+          }
+          pub fn mut_source_file_descriptors(&mut self) -> &mut ::std::vec::Vec<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto> {
+            &mut self.source_file_descriptors
+          }
           pub fn has_compiler_version(&self) -> bool {
             self.compiler_version.is_some()
           }
@@ -403,6 +430,7 @@ pub mod google {
               file_to_generate: ::std::default::Default::default(),
               parameter: ::std::default::Default::default(),
               proto_file: ::std::default::Default::default(),
+              source_file_descriptors: ::std::default::Default::default(),
               compiler_version: ::std::default::Default::default(),
             }
           }
@@ -444,9 +472,18 @@ pub mod google {
                   oneof_index: None,
                 },
                 ::pb_jelly::FieldDescriptor {
+                  name: "source_file_descriptors",
+                  full_name: "google.protobuf.compiler.CodeGeneratorRequest.source_file_descriptors",
+                  index: 3,
+                  number: 17,
+                  typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                  label: ::pb_jelly::Label::Repeated,
+                  oneof_index: None,
+                },
+                ::pb_jelly::FieldDescriptor {
                   name: "compiler_version",
                   full_name: "google.protobuf.compiler.CodeGeneratorRequest.compiler_version",
-                  index: 3,
+                  index: 4,
                   number: 3,
                   typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                   label: ::pb_jelly::Label::Optional,
@@ -468,6 +505,9 @@ pub mod google {
             for val in &self.proto_file {
               size += ::pb_jelly::helpers::compute_size_field::<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(val, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
+            for val in &self.source_file_descriptors {
+              size += ::pb_jelly::helpers::compute_size_field::<super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(val, 17, ::pb_jelly::wire_format::Type::LengthDelimited);
+            }
             if let Some(ref val) = self.compiler_version {
               size += ::pb_jelly::helpers::compute_size_field::<Version>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
@@ -486,6 +526,9 @@ pub mod google {
             for val in &self.proto_file {
               ::pb_jelly::helpers::serialize_field::<W, super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(w, val, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
             }
+            for val in &self.source_file_descriptors {
+              ::pb_jelly::helpers::serialize_field::<W, super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(w, val, 17, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+            }
             Ok(())
           }
           fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -502,6 +545,10 @@ pub mod google {
                 15 => {
                   let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(buf, typ, "CodeGeneratorRequest", 15)?;
                   self.proto_file.push(val);
+                }
+                17 => {
+                  let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, super::super::super::super::google::protobuf::descriptor::FileDescriptorProto>(buf, typ, "CodeGeneratorRequest", 17)?;
+                  self.source_file_descriptors.push(val);
                 }
                 3 => {
                   let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, Version>(buf, typ, "CodeGeneratorRequest", 3)?;
@@ -534,6 +581,9 @@ pub mod google {
               "proto_file" => {
                 unimplemented!("Repeated fields are not currently supported.")
               }
+              "source_file_descriptors" => {
+                unimplemented!("Repeated fields are not currently supported.")
+              }
               "compiler_version" => {
                 ::pb_jelly::reflection::FieldMut::Value(self.compiler_version.get_or_insert_with(::std::default::Default::default))
               }
@@ -559,6 +609,16 @@ pub mod google {
           /// A bitmask of supported features that the code generator supports.
           /// This is a bitwise "or" of values from the Feature enum.
           pub supported_features: ::std::option::Option<u64>,
+          /// The minimum edition this plugin supports.  This will be treated as an
+          /// Edition enum, but we want to allow unknown values.  It should be specified
+          /// according the edition enum value, *not* the edition number.  Only takes
+          /// effect for plugins that have FEATURE_SUPPORTS_EDITIONS set.
+          pub minimum_edition: ::std::option::Option<i32>,
+          /// The maximum edition this plugin supports.  This will be treated as an
+          /// Edition enum, but we want to allow unknown values.  It should be specified
+          /// according the edition enum value, *not* the edition number.  Only takes
+          /// effect for plugins that have FEATURE_SUPPORTS_EDITIONS set.
+          pub maximum_edition: ::std::option::Option<i32>,
           pub file: ::std::vec::Vec<CodeGeneratorResponse_File>,
         }
         impl CodeGeneratorResponse {
@@ -583,6 +643,24 @@ pub mod google {
           pub fn get_supported_features(&self) -> u64 {
             self.supported_features.unwrap_or(0u64)
           }
+          pub fn has_minimum_edition(&self) -> bool {
+            self.minimum_edition.is_some()
+          }
+          pub fn set_minimum_edition(&mut self, v: i32) {
+            self.minimum_edition = Some(v);
+          }
+          pub fn get_minimum_edition(&self) -> i32 {
+            self.minimum_edition.unwrap_or(0i32)
+          }
+          pub fn has_maximum_edition(&self) -> bool {
+            self.maximum_edition.is_some()
+          }
+          pub fn set_maximum_edition(&mut self, v: i32) {
+            self.maximum_edition = Some(v);
+          }
+          pub fn get_maximum_edition(&self) -> i32 {
+            self.maximum_edition.unwrap_or(0i32)
+          }
           pub fn set_file(&mut self, v: ::std::vec::Vec<CodeGeneratorResponse_File>) {
             self.file = v;
           }
@@ -601,6 +679,8 @@ pub mod google {
             CodeGeneratorResponse {
               error: ::std::default::Default::default(),
               supported_features: ::std::default::Default::default(),
+              minimum_edition: ::std::default::Default::default(),
+              maximum_edition: ::std::default::Default::default(),
               file: ::std::default::Default::default(),
             }
           }
@@ -633,9 +713,27 @@ pub mod google {
                   oneof_index: None,
                 },
                 ::pb_jelly::FieldDescriptor {
+                  name: "minimum_edition",
+                  full_name: "google.protobuf.compiler.CodeGeneratorResponse.minimum_edition",
+                  index: 2,
+                  number: 3,
+                  typ: ::pb_jelly::wire_format::Type::Varint,
+                  label: ::pb_jelly::Label::Optional,
+                  oneof_index: None,
+                },
+                ::pb_jelly::FieldDescriptor {
+                  name: "maximum_edition",
+                  full_name: "google.protobuf.compiler.CodeGeneratorResponse.maximum_edition",
+                  index: 3,
+                  number: 4,
+                  typ: ::pb_jelly::wire_format::Type::Varint,
+                  label: ::pb_jelly::Label::Optional,
+                  oneof_index: None,
+                },
+                ::pb_jelly::FieldDescriptor {
                   name: "file",
                   full_name: "google.protobuf.compiler.CodeGeneratorResponse.file",
-                  index: 2,
+                  index: 4,
                   number: 15,
                   typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                   label: ::pb_jelly::Label::Repeated,
@@ -654,6 +752,12 @@ pub mod google {
             if let Some(ref val) = self.supported_features {
               size += ::pb_jelly::helpers::compute_size_field::<u64>(val, 2, ::pb_jelly::wire_format::Type::Varint);
             }
+            if let Some(ref val) = self.minimum_edition {
+              size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 3, ::pb_jelly::wire_format::Type::Varint);
+            }
+            if let Some(ref val) = self.maximum_edition {
+              size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 4, ::pb_jelly::wire_format::Type::Varint);
+            }
             for val in &self.file {
               size += ::pb_jelly::helpers::compute_size_field::<CodeGeneratorResponse_File>(val, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
             }
@@ -665,6 +769,12 @@ pub mod google {
             }
             if let Some(ref val) = self.supported_features {
               ::pb_jelly::helpers::serialize_field::<W, u64>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
+            }
+            if let Some(ref val) = self.minimum_edition {
+              ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+            }
+            if let Some(ref val) = self.maximum_edition {
+              ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
             }
             for val in &self.file {
               ::pb_jelly::helpers::serialize_field::<W, CodeGeneratorResponse_File>(w, val, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
@@ -681,6 +791,14 @@ pub mod google {
                 2 => {
                   let val = ::pb_jelly::helpers::deserialize_known_length::<B, u64>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "CodeGeneratorResponse", 2)?;
                   self.supported_features = Some(val);
+                }
+                3 => {
+                  let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "CodeGeneratorResponse", 3)?;
+                  self.minimum_edition = Some(val);
+                }
+                4 => {
+                  let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "CodeGeneratorResponse", 4)?;
+                  self.maximum_edition = Some(val);
                 }
                 15 => {
                   let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, CodeGeneratorResponse_File>(buf, typ, "CodeGeneratorResponse", 15)?;
@@ -709,6 +827,12 @@ pub mod google {
               }
               "supported_features" => {
                 ::pb_jelly::reflection::FieldMut::Value(self.supported_features.get_or_insert_with(::std::default::Default::default))
+              }
+              "minimum_edition" => {
+                ::pb_jelly::reflection::FieldMut::Value(self.minimum_edition.get_or_insert_with(::std::default::Default::default))
+              }
+              "maximum_edition" => {
+                ::pb_jelly::reflection::FieldMut::Value(self.maximum_edition.get_or_insert_with(::std::default::Default::default))
               }
               "file" => {
                 unimplemented!("Repeated fields are not currently supported.")
@@ -978,6 +1102,290 @@ pub mod google {
         }}
 }
     pub mod descriptor {
+      /// The full set of known editions.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct Edition(i32);
+      impl Edition {
+        /// A placeholder for an unknown edition value.
+        pub const EDITION_UNKNOWN: Edition = Edition(0);
+        /// A placeholder edition for specifying default behaviors *before* a feature
+        /// was first introduced.  This is effectively an "infinite past".
+        pub const EDITION_LEGACY: Edition = Edition(900);
+        /// Legacy syntax "editions".  These pre-date editions, but behave much like
+        /// distinct editions.  These can't be used to specify the edition of proto
+        /// files, but feature definitions must supply proto2/proto3 defaults for
+        /// backwards compatibility.
+        pub const EDITION_PROTO2: Edition = Edition(998);
+        pub const EDITION_PROTO3: Edition = Edition(999);
+        /// Editions that have been released.  The specific values are arbitrary and
+        /// should not be depended on, but they will always be time-ordered for easy
+        /// comparison.
+        pub const EDITION_2023: Edition = Edition(1000);
+        pub const EDITION_2024: Edition = Edition(1001);
+        /// Placeholder editions for testing feature resolution.  These should not be
+        /// used or relyed on outside of tests.
+        pub const EDITION_1_TEST_ONLY: Edition = Edition(1);
+        pub const EDITION_2_TEST_ONLY: Edition = Edition(2);
+        pub const EDITION_99997_TEST_ONLY: Edition = Edition(99997);
+        pub const EDITION_99998_TEST_ONLY: Edition = Edition(99998);
+        pub const EDITION_99999_TEST_ONLY: Edition = Edition(99999);
+        /// Placeholder for specifying unbounded edition support.  This should only
+        /// ever be used by plugins that can expect to never require any changes to
+        /// support a new edition.
+        pub const EDITION_MAX: Edition = Edition(2147483647);
+        pub const KNOWN_VARIANTS: [Edition; 12] = [Edition::EDITION_UNKNOWN, Edition::EDITION_LEGACY, Edition::EDITION_PROTO2, Edition::EDITION_PROTO3, Edition::EDITION_2023, Edition::EDITION_2024, Edition::EDITION_1_TEST_ONLY, Edition::EDITION_2_TEST_ONLY, Edition::EDITION_99997_TEST_ONLY, Edition::EDITION_99998_TEST_ONLY, Edition::EDITION_99999_TEST_ONLY, Edition::EDITION_MAX];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for Edition {
+        fn default() -> Self {
+          Edition::EDITION_UNKNOWN
+        }
+      }
+      impl From<Edition> for i32 {
+        fn from(v: Edition) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for Edition {
+        fn from(v: i32) -> Edition {
+          Edition(v)
+        }
+      }
+      impl From<Edition_Closed> for Edition {
+        fn from(v: Edition_Closed) -> Edition {
+          Edition(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for Edition {
+      }
+      impl ::pb_jelly::OpenProtoEnum for Edition {
+        type Closed = Edition_Closed;
+        fn into_known(self) -> ::std::option::Option<Edition_Closed> {
+          match self {
+            Edition::EDITION_UNKNOWN => ::std::option::Option::Some(Edition_Closed::EDITION_UNKNOWN),
+            Edition::EDITION_LEGACY => ::std::option::Option::Some(Edition_Closed::EDITION_LEGACY),
+            Edition::EDITION_PROTO2 => ::std::option::Option::Some(Edition_Closed::EDITION_PROTO2),
+            Edition::EDITION_PROTO3 => ::std::option::Option::Some(Edition_Closed::EDITION_PROTO3),
+            Edition::EDITION_2023 => ::std::option::Option::Some(Edition_Closed::EDITION_2023),
+            Edition::EDITION_2024 => ::std::option::Option::Some(Edition_Closed::EDITION_2024),
+            Edition::EDITION_1_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_1_TEST_ONLY),
+            Edition::EDITION_2_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_2_TEST_ONLY),
+            Edition::EDITION_99997_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99997_TEST_ONLY),
+            Edition::EDITION_99998_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99998_TEST_ONLY),
+            Edition::EDITION_99999_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99999_TEST_ONLY),
+            Edition::EDITION_MAX => ::std::option::Option::Some(Edition_Closed::EDITION_MAX),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for Edition {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      /// The full set of known editions.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum Edition_Closed {
+        /// A placeholder for an unknown edition value.
+        EDITION_UNKNOWN = 0,
+        /// A placeholder edition for specifying default behaviors *before* a feature
+        /// was first introduced.  This is effectively an "infinite past".
+        EDITION_LEGACY = 900,
+        /// Legacy syntax "editions".  These pre-date editions, but behave much like
+        /// distinct editions.  These can't be used to specify the edition of proto
+        /// files, but feature definitions must supply proto2/proto3 defaults for
+        /// backwards compatibility.
+        EDITION_PROTO2 = 998,
+        EDITION_PROTO3 = 999,
+        /// Editions that have been released.  The specific values are arbitrary and
+        /// should not be depended on, but they will always be time-ordered for easy
+        /// comparison.
+        EDITION_2023 = 1000,
+        EDITION_2024 = 1001,
+        /// Placeholder editions for testing feature resolution.  These should not be
+        /// used or relyed on outside of tests.
+        EDITION_1_TEST_ONLY = 1,
+        EDITION_2_TEST_ONLY = 2,
+        EDITION_99997_TEST_ONLY = 99997,
+        EDITION_99998_TEST_ONLY = 99998,
+        EDITION_99999_TEST_ONLY = 99999,
+        /// Placeholder for specifying unbounded edition support.  This should only
+        /// ever be used by plugins that can expect to never require any changes to
+        /// support a new edition.
+        EDITION_MAX = 2147483647,
+      }
+      impl Edition_Closed {
+        pub const KNOWN_VARIANTS: [Edition_Closed; 12] = [Edition_Closed::EDITION_UNKNOWN, Edition_Closed::EDITION_LEGACY, Edition_Closed::EDITION_PROTO2, Edition_Closed::EDITION_PROTO3, Edition_Closed::EDITION_2023, Edition_Closed::EDITION_2024, Edition_Closed::EDITION_1_TEST_ONLY, Edition_Closed::EDITION_2_TEST_ONLY, Edition_Closed::EDITION_99997_TEST_ONLY, Edition_Closed::EDITION_99998_TEST_ONLY, Edition_Closed::EDITION_99999_TEST_ONLY, Edition_Closed::EDITION_MAX];
+      }
+      impl ::std::default::Default for Edition_Closed {
+        fn default() -> Self {
+          Edition_Closed::EDITION_UNKNOWN
+        }
+      }
+      impl From<Edition_Closed> for i32 {
+        fn from(v: Edition_Closed) -> i32 {
+          match v {
+            Edition_Closed::EDITION_UNKNOWN => 0,
+            Edition_Closed::EDITION_LEGACY => 900,
+            Edition_Closed::EDITION_PROTO2 => 998,
+            Edition_Closed::EDITION_PROTO3 => 999,
+            Edition_Closed::EDITION_2023 => 1000,
+            Edition_Closed::EDITION_2024 => 1001,
+            Edition_Closed::EDITION_1_TEST_ONLY => 1,
+            Edition_Closed::EDITION_2_TEST_ONLY => 2,
+            Edition_Closed::EDITION_99997_TEST_ONLY => 99997,
+            Edition_Closed::EDITION_99998_TEST_ONLY => 99998,
+            Edition_Closed::EDITION_99999_TEST_ONLY => 99999,
+            Edition_Closed::EDITION_MAX => 2147483647,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for Edition_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(Edition_Closed::EDITION_UNKNOWN),
+            900 => Ok(Edition_Closed::EDITION_LEGACY),
+            998 => Ok(Edition_Closed::EDITION_PROTO2),
+            999 => Ok(Edition_Closed::EDITION_PROTO3),
+            1000 => Ok(Edition_Closed::EDITION_2023),
+            1001 => Ok(Edition_Closed::EDITION_2024),
+            1 => Ok(Edition_Closed::EDITION_1_TEST_ONLY),
+            2 => Ok(Edition_Closed::EDITION_2_TEST_ONLY),
+            99997 => Ok(Edition_Closed::EDITION_99997_TEST_ONLY),
+            99998 => Ok(Edition_Closed::EDITION_99998_TEST_ONLY),
+            99999 => Ok(Edition_Closed::EDITION_99999_TEST_ONLY),
+            2147483647 => Ok(Edition_Closed::EDITION_MAX),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for Edition_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for Edition_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            Edition_Closed::EDITION_UNKNOWN => "EDITION_UNKNOWN",
+            Edition_Closed::EDITION_LEGACY => "EDITION_LEGACY",
+            Edition_Closed::EDITION_PROTO2 => "EDITION_PROTO2",
+            Edition_Closed::EDITION_PROTO3 => "EDITION_PROTO3",
+            Edition_Closed::EDITION_2023 => "EDITION_2023",
+            Edition_Closed::EDITION_2024 => "EDITION_2024",
+            Edition_Closed::EDITION_1_TEST_ONLY => "EDITION_1_TEST_ONLY",
+            Edition_Closed::EDITION_2_TEST_ONLY => "EDITION_2_TEST_ONLY",
+            Edition_Closed::EDITION_99997_TEST_ONLY => "EDITION_99997_TEST_ONLY",
+            Edition_Closed::EDITION_99998_TEST_ONLY => "EDITION_99998_TEST_ONLY",
+            Edition_Closed::EDITION_99999_TEST_ONLY => "EDITION_99999_TEST_ONLY",
+            Edition_Closed::EDITION_MAX => "EDITION_MAX",
+          }
+        }
+      }
+      
+      /// The verification state of the extension range.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct ExtensionRangeOptions_VerificationState(i32);
+      impl ExtensionRangeOptions_VerificationState {
+        /// All the extensions of the range must be declared.
+        pub const DECLARATION: ExtensionRangeOptions_VerificationState = ExtensionRangeOptions_VerificationState(0);
+        pub const UNVERIFIED: ExtensionRangeOptions_VerificationState = ExtensionRangeOptions_VerificationState(1);
+        pub const KNOWN_VARIANTS: [ExtensionRangeOptions_VerificationState; 2] = [ExtensionRangeOptions_VerificationState::DECLARATION, ExtensionRangeOptions_VerificationState::UNVERIFIED];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for ExtensionRangeOptions_VerificationState {
+        fn default() -> Self {
+          ExtensionRangeOptions_VerificationState::DECLARATION
+        }
+      }
+      impl From<ExtensionRangeOptions_VerificationState> for i32 {
+        fn from(v: ExtensionRangeOptions_VerificationState) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for ExtensionRangeOptions_VerificationState {
+        fn from(v: i32) -> ExtensionRangeOptions_VerificationState {
+          ExtensionRangeOptions_VerificationState(v)
+        }
+      }
+      impl From<ExtensionRangeOptions_VerificationState_Closed> for ExtensionRangeOptions_VerificationState {
+        fn from(v: ExtensionRangeOptions_VerificationState_Closed) -> ExtensionRangeOptions_VerificationState {
+          ExtensionRangeOptions_VerificationState(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for ExtensionRangeOptions_VerificationState {
+      }
+      impl ::pb_jelly::OpenProtoEnum for ExtensionRangeOptions_VerificationState {
+        type Closed = ExtensionRangeOptions_VerificationState_Closed;
+        fn into_known(self) -> ::std::option::Option<ExtensionRangeOptions_VerificationState_Closed> {
+          match self {
+            ExtensionRangeOptions_VerificationState::DECLARATION => ::std::option::Option::Some(ExtensionRangeOptions_VerificationState_Closed::DECLARATION),
+            ExtensionRangeOptions_VerificationState::UNVERIFIED => ::std::option::Option::Some(ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for ExtensionRangeOptions_VerificationState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      /// The verification state of the extension range.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum ExtensionRangeOptions_VerificationState_Closed {
+        /// All the extensions of the range must be declared.
+        DECLARATION = 0,
+        UNVERIFIED = 1,
+      }
+      impl ExtensionRangeOptions_VerificationState_Closed {
+        pub const KNOWN_VARIANTS: [ExtensionRangeOptions_VerificationState_Closed; 2] = [ExtensionRangeOptions_VerificationState_Closed::DECLARATION, ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED];
+      }
+      impl ::std::default::Default for ExtensionRangeOptions_VerificationState_Closed {
+        fn default() -> Self {
+          ExtensionRangeOptions_VerificationState_Closed::DECLARATION
+        }
+      }
+      impl From<ExtensionRangeOptions_VerificationState_Closed> for i32 {
+        fn from(v: ExtensionRangeOptions_VerificationState_Closed) -> i32 {
+          match v {
+            ExtensionRangeOptions_VerificationState_Closed::DECLARATION => 0,
+            ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED => 1,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for ExtensionRangeOptions_VerificationState_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(ExtensionRangeOptions_VerificationState_Closed::DECLARATION),
+            1 => Ok(ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for ExtensionRangeOptions_VerificationState_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for ExtensionRangeOptions_VerificationState_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            ExtensionRangeOptions_VerificationState_Closed::DECLARATION => "DECLARATION",
+            ExtensionRangeOptions_VerificationState_Closed::UNVERIFIED => "UNVERIFIED",
+          }
+        }
+      }
+      
       #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
       #[repr(transparent)]
       pub struct FieldDescriptorProto_Type(i32);
@@ -998,9 +1406,10 @@ pub mod google {
         pub const TYPE_BOOL: FieldDescriptorProto_Type = FieldDescriptorProto_Type(8);
         pub const TYPE_STRING: FieldDescriptorProto_Type = FieldDescriptorProto_Type(9);
         /// Tag-delimited aggregate.
-        /// Group type is deprecated and not supported in proto3. However, Proto3
+        /// Group type is deprecated and not supported after google.protobuf. However, Proto3
         /// implementations should still be able to parse the group wire format and
-        /// treat group fields as unknown fields.
+        /// treat group fields as unknown fields.  In Editions, the group wire format
+        /// can be enabled via the `message_encoding` feature.
         pub const TYPE_GROUP: FieldDescriptorProto_Type = FieldDescriptorProto_Type(10);
         /// Length-delimited aggregate.
         pub const TYPE_MESSAGE: FieldDescriptorProto_Type = FieldDescriptorProto_Type(11);
@@ -1094,9 +1503,10 @@ pub mod google {
         TYPE_BOOL = 8,
         TYPE_STRING = 9,
         /// Tag-delimited aggregate.
-        /// Group type is deprecated and not supported in proto3. However, Proto3
+        /// Group type is deprecated and not supported after google.protobuf. However, Proto3
         /// implementations should still be able to parse the group wire format and
-        /// treat group fields as unknown fields.
+        /// treat group fields as unknown fields.  In Editions, the group wire format
+        /// can be enabled via the `message_encoding` feature.
         TYPE_GROUP = 10,
         /// Length-delimited aggregate.
         TYPE_MESSAGE = 11,
@@ -1202,9 +1612,12 @@ pub mod google {
       impl FieldDescriptorProto_Label {
         /// 0 is reserved for errors
         pub const LABEL_OPTIONAL: FieldDescriptorProto_Label = FieldDescriptorProto_Label(1);
-        pub const LABEL_REQUIRED: FieldDescriptorProto_Label = FieldDescriptorProto_Label(2);
         pub const LABEL_REPEATED: FieldDescriptorProto_Label = FieldDescriptorProto_Label(3);
-        pub const KNOWN_VARIANTS: [FieldDescriptorProto_Label; 3] = [FieldDescriptorProto_Label::LABEL_OPTIONAL, FieldDescriptorProto_Label::LABEL_REQUIRED, FieldDescriptorProto_Label::LABEL_REPEATED];
+        /// The required label is only allowed in google.protobuf.  In proto3 and Editions
+        /// it's explicitly prohibited.  In Editions, the `field_presence` feature
+        /// can be used to get this behavior.
+        pub const LABEL_REQUIRED: FieldDescriptorProto_Label = FieldDescriptorProto_Label(2);
+        pub const KNOWN_VARIANTS: [FieldDescriptorProto_Label; 3] = [FieldDescriptorProto_Label::LABEL_OPTIONAL, FieldDescriptorProto_Label::LABEL_REPEATED, FieldDescriptorProto_Label::LABEL_REQUIRED];
         pub const fn value(self) -> i32 {
           self.0
         }
@@ -1236,8 +1649,8 @@ pub mod google {
         fn into_known(self) -> ::std::option::Option<FieldDescriptorProto_Label_Closed> {
           match self {
             FieldDescriptorProto_Label::LABEL_OPTIONAL => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL),
-            FieldDescriptorProto_Label::LABEL_REQUIRED => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_REQUIRED),
             FieldDescriptorProto_Label::LABEL_REPEATED => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_REPEATED),
+            FieldDescriptorProto_Label::LABEL_REQUIRED => ::std::option::Option::Some(FieldDescriptorProto_Label_Closed::LABEL_REQUIRED),
             _ => None,
           }
         }
@@ -1255,11 +1668,14 @@ pub mod google {
       pub enum FieldDescriptorProto_Label_Closed {
         /// 0 is reserved for errors
         LABEL_OPTIONAL = 1,
-        LABEL_REQUIRED = 2,
         LABEL_REPEATED = 3,
+        /// The required label is only allowed in google.protobuf.  In proto3 and Editions
+        /// it's explicitly prohibited.  In Editions, the `field_presence` feature
+        /// can be used to get this behavior.
+        LABEL_REQUIRED = 2,
       }
       impl FieldDescriptorProto_Label_Closed {
-        pub const KNOWN_VARIANTS: [FieldDescriptorProto_Label_Closed; 3] = [FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL, FieldDescriptorProto_Label_Closed::LABEL_REQUIRED, FieldDescriptorProto_Label_Closed::LABEL_REPEATED];
+        pub const KNOWN_VARIANTS: [FieldDescriptorProto_Label_Closed; 3] = [FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL, FieldDescriptorProto_Label_Closed::LABEL_REPEATED, FieldDescriptorProto_Label_Closed::LABEL_REQUIRED];
       }
       impl ::std::default::Default for FieldDescriptorProto_Label_Closed {
         fn default() -> Self {
@@ -1270,8 +1686,8 @@ pub mod google {
         fn from(v: FieldDescriptorProto_Label_Closed) -> i32 {
           match v {
             FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL => 1,
-            FieldDescriptorProto_Label_Closed::LABEL_REQUIRED => 2,
             FieldDescriptorProto_Label_Closed::LABEL_REPEATED => 3,
+            FieldDescriptorProto_Label_Closed::LABEL_REQUIRED => 2,
           }
         }
       }
@@ -1280,8 +1696,8 @@ pub mod google {
         fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
           match v {
             1 => Ok(FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL),
-            2 => Ok(FieldDescriptorProto_Label_Closed::LABEL_REQUIRED),
             3 => Ok(FieldDescriptorProto_Label_Closed::LABEL_REPEATED),
+            2 => Ok(FieldDescriptorProto_Label_Closed::LABEL_REQUIRED),
             _ => Err(v),
           }
         }
@@ -1292,8 +1708,8 @@ pub mod google {
         fn name(self) -> &'static str {
           match self {
             FieldDescriptorProto_Label_Closed::LABEL_OPTIONAL => "LABEL_OPTIONAL",
-            FieldDescriptorProto_Label_Closed::LABEL_REQUIRED => "LABEL_REQUIRED",
             FieldDescriptorProto_Label_Closed::LABEL_REPEATED => "LABEL_REPEATED",
+            FieldDescriptorProto_Label_Closed::LABEL_REQUIRED => "LABEL_REQUIRED",
           }
         }
       }
@@ -1414,6 +1830,12 @@ pub mod google {
       impl FieldOptions_CType {
         /// Default mode.
         pub const STRING: FieldOptions_CType = FieldOptions_CType(0);
+        /// The option [ctype=CORD] may be applied to a non-repeated field of type
+        /// "bytes". It indicates that in C++, the data should be stored in a Cord
+        /// instead of a string.  For very large strings, this may reduce memory
+        /// fragmentation. It may also allow better performance when parsing from a
+        /// Cord, or when parsing with aliasing enabled, as the parsed Cord may then
+        /// alias the original buffer.
         pub const CORD: FieldOptions_CType = FieldOptions_CType(1);
         pub const STRING_PIECE: FieldOptions_CType = FieldOptions_CType(2);
         pub const KNOWN_VARIANTS: [FieldOptions_CType; 3] = [FieldOptions_CType::STRING, FieldOptions_CType::CORD, FieldOptions_CType::STRING_PIECE];
@@ -1467,6 +1889,12 @@ pub mod google {
       pub enum FieldOptions_CType_Closed {
         /// Default mode.
         STRING = 0,
+        /// The option [ctype=CORD] may be applied to a non-repeated field of type
+        /// "bytes". It indicates that in C++, the data should be stored in a Cord
+        /// instead of a string.  For very large strings, this may reduce memory
+        /// fragmentation. It may also allow better performance when parsing from a
+        /// Cord, or when parsing with aliasing enabled, as the parsed Cord may then
+        /// alias the original buffer.
         CORD = 1,
         STRING_PIECE = 2,
       }
@@ -1616,6 +2044,262 @@ pub mod google {
         }
       }
       
+      /// If set to RETENTION_SOURCE, the option will be omitted from the binary.
+      /// Note: as of January 2023, support for this is in progress and does not yet
+      /// have an effect (b/264593489).
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FieldOptions_OptionRetention(i32);
+      impl FieldOptions_OptionRetention {
+        pub const RETENTION_UNKNOWN: FieldOptions_OptionRetention = FieldOptions_OptionRetention(0);
+        pub const RETENTION_RUNTIME: FieldOptions_OptionRetention = FieldOptions_OptionRetention(1);
+        pub const RETENTION_SOURCE: FieldOptions_OptionRetention = FieldOptions_OptionRetention(2);
+        pub const KNOWN_VARIANTS: [FieldOptions_OptionRetention; 3] = [FieldOptions_OptionRetention::RETENTION_UNKNOWN, FieldOptions_OptionRetention::RETENTION_RUNTIME, FieldOptions_OptionRetention::RETENTION_SOURCE];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FieldOptions_OptionRetention {
+        fn default() -> Self {
+          FieldOptions_OptionRetention::RETENTION_UNKNOWN
+        }
+      }
+      impl From<FieldOptions_OptionRetention> for i32 {
+        fn from(v: FieldOptions_OptionRetention) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FieldOptions_OptionRetention {
+        fn from(v: i32) -> FieldOptions_OptionRetention {
+          FieldOptions_OptionRetention(v)
+        }
+      }
+      impl From<FieldOptions_OptionRetention_Closed> for FieldOptions_OptionRetention {
+        fn from(v: FieldOptions_OptionRetention_Closed) -> FieldOptions_OptionRetention {
+          FieldOptions_OptionRetention(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FieldOptions_OptionRetention {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FieldOptions_OptionRetention {
+        type Closed = FieldOptions_OptionRetention_Closed;
+        fn into_known(self) -> ::std::option::Option<FieldOptions_OptionRetention_Closed> {
+          match self {
+            FieldOptions_OptionRetention::RETENTION_UNKNOWN => ::std::option::Option::Some(FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN),
+            FieldOptions_OptionRetention::RETENTION_RUNTIME => ::std::option::Option::Some(FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME),
+            FieldOptions_OptionRetention::RETENTION_SOURCE => ::std::option::Option::Some(FieldOptions_OptionRetention_Closed::RETENTION_SOURCE),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FieldOptions_OptionRetention {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      /// If set to RETENTION_SOURCE, the option will be omitted from the binary.
+      /// Note: as of January 2023, support for this is in progress and does not yet
+      /// have an effect (b/264593489).
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FieldOptions_OptionRetention_Closed {
+        RETENTION_UNKNOWN = 0,
+        RETENTION_RUNTIME = 1,
+        RETENTION_SOURCE = 2,
+      }
+      impl FieldOptions_OptionRetention_Closed {
+        pub const KNOWN_VARIANTS: [FieldOptions_OptionRetention_Closed; 3] = [FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN, FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME, FieldOptions_OptionRetention_Closed::RETENTION_SOURCE];
+      }
+      impl ::std::default::Default for FieldOptions_OptionRetention_Closed {
+        fn default() -> Self {
+          FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN
+        }
+      }
+      impl From<FieldOptions_OptionRetention_Closed> for i32 {
+        fn from(v: FieldOptions_OptionRetention_Closed) -> i32 {
+          match v {
+            FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN => 0,
+            FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME => 1,
+            FieldOptions_OptionRetention_Closed::RETENTION_SOURCE => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FieldOptions_OptionRetention_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN),
+            1 => Ok(FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME),
+            2 => Ok(FieldOptions_OptionRetention_Closed::RETENTION_SOURCE),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FieldOptions_OptionRetention_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FieldOptions_OptionRetention_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FieldOptions_OptionRetention_Closed::RETENTION_UNKNOWN => "RETENTION_UNKNOWN",
+            FieldOptions_OptionRetention_Closed::RETENTION_RUNTIME => "RETENTION_RUNTIME",
+            FieldOptions_OptionRetention_Closed::RETENTION_SOURCE => "RETENTION_SOURCE",
+          }
+        }
+      }
+      
+      /// This indicates the types of entities that the field may apply to when used
+      /// as an option. If it is unset, then the field may be freely used as an
+      /// option on any kind of entity. Note: as of January 2023, support for this is
+      /// in progress and does not yet have an effect (b/264593489).
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FieldOptions_OptionTargetType(i32);
+      impl FieldOptions_OptionTargetType {
+        pub const TARGET_TYPE_UNKNOWN: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(0);
+        pub const TARGET_TYPE_FILE: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(1);
+        pub const TARGET_TYPE_EXTENSION_RANGE: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(2);
+        pub const TARGET_TYPE_MESSAGE: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(3);
+        pub const TARGET_TYPE_FIELD: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(4);
+        pub const TARGET_TYPE_ONEOF: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(5);
+        pub const TARGET_TYPE_ENUM: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(6);
+        pub const TARGET_TYPE_ENUM_ENTRY: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(7);
+        pub const TARGET_TYPE_SERVICE: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(8);
+        pub const TARGET_TYPE_METHOD: FieldOptions_OptionTargetType = FieldOptions_OptionTargetType(9);
+        pub const KNOWN_VARIANTS: [FieldOptions_OptionTargetType; 10] = [FieldOptions_OptionTargetType::TARGET_TYPE_UNKNOWN, FieldOptions_OptionTargetType::TARGET_TYPE_FILE, FieldOptions_OptionTargetType::TARGET_TYPE_EXTENSION_RANGE, FieldOptions_OptionTargetType::TARGET_TYPE_MESSAGE, FieldOptions_OptionTargetType::TARGET_TYPE_FIELD, FieldOptions_OptionTargetType::TARGET_TYPE_ONEOF, FieldOptions_OptionTargetType::TARGET_TYPE_ENUM, FieldOptions_OptionTargetType::TARGET_TYPE_ENUM_ENTRY, FieldOptions_OptionTargetType::TARGET_TYPE_SERVICE, FieldOptions_OptionTargetType::TARGET_TYPE_METHOD];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FieldOptions_OptionTargetType {
+        fn default() -> Self {
+          FieldOptions_OptionTargetType::TARGET_TYPE_UNKNOWN
+        }
+      }
+      impl From<FieldOptions_OptionTargetType> for i32 {
+        fn from(v: FieldOptions_OptionTargetType) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FieldOptions_OptionTargetType {
+        fn from(v: i32) -> FieldOptions_OptionTargetType {
+          FieldOptions_OptionTargetType(v)
+        }
+      }
+      impl From<FieldOptions_OptionTargetType_Closed> for FieldOptions_OptionTargetType {
+        fn from(v: FieldOptions_OptionTargetType_Closed) -> FieldOptions_OptionTargetType {
+          FieldOptions_OptionTargetType(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FieldOptions_OptionTargetType {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FieldOptions_OptionTargetType {
+        type Closed = FieldOptions_OptionTargetType_Closed;
+        fn into_known(self) -> ::std::option::Option<FieldOptions_OptionTargetType_Closed> {
+          match self {
+            FieldOptions_OptionTargetType::TARGET_TYPE_UNKNOWN => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN),
+            FieldOptions_OptionTargetType::TARGET_TYPE_FILE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE),
+            FieldOptions_OptionTargetType::TARGET_TYPE_EXTENSION_RANGE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE),
+            FieldOptions_OptionTargetType::TARGET_TYPE_MESSAGE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE),
+            FieldOptions_OptionTargetType::TARGET_TYPE_FIELD => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD),
+            FieldOptions_OptionTargetType::TARGET_TYPE_ONEOF => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF),
+            FieldOptions_OptionTargetType::TARGET_TYPE_ENUM => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM),
+            FieldOptions_OptionTargetType::TARGET_TYPE_ENUM_ENTRY => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY),
+            FieldOptions_OptionTargetType::TARGET_TYPE_SERVICE => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE),
+            FieldOptions_OptionTargetType::TARGET_TYPE_METHOD => ::std::option::Option::Some(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FieldOptions_OptionTargetType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      /// This indicates the types of entities that the field may apply to when used
+      /// as an option. If it is unset, then the field may be freely used as an
+      /// option on any kind of entity. Note: as of January 2023, support for this is
+      /// in progress and does not yet have an effect (b/264593489).
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FieldOptions_OptionTargetType_Closed {
+        TARGET_TYPE_UNKNOWN = 0,
+        TARGET_TYPE_FILE = 1,
+        TARGET_TYPE_EXTENSION_RANGE = 2,
+        TARGET_TYPE_MESSAGE = 3,
+        TARGET_TYPE_FIELD = 4,
+        TARGET_TYPE_ONEOF = 5,
+        TARGET_TYPE_ENUM = 6,
+        TARGET_TYPE_ENUM_ENTRY = 7,
+        TARGET_TYPE_SERVICE = 8,
+        TARGET_TYPE_METHOD = 9,
+      }
+      impl FieldOptions_OptionTargetType_Closed {
+        pub const KNOWN_VARIANTS: [FieldOptions_OptionTargetType_Closed; 10] = [FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE, FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD];
+      }
+      impl ::std::default::Default for FieldOptions_OptionTargetType_Closed {
+        fn default() -> Self {
+          FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN
+        }
+      }
+      impl From<FieldOptions_OptionTargetType_Closed> for i32 {
+        fn from(v: FieldOptions_OptionTargetType_Closed) -> i32 {
+          match v {
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN => 0,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE => 1,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE => 2,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE => 3,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD => 4,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF => 5,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM => 6,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY => 7,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE => 8,
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD => 9,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FieldOptions_OptionTargetType_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN),
+            1 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE),
+            2 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE),
+            3 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE),
+            4 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD),
+            5 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF),
+            6 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM),
+            7 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY),
+            8 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE),
+            9 => Ok(FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FieldOptions_OptionTargetType_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FieldOptions_OptionTargetType_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_UNKNOWN => "TARGET_TYPE_UNKNOWN",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FILE => "TARGET_TYPE_FILE",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_EXTENSION_RANGE => "TARGET_TYPE_EXTENSION_RANGE",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_MESSAGE => "TARGET_TYPE_MESSAGE",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_FIELD => "TARGET_TYPE_FIELD",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ONEOF => "TARGET_TYPE_ONEOF",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM => "TARGET_TYPE_ENUM",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_ENUM_ENTRY => "TARGET_TYPE_ENUM_ENTRY",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_SERVICE => "TARGET_TYPE_SERVICE",
+            FieldOptions_OptionTargetType_Closed::TARGET_TYPE_METHOD => "TARGET_TYPE_METHOD",
+          }
+        }
+      }
+      
       /// Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
       /// or neither? HTTP based RPC implementation may choose GET verb for safe
       /// methods, and PUT verb for idempotent methods instead of the default POST.
@@ -1722,6 +2406,722 @@ pub mod google {
             MethodOptions_IdempotencyLevel_Closed::IDEMPOTENCY_UNKNOWN => "IDEMPOTENCY_UNKNOWN",
             MethodOptions_IdempotencyLevel_Closed::NO_SIDE_EFFECTS => "NO_SIDE_EFFECTS",
             MethodOptions_IdempotencyLevel_Closed::IDEMPOTENT => "IDEMPOTENT",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_FieldPresence(i32);
+      impl FeatureSet_FieldPresence {
+        pub const FIELD_PRESENCE_UNKNOWN: FeatureSet_FieldPresence = FeatureSet_FieldPresence(0);
+        pub const EXPLICIT: FeatureSet_FieldPresence = FeatureSet_FieldPresence(1);
+        pub const IMPLICIT: FeatureSet_FieldPresence = FeatureSet_FieldPresence(2);
+        pub const LEGACY_REQUIRED: FeatureSet_FieldPresence = FeatureSet_FieldPresence(3);
+        pub const KNOWN_VARIANTS: [FeatureSet_FieldPresence; 4] = [FeatureSet_FieldPresence::FIELD_PRESENCE_UNKNOWN, FeatureSet_FieldPresence::EXPLICIT, FeatureSet_FieldPresence::IMPLICIT, FeatureSet_FieldPresence::LEGACY_REQUIRED];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_FieldPresence {
+        fn default() -> Self {
+          FeatureSet_FieldPresence::FIELD_PRESENCE_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_FieldPresence> for i32 {
+        fn from(v: FeatureSet_FieldPresence) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_FieldPresence {
+        fn from(v: i32) -> FeatureSet_FieldPresence {
+          FeatureSet_FieldPresence(v)
+        }
+      }
+      impl From<FeatureSet_FieldPresence_Closed> for FeatureSet_FieldPresence {
+        fn from(v: FeatureSet_FieldPresence_Closed) -> FeatureSet_FieldPresence {
+          FeatureSet_FieldPresence(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_FieldPresence {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_FieldPresence {
+        type Closed = FeatureSet_FieldPresence_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_FieldPresence_Closed> {
+          match self {
+            FeatureSet_FieldPresence::FIELD_PRESENCE_UNKNOWN => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN),
+            FeatureSet_FieldPresence::EXPLICIT => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::EXPLICIT),
+            FeatureSet_FieldPresence::IMPLICIT => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::IMPLICIT),
+            FeatureSet_FieldPresence::LEGACY_REQUIRED => ::std::option::Option::Some(FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_FieldPresence {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_FieldPresence_Closed {
+        FIELD_PRESENCE_UNKNOWN = 0,
+        EXPLICIT = 1,
+        IMPLICIT = 2,
+        LEGACY_REQUIRED = 3,
+      }
+      impl FeatureSet_FieldPresence_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_FieldPresence_Closed; 4] = [FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN, FeatureSet_FieldPresence_Closed::EXPLICIT, FeatureSet_FieldPresence_Closed::IMPLICIT, FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED];
+      }
+      impl ::std::default::Default for FeatureSet_FieldPresence_Closed {
+        fn default() -> Self {
+          FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_FieldPresence_Closed> for i32 {
+        fn from(v: FeatureSet_FieldPresence_Closed) -> i32 {
+          match v {
+            FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN => 0,
+            FeatureSet_FieldPresence_Closed::EXPLICIT => 1,
+            FeatureSet_FieldPresence_Closed::IMPLICIT => 2,
+            FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED => 3,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_FieldPresence_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN),
+            1 => Ok(FeatureSet_FieldPresence_Closed::EXPLICIT),
+            2 => Ok(FeatureSet_FieldPresence_Closed::IMPLICIT),
+            3 => Ok(FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_FieldPresence_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_FieldPresence_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_FieldPresence_Closed::FIELD_PRESENCE_UNKNOWN => "FIELD_PRESENCE_UNKNOWN",
+            FeatureSet_FieldPresence_Closed::EXPLICIT => "EXPLICIT",
+            FeatureSet_FieldPresence_Closed::IMPLICIT => "IMPLICIT",
+            FeatureSet_FieldPresence_Closed::LEGACY_REQUIRED => "LEGACY_REQUIRED",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_EnumType(i32);
+      impl FeatureSet_EnumType {
+        pub const ENUM_TYPE_UNKNOWN: FeatureSet_EnumType = FeatureSet_EnumType(0);
+        pub const OPEN: FeatureSet_EnumType = FeatureSet_EnumType(1);
+        pub const CLOSED: FeatureSet_EnumType = FeatureSet_EnumType(2);
+        pub const KNOWN_VARIANTS: [FeatureSet_EnumType; 3] = [FeatureSet_EnumType::ENUM_TYPE_UNKNOWN, FeatureSet_EnumType::OPEN, FeatureSet_EnumType::CLOSED];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_EnumType {
+        fn default() -> Self {
+          FeatureSet_EnumType::ENUM_TYPE_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_EnumType> for i32 {
+        fn from(v: FeatureSet_EnumType) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_EnumType {
+        fn from(v: i32) -> FeatureSet_EnumType {
+          FeatureSet_EnumType(v)
+        }
+      }
+      impl From<FeatureSet_EnumType_Closed> for FeatureSet_EnumType {
+        fn from(v: FeatureSet_EnumType_Closed) -> FeatureSet_EnumType {
+          FeatureSet_EnumType(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_EnumType {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_EnumType {
+        type Closed = FeatureSet_EnumType_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_EnumType_Closed> {
+          match self {
+            FeatureSet_EnumType::ENUM_TYPE_UNKNOWN => ::std::option::Option::Some(FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN),
+            FeatureSet_EnumType::OPEN => ::std::option::Option::Some(FeatureSet_EnumType_Closed::OPEN),
+            FeatureSet_EnumType::CLOSED => ::std::option::Option::Some(FeatureSet_EnumType_Closed::CLOSED),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_EnumType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_EnumType_Closed {
+        ENUM_TYPE_UNKNOWN = 0,
+        OPEN = 1,
+        CLOSED = 2,
+      }
+      impl FeatureSet_EnumType_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_EnumType_Closed; 3] = [FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN, FeatureSet_EnumType_Closed::OPEN, FeatureSet_EnumType_Closed::CLOSED];
+      }
+      impl ::std::default::Default for FeatureSet_EnumType_Closed {
+        fn default() -> Self {
+          FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_EnumType_Closed> for i32 {
+        fn from(v: FeatureSet_EnumType_Closed) -> i32 {
+          match v {
+            FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN => 0,
+            FeatureSet_EnumType_Closed::OPEN => 1,
+            FeatureSet_EnumType_Closed::CLOSED => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_EnumType_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN),
+            1 => Ok(FeatureSet_EnumType_Closed::OPEN),
+            2 => Ok(FeatureSet_EnumType_Closed::CLOSED),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_EnumType_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_EnumType_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_EnumType_Closed::ENUM_TYPE_UNKNOWN => "ENUM_TYPE_UNKNOWN",
+            FeatureSet_EnumType_Closed::OPEN => "OPEN",
+            FeatureSet_EnumType_Closed::CLOSED => "CLOSED",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_RepeatedFieldEncoding(i32);
+      impl FeatureSet_RepeatedFieldEncoding {
+        pub const REPEATED_FIELD_ENCODING_UNKNOWN: FeatureSet_RepeatedFieldEncoding = FeatureSet_RepeatedFieldEncoding(0);
+        pub const PACKED: FeatureSet_RepeatedFieldEncoding = FeatureSet_RepeatedFieldEncoding(1);
+        pub const EXPANDED: FeatureSet_RepeatedFieldEncoding = FeatureSet_RepeatedFieldEncoding(2);
+        pub const KNOWN_VARIANTS: [FeatureSet_RepeatedFieldEncoding; 3] = [FeatureSet_RepeatedFieldEncoding::REPEATED_FIELD_ENCODING_UNKNOWN, FeatureSet_RepeatedFieldEncoding::PACKED, FeatureSet_RepeatedFieldEncoding::EXPANDED];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_RepeatedFieldEncoding {
+        fn default() -> Self {
+          FeatureSet_RepeatedFieldEncoding::REPEATED_FIELD_ENCODING_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_RepeatedFieldEncoding> for i32 {
+        fn from(v: FeatureSet_RepeatedFieldEncoding) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_RepeatedFieldEncoding {
+        fn from(v: i32) -> FeatureSet_RepeatedFieldEncoding {
+          FeatureSet_RepeatedFieldEncoding(v)
+        }
+      }
+      impl From<FeatureSet_RepeatedFieldEncoding_Closed> for FeatureSet_RepeatedFieldEncoding {
+        fn from(v: FeatureSet_RepeatedFieldEncoding_Closed) -> FeatureSet_RepeatedFieldEncoding {
+          FeatureSet_RepeatedFieldEncoding(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_RepeatedFieldEncoding {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_RepeatedFieldEncoding {
+        type Closed = FeatureSet_RepeatedFieldEncoding_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_RepeatedFieldEncoding_Closed> {
+          match self {
+            FeatureSet_RepeatedFieldEncoding::REPEATED_FIELD_ENCODING_UNKNOWN => ::std::option::Option::Some(FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN),
+            FeatureSet_RepeatedFieldEncoding::PACKED => ::std::option::Option::Some(FeatureSet_RepeatedFieldEncoding_Closed::PACKED),
+            FeatureSet_RepeatedFieldEncoding::EXPANDED => ::std::option::Option::Some(FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_RepeatedFieldEncoding {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_RepeatedFieldEncoding_Closed {
+        REPEATED_FIELD_ENCODING_UNKNOWN = 0,
+        PACKED = 1,
+        EXPANDED = 2,
+      }
+      impl FeatureSet_RepeatedFieldEncoding_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_RepeatedFieldEncoding_Closed; 3] = [FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN, FeatureSet_RepeatedFieldEncoding_Closed::PACKED, FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED];
+      }
+      impl ::std::default::Default for FeatureSet_RepeatedFieldEncoding_Closed {
+        fn default() -> Self {
+          FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_RepeatedFieldEncoding_Closed> for i32 {
+        fn from(v: FeatureSet_RepeatedFieldEncoding_Closed) -> i32 {
+          match v {
+            FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN => 0,
+            FeatureSet_RepeatedFieldEncoding_Closed::PACKED => 1,
+            FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_RepeatedFieldEncoding_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN),
+            1 => Ok(FeatureSet_RepeatedFieldEncoding_Closed::PACKED),
+            2 => Ok(FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_RepeatedFieldEncoding_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_RepeatedFieldEncoding_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_RepeatedFieldEncoding_Closed::REPEATED_FIELD_ENCODING_UNKNOWN => "REPEATED_FIELD_ENCODING_UNKNOWN",
+            FeatureSet_RepeatedFieldEncoding_Closed::PACKED => "PACKED",
+            FeatureSet_RepeatedFieldEncoding_Closed::EXPANDED => "EXPANDED",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_Utf8Validation(i32);
+      impl FeatureSet_Utf8Validation {
+        pub const UTF8_VALIDATION_UNKNOWN: FeatureSet_Utf8Validation = FeatureSet_Utf8Validation(0);
+        pub const VERIFY: FeatureSet_Utf8Validation = FeatureSet_Utf8Validation(2);
+        pub const NONE: FeatureSet_Utf8Validation = FeatureSet_Utf8Validation(3);
+        pub const KNOWN_VARIANTS: [FeatureSet_Utf8Validation; 3] = [FeatureSet_Utf8Validation::UTF8_VALIDATION_UNKNOWN, FeatureSet_Utf8Validation::VERIFY, FeatureSet_Utf8Validation::NONE];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_Utf8Validation {
+        fn default() -> Self {
+          FeatureSet_Utf8Validation::UTF8_VALIDATION_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_Utf8Validation> for i32 {
+        fn from(v: FeatureSet_Utf8Validation) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_Utf8Validation {
+        fn from(v: i32) -> FeatureSet_Utf8Validation {
+          FeatureSet_Utf8Validation(v)
+        }
+      }
+      impl From<FeatureSet_Utf8Validation_Closed> for FeatureSet_Utf8Validation {
+        fn from(v: FeatureSet_Utf8Validation_Closed) -> FeatureSet_Utf8Validation {
+          FeatureSet_Utf8Validation(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_Utf8Validation {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_Utf8Validation {
+        type Closed = FeatureSet_Utf8Validation_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_Utf8Validation_Closed> {
+          match self {
+            FeatureSet_Utf8Validation::UTF8_VALIDATION_UNKNOWN => ::std::option::Option::Some(FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN),
+            FeatureSet_Utf8Validation::VERIFY => ::std::option::Option::Some(FeatureSet_Utf8Validation_Closed::VERIFY),
+            FeatureSet_Utf8Validation::NONE => ::std::option::Option::Some(FeatureSet_Utf8Validation_Closed::NONE),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_Utf8Validation {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_Utf8Validation_Closed {
+        UTF8_VALIDATION_UNKNOWN = 0,
+        VERIFY = 2,
+        NONE = 3,
+      }
+      impl FeatureSet_Utf8Validation_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_Utf8Validation_Closed; 3] = [FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN, FeatureSet_Utf8Validation_Closed::VERIFY, FeatureSet_Utf8Validation_Closed::NONE];
+      }
+      impl ::std::default::Default for FeatureSet_Utf8Validation_Closed {
+        fn default() -> Self {
+          FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_Utf8Validation_Closed> for i32 {
+        fn from(v: FeatureSet_Utf8Validation_Closed) -> i32 {
+          match v {
+            FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN => 0,
+            FeatureSet_Utf8Validation_Closed::VERIFY => 2,
+            FeatureSet_Utf8Validation_Closed::NONE => 3,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_Utf8Validation_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN),
+            2 => Ok(FeatureSet_Utf8Validation_Closed::VERIFY),
+            3 => Ok(FeatureSet_Utf8Validation_Closed::NONE),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_Utf8Validation_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_Utf8Validation_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_Utf8Validation_Closed::UTF8_VALIDATION_UNKNOWN => "UTF8_VALIDATION_UNKNOWN",
+            FeatureSet_Utf8Validation_Closed::VERIFY => "VERIFY",
+            FeatureSet_Utf8Validation_Closed::NONE => "NONE",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_MessageEncoding(i32);
+      impl FeatureSet_MessageEncoding {
+        pub const MESSAGE_ENCODING_UNKNOWN: FeatureSet_MessageEncoding = FeatureSet_MessageEncoding(0);
+        pub const LENGTH_PREFIXED: FeatureSet_MessageEncoding = FeatureSet_MessageEncoding(1);
+        pub const DELIMITED: FeatureSet_MessageEncoding = FeatureSet_MessageEncoding(2);
+        pub const KNOWN_VARIANTS: [FeatureSet_MessageEncoding; 3] = [FeatureSet_MessageEncoding::MESSAGE_ENCODING_UNKNOWN, FeatureSet_MessageEncoding::LENGTH_PREFIXED, FeatureSet_MessageEncoding::DELIMITED];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_MessageEncoding {
+        fn default() -> Self {
+          FeatureSet_MessageEncoding::MESSAGE_ENCODING_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_MessageEncoding> for i32 {
+        fn from(v: FeatureSet_MessageEncoding) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_MessageEncoding {
+        fn from(v: i32) -> FeatureSet_MessageEncoding {
+          FeatureSet_MessageEncoding(v)
+        }
+      }
+      impl From<FeatureSet_MessageEncoding_Closed> for FeatureSet_MessageEncoding {
+        fn from(v: FeatureSet_MessageEncoding_Closed) -> FeatureSet_MessageEncoding {
+          FeatureSet_MessageEncoding(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_MessageEncoding {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_MessageEncoding {
+        type Closed = FeatureSet_MessageEncoding_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_MessageEncoding_Closed> {
+          match self {
+            FeatureSet_MessageEncoding::MESSAGE_ENCODING_UNKNOWN => ::std::option::Option::Some(FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN),
+            FeatureSet_MessageEncoding::LENGTH_PREFIXED => ::std::option::Option::Some(FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED),
+            FeatureSet_MessageEncoding::DELIMITED => ::std::option::Option::Some(FeatureSet_MessageEncoding_Closed::DELIMITED),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_MessageEncoding {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_MessageEncoding_Closed {
+        MESSAGE_ENCODING_UNKNOWN = 0,
+        LENGTH_PREFIXED = 1,
+        DELIMITED = 2,
+      }
+      impl FeatureSet_MessageEncoding_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_MessageEncoding_Closed; 3] = [FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN, FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED, FeatureSet_MessageEncoding_Closed::DELIMITED];
+      }
+      impl ::std::default::Default for FeatureSet_MessageEncoding_Closed {
+        fn default() -> Self {
+          FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_MessageEncoding_Closed> for i32 {
+        fn from(v: FeatureSet_MessageEncoding_Closed) -> i32 {
+          match v {
+            FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN => 0,
+            FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED => 1,
+            FeatureSet_MessageEncoding_Closed::DELIMITED => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_MessageEncoding_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN),
+            1 => Ok(FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED),
+            2 => Ok(FeatureSet_MessageEncoding_Closed::DELIMITED),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_MessageEncoding_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_MessageEncoding_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_MessageEncoding_Closed::MESSAGE_ENCODING_UNKNOWN => "MESSAGE_ENCODING_UNKNOWN",
+            FeatureSet_MessageEncoding_Closed::LENGTH_PREFIXED => "LENGTH_PREFIXED",
+            FeatureSet_MessageEncoding_Closed::DELIMITED => "DELIMITED",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_JsonFormat(i32);
+      impl FeatureSet_JsonFormat {
+        pub const JSON_FORMAT_UNKNOWN: FeatureSet_JsonFormat = FeatureSet_JsonFormat(0);
+        pub const ALLOW: FeatureSet_JsonFormat = FeatureSet_JsonFormat(1);
+        pub const LEGACY_BEST_EFFORT: FeatureSet_JsonFormat = FeatureSet_JsonFormat(2);
+        pub const KNOWN_VARIANTS: [FeatureSet_JsonFormat; 3] = [FeatureSet_JsonFormat::JSON_FORMAT_UNKNOWN, FeatureSet_JsonFormat::ALLOW, FeatureSet_JsonFormat::LEGACY_BEST_EFFORT];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_JsonFormat {
+        fn default() -> Self {
+          FeatureSet_JsonFormat::JSON_FORMAT_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_JsonFormat> for i32 {
+        fn from(v: FeatureSet_JsonFormat) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_JsonFormat {
+        fn from(v: i32) -> FeatureSet_JsonFormat {
+          FeatureSet_JsonFormat(v)
+        }
+      }
+      impl From<FeatureSet_JsonFormat_Closed> for FeatureSet_JsonFormat {
+        fn from(v: FeatureSet_JsonFormat_Closed) -> FeatureSet_JsonFormat {
+          FeatureSet_JsonFormat(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_JsonFormat {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_JsonFormat {
+        type Closed = FeatureSet_JsonFormat_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_JsonFormat_Closed> {
+          match self {
+            FeatureSet_JsonFormat::JSON_FORMAT_UNKNOWN => ::std::option::Option::Some(FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN),
+            FeatureSet_JsonFormat::ALLOW => ::std::option::Option::Some(FeatureSet_JsonFormat_Closed::ALLOW),
+            FeatureSet_JsonFormat::LEGACY_BEST_EFFORT => ::std::option::Option::Some(FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_JsonFormat {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_JsonFormat_Closed {
+        JSON_FORMAT_UNKNOWN = 0,
+        ALLOW = 1,
+        LEGACY_BEST_EFFORT = 2,
+      }
+      impl FeatureSet_JsonFormat_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_JsonFormat_Closed; 3] = [FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN, FeatureSet_JsonFormat_Closed::ALLOW, FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT];
+      }
+      impl ::std::default::Default for FeatureSet_JsonFormat_Closed {
+        fn default() -> Self {
+          FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_JsonFormat_Closed> for i32 {
+        fn from(v: FeatureSet_JsonFormat_Closed) -> i32 {
+          match v {
+            FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN => 0,
+            FeatureSet_JsonFormat_Closed::ALLOW => 1,
+            FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_JsonFormat_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN),
+            1 => Ok(FeatureSet_JsonFormat_Closed::ALLOW),
+            2 => Ok(FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_JsonFormat_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_JsonFormat_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_JsonFormat_Closed::JSON_FORMAT_UNKNOWN => "JSON_FORMAT_UNKNOWN",
+            FeatureSet_JsonFormat_Closed::ALLOW => "ALLOW",
+            FeatureSet_JsonFormat_Closed::LEGACY_BEST_EFFORT => "LEGACY_BEST_EFFORT",
+          }
+        }
+      }
+      
+      /// Represents the identified object's effect on the element in the original
+      /// .proto file.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct GeneratedCodeInfo_Annotation_Semantic(i32);
+      impl GeneratedCodeInfo_Annotation_Semantic {
+        /// There is no effect or the effect is indescribable.
+        pub const NONE: GeneratedCodeInfo_Annotation_Semantic = GeneratedCodeInfo_Annotation_Semantic(0);
+        /// The element is set or otherwise mutated.
+        pub const SET: GeneratedCodeInfo_Annotation_Semantic = GeneratedCodeInfo_Annotation_Semantic(1);
+        /// An alias to the element is returned.
+        pub const ALIAS: GeneratedCodeInfo_Annotation_Semantic = GeneratedCodeInfo_Annotation_Semantic(2);
+        pub const KNOWN_VARIANTS: [GeneratedCodeInfo_Annotation_Semantic; 3] = [GeneratedCodeInfo_Annotation_Semantic::NONE, GeneratedCodeInfo_Annotation_Semantic::SET, GeneratedCodeInfo_Annotation_Semantic::ALIAS];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for GeneratedCodeInfo_Annotation_Semantic {
+        fn default() -> Self {
+          GeneratedCodeInfo_Annotation_Semantic::NONE
+        }
+      }
+      impl From<GeneratedCodeInfo_Annotation_Semantic> for i32 {
+        fn from(v: GeneratedCodeInfo_Annotation_Semantic) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for GeneratedCodeInfo_Annotation_Semantic {
+        fn from(v: i32) -> GeneratedCodeInfo_Annotation_Semantic {
+          GeneratedCodeInfo_Annotation_Semantic(v)
+        }
+      }
+      impl From<GeneratedCodeInfo_Annotation_Semantic_Closed> for GeneratedCodeInfo_Annotation_Semantic {
+        fn from(v: GeneratedCodeInfo_Annotation_Semantic_Closed) -> GeneratedCodeInfo_Annotation_Semantic {
+          GeneratedCodeInfo_Annotation_Semantic(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for GeneratedCodeInfo_Annotation_Semantic {
+      }
+      impl ::pb_jelly::OpenProtoEnum for GeneratedCodeInfo_Annotation_Semantic {
+        type Closed = GeneratedCodeInfo_Annotation_Semantic_Closed;
+        fn into_known(self) -> ::std::option::Option<GeneratedCodeInfo_Annotation_Semantic_Closed> {
+          match self {
+            GeneratedCodeInfo_Annotation_Semantic::NONE => ::std::option::Option::Some(GeneratedCodeInfo_Annotation_Semantic_Closed::NONE),
+            GeneratedCodeInfo_Annotation_Semantic::SET => ::std::option::Option::Some(GeneratedCodeInfo_Annotation_Semantic_Closed::SET),
+            GeneratedCodeInfo_Annotation_Semantic::ALIAS => ::std::option::Option::Some(GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for GeneratedCodeInfo_Annotation_Semantic {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      /// Represents the identified object's effect on the element in the original
+      /// .proto file.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum GeneratedCodeInfo_Annotation_Semantic_Closed {
+        /// There is no effect or the effect is indescribable.
+        NONE = 0,
+        /// The element is set or otherwise mutated.
+        SET = 1,
+        /// An alias to the element is returned.
+        ALIAS = 2,
+      }
+      impl GeneratedCodeInfo_Annotation_Semantic_Closed {
+        pub const KNOWN_VARIANTS: [GeneratedCodeInfo_Annotation_Semantic_Closed; 3] = [GeneratedCodeInfo_Annotation_Semantic_Closed::NONE, GeneratedCodeInfo_Annotation_Semantic_Closed::SET, GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS];
+      }
+      impl ::std::default::Default for GeneratedCodeInfo_Annotation_Semantic_Closed {
+        fn default() -> Self {
+          GeneratedCodeInfo_Annotation_Semantic_Closed::NONE
+        }
+      }
+      impl From<GeneratedCodeInfo_Annotation_Semantic_Closed> for i32 {
+        fn from(v: GeneratedCodeInfo_Annotation_Semantic_Closed) -> i32 {
+          match v {
+            GeneratedCodeInfo_Annotation_Semantic_Closed::NONE => 0,
+            GeneratedCodeInfo_Annotation_Semantic_Closed::SET => 1,
+            GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for GeneratedCodeInfo_Annotation_Semantic_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(GeneratedCodeInfo_Annotation_Semantic_Closed::NONE),
+            1 => Ok(GeneratedCodeInfo_Annotation_Semantic_Closed::SET),
+            2 => Ok(GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for GeneratedCodeInfo_Annotation_Semantic_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for GeneratedCodeInfo_Annotation_Semantic_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            GeneratedCodeInfo_Annotation_Semantic_Closed::NONE => "NONE",
+            GeneratedCodeInfo_Annotation_Semantic_Closed::SET => "SET",
+            GeneratedCodeInfo_Annotation_Semantic_Closed::ALIAS => "ALIAS",
           }
         }
       }
@@ -1850,8 +3250,12 @@ pub mod google {
         /// development tools.
         pub source_code_info: ::std::option::Option<SourceCodeInfo>,
         /// The syntax of the proto file.
-        /// The supported values are "proto2" and "proto3".
+        /// The supported values are "proto2", "proto3", and "editions".
+      
+        /// If `edition` is present, this value must be "editions".
         pub syntax: ::std::option::Option<::std::string::String>,
+        /// The edition of the proto file.
+        pub edition: ::std::option::Option<Edition>,
       }
       impl FileDescriptorProto {
         pub fn has_name(&self) -> bool {
@@ -1998,6 +3402,15 @@ pub mod google {
         pub fn get_syntax(&self) -> &str {
           self.syntax.as_deref().unwrap_or("")
         }
+        pub fn has_edition(&self) -> bool {
+          self.edition.is_some()
+        }
+        pub fn set_edition(&mut self, v: Edition) {
+          self.edition = Some(v);
+        }
+        pub fn get_edition(&self) -> Edition {
+          self.edition.unwrap_or_default()
+        }
       }
       impl ::std::default::Default for FileDescriptorProto {
         fn default() -> Self {
@@ -2014,6 +3427,7 @@ pub mod google {
             options: ::std::default::Default::default(),
             source_code_info: ::std::default::Default::default(),
             syntax: ::std::default::Default::default(),
+            edition: ::std::default::Default::default(),
           }
         }
       }
@@ -2134,6 +3548,15 @@ pub mod google {
                 label: ::pb_jelly::Label::Optional,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "edition",
+                full_name: "google.protobuf.FileDescriptorProto.edition",
+                index: 12,
+                number: 14,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -2177,6 +3600,9 @@ pub mod google {
           if let Some(ref val) = self.syntax {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 12, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
+          if let Some(ref val) = self.edition {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 14, ::pb_jelly::wire_format::Type::Varint);
+          }
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -2215,6 +3641,9 @@ pub mod google {
           }
           if let Some(ref val) = self.syntax {
             ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 12, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.edition {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 14, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -2266,6 +3695,10 @@ pub mod google {
               12 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "FileDescriptorProto", 12)?;
                 self.syntax = Some(val);
+              }
+              14 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FileDescriptorProto", 14)?;
+                self.edition = Some(val);
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -2320,6 +3753,9 @@ pub mod google {
             }
             "syntax" => {
               ::pb_jelly::reflection::FieldMut::Value(self.syntax.get_or_insert_with(::std::default::Default::default))
+            }
+            "edition" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.edition.get_or_insert_with(::std::default::Default::default))
             }
             _ => {
               panic!("unknown field name given")
@@ -3050,6 +4486,16 @@ pub mod google {
       pub struct ExtensionRangeOptions {
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
+        /// For external users: DO NOT USE. We are in the process of open sourcing
+        /// extension declaration and executing internal cleanups before it can be
+        /// used externally.
+        pub declaration: ::std::vec::Vec<ExtensionRangeOptions_Declaration>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
+        /// The verification state of the range.
+        /// TODO: flip the default to DECLARATION once all empty ranges
+        /// are marked as UNVERIFIED.
+        pub verification: ::std::option::Option<ExtensionRangeOptions_VerificationState>,
         pub _extensions: ::pb_jelly::Unrecognized,
       }
       impl ExtensionRangeOptions {
@@ -3065,11 +4511,47 @@ pub mod google {
         pub fn mut_uninterpreted_option(&mut self) -> &mut ::std::vec::Vec<UninterpretedOption> {
           &mut self.uninterpreted_option
         }
+        pub fn set_declaration(&mut self, v: ::std::vec::Vec<ExtensionRangeOptions_Declaration>) {
+          self.declaration = v;
+        }
+        pub fn take_declaration(&mut self) -> ::std::vec::Vec<ExtensionRangeOptions_Declaration> {
+          ::std::mem::take(&mut self.declaration)
+        }
+        pub fn get_declaration(&self) -> &[ExtensionRangeOptions_Declaration] {
+          &self.declaration
+        }
+        pub fn mut_declaration(&mut self) -> &mut ::std::vec::Vec<ExtensionRangeOptions_Declaration> {
+          &mut self.declaration
+        }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
+        pub fn has_verification(&self) -> bool {
+          self.verification.is_some()
+        }
+        pub fn set_verification(&mut self, v: ExtensionRangeOptions_VerificationState) {
+          self.verification = Some(v);
+        }
+        pub fn get_verification(&self) -> ExtensionRangeOptions_VerificationState {
+          self.verification.unwrap_or_default()
+        }
       }
       impl ::std::default::Default for ExtensionRangeOptions {
         fn default() -> Self {
           ExtensionRangeOptions {
             uninterpreted_option: ::std::default::Default::default(),
+            declaration: ::std::default::Default::default(),
+            features: ::std::default::Default::default(),
+            verification: ::std::option::Option::Some(ExtensionRangeOptions_VerificationState::UNVERIFIED),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
         }
@@ -3092,6 +4574,33 @@ pub mod google {
                 label: ::pb_jelly::Label::Repeated,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "declaration",
+                full_name: "google.protobuf.ExtensionRangeOptions.declaration",
+                index: 1,
+                number: 2,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Repeated,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.ExtensionRangeOptions.features",
+                index: 2,
+                number: 50,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "verification",
+                full_name: "google.protobuf.ExtensionRangeOptions.verification",
+                index: 3,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -3102,10 +4611,28 @@ pub mod google {
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
+          for val in &self.declaration {
+            size += ::pb_jelly::helpers::compute_size_field::<ExtensionRangeOptions_Declaration>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 50, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.verification {
+            size += ::pb_jelly::helpers::compute_size_field::<ExtensionRangeOptions_VerificationState>(val, 3, ::pb_jelly::wire_format::Type::Varint);
+          }
           size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          for val in &self.declaration {
+            ::pb_jelly::helpers::serialize_field::<W, ExtensionRangeOptions_Declaration>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.verification {
+            ::pb_jelly::helpers::serialize_field::<W, ExtensionRangeOptions_VerificationState>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 50, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
@@ -3118,6 +4645,18 @@ pub mod google {
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "ExtensionRangeOptions", 999)?;
                 self.uninterpreted_option.push(val);
+              }
+              2 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ExtensionRangeOptions_Declaration>(buf, typ, "ExtensionRangeOptions", 2)?;
+                self.declaration.push(val);
+              }
+              50 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "ExtensionRangeOptions", 50)?;
+                self.features = Some(val);
+              }
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, ExtensionRangeOptions_VerificationState>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ExtensionRangeOptions", 3)?;
+                self.verification = Some(val);
               }
               1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
@@ -3143,6 +4682,15 @@ pub mod google {
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
+            "declaration" => {
+              unimplemented!("Repeated fields are not currently supported.")
+            }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
+            "verification" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.verification.get_or_insert_with(::std::default::Default::default))
+            }
             _ => {
               panic!("unknown field name given")
             }
@@ -3152,6 +4700,248 @@ pub mod google {
       impl ::pb_jelly::extensions::Extensible for ExtensionRangeOptions {
         fn _extensions(&self) -> &::pb_jelly::Unrecognized {
           &self._extensions
+        }
+      }
+      
+      #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+      pub struct ExtensionRangeOptions_Declaration {
+        /// The extension number declared within the extension range.
+        pub number: ::std::option::Option<i32>,
+        /// The fully-qualified name of the extension field. There must be a leading
+        /// dot in front of the full name.
+        pub full_name: ::std::option::Option<::std::string::String>,
+        /// The fully-qualified type name of the extension field. Unlike
+        /// Metadata.type, Declaration.type must have a leading dot for messages
+        /// and enums.
+        pub r#type: ::std::option::Option<::std::string::String>,
+        /// If true, indicates that the number is reserved in the extension range,
+        /// and any extension field with the number will fail to compile. Set this
+        /// when a declared extension field is deleted.
+        pub reserved: ::std::option::Option<bool>,
+        /// If true, indicates that the extension must be defined as repeated.
+        /// Otherwise the extension must be defined as optional.
+        pub repeated: ::std::option::Option<bool>,
+      }
+      impl ExtensionRangeOptions_Declaration {
+        pub fn has_number(&self) -> bool {
+          self.number.is_some()
+        }
+        pub fn set_number(&mut self, v: i32) {
+          self.number = Some(v);
+        }
+        pub fn get_number(&self) -> i32 {
+          self.number.unwrap_or(0i32)
+        }
+        pub fn has_full_name(&self) -> bool {
+          self.full_name.is_some()
+        }
+        pub fn set_full_name(&mut self, v: ::std::string::String) {
+          self.full_name = Some(v);
+        }
+        pub fn take_full_name(&mut self) -> ::std::string::String {
+          self.full_name.take().unwrap_or_default()
+        }
+        pub fn get_full_name(&self) -> &str {
+          self.full_name.as_deref().unwrap_or("")
+        }
+        pub fn has_type(&self) -> bool {
+          self.r#type.is_some()
+        }
+        pub fn set_type(&mut self, v: ::std::string::String) {
+          self.r#type = Some(v);
+        }
+        pub fn take_type(&mut self) -> ::std::string::String {
+          self.r#type.take().unwrap_or_default()
+        }
+        pub fn get_type(&self) -> &str {
+          self.r#type.as_deref().unwrap_or("")
+        }
+        pub fn has_reserved(&self) -> bool {
+          self.reserved.is_some()
+        }
+        pub fn set_reserved(&mut self, v: bool) {
+          self.reserved = Some(v);
+        }
+        pub fn get_reserved(&self) -> bool {
+          self.reserved.unwrap_or(false)
+        }
+        pub fn has_repeated(&self) -> bool {
+          self.repeated.is_some()
+        }
+        pub fn set_repeated(&mut self, v: bool) {
+          self.repeated = Some(v);
+        }
+        pub fn get_repeated(&self) -> bool {
+          self.repeated.unwrap_or(false)
+        }
+      }
+      impl ::std::default::Default for ExtensionRangeOptions_Declaration {
+        fn default() -> Self {
+          ExtensionRangeOptions_Declaration {
+            number: ::std::default::Default::default(),
+            full_name: ::std::default::Default::default(),
+            r#type: ::std::default::Default::default(),
+            reserved: ::std::default::Default::default(),
+            repeated: ::std::default::Default::default(),
+          }
+        }
+      }
+      ::lazy_static::lazy_static! {
+        pub static ref ExtensionRangeOptions_Declaration_default: ExtensionRangeOptions_Declaration = ExtensionRangeOptions_Declaration::default();
+      }
+      impl ::pb_jelly::Message for ExtensionRangeOptions_Declaration {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "ExtensionRangeOptions_Declaration",
+            full_name: "google.protobuf.ExtensionRangeOptions_Declaration",
+            fields: &[
+              ::pb_jelly::FieldDescriptor {
+                name: "number",
+                full_name: "google.protobuf.ExtensionRangeOptions_Declaration.number",
+                index: 0,
+                number: 1,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "full_name",
+                full_name: "google.protobuf.ExtensionRangeOptions_Declaration.full_name",
+                index: 1,
+                number: 2,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "type",
+                full_name: "google.protobuf.ExtensionRangeOptions_Declaration.type",
+                index: 2,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "reserved",
+                full_name: "google.protobuf.ExtensionRangeOptions_Declaration.reserved",
+                index: 3,
+                number: 5,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "repeated",
+                full_name: "google.protobuf.ExtensionRangeOptions_Declaration.repeated",
+                index: 4,
+                number: 6,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          let mut size = 0usize;
+          if let Some(ref val) = self.number {
+            size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.full_name {
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.r#type {
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.reserved {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 5, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.repeated {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 6, ::pb_jelly::wire_format::Type::Varint);
+          }
+          size
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          if let Some(ref val) = self.number {
+            ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.full_name {
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.r#type {
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.reserved {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.repeated {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              1 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ExtensionRangeOptions_Declaration", 1)?;
+                self.number = Some(val);
+              }
+              2 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "ExtensionRangeOptions_Declaration", 2)?;
+                self.full_name = Some(val);
+              }
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "ExtensionRangeOptions_Declaration", 3)?;
+                self.r#type = Some(val);
+              }
+              5 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ExtensionRangeOptions_Declaration", 5)?;
+                self.reserved = Some(val);
+              }
+              6 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ExtensionRangeOptions_Declaration", 6)?;
+                self.repeated = Some(val);
+              }
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for ExtensionRangeOptions_Declaration {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            "number" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.number.get_or_insert_with(::std::default::Default::default))
+            }
+            "full_name" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.full_name.get_or_insert_with(::std::default::Default::default))
+            }
+            "type" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.r#type.get_or_insert_with(::std::default::Default::default))
+            }
+            "reserved" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.reserved.get_or_insert_with(::std::default::Default::default))
+            }
+            "repeated" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.repeated.get_or_insert_with(::std::default::Default::default))
+            }
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
         }
       }
       
@@ -3177,7 +4967,6 @@ pub mod google {
         /// For booleans, "true" or "false".
         /// For strings, contains the default text contents (not escaped in any way).
         /// For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
-        /// TODO(kenton):  Base-64 encode?
         pub default_value: ::std::option::Option<::std::string::String>,
         /// If set, gives the index of a oneof in the containing type's oneof_decl
         /// list.  This field is a member of that oneof.
@@ -3191,12 +4980,12 @@ pub mod google {
         /// If true, this is a proto3 "optional". When a proto3 field is optional, it
         /// tracks presence regardless of field type.
       
-        /// When proto3_optional is true, this field must be belong to a oneof to
-        /// signal to old proto3 clients that presence is tracked for this field. This
-        /// oneof is known as a "synthetic" oneof, and this field must be its sole
-        /// member (each proto3 optional field gets its own synthetic oneof). Synthetic
-        /// oneofs exist in the descriptor only, and do not generate any API. Synthetic
-        /// oneofs must be ordered after all "real" oneofs.
+        /// When proto3_optional is true, this field must belong to a oneof to signal
+        /// to old proto3 clients that presence is tracked for this field. This oneof
+        /// is known as a "synthetic" oneof, and this field must be its sole member
+        /// (each proto3 optional field gets its own synthetic oneof). Synthetic oneofs
+        /// exist in the descriptor only, and do not generate any API. Synthetic oneofs
+        /// must be ordered after all "real" oneofs.
       
         /// For message fields, proto3_optional doesn't create any semantic change,
         /// since non-repeated message fields always track presence. However it still
@@ -4815,12 +6604,16 @@ pub mod google {
         pub java_multiple_files: ::std::option::Option<bool>,
         /// This option does nothing.
         pub java_generate_equals_and_hash: ::std::option::Option<bool>,
-        /// If set true, then the Java2 code generator will generate code that
-        /// throws an exception whenever an attempt is made to assign a non-UTF-8
-        /// byte sequence to a string field.
-        /// Message reflection will do the same.
-        /// However, an extension field still accepts non-UTF-8 byte sequences.
-        /// This option has no effect on when used with the lite runtime.
+        /// A proto2 file can set this to true to opt in to UTF-8 checking for Java,
+        /// which will throw an exception if invalid UTF-8 is parsed from the wire or
+        /// assigned to a string field.
+      
+        /// TODO: clarify exactly what kinds of field types this option
+        /// applies to, and update these docs accordingly.
+      
+        /// Proto3 files already perform these checks. Setting the option explicitly to
+        /// false has no effect: it cannot be used to opt proto3 files out of UTF-8
+        /// checks.
         pub java_string_check_utf8: ::std::option::Option<bool>,
         pub optimize_for: ::std::option::Option<FileOptions_OptimizeMode>,
         /// Sets the Go package where structs generated from this .proto will be
@@ -4842,7 +6635,6 @@ pub mod google {
         pub cc_generic_services: ::std::option::Option<bool>,
         pub java_generic_services: ::std::option::Option<bool>,
         pub py_generic_services: ::std::option::Option<bool>,
-        pub php_generic_services: ::std::option::Option<bool>,
         /// Is this file deprecated?
         /// Depending on the target platform, this can emit Deprecated annotations
         /// for everything in the file, or it will be completely ignored; in the very
@@ -4876,6 +6668,8 @@ pub mod google {
         /// is empty. When this option is not set, the package name will be used for
         /// determining the ruby package.
         pub ruby_package: ::std::option::Option<::std::string::String>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here.
         /// See the documentation for the "Options" section above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
@@ -4981,15 +6775,6 @@ pub mod google {
         pub fn get_py_generic_services(&self) -> bool {
           self.py_generic_services.unwrap_or(false)
         }
-        pub fn has_php_generic_services(&self) -> bool {
-          self.php_generic_services.is_some()
-        }
-        pub fn set_php_generic_services(&mut self, v: bool) {
-          self.php_generic_services = Some(v);
-        }
-        pub fn get_php_generic_services(&self) -> bool {
-          self.php_generic_services.unwrap_or(false)
-        }
         pub fn has_deprecated(&self) -> bool {
           self.deprecated.is_some()
         }
@@ -5092,6 +6877,18 @@ pub mod google {
         pub fn get_ruby_package(&self) -> &str {
           self.ruby_package.as_deref().unwrap_or("")
         }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
         }
@@ -5118,7 +6915,6 @@ pub mod google {
             cc_generic_services: ::std::option::Option::Some(false),
             java_generic_services: ::std::option::Option::Some(false),
             py_generic_services: ::std::option::Option::Some(false),
-            php_generic_services: ::std::option::Option::Some(false),
             deprecated: ::std::option::Option::Some(false),
             cc_enable_arenas: ::std::option::Option::Some(true),
             objc_class_prefix: ::std::default::Default::default(),
@@ -5128,6 +6924,7 @@ pub mod google {
             php_namespace: ::std::default::Default::default(),
             php_metadata_namespace: ::std::default::Default::default(),
             ruby_package: ::std::default::Default::default(),
+            features: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -5233,18 +7030,9 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
-                name: "php_generic_services",
-                full_name: "google.protobuf.FileOptions.php_generic_services",
-                index: 10,
-                number: 42,
-                typ: ::pb_jelly::wire_format::Type::Varint,
-                label: ::pb_jelly::Label::Optional,
-                oneof_index: None,
-              },
-              ::pb_jelly::FieldDescriptor {
                 name: "deprecated",
                 full_name: "google.protobuf.FileOptions.deprecated",
-                index: 11,
+                index: 10,
                 number: 23,
                 typ: ::pb_jelly::wire_format::Type::Varint,
                 label: ::pb_jelly::Label::Optional,
@@ -5253,7 +7041,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "cc_enable_arenas",
                 full_name: "google.protobuf.FileOptions.cc_enable_arenas",
-                index: 12,
+                index: 11,
                 number: 31,
                 typ: ::pb_jelly::wire_format::Type::Varint,
                 label: ::pb_jelly::Label::Optional,
@@ -5262,7 +7050,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "objc_class_prefix",
                 full_name: "google.protobuf.FileOptions.objc_class_prefix",
-                index: 13,
+                index: 12,
                 number: 36,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -5271,7 +7059,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "csharp_namespace",
                 full_name: "google.protobuf.FileOptions.csharp_namespace",
-                index: 14,
+                index: 13,
                 number: 37,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -5280,7 +7068,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "swift_prefix",
                 full_name: "google.protobuf.FileOptions.swift_prefix",
-                index: 15,
+                index: 14,
                 number: 39,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -5289,7 +7077,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "php_class_prefix",
                 full_name: "google.protobuf.FileOptions.php_class_prefix",
-                index: 16,
+                index: 15,
                 number: 40,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -5298,7 +7086,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "php_namespace",
                 full_name: "google.protobuf.FileOptions.php_namespace",
-                index: 17,
+                index: 16,
                 number: 41,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -5307,7 +7095,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "php_metadata_namespace",
                 full_name: "google.protobuf.FileOptions.php_metadata_namespace",
-                index: 18,
+                index: 17,
                 number: 44,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -5316,8 +7104,17 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "ruby_package",
                 full_name: "google.protobuf.FileOptions.ruby_package",
-                index: 19,
+                index: 18,
                 number: 45,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.FileOptions.features",
+                index: 19,
+                number: 50,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
                 oneof_index: None,
@@ -5368,9 +7165,6 @@ pub mod google {
           if let Some(ref val) = self.py_generic_services {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 18, ::pb_jelly::wire_format::Type::Varint);
           }
-          if let Some(ref val) = self.php_generic_services {
-            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 42, ::pb_jelly::wire_format::Type::Varint);
-          }
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 23, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -5397,6 +7191,9 @@ pub mod google {
           }
           if let Some(ref val) = self.ruby_package {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 45, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 50, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -5456,14 +7253,14 @@ pub mod google {
           if let Some(ref val) = self.php_namespace {
             ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 41, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
-          if let Some(ref val) = self.php_generic_services {
-            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 42, ::pb_jelly::wire_format::Type::Varint)?;
-          }
           if let Some(ref val) = self.php_metadata_namespace {
             ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 44, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           if let Some(ref val) = self.ruby_package {
             ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 45, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 50, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
@@ -5514,10 +7311,6 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FileOptions", 18)?;
                 self.py_generic_services = Some(val);
               }
-              42 => {
-                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FileOptions", 42)?;
-                self.php_generic_services = Some(val);
-              }
               23 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FileOptions", 23)?;
                 self.deprecated = Some(val);
@@ -5553,6 +7346,10 @@ pub mod google {
               45 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "FileOptions", 45)?;
                 self.ruby_package = Some(val);
+              }
+              50 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "FileOptions", 50)?;
+                self.features = Some(val);
               }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "FileOptions", 999)?;
@@ -5609,9 +7406,6 @@ pub mod google {
             "py_generic_services" => {
               ::pb_jelly::reflection::FieldMut::Value(self.py_generic_services.get_or_insert_with(::std::default::Default::default))
             }
-            "php_generic_services" => {
-              ::pb_jelly::reflection::FieldMut::Value(self.php_generic_services.get_or_insert_with(::std::default::Default::default))
-            }
             "deprecated" => {
               ::pb_jelly::reflection::FieldMut::Value(self.deprecated.get_or_insert_with(::std::default::Default::default))
             }
@@ -5638,6 +7432,9 @@ pub mod google {
             }
             "ruby_package" => {
               ::pb_jelly::reflection::FieldMut::Value(self.ruby_package.get_or_insert_with(::std::default::Default::default))
+            }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
             }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
@@ -5706,6 +7503,19 @@ pub mod google {
         /// instead. The option should only be implicitly set by the proto compiler
         /// parser.
         pub map_entry: ::std::option::Option<bool>,
+        /// Enable the legacy handling of JSON field name conflicts.  This lowercases
+        /// and strips underscored from the fields before comparison in proto3 only.
+        /// The new behavior takes `json_name` into account and applies to proto2 as
+        /// well.
+      
+        /// This should only be used as a temporary measure against broken builds due
+        /// to the change in behavior for JSON field name conflicts.
+      
+        /// TODO This is legacy behavior we plan to remove once downstream
+        /// teams have had time to migrate.
+        pub deprecated_legacy_json_field_conflicts: ::std::option::Option<bool>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
         pub _extensions: ::pb_jelly::Unrecognized,
@@ -5747,6 +7557,27 @@ pub mod google {
         pub fn get_map_entry(&self) -> bool {
           self.map_entry.unwrap_or(false)
         }
+        pub fn has_deprecated_legacy_json_field_conflicts(&self) -> bool {
+          self.deprecated_legacy_json_field_conflicts.is_some()
+        }
+        pub fn set_deprecated_legacy_json_field_conflicts(&mut self, v: bool) {
+          self.deprecated_legacy_json_field_conflicts = Some(v);
+        }
+        pub fn get_deprecated_legacy_json_field_conflicts(&self) -> bool {
+          self.deprecated_legacy_json_field_conflicts.unwrap_or(false)
+        }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
         }
@@ -5767,6 +7598,8 @@ pub mod google {
             no_standard_descriptor_accessor: ::std::option::Option::Some(false),
             deprecated: ::std::option::Option::Some(false),
             map_entry: ::std::default::Default::default(),
+            deprecated_legacy_json_field_conflicts: ::std::default::Default::default(),
+            features: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -5818,9 +7651,27 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "deprecated_legacy_json_field_conflicts",
+                full_name: "google.protobuf.MessageOptions.deprecated_legacy_json_field_conflicts",
+                index: 4,
+                number: 11,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.MessageOptions.features",
+                index: 5,
+                number: 12,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.MessageOptions.uninterpreted_option",
-                index: 4,
+                index: 6,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -5845,6 +7696,12 @@ pub mod google {
           if let Some(ref val) = self.map_entry {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 7, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.deprecated_legacy_json_field_conflicts {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 11, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 12, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -5863,6 +7720,12 @@ pub mod google {
           }
           if let Some(ref val) = self.map_entry {
             ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 7, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.deprecated_legacy_json_field_conflicts {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 11, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 12, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
@@ -5888,6 +7751,14 @@ pub mod google {
               7 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "MessageOptions", 7)?;
                 self.map_entry = Some(val);
+              }
+              11 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "MessageOptions", 11)?;
+                self.deprecated_legacy_json_field_conflicts = Some(val);
+              }
+              12 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "MessageOptions", 12)?;
+                self.features = Some(val);
               }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "MessageOptions", 999)?;
@@ -5926,6 +7797,12 @@ pub mod google {
             "map_entry" => {
               ::pb_jelly::reflection::FieldMut::Value(self.map_entry.get_or_insert_with(::std::default::Default::default))
             }
+            "deprecated_legacy_json_field_conflicts" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.deprecated_legacy_json_field_conflicts.get_or_insert_with(::std::default::Default::default))
+            }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
@@ -5943,16 +7820,21 @@ pub mod google {
       
       #[derive(Clone, Debug, PartialEq)]
       pub struct FieldOptions {
+        /// NOTE: ctype is deprecated. Use `features.(pb.cpp).string_type` instead.
         /// The ctype option instructs the C++ code generator to use a different
         /// representation of the field than it normally would.  See the specific
-        /// options below.  This option is not yet implemented in the open source
-        /// release -- sorry, we'll try to include it in a future version!
+        /// options below.  This option is only implemented to support use of
+        /// [ctype=CORD] and [ctype=STRING] (the default) on non-repeated fields of
+        /// type "bytes" in the open source release.
+        /// TODO: make ctype actually deprecated.
         pub ctype: ::std::option::Option<FieldOptions_CType>,
         /// The packed option can be enabled for repeated primitive fields to enable
         /// a more efficient representation on the wire. Rather than repeatedly
         /// writing the tag and type for each element, the entire array is encoded as
         /// a single length-delimited blob. In proto3, only explicit setting it to
-        /// false will avoid using packed encoding.
+        /// false will avoid using packed encoding.  This option is prohibited in
+        /// Editions, but the `repeated_field_encoding` feature can be used to control
+        /// the behavior.
         pub packed: ::std::option::Option<bool>,
         /// The jstype option determines the JavaScript type used for values of the
         /// field.  The option is permitted only for 64 bit integral and fixed types
@@ -5983,18 +7865,16 @@ pub mod google {
         /// call from multiple threads concurrently, while non-const methods continue
         /// to require exclusive access.
       
-      
-        /// Note that implementations may choose not to check required fields within
-        /// a lazy sub-message.  That is, calling IsInitialized() on the outer message
-        /// may return true even if the inner message has missing required fields.
-        /// This is necessary because otherwise the inner message would have to be
-        /// parsed in order to perform the check, defeating the purpose of lazy
-        /// parsing.  An implementation which chooses not to check required fields
-        /// must be consistent about it.  That is, for any particular sub-message, the
-        /// implementation must either *always* check its required fields, or *never*
-        /// check its required fields, regardless of whether or not the message has
-        /// been parsed.
+        /// Note that lazy message fields are still eagerly verified to check
+        /// ill-formed wireformat or missing required fields. Calling IsInitialized()
+        /// on the outer message would fail if the inner message has missing required
+        /// fields. Failed verification would result in parsing failure (except when
+        /// uninitialized messages are acceptable).
         pub lazy: ::std::option::Option<bool>,
+        /// unverified_lazy does no correctness checks on the byte stream. This should
+        /// only be used where lazy with verification is prohibitive for performance
+        /// reasons.
+        pub unverified_lazy: ::std::option::Option<bool>,
         /// Is this field deprecated?
         /// Depending on the target platform, this can emit Deprecated annotations
         /// for accessors, or it will be completely ignored; in the very least, this
@@ -6002,6 +7882,15 @@ pub mod google {
         pub deprecated: ::std::option::Option<bool>,
         /// For Google-internal migration only. Do not use.
         pub weak: ::std::option::Option<bool>,
+        /// Indicate that the field value should not be printed out when using debug
+        /// formats, e.g. when the field contains sensitive credentials.
+        pub debug_redact: ::std::option::Option<bool>,
+        pub retention: ::std::option::Option<FieldOptions_OptionRetention>,
+        pub targets: ::std::vec::Vec<FieldOptions_OptionTargetType>,
+        pub edition_defaults: ::std::vec::Vec<FieldOptions_EditionDefault>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
+        pub feature_support: ::std::option::Option<FieldOptions_FeatureSupport>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
         pub _extensions: ::pb_jelly::Unrecognized,
@@ -6043,6 +7932,15 @@ pub mod google {
         pub fn get_lazy(&self) -> bool {
           self.lazy.unwrap_or(false)
         }
+        pub fn has_unverified_lazy(&self) -> bool {
+          self.unverified_lazy.is_some()
+        }
+        pub fn set_unverified_lazy(&mut self, v: bool) {
+          self.unverified_lazy = Some(v);
+        }
+        pub fn get_unverified_lazy(&self) -> bool {
+          self.unverified_lazy.unwrap_or(false)
+        }
         pub fn has_deprecated(&self) -> bool {
           self.deprecated.is_some()
         }
@@ -6060,6 +7958,72 @@ pub mod google {
         }
         pub fn get_weak(&self) -> bool {
           self.weak.unwrap_or(false)
+        }
+        pub fn has_debug_redact(&self) -> bool {
+          self.debug_redact.is_some()
+        }
+        pub fn set_debug_redact(&mut self, v: bool) {
+          self.debug_redact = Some(v);
+        }
+        pub fn get_debug_redact(&self) -> bool {
+          self.debug_redact.unwrap_or(false)
+        }
+        pub fn has_retention(&self) -> bool {
+          self.retention.is_some()
+        }
+        pub fn set_retention(&mut self, v: FieldOptions_OptionRetention) {
+          self.retention = Some(v);
+        }
+        pub fn get_retention(&self) -> FieldOptions_OptionRetention {
+          self.retention.unwrap_or_default()
+        }
+        pub fn set_targets(&mut self, v: ::std::vec::Vec<FieldOptions_OptionTargetType>) {
+          self.targets = v;
+        }
+        pub fn take_targets(&mut self) -> ::std::vec::Vec<FieldOptions_OptionTargetType> {
+          ::std::mem::take(&mut self.targets)
+        }
+        pub fn get_targets(&self) -> &[FieldOptions_OptionTargetType] {
+          &self.targets
+        }
+        pub fn mut_targets(&mut self) -> &mut ::std::vec::Vec<FieldOptions_OptionTargetType> {
+          &mut self.targets
+        }
+        pub fn set_edition_defaults(&mut self, v: ::std::vec::Vec<FieldOptions_EditionDefault>) {
+          self.edition_defaults = v;
+        }
+        pub fn take_edition_defaults(&mut self) -> ::std::vec::Vec<FieldOptions_EditionDefault> {
+          ::std::mem::take(&mut self.edition_defaults)
+        }
+        pub fn get_edition_defaults(&self) -> &[FieldOptions_EditionDefault] {
+          &self.edition_defaults
+        }
+        pub fn mut_edition_defaults(&mut self) -> &mut ::std::vec::Vec<FieldOptions_EditionDefault> {
+          &mut self.edition_defaults
+        }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
+        pub fn has_feature_support(&self) -> bool {
+          self.feature_support.is_some()
+        }
+        pub fn set_feature_support(&mut self, v: FieldOptions_FeatureSupport) {
+          self.feature_support = Some(v);
+        }
+        pub fn take_feature_support(&mut self) -> FieldOptions_FeatureSupport {
+          self.feature_support.take().unwrap_or_default()
+        }
+        pub fn get_feature_support(&self) -> &FieldOptions_FeatureSupport {
+          self.feature_support.as_ref().unwrap_or(&FieldOptions_FeatureSupport_default)
         }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
@@ -6081,8 +8045,15 @@ pub mod google {
             packed: ::std::default::Default::default(),
             jstype: ::std::option::Option::Some(FieldOptions_JSType::JS_NORMAL),
             lazy: ::std::option::Option::Some(false),
+            unverified_lazy: ::std::option::Option::Some(false),
             deprecated: ::std::option::Option::Some(false),
             weak: ::std::option::Option::Some(false),
+            debug_redact: ::std::option::Option::Some(false),
+            retention: ::std::default::Default::default(),
+            targets: ::std::default::Default::default(),
+            edition_defaults: ::std::default::Default::default(),
+            features: ::std::default::Default::default(),
+            feature_support: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -6134,9 +8105,18 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "unverified_lazy",
+                full_name: "google.protobuf.FieldOptions.unverified_lazy",
+                index: 4,
+                number: 15,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "deprecated",
                 full_name: "google.protobuf.FieldOptions.deprecated",
-                index: 4,
+                index: 5,
                 number: 3,
                 typ: ::pb_jelly::wire_format::Type::Varint,
                 label: ::pb_jelly::Label::Optional,
@@ -6145,16 +8125,70 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "weak",
                 full_name: "google.protobuf.FieldOptions.weak",
-                index: 5,
+                index: 6,
                 number: 10,
                 typ: ::pb_jelly::wire_format::Type::Varint,
                 label: ::pb_jelly::Label::Optional,
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "debug_redact",
+                full_name: "google.protobuf.FieldOptions.debug_redact",
+                index: 7,
+                number: 16,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "retention",
+                full_name: "google.protobuf.FieldOptions.retention",
+                index: 8,
+                number: 17,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "targets",
+                full_name: "google.protobuf.FieldOptions.targets",
+                index: 9,
+                number: 19,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Repeated,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "edition_defaults",
+                full_name: "google.protobuf.FieldOptions.edition_defaults",
+                index: 10,
+                number: 20,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Repeated,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.FieldOptions.features",
+                index: 11,
+                number: 21,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "feature_support",
+                full_name: "google.protobuf.FieldOptions.feature_support",
+                index: 12,
+                number: 22,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.FieldOptions.uninterpreted_option",
-                index: 6,
+                index: 13,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -6179,11 +8213,32 @@ pub mod google {
           if let Some(ref val) = self.lazy {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 5, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.unverified_lazy {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 15, ::pb_jelly::wire_format::Type::Varint);
+          }
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
           if let Some(ref val) = self.weak {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 10, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.debug_redact {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 16, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.retention {
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_OptionRetention>(val, 17, ::pb_jelly::wire_format::Type::Varint);
+          }
+          for val in &self.targets {
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_OptionTargetType>(val, 19, ::pb_jelly::wire_format::Type::Varint);
+          }
+          for val in &self.edition_defaults {
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_EditionDefault>(val, 20, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 21, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.feature_support {
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_FeatureSupport>(val, 22, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -6210,6 +8265,27 @@ pub mod google {
           if let Some(ref val) = self.weak {
             ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 10, ::pb_jelly::wire_format::Type::Varint)?;
           }
+          if let Some(ref val) = self.unverified_lazy {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 15, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.debug_redact {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 16, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.retention {
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_OptionRetention>(w, val, 17, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          for val in &self.targets {
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_OptionTargetType>(w, val, 19, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          for val in &self.edition_defaults {
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_EditionDefault>(w, val, 20, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 21, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.feature_support {
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_FeatureSupport>(w, val, 22, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
@@ -6235,6 +8311,10 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 5)?;
                 self.lazy = Some(val);
               }
+              15 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 15)?;
+                self.unverified_lazy = Some(val);
+              }
               3 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 3)?;
                 self.deprecated = Some(val);
@@ -6242,6 +8322,29 @@ pub mod google {
               10 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 10)?;
                 self.weak = Some(val);
+              }
+              16 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 16)?;
+                self.debug_redact = Some(val);
+              }
+              17 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FieldOptions_OptionRetention>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 17)?;
+                self.retention = Some(val);
+              }
+              19 => {
+                ::pb_jelly::helpers::deserialize_packed::<B, FieldOptions_OptionTargetType>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions", 19, &mut self.targets)?;
+              }
+              20 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FieldOptions_EditionDefault>(buf, typ, "FieldOptions", 20)?;
+                self.edition_defaults.push(val);
+              }
+              21 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "FieldOptions", 21)?;
+                self.features = Some(val);
+              }
+              22 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FieldOptions_FeatureSupport>(buf, typ, "FieldOptions", 22)?;
+                self.feature_support = Some(val);
               }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "FieldOptions", 999)?;
@@ -6280,11 +8383,32 @@ pub mod google {
             "lazy" => {
               ::pb_jelly::reflection::FieldMut::Value(self.lazy.get_or_insert_with(::std::default::Default::default))
             }
+            "unverified_lazy" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.unverified_lazy.get_or_insert_with(::std::default::Default::default))
+            }
             "deprecated" => {
               ::pb_jelly::reflection::FieldMut::Value(self.deprecated.get_or_insert_with(::std::default::Default::default))
             }
             "weak" => {
               ::pb_jelly::reflection::FieldMut::Value(self.weak.get_or_insert_with(::std::default::Default::default))
+            }
+            "debug_redact" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.debug_redact.get_or_insert_with(::std::default::Default::default))
+            }
+            "retention" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.retention.get_or_insert_with(::std::default::Default::default))
+            }
+            "targets" => {
+              unimplemented!("Repeated fields are not currently supported.")
+            }
+            "edition_defaults" => {
+              unimplemented!("Repeated fields are not currently supported.")
+            }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
+            "feature_support" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.feature_support.get_or_insert_with(::std::default::Default::default))
             }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
@@ -6301,13 +8425,363 @@ pub mod google {
         }
       }
       
+      #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+      pub struct FieldOptions_EditionDefault {
+        pub edition: ::std::option::Option<Edition>,
+        /// Textproto value.
+        pub value: ::std::option::Option<::std::string::String>,
+      }
+      impl FieldOptions_EditionDefault {
+        pub fn has_edition(&self) -> bool {
+          self.edition.is_some()
+        }
+        pub fn set_edition(&mut self, v: Edition) {
+          self.edition = Some(v);
+        }
+        pub fn get_edition(&self) -> Edition {
+          self.edition.unwrap_or_default()
+        }
+        pub fn has_value(&self) -> bool {
+          self.value.is_some()
+        }
+        pub fn set_value(&mut self, v: ::std::string::String) {
+          self.value = Some(v);
+        }
+        pub fn take_value(&mut self) -> ::std::string::String {
+          self.value.take().unwrap_or_default()
+        }
+        pub fn get_value(&self) -> &str {
+          self.value.as_deref().unwrap_or("")
+        }
+      }
+      impl ::std::default::Default for FieldOptions_EditionDefault {
+        fn default() -> Self {
+          FieldOptions_EditionDefault {
+            edition: ::std::default::Default::default(),
+            value: ::std::default::Default::default(),
+          }
+        }
+      }
+      ::lazy_static::lazy_static! {
+        pub static ref FieldOptions_EditionDefault_default: FieldOptions_EditionDefault = FieldOptions_EditionDefault::default();
+      }
+      impl ::pb_jelly::Message for FieldOptions_EditionDefault {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "FieldOptions_EditionDefault",
+            full_name: "google.protobuf.FieldOptions_EditionDefault",
+            fields: &[
+              ::pb_jelly::FieldDescriptor {
+                name: "edition",
+                full_name: "google.protobuf.FieldOptions_EditionDefault.edition",
+                index: 0,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "value",
+                full_name: "google.protobuf.FieldOptions_EditionDefault.value",
+                index: 1,
+                number: 2,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          let mut size = 0usize;
+          if let Some(ref val) = self.edition {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 3, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.value {
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          size
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          if let Some(ref val) = self.value {
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.edition {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions_EditionDefault", 3)?;
+                self.edition = Some(val);
+              }
+              2 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "FieldOptions_EditionDefault", 2)?;
+                self.value = Some(val);
+              }
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for FieldOptions_EditionDefault {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            "edition" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.edition.get_or_insert_with(::std::default::Default::default))
+            }
+            "value" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.value.get_or_insert_with(::std::default::Default::default))
+            }
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
+        }
+      }
+      
+      /// Information about the support window of a feature.
+      #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+      pub struct FieldOptions_FeatureSupport {
+        /// The edition that this feature was first available in.  In editions
+        /// earlier than this one, the default assigned to EDITION_LEGACY will be
+        /// used, and proto files will not be able to override it.
+        pub edition_introduced: ::std::option::Option<Edition>,
+        /// The edition this feature becomes deprecated in.  Using this after this
+        /// edition may trigger warnings.
+        pub edition_deprecated: ::std::option::Option<Edition>,
+        /// The deprecation warning text if this feature is used after the edition it
+        /// was marked deprecated in.
+        pub deprecation_warning: ::std::option::Option<::std::string::String>,
+        /// The edition this feature is no longer available in.  In editions after
+        /// this one, the last default assigned will be used, and proto files will
+        /// not be able to override it.
+        pub edition_removed: ::std::option::Option<Edition>,
+      }
+      impl FieldOptions_FeatureSupport {
+        pub fn has_edition_introduced(&self) -> bool {
+          self.edition_introduced.is_some()
+        }
+        pub fn set_edition_introduced(&mut self, v: Edition) {
+          self.edition_introduced = Some(v);
+        }
+        pub fn get_edition_introduced(&self) -> Edition {
+          self.edition_introduced.unwrap_or_default()
+        }
+        pub fn has_edition_deprecated(&self) -> bool {
+          self.edition_deprecated.is_some()
+        }
+        pub fn set_edition_deprecated(&mut self, v: Edition) {
+          self.edition_deprecated = Some(v);
+        }
+        pub fn get_edition_deprecated(&self) -> Edition {
+          self.edition_deprecated.unwrap_or_default()
+        }
+        pub fn has_deprecation_warning(&self) -> bool {
+          self.deprecation_warning.is_some()
+        }
+        pub fn set_deprecation_warning(&mut self, v: ::std::string::String) {
+          self.deprecation_warning = Some(v);
+        }
+        pub fn take_deprecation_warning(&mut self) -> ::std::string::String {
+          self.deprecation_warning.take().unwrap_or_default()
+        }
+        pub fn get_deprecation_warning(&self) -> &str {
+          self.deprecation_warning.as_deref().unwrap_or("")
+        }
+        pub fn has_edition_removed(&self) -> bool {
+          self.edition_removed.is_some()
+        }
+        pub fn set_edition_removed(&mut self, v: Edition) {
+          self.edition_removed = Some(v);
+        }
+        pub fn get_edition_removed(&self) -> Edition {
+          self.edition_removed.unwrap_or_default()
+        }
+      }
+      impl ::std::default::Default for FieldOptions_FeatureSupport {
+        fn default() -> Self {
+          FieldOptions_FeatureSupport {
+            edition_introduced: ::std::default::Default::default(),
+            edition_deprecated: ::std::default::Default::default(),
+            deprecation_warning: ::std::default::Default::default(),
+            edition_removed: ::std::default::Default::default(),
+          }
+        }
+      }
+      ::lazy_static::lazy_static! {
+        pub static ref FieldOptions_FeatureSupport_default: FieldOptions_FeatureSupport = FieldOptions_FeatureSupport::default();
+      }
+      impl ::pb_jelly::Message for FieldOptions_FeatureSupport {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "FieldOptions_FeatureSupport",
+            full_name: "google.protobuf.FieldOptions_FeatureSupport",
+            fields: &[
+              ::pb_jelly::FieldDescriptor {
+                name: "edition_introduced",
+                full_name: "google.protobuf.FieldOptions_FeatureSupport.edition_introduced",
+                index: 0,
+                number: 1,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "edition_deprecated",
+                full_name: "google.protobuf.FieldOptions_FeatureSupport.edition_deprecated",
+                index: 1,
+                number: 2,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "deprecation_warning",
+                full_name: "google.protobuf.FieldOptions_FeatureSupport.deprecation_warning",
+                index: 2,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "edition_removed",
+                full_name: "google.protobuf.FieldOptions_FeatureSupport.edition_removed",
+                index: 3,
+                number: 4,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          let mut size = 0usize;
+          if let Some(ref val) = self.edition_introduced {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 1, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.edition_deprecated {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 2, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.deprecation_warning {
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 3, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.edition_removed {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 4, ::pb_jelly::wire_format::Type::Varint);
+          }
+          size
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          if let Some(ref val) = self.edition_introduced {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.edition_deprecated {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.deprecation_warning {
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 3, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.edition_removed {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              1 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions_FeatureSupport", 1)?;
+                self.edition_introduced = Some(val);
+              }
+              2 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions_FeatureSupport", 2)?;
+                self.edition_deprecated = Some(val);
+              }
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "FieldOptions_FeatureSupport", 3)?;
+                self.deprecation_warning = Some(val);
+              }
+              4 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions_FeatureSupport", 4)?;
+                self.edition_removed = Some(val);
+              }
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for FieldOptions_FeatureSupport {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            "edition_introduced" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.edition_introduced.get_or_insert_with(::std::default::Default::default))
+            }
+            "edition_deprecated" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.edition_deprecated.get_or_insert_with(::std::default::Default::default))
+            }
+            "deprecation_warning" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.deprecation_warning.get_or_insert_with(::std::default::Default::default))
+            }
+            "edition_removed" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.edition_removed.get_or_insert_with(::std::default::Default::default))
+            }
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
+        }
+      }
+      
       #[derive(Clone, Debug, PartialEq)]
       pub struct OneofOptions {
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
         pub _extensions: ::pb_jelly::Unrecognized,
       }
       impl OneofOptions {
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
         }
@@ -6324,6 +8798,7 @@ pub mod google {
       impl ::std::default::Default for OneofOptions {
         fn default() -> Self {
           OneofOptions {
+            features: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -6339,9 +8814,18 @@ pub mod google {
             full_name: "google.protobuf.OneofOptions",
             fields: &[
               ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.OneofOptions.features",
+                index: 0,
+                number: 1,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.OneofOptions.uninterpreted_option",
-                index: 0,
+                index: 1,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -6354,6 +8838,9 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0usize;
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -6361,6 +8848,9 @@ pub mod google {
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
@@ -6370,6 +8860,10 @@ pub mod google {
         fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
           while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
             match field_number {
+              1 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "OneofOptions", 1)?;
+                self.features = Some(val);
+              }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "OneofOptions", 999)?;
                 self.uninterpreted_option.push(val);
@@ -6395,6 +8889,9 @@ pub mod google {
         }
         fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
           match field_name {
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
@@ -6420,6 +8917,15 @@ pub mod google {
         /// for the enum, or it will be completely ignored; in the very least, this
         /// is a formalization for deprecating enums.
         pub deprecated: ::std::option::Option<bool>,
+        /// Enable the legacy handling of JSON field name conflicts.  This lowercases
+        /// and strips underscored from the fields before comparison in proto3 only.
+        /// The new behavior takes `json_name` into account and applies to proto2 as
+        /// well.
+        /// TODO Remove this legacy behavior once downstream teams have
+        /// had time to migrate.
+        pub deprecated_legacy_json_field_conflicts: ::std::option::Option<bool>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
         pub _extensions: ::pb_jelly::Unrecognized,
@@ -6443,6 +8949,27 @@ pub mod google {
         pub fn get_deprecated(&self) -> bool {
           self.deprecated.unwrap_or(false)
         }
+        pub fn has_deprecated_legacy_json_field_conflicts(&self) -> bool {
+          self.deprecated_legacy_json_field_conflicts.is_some()
+        }
+        pub fn set_deprecated_legacy_json_field_conflicts(&mut self, v: bool) {
+          self.deprecated_legacy_json_field_conflicts = Some(v);
+        }
+        pub fn get_deprecated_legacy_json_field_conflicts(&self) -> bool {
+          self.deprecated_legacy_json_field_conflicts.unwrap_or(false)
+        }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
         }
@@ -6461,6 +8988,8 @@ pub mod google {
           EnumOptions {
             allow_alias: ::std::default::Default::default(),
             deprecated: ::std::option::Option::Some(false),
+            deprecated_legacy_json_field_conflicts: ::std::default::Default::default(),
+            features: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -6494,9 +9023,27 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "deprecated_legacy_json_field_conflicts",
+                full_name: "google.protobuf.EnumOptions.deprecated_legacy_json_field_conflicts",
+                index: 2,
+                number: 6,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.EnumOptions.features",
+                index: 3,
+                number: 7,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.EnumOptions.uninterpreted_option",
-                index: 2,
+                index: 4,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -6515,6 +9062,12 @@ pub mod google {
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 3, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.deprecated_legacy_json_field_conflicts {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 6, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 7, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -6527,6 +9080,12 @@ pub mod google {
           }
           if let Some(ref val) = self.deprecated {
             ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.deprecated_legacy_json_field_conflicts {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 7, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
@@ -6544,6 +9103,14 @@ pub mod google {
               3 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "EnumOptions", 3)?;
                 self.deprecated = Some(val);
+              }
+              6 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "EnumOptions", 6)?;
+                self.deprecated_legacy_json_field_conflicts = Some(val);
+              }
+              7 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "EnumOptions", 7)?;
+                self.features = Some(val);
               }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "EnumOptions", 999)?;
@@ -6576,6 +9143,12 @@ pub mod google {
             "deprecated" => {
               ::pb_jelly::reflection::FieldMut::Value(self.deprecated.get_or_insert_with(::std::default::Default::default))
             }
+            "deprecated_legacy_json_field_conflicts" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.deprecated_legacy_json_field_conflicts.get_or_insert_with(::std::default::Default::default))
+            }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
@@ -6598,6 +9171,14 @@ pub mod google {
         /// for the enum value, or it will be completely ignored; in the very least,
         /// this is a formalization for deprecating enum values.
         pub deprecated: ::std::option::Option<bool>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
+        /// Indicate that fields annotated with this enum value should not be printed
+        /// out when using debug formats, e.g. when the field contains sensitive
+        /// credentials.
+        pub debug_redact: ::std::option::Option<bool>,
+        /// Information about the support window of a feature value.
+        pub feature_support: ::std::option::Option<FieldOptions_FeatureSupport>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
         pub _extensions: ::pb_jelly::Unrecognized,
@@ -6611,6 +9192,39 @@ pub mod google {
         }
         pub fn get_deprecated(&self) -> bool {
           self.deprecated.unwrap_or(false)
+        }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
+        pub fn has_debug_redact(&self) -> bool {
+          self.debug_redact.is_some()
+        }
+        pub fn set_debug_redact(&mut self, v: bool) {
+          self.debug_redact = Some(v);
+        }
+        pub fn get_debug_redact(&self) -> bool {
+          self.debug_redact.unwrap_or(false)
+        }
+        pub fn has_feature_support(&self) -> bool {
+          self.feature_support.is_some()
+        }
+        pub fn set_feature_support(&mut self, v: FieldOptions_FeatureSupport) {
+          self.feature_support = Some(v);
+        }
+        pub fn take_feature_support(&mut self) -> FieldOptions_FeatureSupport {
+          self.feature_support.take().unwrap_or_default()
+        }
+        pub fn get_feature_support(&self) -> &FieldOptions_FeatureSupport {
+          self.feature_support.as_ref().unwrap_or(&FieldOptions_FeatureSupport_default)
         }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
@@ -6629,6 +9243,9 @@ pub mod google {
         fn default() -> Self {
           EnumValueOptions {
             deprecated: ::std::option::Option::Some(false),
+            features: ::std::default::Default::default(),
+            debug_redact: ::std::option::Option::Some(false),
+            feature_support: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -6653,9 +9270,36 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.EnumValueOptions.features",
+                index: 1,
+                number: 2,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "debug_redact",
+                full_name: "google.protobuf.EnumValueOptions.debug_redact",
+                index: 2,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "feature_support",
+                full_name: "google.protobuf.EnumValueOptions.feature_support",
+                index: 3,
+                number: 4,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.EnumValueOptions.uninterpreted_option",
-                index: 1,
+                index: 4,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -6671,6 +9315,15 @@ pub mod google {
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 1, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 2, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.debug_redact {
+            size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 3, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.feature_support {
+            size += ::pb_jelly::helpers::compute_size_field::<FieldOptions_FeatureSupport>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -6680,6 +9333,15 @@ pub mod google {
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           if let Some(ref val) = self.deprecated {
             ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 2, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.debug_redact {
+            ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.feature_support {
+            ::pb_jelly::helpers::serialize_field::<W, FieldOptions_FeatureSupport>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
@@ -6693,6 +9355,18 @@ pub mod google {
               1 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "EnumValueOptions", 1)?;
                 self.deprecated = Some(val);
+              }
+              2 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "EnumValueOptions", 2)?;
+                self.features = Some(val);
+              }
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "EnumValueOptions", 3)?;
+                self.debug_redact = Some(val);
+              }
+              4 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FieldOptions_FeatureSupport>(buf, typ, "EnumValueOptions", 4)?;
+                self.feature_support = Some(val);
               }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "EnumValueOptions", 999)?;
@@ -6722,6 +9396,15 @@ pub mod google {
             "deprecated" => {
               ::pb_jelly::reflection::FieldMut::Value(self.deprecated.get_or_insert_with(::std::default::Default::default))
             }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
+            "debug_redact" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.debug_redact.get_or_insert_with(::std::default::Default::default))
+            }
+            "feature_support" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.feature_support.get_or_insert_with(::std::default::Default::default))
+            }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
@@ -6739,6 +9422,8 @@ pub mod google {
       
       #[derive(Clone, Debug, PartialEq)]
       pub struct ServiceOptions {
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
         // Note:  Field numbers 1 through 32 are reserved for Google's internal RPC
         //   framework.  We apologize for hoarding these numbers to ourselves, but
         //   we were already using them long before we decided to release Protocol
@@ -6754,6 +9439,18 @@ pub mod google {
         pub _extensions: ::pb_jelly::Unrecognized,
       }
       impl ServiceOptions {
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
         pub fn has_deprecated(&self) -> bool {
           self.deprecated.is_some()
         }
@@ -6779,6 +9476,7 @@ pub mod google {
       impl ::std::default::Default for ServiceOptions {
         fn default() -> Self {
           ServiceOptions {
+            features: ::std::default::Default::default(),
             deprecated: ::std::option::Option::Some(false),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
@@ -6795,9 +9493,18 @@ pub mod google {
             full_name: "google.protobuf.ServiceOptions",
             fields: &[
               ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.ServiceOptions.features",
+                index: 0,
+                number: 34,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "deprecated",
                 full_name: "google.protobuf.ServiceOptions.deprecated",
-                index: 0,
+                index: 1,
                 number: 33,
                 typ: ::pb_jelly::wire_format::Type::Varint,
                 label: ::pb_jelly::Label::Optional,
@@ -6806,7 +9513,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.ServiceOptions.uninterpreted_option",
-                index: 1,
+                index: 2,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -6819,6 +9526,9 @@ pub mod google {
         }
         fn compute_size(&self) -> usize {
           let mut size = 0usize;
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 34, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           if let Some(ref val) = self.deprecated {
             size += ::pb_jelly::helpers::compute_size_field::<bool>(val, 33, ::pb_jelly::wire_format::Type::Varint);
           }
@@ -6832,6 +9542,9 @@ pub mod google {
           if let Some(ref val) = self.deprecated {
             ::pb_jelly::helpers::serialize_field::<W, bool>(w, val, 33, ::pb_jelly::wire_format::Type::Varint)?;
           }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 34, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
@@ -6841,6 +9554,10 @@ pub mod google {
         fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
           while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
             match field_number {
+              34 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "ServiceOptions", 34)?;
+                self.features = Some(val);
+              }
               33 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, bool>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ServiceOptions", 33)?;
                 self.deprecated = Some(val);
@@ -6870,6 +9587,9 @@ pub mod google {
         }
         fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
           match field_name {
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
+            }
             "deprecated" => {
               ::pb_jelly::reflection::FieldMut::Value(self.deprecated.get_or_insert_with(::std::default::Default::default))
             }
@@ -6901,6 +9621,8 @@ pub mod google {
         /// this is a formalization for deprecating methods.
         pub deprecated: ::std::option::Option<bool>,
         pub idempotency_level: ::std::option::Option<MethodOptions_IdempotencyLevel>,
+        /// Any features defined in the specific edition.
+        pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
         pub _extensions: ::pb_jelly::Unrecognized,
@@ -6924,6 +9646,18 @@ pub mod google {
         pub fn get_idempotency_level(&self) -> MethodOptions_IdempotencyLevel {
           self.idempotency_level.unwrap_or_default()
         }
+        pub fn has_features(&self) -> bool {
+          self.features.is_some()
+        }
+        pub fn set_features(&mut self, v: FeatureSet) {
+          self.features = Some(v);
+        }
+        pub fn take_features(&mut self) -> FeatureSet {
+          self.features.take().unwrap_or_default()
+        }
+        pub fn get_features(&self) -> &FeatureSet {
+          self.features.as_ref().unwrap_or(&FeatureSet_default)
+        }
         pub fn set_uninterpreted_option(&mut self, v: ::std::vec::Vec<UninterpretedOption>) {
           self.uninterpreted_option = v;
         }
@@ -6942,6 +9676,7 @@ pub mod google {
           MethodOptions {
             deprecated: ::std::option::Option::Some(false),
             idempotency_level: ::std::option::Option::Some(MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN),
+            features: ::std::default::Default::default(),
             uninterpreted_option: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
@@ -6975,9 +9710,18 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "features",
+                full_name: "google.protobuf.MethodOptions.features",
+                index: 2,
+                number: 35,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "uninterpreted_option",
                 full_name: "google.protobuf.MethodOptions.uninterpreted_option",
-                index: 2,
+                index: 3,
                 number: 999,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -6996,6 +9740,9 @@ pub mod google {
           if let Some(ref val) = self.idempotency_level {
             size += ::pb_jelly::helpers::compute_size_field::<MethodOptions_IdempotencyLevel>(val, 34, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 35, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           for val in &self.uninterpreted_option {
             size += ::pb_jelly::helpers::compute_size_field::<UninterpretedOption>(val, 999, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
@@ -7008,6 +9755,9 @@ pub mod google {
           }
           if let Some(ref val) = self.idempotency_level {
             ::pb_jelly::helpers::serialize_field::<W, MethodOptions_IdempotencyLevel>(w, val, 34, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 35, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           for val in &self.uninterpreted_option {
             ::pb_jelly::helpers::serialize_field::<W, UninterpretedOption>(w, val, 999, ::pb_jelly::wire_format::Type::LengthDelimited)?;
@@ -7025,6 +9775,10 @@ pub mod google {
               34 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, MethodOptions_IdempotencyLevel>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "MethodOptions", 34)?;
                 self.idempotency_level = Some(val);
+              }
+              35 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "MethodOptions", 35)?;
+                self.features = Some(val);
               }
               999 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "MethodOptions", 999)?;
@@ -7056,6 +9810,9 @@ pub mod google {
             }
             "idempotency_level" => {
               ::pb_jelly::reflection::FieldMut::Value(self.idempotency_level.get_or_insert_with(::std::default::Default::default))
+            }
+            "features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.features.get_or_insert_with(::std::default::Default::default))
             }
             "uninterpreted_option" => {
               unimplemented!("Repeated fields are not currently supported.")
@@ -7386,8 +10143,8 @@ pub mod google {
       /// The name of the uninterpreted option.  Each string represents a segment in
       /// a dot-separated name.  is_extension is true iff a segment represents an
       /// extension (denoted with parentheses in options specs in .proto files).
-      /// E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
-      /// "foo.(bar.baz).qux".
+      /// E.g.,{ ["foo", false], ["bar.baz", true], ["moo", false] } represents
+      /// "foo.(bar.baz).moo".
       #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
       pub struct UninterpretedOption_NamePart {
         pub name_part: ::std::option::Option<::std::string::String>,
@@ -7509,6 +10266,626 @@ pub mod google {
             }
             "is_extension" => {
               ::pb_jelly::reflection::FieldMut::Value(self.is_extension.get_or_insert_with(::std::default::Default::default))
+            }
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
+        }
+      }
+      
+      // ===================================================================
+      // Features
+      
+      /// TODO Enums in C++ gencode (and potentially other languages) are
+      /// not well scoped.  This means that each of the feature enums below can clash
+      /// with each other.  The short names we've chosen maximize call-site
+      /// readability, but leave us very open to this scenario.  A future feature will
+      /// be designed and implemented to handle this, hopefully before we ever hit a
+      /// conflict here.
+      #[derive(Clone, Debug, PartialEq)]
+      pub struct FeatureSet {
+        pub field_presence: ::std::option::Option<FeatureSet_FieldPresence>,
+        pub enum_type: ::std::option::Option<FeatureSet_EnumType>,
+        pub repeated_field_encoding: ::std::option::Option<FeatureSet_RepeatedFieldEncoding>,
+        pub utf8_validation: ::std::option::Option<FeatureSet_Utf8Validation>,
+        pub message_encoding: ::std::option::Option<FeatureSet_MessageEncoding>,
+        pub json_format: ::std::option::Option<FeatureSet_JsonFormat>,
+        pub _extensions: ::pb_jelly::Unrecognized,
+      }
+      impl FeatureSet {
+        pub fn has_field_presence(&self) -> bool {
+          self.field_presence.is_some()
+        }
+        pub fn set_field_presence(&mut self, v: FeatureSet_FieldPresence) {
+          self.field_presence = Some(v);
+        }
+        pub fn get_field_presence(&self) -> FeatureSet_FieldPresence {
+          self.field_presence.unwrap_or_default()
+        }
+        pub fn has_enum_type(&self) -> bool {
+          self.enum_type.is_some()
+        }
+        pub fn set_enum_type(&mut self, v: FeatureSet_EnumType) {
+          self.enum_type = Some(v);
+        }
+        pub fn get_enum_type(&self) -> FeatureSet_EnumType {
+          self.enum_type.unwrap_or_default()
+        }
+        pub fn has_repeated_field_encoding(&self) -> bool {
+          self.repeated_field_encoding.is_some()
+        }
+        pub fn set_repeated_field_encoding(&mut self, v: FeatureSet_RepeatedFieldEncoding) {
+          self.repeated_field_encoding = Some(v);
+        }
+        pub fn get_repeated_field_encoding(&self) -> FeatureSet_RepeatedFieldEncoding {
+          self.repeated_field_encoding.unwrap_or_default()
+        }
+        pub fn has_utf8_validation(&self) -> bool {
+          self.utf8_validation.is_some()
+        }
+        pub fn set_utf8_validation(&mut self, v: FeatureSet_Utf8Validation) {
+          self.utf8_validation = Some(v);
+        }
+        pub fn get_utf8_validation(&self) -> FeatureSet_Utf8Validation {
+          self.utf8_validation.unwrap_or_default()
+        }
+        pub fn has_message_encoding(&self) -> bool {
+          self.message_encoding.is_some()
+        }
+        pub fn set_message_encoding(&mut self, v: FeatureSet_MessageEncoding) {
+          self.message_encoding = Some(v);
+        }
+        pub fn get_message_encoding(&self) -> FeatureSet_MessageEncoding {
+          self.message_encoding.unwrap_or_default()
+        }
+        pub fn has_json_format(&self) -> bool {
+          self.json_format.is_some()
+        }
+        pub fn set_json_format(&mut self, v: FeatureSet_JsonFormat) {
+          self.json_format = Some(v);
+        }
+        pub fn get_json_format(&self) -> FeatureSet_JsonFormat {
+          self.json_format.unwrap_or_default()
+        }
+      }
+      impl ::std::default::Default for FeatureSet {
+        fn default() -> Self {
+          FeatureSet {
+            field_presence: ::std::default::Default::default(),
+            enum_type: ::std::default::Default::default(),
+            repeated_field_encoding: ::std::default::Default::default(),
+            utf8_validation: ::std::default::Default::default(),
+            message_encoding: ::std::default::Default::default(),
+            json_format: ::std::default::Default::default(),
+            _extensions: ::pb_jelly::Unrecognized::default(),
+          }
+        }
+      }
+      ::lazy_static::lazy_static! {
+        pub static ref FeatureSet_default: FeatureSet = FeatureSet::default();
+      }
+      impl ::pb_jelly::Message for FeatureSet {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "FeatureSet",
+            full_name: "google.protobuf.FeatureSet",
+            fields: &[
+              ::pb_jelly::FieldDescriptor {
+                name: "field_presence",
+                full_name: "google.protobuf.FeatureSet.field_presence",
+                index: 0,
+                number: 1,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "enum_type",
+                full_name: "google.protobuf.FeatureSet.enum_type",
+                index: 1,
+                number: 2,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "repeated_field_encoding",
+                full_name: "google.protobuf.FeatureSet.repeated_field_encoding",
+                index: 2,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "utf8_validation",
+                full_name: "google.protobuf.FeatureSet.utf8_validation",
+                index: 3,
+                number: 4,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "message_encoding",
+                full_name: "google.protobuf.FeatureSet.message_encoding",
+                index: 4,
+                number: 5,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "json_format",
+                full_name: "google.protobuf.FeatureSet.json_format",
+                index: 5,
+                number: 6,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          let mut size = 0usize;
+          if let Some(ref val) = self.field_presence {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_FieldPresence>(val, 1, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.enum_type {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_EnumType>(val, 2, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.repeated_field_encoding {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_RepeatedFieldEncoding>(val, 3, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.utf8_validation {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_Utf8Validation>(val, 4, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.message_encoding {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_MessageEncoding>(val, 5, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.json_format {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_JsonFormat>(val, 6, ::pb_jelly::wire_format::Type::Varint);
+          }
+          size += self._extensions.compute_size();
+          size
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          if let Some(ref val) = self.field_presence {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_FieldPresence>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.enum_type {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_EnumType>(w, val, 2, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.repeated_field_encoding {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_RepeatedFieldEncoding>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.utf8_validation {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_Utf8Validation>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.message_encoding {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_MessageEncoding>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.json_format {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_JsonFormat>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          self._extensions.serialize(w)?;
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              1 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_FieldPresence>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 1)?;
+                self.field_presence = Some(val);
+              }
+              2 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_EnumType>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 2)?;
+                self.enum_type = Some(val);
+              }
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_RepeatedFieldEncoding>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 3)?;
+                self.repeated_field_encoding = Some(val);
+              }
+              4 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_Utf8Validation>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 4)?;
+                self.utf8_validation = Some(val);
+              }
+              5 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_MessageEncoding>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 5)?;
+                self.message_encoding = Some(val);
+              }
+              6 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_JsonFormat>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 6)?;
+                self.json_format = Some(val);
+              }
+              1000..=9994 | 9995..=9999 | 10000..=10000 => {
+                self._extensions.gather(field_number, typ, &mut buf)?;
+              }
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for FeatureSet {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            "field_presence" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.field_presence.get_or_insert_with(::std::default::Default::default))
+            }
+            "enum_type" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.enum_type.get_or_insert_with(::std::default::Default::default))
+            }
+            "repeated_field_encoding" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.repeated_field_encoding.get_or_insert_with(::std::default::Default::default))
+            }
+            "utf8_validation" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.utf8_validation.get_or_insert_with(::std::default::Default::default))
+            }
+            "message_encoding" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.message_encoding.get_or_insert_with(::std::default::Default::default))
+            }
+            "json_format" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.json_format.get_or_insert_with(::std::default::Default::default))
+            }
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
+        }
+      }
+      impl ::pb_jelly::extensions::Extensible for FeatureSet {
+        fn _extensions(&self) -> &::pb_jelly::Unrecognized {
+          &self._extensions
+        }
+      }
+      
+      /// A compiled specification for the defaults of a set of features.  These
+      /// messages are generated from FeatureSet extensions and can be used to seed
+      /// feature resolution. The resolution with this object becomes a simple search
+      /// for the closest matching edition, followed by proto merges.
+      #[derive(Clone, Debug, PartialEq)]
+      pub struct FeatureSetDefaults {
+        pub defaults: ::std::vec::Vec<FeatureSetDefaults_FeatureSetEditionDefault>,
+        /// The minimum supported edition (inclusive) when this was constructed.
+        /// Editions before this will not have defaults.
+        pub minimum_edition: ::std::option::Option<Edition>,
+        /// The maximum known edition (inclusive) when this was constructed. Editions
+        /// after this will not have reliable defaults.
+        pub maximum_edition: ::std::option::Option<Edition>,
+      }
+      impl FeatureSetDefaults {
+        pub fn set_defaults(&mut self, v: ::std::vec::Vec<FeatureSetDefaults_FeatureSetEditionDefault>) {
+          self.defaults = v;
+        }
+        pub fn take_defaults(&mut self) -> ::std::vec::Vec<FeatureSetDefaults_FeatureSetEditionDefault> {
+          ::std::mem::take(&mut self.defaults)
+        }
+        pub fn get_defaults(&self) -> &[FeatureSetDefaults_FeatureSetEditionDefault] {
+          &self.defaults
+        }
+        pub fn mut_defaults(&mut self) -> &mut ::std::vec::Vec<FeatureSetDefaults_FeatureSetEditionDefault> {
+          &mut self.defaults
+        }
+        pub fn has_minimum_edition(&self) -> bool {
+          self.minimum_edition.is_some()
+        }
+        pub fn set_minimum_edition(&mut self, v: Edition) {
+          self.minimum_edition = Some(v);
+        }
+        pub fn get_minimum_edition(&self) -> Edition {
+          self.minimum_edition.unwrap_or_default()
+        }
+        pub fn has_maximum_edition(&self) -> bool {
+          self.maximum_edition.is_some()
+        }
+        pub fn set_maximum_edition(&mut self, v: Edition) {
+          self.maximum_edition = Some(v);
+        }
+        pub fn get_maximum_edition(&self) -> Edition {
+          self.maximum_edition.unwrap_or_default()
+        }
+      }
+      impl ::std::default::Default for FeatureSetDefaults {
+        fn default() -> Self {
+          FeatureSetDefaults {
+            defaults: ::std::default::Default::default(),
+            minimum_edition: ::std::default::Default::default(),
+            maximum_edition: ::std::default::Default::default(),
+          }
+        }
+      }
+      ::lazy_static::lazy_static! {
+        pub static ref FeatureSetDefaults_default: FeatureSetDefaults = FeatureSetDefaults::default();
+      }
+      impl ::pb_jelly::Message for FeatureSetDefaults {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "FeatureSetDefaults",
+            full_name: "google.protobuf.FeatureSetDefaults",
+            fields: &[
+              ::pb_jelly::FieldDescriptor {
+                name: "defaults",
+                full_name: "google.protobuf.FeatureSetDefaults.defaults",
+                index: 0,
+                number: 1,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Repeated,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "minimum_edition",
+                full_name: "google.protobuf.FeatureSetDefaults.minimum_edition",
+                index: 1,
+                number: 4,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "maximum_edition",
+                full_name: "google.protobuf.FeatureSetDefaults.maximum_edition",
+                index: 2,
+                number: 5,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          let mut size = 0usize;
+          for val in &self.defaults {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSetDefaults_FeatureSetEditionDefault>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.minimum_edition {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 4, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.maximum_edition {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 5, ::pb_jelly::wire_format::Type::Varint);
+          }
+          size
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          for val in &self.defaults {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSetDefaults_FeatureSetEditionDefault>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.minimum_edition {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.maximum_edition {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              1 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSetDefaults_FeatureSetEditionDefault>(buf, typ, "FeatureSetDefaults", 1)?;
+                self.defaults.push(val);
+              }
+              4 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSetDefaults", 4)?;
+                self.minimum_edition = Some(val);
+              }
+              5 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSetDefaults", 5)?;
+                self.maximum_edition = Some(val);
+              }
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for FeatureSetDefaults {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            "defaults" => {
+              unimplemented!("Repeated fields are not currently supported.")
+            }
+            "minimum_edition" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.minimum_edition.get_or_insert_with(::std::default::Default::default))
+            }
+            "maximum_edition" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.maximum_edition.get_or_insert_with(::std::default::Default::default))
+            }
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
+        }
+      }
+      
+      /// A map from every known edition with a unique set of defaults to its
+      /// defaults. Not all editions may be contained here.  For a given edition,
+      /// the defaults at the closest matching edition ordered at or before it should
+      /// be used.  This field must be in strict ascending order by edition.
+      #[derive(Clone, Debug, PartialEq)]
+      pub struct FeatureSetDefaults_FeatureSetEditionDefault {
+        pub edition: ::std::option::Option<Edition>,
+        /// Defaults of features that can be overridden in this edition.
+        pub overridable_features: ::std::option::Option<FeatureSet>,
+        /// Defaults of features that can't be overridden in this edition.
+        pub fixed_features: ::std::option::Option<FeatureSet>,
+      }
+      impl FeatureSetDefaults_FeatureSetEditionDefault {
+        pub fn has_edition(&self) -> bool {
+          self.edition.is_some()
+        }
+        pub fn set_edition(&mut self, v: Edition) {
+          self.edition = Some(v);
+        }
+        pub fn get_edition(&self) -> Edition {
+          self.edition.unwrap_or_default()
+        }
+        pub fn has_overridable_features(&self) -> bool {
+          self.overridable_features.is_some()
+        }
+        pub fn set_overridable_features(&mut self, v: FeatureSet) {
+          self.overridable_features = Some(v);
+        }
+        pub fn take_overridable_features(&mut self) -> FeatureSet {
+          self.overridable_features.take().unwrap_or_default()
+        }
+        pub fn get_overridable_features(&self) -> &FeatureSet {
+          self.overridable_features.as_ref().unwrap_or(&FeatureSet_default)
+        }
+        pub fn has_fixed_features(&self) -> bool {
+          self.fixed_features.is_some()
+        }
+        pub fn set_fixed_features(&mut self, v: FeatureSet) {
+          self.fixed_features = Some(v);
+        }
+        pub fn take_fixed_features(&mut self) -> FeatureSet {
+          self.fixed_features.take().unwrap_or_default()
+        }
+        pub fn get_fixed_features(&self) -> &FeatureSet {
+          self.fixed_features.as_ref().unwrap_or(&FeatureSet_default)
+        }
+      }
+      impl ::std::default::Default for FeatureSetDefaults_FeatureSetEditionDefault {
+        fn default() -> Self {
+          FeatureSetDefaults_FeatureSetEditionDefault {
+            edition: ::std::default::Default::default(),
+            overridable_features: ::std::default::Default::default(),
+            fixed_features: ::std::default::Default::default(),
+          }
+        }
+      }
+      ::lazy_static::lazy_static! {
+        pub static ref FeatureSetDefaults_FeatureSetEditionDefault_default: FeatureSetDefaults_FeatureSetEditionDefault = FeatureSetDefaults_FeatureSetEditionDefault::default();
+      }
+      impl ::pb_jelly::Message for FeatureSetDefaults_FeatureSetEditionDefault {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "FeatureSetDefaults_FeatureSetEditionDefault",
+            full_name: "google.protobuf.FeatureSetDefaults_FeatureSetEditionDefault",
+            fields: &[
+              ::pb_jelly::FieldDescriptor {
+                name: "edition",
+                full_name: "google.protobuf.FeatureSetDefaults_FeatureSetEditionDefault.edition",
+                index: 0,
+                number: 3,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "overridable_features",
+                full_name: "google.protobuf.FeatureSetDefaults_FeatureSetEditionDefault.overridable_features",
+                index: 1,
+                number: 4,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "fixed_features",
+                full_name: "google.protobuf.FeatureSetDefaults_FeatureSetEditionDefault.fixed_features",
+                index: 2,
+                number: 5,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          let mut size = 0usize;
+          if let Some(ref val) = self.edition {
+            size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 3, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.overridable_features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          if let Some(ref val) = self.fixed_features {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet>(val, 5, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
+          size
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          if let Some(ref val) = self.edition {
+            ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 3, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.overridable_features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 4, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.fixed_features {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet>(w, val, 5, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              3 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSetDefaults_FeatureSetEditionDefault", 3)?;
+                self.edition = Some(val);
+              }
+              4 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "FeatureSetDefaults_FeatureSetEditionDefault", 4)?;
+                self.overridable_features = Some(val);
+              }
+              5 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FeatureSet>(buf, typ, "FeatureSetDefaults_FeatureSetEditionDefault", 5)?;
+                self.fixed_features = Some(val);
+              }
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for FeatureSetDefaults_FeatureSetEditionDefault {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            "edition" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.edition.get_or_insert_with(::std::default::Default::default))
+            }
+            "overridable_features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.overridable_features.get_or_insert_with(::std::default::Default::default))
+            }
+            "fixed_features" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.fixed_features.get_or_insert_with(::std::default::Default::default))
             }
             _ => {
               panic!("unknown field name given")
@@ -7667,8 +11044,8 @@ pub mod google {
         /// location.
       
         /// Each element is a field number or an index.  They form a path from
-        /// the root FileDescriptorProto to the place where the definition.  For
-        /// example, this path:
+        /// the root FileDescriptorProto to the place where the definition appears.
+        /// For example, this path:
         ///   [ 4, 3, 2, 7, 1 ]
         /// refers to:
         ///   file.message_type(3)  // 4, 3
@@ -7720,13 +11097,13 @@ pub mod google {
         ///   // Comment attached to baz.
         ///   // Another line attached to baz.
       
-        ///   // Comment attached to qux.
+        ///   // Comment attached to moo.
         ///   //
-        ///   // Another line attached to qux.
-        ///   optional double qux = 4;
+        ///   // Another line attached to moo.
+        ///   optional double moo = 4;
       
         ///   // Detached comment for corge. This is not leading or trailing comments
-        ///   // to qux or corge because there are blank lines separating it from
+        ///   // to moo or corge because there are blank lines separating it from
         ///   // both.
       
         ///   // Detached comment for corge paragraph 2.
@@ -8114,9 +11491,10 @@ pub mod google {
         /// that relates to the identified object.
         pub begin: ::std::option::Option<i32>,
         /// Identifies the ending offset in bytes in the generated code that
-        /// relates to the identified offset. The end offset should be one past
+        /// relates to the identified object. The end offset should be one past
         /// the last relevant byte (so the length of the text = end - begin).
         pub end: ::std::option::Option<i32>,
+        pub semantic: ::std::option::Option<GeneratedCodeInfo_Annotation_Semantic>,
       }
       impl GeneratedCodeInfo_Annotation {
         pub fn set_path(&mut self, v: ::std::vec::Vec<i32>) {
@@ -8161,6 +11539,15 @@ pub mod google {
         pub fn get_end(&self) -> i32 {
           self.end.unwrap_or(0i32)
         }
+        pub fn has_semantic(&self) -> bool {
+          self.semantic.is_some()
+        }
+        pub fn set_semantic(&mut self, v: GeneratedCodeInfo_Annotation_Semantic) {
+          self.semantic = Some(v);
+        }
+        pub fn get_semantic(&self) -> GeneratedCodeInfo_Annotation_Semantic {
+          self.semantic.unwrap_or_default()
+        }
       }
       impl ::std::default::Default for GeneratedCodeInfo_Annotation {
         fn default() -> Self {
@@ -8169,6 +11556,7 @@ pub mod google {
             source_file: ::std::default::Default::default(),
             begin: ::std::default::Default::default(),
             end: ::std::default::Default::default(),
+            semantic: ::std::default::Default::default(),
           }
         }
       }
@@ -8217,6 +11605,15 @@ pub mod google {
                 label: ::pb_jelly::Label::Optional,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "semantic",
+                full_name: "google.protobuf.GeneratedCodeInfo_Annotation.semantic",
+                index: 4,
+                number: 5,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -8242,6 +11639,9 @@ pub mod google {
           if let Some(ref val) = self.end {
             size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 4, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.semantic {
+            size += ::pb_jelly::helpers::compute_size_field::<GeneratedCodeInfo_Annotation_Semantic>(val, 5, ::pb_jelly::wire_format::Type::Varint);
+          }
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -8265,6 +11665,9 @@ pub mod google {
           if let Some(ref val) = self.end {
             ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
           }
+          if let Some(ref val) = self.semantic {
+            ::pb_jelly::helpers::serialize_field::<W, GeneratedCodeInfo_Annotation_Semantic>(w, val, 5, ::pb_jelly::wire_format::Type::Varint)?;
+          }
           Ok(())
         }
         fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -8284,6 +11687,10 @@ pub mod google {
               4 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "GeneratedCodeInfo_Annotation", 4)?;
                 self.end = Some(val);
+              }
+              5 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, GeneratedCodeInfo_Annotation_Semantic>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "GeneratedCodeInfo_Annotation", 5)?;
+                self.semantic = Some(val);
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -8314,6 +11721,9 @@ pub mod google {
             }
             "end" => {
               ::pb_jelly::reflection::FieldMut::Value(self.end.get_or_insert_with(::std::default::Default::default))
+            }
+            "semantic" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.semantic.get_or_insert_with(::std::default::Default::default))
             }
             _ => {
               panic!("unknown field name given")
