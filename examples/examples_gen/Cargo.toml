@@ -8,6 +8,3 @@ publish = false
 [dependencies]
 #pb-jelly-gen = "0.0.17"  # If copying this example - use this
 pb-jelly-gen = { path = "../../pb-jelly-gen" }
-
-[patch.crates-io]
-pb-jelly = { path = "../../pb-jelly" }
