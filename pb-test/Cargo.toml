@@ -22,6 +22,7 @@ protobuf = { version = "3.3", features = ["bytes"], optional = true }
 compact_str = { version = "0.5", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+criterion = "0.6.0"
 
 [features]
 bench_prost = ["prost"]
@@ -30,3 +31,8 @@ bench_rust_protobuf = ["protobuf"]
 # Override pb-jelly dependency for generated crates as well
 [patch.crates-io]
 pb-jelly = { path = "../pb-jelly" }
+
+[[bench]]
+name = "bench"
+path = "src/bench.rs"
+harness = false
