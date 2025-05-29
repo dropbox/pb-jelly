@@ -1,15 +1,31 @@
-use criterion::{criterion_group, Criterion};
+use criterion::{
+    criterion_group,
+    Criterion,
+};
 
 mod benches {
-    use super::*;
     use std::hint::black_box;
     use std::io::Cursor;
 
     use bytes::Bytes;
     use compact_str::CompactString;
-    use pb_jelly::{Lazy, Message};
-    use proto_pbtest::bench::{BytesData, Cities, CitiesSSO, City, CitySSO, StringMessage, StringMessageSSO, VecData};
+    use pb_jelly::{
+        Lazy,
+        Message,
+    };
+    use proto_pbtest::bench::{
+        BytesData,
+        Cities,
+        CitiesSSO,
+        City,
+        CitySSO,
+        StringMessage,
+        StringMessageSSO,
+        VecData,
+    };
     use serde::Deserialize;
+
+    use super::*;
 
     fn bench_deserialize_zero_copy_bytes(c: &mut Criterion) {
         // Generate 4MB of data
@@ -227,9 +243,10 @@ mod benches {
 
 #[cfg(feature = "bench_prost")]
 mod prost {
-    use super::*;
     use ::prost::bytes::Bytes;
     use ::prost::Message;
+
+    use super::*;
 
     mod gen {
         include!(concat!(env!("CARGO_MANIFEST_DIR"), "/gen/prost/pbtest.rs"));
@@ -299,11 +316,17 @@ mod prost {
 
 #[cfg(feature = "bench_rust_protobuf")]
 mod rust_protobuf {
-    use super::*;
     use bytes::Bytes;
-    use protobuf::{CodedInputStream, Message};
-    
-    use pb_test::gen::rust_protobuf::bench::{BytesData, StringMessage};
+    use pb_test::gen::rust_protobuf::bench::{
+        BytesData,
+        StringMessage,
+    };
+    use protobuf::{
+        CodedInputStream,
+        Message,
+    };
+
+    use super::*;
 
     fn bench_deserialize_rust_protobuf_bytes(c: &mut Criterion) {
         // Generate 4MB of data
