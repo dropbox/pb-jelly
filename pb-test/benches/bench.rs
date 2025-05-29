@@ -1,4 +1,3 @@
-#![cfg(test)]
 use criterion::{criterion_group, Criterion};
 
 mod benches {
@@ -229,8 +228,8 @@ mod benches {
 #[cfg(feature = "bench_prost")]
 mod prost {
     use super::*;
-    use prost::bytes::Bytes;
-    use prost::Message;
+    use ::prost::bytes::Bytes;
+    use ::prost::Message;
 
     mod gen {
         include!(concat!(env!("CARGO_MANIFEST_DIR"), "/gen/prost/pbtest.rs"));
@@ -303,8 +302,8 @@ mod rust_protobuf {
     use super::*;
     use bytes::Bytes;
     use protobuf::{CodedInputStream, Message};
-
-    use crate::gen::rust_protobuf::bench::{BytesData, StringMessage};
+    
+    use pb_test::gen::rust_protobuf::bench::{BytesData, StringMessage};
 
     fn bench_deserialize_rust_protobuf_bytes(c: &mut Criterion) {
         // Generate 4MB of data
