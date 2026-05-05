@@ -1,0 +1,21 @@
+syntax = "proto2";
+package pbtest;
+
+// Regression test: a message containing a nested `extend` block.
+//
+// Previously, walking such a message in pb-jelly-gen panicked with
+// `Option::unwrap() on a None value` because the codegen looked up the
+// non-existent field name `"extension_type"` on `DescriptorProto` instead
+// of the real field `"extension"` (number 6).
+message Outer {
+    extensions 100 to 200;
+
+    message Inner {
+        optional int32 inner_field = 1;
+    }
+
+    extend Outer {
+        optional int32 nested_singular_primitive = 101;
+        repeated Inner nested_repeated_message = 102;
+    }
+}
