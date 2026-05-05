@@ -2019,11 +2019,6 @@ fn walk(proto: &FileDescriptorProto) -> WalkResult<'_> {
         }
 
         for (i, nested_extension) in proto.extension.iter().enumerate() {
-            // The field on `DescriptorProto` for nested extensions is `extension`
-            // (number 6); see google/protobuf/descriptor.proto. Previously this
-            // looked up `"extension_type"`, which does not exist and would panic
-            // (`Option::unwrap()` on `None`) whenever a message contained a
-            // nested `extend` block.
             let extfn = DescriptorProto::default()
                 .descriptor()
                 .unwrap()
