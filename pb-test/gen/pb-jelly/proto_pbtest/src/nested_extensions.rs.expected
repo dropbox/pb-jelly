@@ -1,0 +1,189 @@
+// @generated, do not edit
+/// Regression test: a message containing a nested `extend` block.
+
+/// Previously, walking such a message in pb-jelly-gen panicked with
+/// `Option::unwrap() on a None value` because the codegen looked up the
+/// non-existent field name `"extension_type"` on `DescriptorProto` instead
+/// of the real field `"extension"` (number 6).
+#[derive(Clone, Debug, PartialEq)]
+pub struct Outer {
+  pub _extensions: ::pb_jelly::Unrecognized,
+}
+impl Outer {
+}
+impl ::std::default::Default for Outer {
+  fn default() -> Self {
+    Outer {
+      _extensions: ::pb_jelly::Unrecognized::default(),
+    }
+  }
+}
+::lazy_static::lazy_static! {
+  pub static ref Outer_default: Outer = Outer::default();
+}
+impl ::pb_jelly::Message for Outer {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Outer",
+      full_name: "pbtest.Outer",
+      fields: &[
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0usize;
+    size += self._extensions.compute_size();
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    self._extensions.serialize(w)?;
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        100..=200 => {
+          self._extensions.gather(field_number, typ, &mut buf)?;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for Outer {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+impl ::pb_jelly::extensions::Extensible for Outer {
+  fn _extensions(&self) -> &::pb_jelly::Unrecognized {
+    &self._extensions
+  }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Outer_Inner {
+  pub inner_field: ::std::option::Option<i32>,
+}
+impl Outer_Inner {
+  pub fn has_inner_field(&self) -> bool {
+    self.inner_field.is_some()
+  }
+  pub fn set_inner_field(&mut self, v: i32) {
+    self.inner_field = Some(v);
+  }
+  pub fn get_inner_field(&self) -> i32 {
+    self.inner_field.unwrap_or(0i32)
+  }
+}
+impl ::std::default::Default for Outer_Inner {
+  fn default() -> Self {
+    Outer_Inner {
+      inner_field: ::std::default::Default::default(),
+    }
+  }
+}
+::lazy_static::lazy_static! {
+  pub static ref Outer_Inner_default: Outer_Inner = Outer_Inner::default();
+}
+impl ::pb_jelly::Message for Outer_Inner {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Outer_Inner",
+      full_name: "pbtest.Outer_Inner",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "inner_field",
+          full_name: "pbtest.Outer_Inner.inner_field",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::Varint,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[
+      ],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0usize;
+    if let Some(ref val) = self.inner_field {
+      size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 1, ::pb_jelly::wire_format::Type::Varint);
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if let Some(ref val) = self.inner_field {
+      ::pb_jelly::helpers::serialize_field::<W, i32>(w, val, 1, ::pb_jelly::wire_format::Type::Varint)?;
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          let val = ::pb_jelly::helpers::deserialize_known_length::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "Outer_Inner", 1)?;
+          self.inner_field = Some(val);
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for Outer_Inner {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "inner_field" => {
+        ::pb_jelly::reflection::FieldMut::Value(self.inner_field.get_or_insert_with(::std::default::Default::default))
+      }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+pub const Outer_NESTED_SINGULAR_PRIMITIVE: ::pb_jelly::extensions::SingularExtension<Outer, i32> =
+  ::pb_jelly::extensions::SingularExtension::new(
+    101,
+    ::pb_jelly::wire_format::Type::Varint,
+    "nested_singular_primitive",
+    || ::std::default::Default::default(),
+  );
+
+
+pub const Outer_NESTED_REPEATED_MESSAGE: ::pb_jelly::extensions::RepeatedExtension<Outer, Outer_Inner> =
+  ::pb_jelly::extensions::RepeatedExtension::new(
+    102,
+    ::pb_jelly::wire_format::Type::LengthDelimited,
+    "nested_repeated_message",
+  );
+
+

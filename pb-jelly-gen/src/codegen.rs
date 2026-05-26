@@ -2022,7 +2022,7 @@ fn walk(proto: &FileDescriptorProto) -> WalkResult<'_> {
             let extfn = DescriptorProto::default()
                 .descriptor()
                 .unwrap()
-                .get_field("extension_type")
+                .get_field("extension")
                 .unwrap()
                 .number as i32;
             let mut scl2 = scl_prefix.clone();
