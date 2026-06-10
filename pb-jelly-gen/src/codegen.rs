@@ -53,10 +53,10 @@ impl<T: Eq + Hash + Clone> StronglyConnectedComponents<T> {
     /// Computes the strongly connected components of a directed graph on the fly.
     ///
     /// Calls `callback` with each component in topological order.
-    /// Specifically, each component will appears after the component containing `edges_from(node)`.
-    /// All nodes reachable from `node` will be processed, if they have not already been.
+    /// Specifically, each component will appear after the component containing `edges_from(node)`.
+    /// All nodes reachable from `node` will be processed if they have not already been.
     ///
-    /// After, `self.index` will also be populated with component IDs for each visited node.
+    /// After `self.index` will also be populated with component IDs for each visited node.
     fn process(&mut self, node: T, edges_from: &mut impl Fn(&T) -> Vec<T>, callback: &mut impl FnMut(IndexSet<T>)) {
         if !self.index.contains_key(&node) {
             self.dfs(node, edges_from, callback);
@@ -191,7 +191,7 @@ static SMALL_STRING_OPT_TYPE: &str = "::compact_str::CompactString";
 /// Try to divine crate names used inside a type.
 /// We're assuming all paths are fully qualified, i.e. start with `::` and then the crate name.
 /// Properly this should parse the string using `syn` or similar,
-/// but we don't want to take such a heavy dependency so we're just using an approximation.
+/// but we don't want to take such a heavy dependency, so we're just using an approximation.
 fn extract_crate_names_from_custom_type(custom_type: &str) -> Vec<&str> {
     fn is_ident_char(c: char) -> bool {
         c.is_ascii_alphanumeric() || c == '_'
@@ -1381,11 +1381,9 @@ impl<'a, 'ctx> CodeWriter<'a, 'ctx> {
             });
         });
 
-        block(ctx, "::lazy_static::lazy_static!", |ctx| {
-            ctx.write(format!(
-                "pub static ref {name}_default: {escaped_name} = {escaped_name}::default();"
-            ));
-        });
+        ctx.write(format!(
+            "pub static {name}_default: std::sync::LazyLock<{escaped_name}> = std::sync::LazyLock::new({escaped_name}::default);"
+        ));
 
         block(ctx, format!("impl ::pb_jelly::Message for {escaped_name}"), |ctx| {
             block(
@@ -2506,7 +2504,7 @@ impl<'a> Context<'a> {
         let mut results = Vec::new();
 
         for (crate_name, deps) in self.deps_map.borrow().iter() {
-            let mut all_deps: BTreeSet<&str> = ["lazy_static", "pb-jelly"]
+            let mut all_deps: BTreeSet<&str> = ["pb-jelly"]
                 .iter()
                 .copied()
                 .chain(deps.iter().map(String::as_str))
@@ -2545,7 +2543,7 @@ impl<'a> Context<'a> {
         let mut result = Vec::new();
 
         for (crate_name, deps) in &*self.deps_map.borrow() {
-            let mut all_deps: BTreeSet<&str> = ["lazy_static", "pb-jelly"]
+            let mut all_deps: BTreeSet<&str> = ["pb-jelly"]
                 .iter()
                 .copied()
                 .chain(deps.iter().map(String::as_str))
@@ -2566,7 +2564,6 @@ impl<'a> Context<'a> {
             }
 
             let mut versions: IndexMap<&str, String> = IndexMap::new();
-            versions.insert("lazy_static", "version = \"1.4.0\"".to_string());
             versions.insert("pb-jelly", "version = \"0.0.17\"".to_string());
             versions.insert("serde", "version = \"1.0\"".to_string());
             versions.insert("serde_derive", "version = \"1.0\"".to_string());

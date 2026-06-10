@@ -189,9 +189,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref Version_default: Version = Version::default();
-        }
+        pub static Version_default: std::sync::LazyLock<Version> = std::sync::LazyLock::new(Version::default);
         impl ::pb_jelly::Message for Version {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -435,9 +433,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref CodeGeneratorRequest_default: CodeGeneratorRequest = CodeGeneratorRequest::default();
-        }
+        pub static CodeGeneratorRequest_default: std::sync::LazyLock<CodeGeneratorRequest> = std::sync::LazyLock::new(CodeGeneratorRequest::default);
         impl ::pb_jelly::Message for CodeGeneratorRequest {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -685,9 +681,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref CodeGeneratorResponse_default: CodeGeneratorResponse = CodeGeneratorResponse::default();
-        }
+        pub static CodeGeneratorResponse_default: std::sync::LazyLock<CodeGeneratorResponse> = std::sync::LazyLock::new(CodeGeneratorResponse::default);
         impl ::pb_jelly::Message for CodeGeneratorResponse {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -964,9 +958,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref CodeGeneratorResponse_File_default: CodeGeneratorResponse_File = CodeGeneratorResponse_File::default();
-        }
+        pub static CodeGeneratorResponse_File_default: std::sync::LazyLock<CodeGeneratorResponse_File> = std::sync::LazyLock::new(CodeGeneratorResponse_File::default);
         impl ::pb_jelly::Message for CodeGeneratorResponse_File {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -1123,8 +1115,11 @@ pub mod google {
         /// comparison.
         pub const EDITION_2023: Edition = Edition(1000);
         pub const EDITION_2024: Edition = Edition(1001);
+        pub const EDITION_2026: Edition = Edition(1002);
+        /// A placeholder edition for developing and testing unscheduled features.
+        pub const EDITION_UNSTABLE: Edition = Edition(9999);
         /// Placeholder editions for testing feature resolution.  These should not be
-        /// used or relyed on outside of tests.
+        /// used or relied on outside of tests.
         pub const EDITION_1_TEST_ONLY: Edition = Edition(1);
         pub const EDITION_2_TEST_ONLY: Edition = Edition(2);
         pub const EDITION_99997_TEST_ONLY: Edition = Edition(99997);
@@ -1134,7 +1129,7 @@ pub mod google {
         /// ever be used by plugins that can expect to never require any changes to
         /// support a new edition.
         pub const EDITION_MAX: Edition = Edition(2147483647);
-        pub const KNOWN_VARIANTS: [Edition; 12] = [Edition::EDITION_UNKNOWN, Edition::EDITION_LEGACY, Edition::EDITION_PROTO2, Edition::EDITION_PROTO3, Edition::EDITION_2023, Edition::EDITION_2024, Edition::EDITION_1_TEST_ONLY, Edition::EDITION_2_TEST_ONLY, Edition::EDITION_99997_TEST_ONLY, Edition::EDITION_99998_TEST_ONLY, Edition::EDITION_99999_TEST_ONLY, Edition::EDITION_MAX];
+        pub const KNOWN_VARIANTS: [Edition; 14] = [Edition::EDITION_UNKNOWN, Edition::EDITION_LEGACY, Edition::EDITION_PROTO2, Edition::EDITION_PROTO3, Edition::EDITION_2023, Edition::EDITION_2024, Edition::EDITION_2026, Edition::EDITION_UNSTABLE, Edition::EDITION_1_TEST_ONLY, Edition::EDITION_2_TEST_ONLY, Edition::EDITION_99997_TEST_ONLY, Edition::EDITION_99998_TEST_ONLY, Edition::EDITION_99999_TEST_ONLY, Edition::EDITION_MAX];
         pub const fn value(self) -> i32 {
           self.0
         }
@@ -1171,6 +1166,8 @@ pub mod google {
             Edition::EDITION_PROTO3 => ::std::option::Option::Some(Edition_Closed::EDITION_PROTO3),
             Edition::EDITION_2023 => ::std::option::Option::Some(Edition_Closed::EDITION_2023),
             Edition::EDITION_2024 => ::std::option::Option::Some(Edition_Closed::EDITION_2024),
+            Edition::EDITION_2026 => ::std::option::Option::Some(Edition_Closed::EDITION_2026),
+            Edition::EDITION_UNSTABLE => ::std::option::Option::Some(Edition_Closed::EDITION_UNSTABLE),
             Edition::EDITION_1_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_1_TEST_ONLY),
             Edition::EDITION_2_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_2_TEST_ONLY),
             Edition::EDITION_99997_TEST_ONLY => ::std::option::Option::Some(Edition_Closed::EDITION_99997_TEST_ONLY),
@@ -1209,8 +1206,11 @@ pub mod google {
         /// comparison.
         EDITION_2023 = 1000,
         EDITION_2024 = 1001,
+        EDITION_2026 = 1002,
+        /// A placeholder edition for developing and testing unscheduled features.
+        EDITION_UNSTABLE = 9999,
         /// Placeholder editions for testing feature resolution.  These should not be
-        /// used or relyed on outside of tests.
+        /// used or relied on outside of tests.
         EDITION_1_TEST_ONLY = 1,
         EDITION_2_TEST_ONLY = 2,
         EDITION_99997_TEST_ONLY = 99997,
@@ -1222,7 +1222,7 @@ pub mod google {
         EDITION_MAX = 2147483647,
       }
       impl Edition_Closed {
-        pub const KNOWN_VARIANTS: [Edition_Closed; 12] = [Edition_Closed::EDITION_UNKNOWN, Edition_Closed::EDITION_LEGACY, Edition_Closed::EDITION_PROTO2, Edition_Closed::EDITION_PROTO3, Edition_Closed::EDITION_2023, Edition_Closed::EDITION_2024, Edition_Closed::EDITION_1_TEST_ONLY, Edition_Closed::EDITION_2_TEST_ONLY, Edition_Closed::EDITION_99997_TEST_ONLY, Edition_Closed::EDITION_99998_TEST_ONLY, Edition_Closed::EDITION_99999_TEST_ONLY, Edition_Closed::EDITION_MAX];
+        pub const KNOWN_VARIANTS: [Edition_Closed; 14] = [Edition_Closed::EDITION_UNKNOWN, Edition_Closed::EDITION_LEGACY, Edition_Closed::EDITION_PROTO2, Edition_Closed::EDITION_PROTO3, Edition_Closed::EDITION_2023, Edition_Closed::EDITION_2024, Edition_Closed::EDITION_2026, Edition_Closed::EDITION_UNSTABLE, Edition_Closed::EDITION_1_TEST_ONLY, Edition_Closed::EDITION_2_TEST_ONLY, Edition_Closed::EDITION_99997_TEST_ONLY, Edition_Closed::EDITION_99998_TEST_ONLY, Edition_Closed::EDITION_99999_TEST_ONLY, Edition_Closed::EDITION_MAX];
       }
       impl ::std::default::Default for Edition_Closed {
         fn default() -> Self {
@@ -1238,6 +1238,8 @@ pub mod google {
             Edition_Closed::EDITION_PROTO3 => 999,
             Edition_Closed::EDITION_2023 => 1000,
             Edition_Closed::EDITION_2024 => 1001,
+            Edition_Closed::EDITION_2026 => 1002,
+            Edition_Closed::EDITION_UNSTABLE => 9999,
             Edition_Closed::EDITION_1_TEST_ONLY => 1,
             Edition_Closed::EDITION_2_TEST_ONLY => 2,
             Edition_Closed::EDITION_99997_TEST_ONLY => 99997,
@@ -1257,6 +1259,8 @@ pub mod google {
             999 => Ok(Edition_Closed::EDITION_PROTO3),
             1000 => Ok(Edition_Closed::EDITION_2023),
             1001 => Ok(Edition_Closed::EDITION_2024),
+            1002 => Ok(Edition_Closed::EDITION_2026),
+            9999 => Ok(Edition_Closed::EDITION_UNSTABLE),
             1 => Ok(Edition_Closed::EDITION_1_TEST_ONLY),
             2 => Ok(Edition_Closed::EDITION_2_TEST_ONLY),
             99997 => Ok(Edition_Closed::EDITION_99997_TEST_ONLY),
@@ -1278,12 +1282,124 @@ pub mod google {
             Edition_Closed::EDITION_PROTO3 => "EDITION_PROTO3",
             Edition_Closed::EDITION_2023 => "EDITION_2023",
             Edition_Closed::EDITION_2024 => "EDITION_2024",
+            Edition_Closed::EDITION_2026 => "EDITION_2026",
+            Edition_Closed::EDITION_UNSTABLE => "EDITION_UNSTABLE",
             Edition_Closed::EDITION_1_TEST_ONLY => "EDITION_1_TEST_ONLY",
             Edition_Closed::EDITION_2_TEST_ONLY => "EDITION_2_TEST_ONLY",
             Edition_Closed::EDITION_99997_TEST_ONLY => "EDITION_99997_TEST_ONLY",
             Edition_Closed::EDITION_99998_TEST_ONLY => "EDITION_99998_TEST_ONLY",
             Edition_Closed::EDITION_99999_TEST_ONLY => "EDITION_99999_TEST_ONLY",
             Edition_Closed::EDITION_MAX => "EDITION_MAX",
+          }
+        }
+      }
+      
+      /// Describes the 'visibility' of a symbol with respect to the proto import
+      /// system. Symbols can only be imported when the visibility rules do not prevent
+      /// it (ex: local symbols cannot be imported).  Visibility modifiers can only set
+      /// on `message` and `enum` as they are the only types available to be referenced
+      /// from other files.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct SymbolVisibility(i32);
+      impl SymbolVisibility {
+        pub const VISIBILITY_UNSET: SymbolVisibility = SymbolVisibility(0);
+        pub const VISIBILITY_LOCAL: SymbolVisibility = SymbolVisibility(1);
+        pub const VISIBILITY_EXPORT: SymbolVisibility = SymbolVisibility(2);
+        pub const KNOWN_VARIANTS: [SymbolVisibility; 3] = [SymbolVisibility::VISIBILITY_UNSET, SymbolVisibility::VISIBILITY_LOCAL, SymbolVisibility::VISIBILITY_EXPORT];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for SymbolVisibility {
+        fn default() -> Self {
+          SymbolVisibility::VISIBILITY_UNSET
+        }
+      }
+      impl From<SymbolVisibility> for i32 {
+        fn from(v: SymbolVisibility) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for SymbolVisibility {
+        fn from(v: i32) -> SymbolVisibility {
+          SymbolVisibility(v)
+        }
+      }
+      impl From<SymbolVisibility_Closed> for SymbolVisibility {
+        fn from(v: SymbolVisibility_Closed) -> SymbolVisibility {
+          SymbolVisibility(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for SymbolVisibility {
+      }
+      impl ::pb_jelly::OpenProtoEnum for SymbolVisibility {
+        type Closed = SymbolVisibility_Closed;
+        fn into_known(self) -> ::std::option::Option<SymbolVisibility_Closed> {
+          match self {
+            SymbolVisibility::VISIBILITY_UNSET => ::std::option::Option::Some(SymbolVisibility_Closed::VISIBILITY_UNSET),
+            SymbolVisibility::VISIBILITY_LOCAL => ::std::option::Option::Some(SymbolVisibility_Closed::VISIBILITY_LOCAL),
+            SymbolVisibility::VISIBILITY_EXPORT => ::std::option::Option::Some(SymbolVisibility_Closed::VISIBILITY_EXPORT),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for SymbolVisibility {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      /// Describes the 'visibility' of a symbol with respect to the proto import
+      /// system. Symbols can only be imported when the visibility rules do not prevent
+      /// it (ex: local symbols cannot be imported).  Visibility modifiers can only set
+      /// on `message` and `enum` as they are the only types available to be referenced
+      /// from other files.
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum SymbolVisibility_Closed {
+        VISIBILITY_UNSET = 0,
+        VISIBILITY_LOCAL = 1,
+        VISIBILITY_EXPORT = 2,
+      }
+      impl SymbolVisibility_Closed {
+        pub const KNOWN_VARIANTS: [SymbolVisibility_Closed; 3] = [SymbolVisibility_Closed::VISIBILITY_UNSET, SymbolVisibility_Closed::VISIBILITY_LOCAL, SymbolVisibility_Closed::VISIBILITY_EXPORT];
+      }
+      impl ::std::default::Default for SymbolVisibility_Closed {
+        fn default() -> Self {
+          SymbolVisibility_Closed::VISIBILITY_UNSET
+        }
+      }
+      impl From<SymbolVisibility_Closed> for i32 {
+        fn from(v: SymbolVisibility_Closed) -> i32 {
+          match v {
+            SymbolVisibility_Closed::VISIBILITY_UNSET => 0,
+            SymbolVisibility_Closed::VISIBILITY_LOCAL => 1,
+            SymbolVisibility_Closed::VISIBILITY_EXPORT => 2,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for SymbolVisibility_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(SymbolVisibility_Closed::VISIBILITY_UNSET),
+            1 => Ok(SymbolVisibility_Closed::VISIBILITY_LOCAL),
+            2 => Ok(SymbolVisibility_Closed::VISIBILITY_EXPORT),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for SymbolVisibility_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for SymbolVisibility_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            SymbolVisibility_Closed::VISIBILITY_UNSET => "VISIBILITY_UNSET",
+            SymbolVisibility_Closed::VISIBILITY_LOCAL => "VISIBILITY_LOCAL",
+            SymbolVisibility_Closed::VISIBILITY_EXPORT => "VISIBILITY_EXPORT",
           }
         }
       }
@@ -2045,8 +2161,6 @@ pub mod google {
       }
       
       /// If set to RETENTION_SOURCE, the option will be omitted from the binary.
-      /// Note: as of January 2023, support for this is in progress and does not yet
-      /// have an effect (b/264593489).
       #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
       #[repr(transparent)]
       pub struct FieldOptions_OptionRetention(i32);
@@ -2101,8 +2215,6 @@ pub mod google {
         }
       }
       /// If set to RETENTION_SOURCE, the option will be omitted from the binary.
-      /// Note: as of January 2023, support for this is in progress and does not yet
-      /// have an effect (b/264593489).
       #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
       #[repr(i32)]
       pub enum FieldOptions_OptionRetention_Closed {
@@ -2152,8 +2264,7 @@ pub mod google {
       
       /// This indicates the types of entities that the field may apply to when used
       /// as an option. If it is unset, then the field may be freely used as an
-      /// option on any kind of entity. Note: as of January 2023, support for this is
-      /// in progress and does not yet have an effect (b/264593489).
+      /// option on any kind of entity.
       #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
       #[repr(transparent)]
       pub struct FieldOptions_OptionTargetType(i32);
@@ -2223,8 +2334,7 @@ pub mod google {
       }
       /// This indicates the types of entities that the field may apply to when used
       /// as an option. If it is unset, then the field may be freely used as an
-      /// option on any kind of entity. Note: as of January 2023, support for this is
-      /// in progress and does not yet have an effect (b/264593489).
+      /// option on any kind of entity.
       #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
       #[repr(i32)]
       pub enum FieldOptions_OptionTargetType_Closed {
@@ -3016,6 +3126,236 @@ pub mod google {
         }
       }
       
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_EnforceNamingStyle(i32);
+      impl FeatureSet_EnforceNamingStyle {
+        pub const ENFORCE_NAMING_STYLE_UNKNOWN: FeatureSet_EnforceNamingStyle = FeatureSet_EnforceNamingStyle(0);
+        pub const STYLE2024: FeatureSet_EnforceNamingStyle = FeatureSet_EnforceNamingStyle(1);
+        pub const STYLE_LEGACY: FeatureSet_EnforceNamingStyle = FeatureSet_EnforceNamingStyle(2);
+        pub const STYLE2026: FeatureSet_EnforceNamingStyle = FeatureSet_EnforceNamingStyle(3);
+        pub const KNOWN_VARIANTS: [FeatureSet_EnforceNamingStyle; 4] = [FeatureSet_EnforceNamingStyle::ENFORCE_NAMING_STYLE_UNKNOWN, FeatureSet_EnforceNamingStyle::STYLE2024, FeatureSet_EnforceNamingStyle::STYLE_LEGACY, FeatureSet_EnforceNamingStyle::STYLE2026];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_EnforceNamingStyle {
+        fn default() -> Self {
+          FeatureSet_EnforceNamingStyle::ENFORCE_NAMING_STYLE_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_EnforceNamingStyle> for i32 {
+        fn from(v: FeatureSet_EnforceNamingStyle) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_EnforceNamingStyle {
+        fn from(v: i32) -> FeatureSet_EnforceNamingStyle {
+          FeatureSet_EnforceNamingStyle(v)
+        }
+      }
+      impl From<FeatureSet_EnforceNamingStyle_Closed> for FeatureSet_EnforceNamingStyle {
+        fn from(v: FeatureSet_EnforceNamingStyle_Closed) -> FeatureSet_EnforceNamingStyle {
+          FeatureSet_EnforceNamingStyle(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_EnforceNamingStyle {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_EnforceNamingStyle {
+        type Closed = FeatureSet_EnforceNamingStyle_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_EnforceNamingStyle_Closed> {
+          match self {
+            FeatureSet_EnforceNamingStyle::ENFORCE_NAMING_STYLE_UNKNOWN => ::std::option::Option::Some(FeatureSet_EnforceNamingStyle_Closed::ENFORCE_NAMING_STYLE_UNKNOWN),
+            FeatureSet_EnforceNamingStyle::STYLE2024 => ::std::option::Option::Some(FeatureSet_EnforceNamingStyle_Closed::STYLE2024),
+            FeatureSet_EnforceNamingStyle::STYLE_LEGACY => ::std::option::Option::Some(FeatureSet_EnforceNamingStyle_Closed::STYLE_LEGACY),
+            FeatureSet_EnforceNamingStyle::STYLE2026 => ::std::option::Option::Some(FeatureSet_EnforceNamingStyle_Closed::STYLE2026),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_EnforceNamingStyle {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_EnforceNamingStyle_Closed {
+        ENFORCE_NAMING_STYLE_UNKNOWN = 0,
+        STYLE2024 = 1,
+        STYLE_LEGACY = 2,
+        STYLE2026 = 3,
+      }
+      impl FeatureSet_EnforceNamingStyle_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_EnforceNamingStyle_Closed; 4] = [FeatureSet_EnforceNamingStyle_Closed::ENFORCE_NAMING_STYLE_UNKNOWN, FeatureSet_EnforceNamingStyle_Closed::STYLE2024, FeatureSet_EnforceNamingStyle_Closed::STYLE_LEGACY, FeatureSet_EnforceNamingStyle_Closed::STYLE2026];
+      }
+      impl ::std::default::Default for FeatureSet_EnforceNamingStyle_Closed {
+        fn default() -> Self {
+          FeatureSet_EnforceNamingStyle_Closed::ENFORCE_NAMING_STYLE_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_EnforceNamingStyle_Closed> for i32 {
+        fn from(v: FeatureSet_EnforceNamingStyle_Closed) -> i32 {
+          match v {
+            FeatureSet_EnforceNamingStyle_Closed::ENFORCE_NAMING_STYLE_UNKNOWN => 0,
+            FeatureSet_EnforceNamingStyle_Closed::STYLE2024 => 1,
+            FeatureSet_EnforceNamingStyle_Closed::STYLE_LEGACY => 2,
+            FeatureSet_EnforceNamingStyle_Closed::STYLE2026 => 3,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_EnforceNamingStyle_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_EnforceNamingStyle_Closed::ENFORCE_NAMING_STYLE_UNKNOWN),
+            1 => Ok(FeatureSet_EnforceNamingStyle_Closed::STYLE2024),
+            2 => Ok(FeatureSet_EnforceNamingStyle_Closed::STYLE_LEGACY),
+            3 => Ok(FeatureSet_EnforceNamingStyle_Closed::STYLE2026),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_EnforceNamingStyle_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_EnforceNamingStyle_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_EnforceNamingStyle_Closed::ENFORCE_NAMING_STYLE_UNKNOWN => "ENFORCE_NAMING_STYLE_UNKNOWN",
+            FeatureSet_EnforceNamingStyle_Closed::STYLE2024 => "STYLE2024",
+            FeatureSet_EnforceNamingStyle_Closed::STYLE_LEGACY => "STYLE_LEGACY",
+            FeatureSet_EnforceNamingStyle_Closed::STYLE2026 => "STYLE2026",
+          }
+        }
+      }
+      
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+      #[repr(transparent)]
+      pub struct FeatureSet_VisibilityFeature_DefaultSymbolVisibility(i32);
+      impl FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+        pub const DEFAULT_SYMBOL_VISIBILITY_UNKNOWN: FeatureSet_VisibilityFeature_DefaultSymbolVisibility = FeatureSet_VisibilityFeature_DefaultSymbolVisibility(0);
+        /// Default pre-EDITION_2024, all UNSET visibility are export.
+        pub const EXPORT_ALL: FeatureSet_VisibilityFeature_DefaultSymbolVisibility = FeatureSet_VisibilityFeature_DefaultSymbolVisibility(1);
+        /// All top-level symbols default to export, nested default to local.
+        pub const EXPORT_TOP_LEVEL: FeatureSet_VisibilityFeature_DefaultSymbolVisibility = FeatureSet_VisibilityFeature_DefaultSymbolVisibility(2);
+        /// All symbols default to local.
+        pub const LOCAL_ALL: FeatureSet_VisibilityFeature_DefaultSymbolVisibility = FeatureSet_VisibilityFeature_DefaultSymbolVisibility(3);
+        /// All symbols local by default. Nested types cannot be exported.
+        /// With special case caveat for message { enum {} reserved 1 to max; }
+        /// This is the recommended setting for new protos.
+        pub const STRICT: FeatureSet_VisibilityFeature_DefaultSymbolVisibility = FeatureSet_VisibilityFeature_DefaultSymbolVisibility(4);
+        pub const KNOWN_VARIANTS: [FeatureSet_VisibilityFeature_DefaultSymbolVisibility; 5] = [FeatureSet_VisibilityFeature_DefaultSymbolVisibility::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN, FeatureSet_VisibilityFeature_DefaultSymbolVisibility::EXPORT_ALL, FeatureSet_VisibilityFeature_DefaultSymbolVisibility::EXPORT_TOP_LEVEL, FeatureSet_VisibilityFeature_DefaultSymbolVisibility::LOCAL_ALL, FeatureSet_VisibilityFeature_DefaultSymbolVisibility::STRICT];
+        pub const fn value(self) -> i32 {
+          self.0
+        }
+      }
+      impl ::std::default::Default for FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+        fn default() -> Self {
+          FeatureSet_VisibilityFeature_DefaultSymbolVisibility::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_VisibilityFeature_DefaultSymbolVisibility> for i32 {
+        fn from(v: FeatureSet_VisibilityFeature_DefaultSymbolVisibility) -> i32 {
+          v.0
+        }
+      }
+      impl From<i32> for FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+        fn from(v: i32) -> FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+          FeatureSet_VisibilityFeature_DefaultSymbolVisibility(v)
+        }
+      }
+      impl From<FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed> for FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+        fn from(v: FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed) -> FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+          FeatureSet_VisibilityFeature_DefaultSymbolVisibility(v as i32)
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+      }
+      impl ::pb_jelly::OpenProtoEnum for FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+        type Closed = FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed;
+        fn into_known(self) -> ::std::option::Option<FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed> {
+          match self {
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN => ::std::option::Option::Some(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN),
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility::EXPORT_ALL => ::std::option::Option::Some(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_ALL),
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility::EXPORT_TOP_LEVEL => ::std::option::Option::Some(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_TOP_LEVEL),
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility::LOCAL_ALL => ::std::option::Option::Some(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::LOCAL_ALL),
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility::STRICT => ::std::option::Option::Some(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::STRICT),
+            _ => None,
+          }
+        }
+      }
+      impl ::std::fmt::Debug for FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+          match <Self as ::pb_jelly::OpenProtoEnum>::name(*self) {
+            Some(s) => write!(f, "{}", s),
+            None => write!(f, "Unknown({})", self.0),
+          }
+        }
+      }
+      #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+      #[repr(i32)]
+      pub enum FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed {
+        DEFAULT_SYMBOL_VISIBILITY_UNKNOWN = 0,
+        /// Default pre-EDITION_2024, all UNSET visibility are export.
+        EXPORT_ALL = 1,
+        /// All top-level symbols default to export, nested default to local.
+        EXPORT_TOP_LEVEL = 2,
+        /// All symbols default to local.
+        LOCAL_ALL = 3,
+        /// All symbols local by default. Nested types cannot be exported.
+        /// With special case caveat for message { enum {} reserved 1 to max; }
+        /// This is the recommended setting for new protos.
+        STRICT = 4,
+      }
+      impl FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed {
+        pub const KNOWN_VARIANTS: [FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed; 5] = [FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN, FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_ALL, FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_TOP_LEVEL, FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::LOCAL_ALL, FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::STRICT];
+      }
+      impl ::std::default::Default for FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed {
+        fn default() -> Self {
+          FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN
+        }
+      }
+      impl From<FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed> for i32 {
+        fn from(v: FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed) -> i32 {
+          match v {
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN => 0,
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_ALL => 1,
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_TOP_LEVEL => 2,
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::LOCAL_ALL => 3,
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::STRICT => 4,
+          }
+        }
+      }
+      impl ::std::convert::TryFrom<i32> for FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed {
+        type Error = i32;
+        fn try_from(v: i32) -> ::std::result::Result<Self, i32> {
+          match v {
+            0 => Ok(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN),
+            1 => Ok(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_ALL),
+            2 => Ok(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_TOP_LEVEL),
+            3 => Ok(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::LOCAL_ALL),
+            4 => Ok(FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::STRICT),
+            _ => Err(v),
+          }
+        }
+      }
+      impl ::pb_jelly::ProtoEnum for FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed {
+      }
+      impl ::pb_jelly::ClosedProtoEnum for FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed {
+        fn name(self) -> &'static str {
+          match self {
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::DEFAULT_SYMBOL_VISIBILITY_UNKNOWN => "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN",
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_ALL => "EXPORT_ALL",
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::EXPORT_TOP_LEVEL => "EXPORT_TOP_LEVEL",
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::LOCAL_ALL => "LOCAL_ALL",
+            FeatureSet_VisibilityFeature_DefaultSymbolVisibility_Closed::STRICT => "STRICT",
+          }
+        }
+      }
+      
       /// Represents the identified object's effect on the element in the original
       /// .proto file.
       #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -3131,6 +3471,7 @@ pub mod google {
       #[derive(Clone, Debug, PartialEq)]
       pub struct FileDescriptorSet {
         pub file: ::std::vec::Vec<FileDescriptorProto>,
+        pub _extensions: ::pb_jelly::Unrecognized,
       }
       impl FileDescriptorSet {
         pub fn set_file(&mut self, v: ::std::vec::Vec<FileDescriptorProto>) {
@@ -3150,12 +3491,11 @@ pub mod google {
         fn default() -> Self {
           FileDescriptorSet {
             file: ::std::default::Default::default(),
+            _extensions: ::pb_jelly::Unrecognized::default(),
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FileDescriptorSet_default: FileDescriptorSet = FileDescriptorSet::default();
-      }
+      pub static FileDescriptorSet_default: std::sync::LazyLock<FileDescriptorSet> = std::sync::LazyLock::new(FileDescriptorSet::default);
       impl ::pb_jelly::Message for FileDescriptorSet {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -3181,12 +3521,14 @@ pub mod google {
           for val in &self.file {
             size += ::pb_jelly::helpers::compute_size_field::<FileDescriptorProto>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
+          size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.file {
             ::pb_jelly::helpers::serialize_field::<W, FileDescriptorProto>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
+          self._extensions.serialize(w)?;
           Ok(())
         }
         fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -3195,6 +3537,9 @@ pub mod google {
               1 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, FileDescriptorProto>(buf, typ, "FileDescriptorSet", 1)?;
                 self.file.push(val);
+              }
+              536000000..=536000000 => {
+                self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -3223,6 +3568,11 @@ pub mod google {
           }
         }
       }
+      impl ::pb_jelly::extensions::Extensible for FileDescriptorSet {
+        fn _extensions(&self) -> &::pb_jelly::Unrecognized {
+          &self._extensions
+        }
+      }
       
       /// Describes a complete .proto file.
       #[derive(Clone, Debug, PartialEq)]
@@ -3238,6 +3588,9 @@ pub mod google {
         /// Indexes of the weak imported files in the dependency list.
         /// For Google-internal migration only. Do not use.
         pub weak_dependency: ::std::vec::Vec<i32>,
+        /// Names of files imported by this file purely for the purpose of providing
+        /// option extensions. These are excluded from the dependency list above.
+        pub option_dependency: ::std::vec::Vec<::std::string::String>,
         /// All top-level definitions in this file.
         pub message_type: ::std::vec::Vec<DescriptorProto>,
         pub enum_type: ::std::vec::Vec<EnumDescriptorProto>,
@@ -3253,8 +3606,14 @@ pub mod google {
         /// The supported values are "proto2", "proto3", and "editions".
       
         /// If `edition` is present, this value must be "editions".
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub syntax: ::std::option::Option<::std::string::String>,
         /// The edition of the proto file.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub edition: ::std::option::Option<Edition>,
       }
       impl FileDescriptorProto {
@@ -3317,6 +3676,18 @@ pub mod google {
         }
         pub fn mut_weak_dependency(&mut self) -> &mut ::std::vec::Vec<i32> {
           &mut self.weak_dependency
+        }
+        pub fn set_option_dependency(&mut self, v: ::std::vec::Vec<::std::string::String>) {
+          self.option_dependency = v;
+        }
+        pub fn take_option_dependency(&mut self) -> ::std::vec::Vec<::std::string::String> {
+          ::std::mem::take(&mut self.option_dependency)
+        }
+        pub fn get_option_dependency(&self) -> &[::std::string::String] {
+          &self.option_dependency
+        }
+        pub fn mut_option_dependency(&mut self) -> &mut ::std::vec::Vec<::std::string::String> {
+          &mut self.option_dependency
         }
         pub fn set_message_type(&mut self, v: ::std::vec::Vec<DescriptorProto>) {
           self.message_type = v;
@@ -3420,6 +3791,7 @@ pub mod google {
             dependency: ::std::default::Default::default(),
             public_dependency: ::std::default::Default::default(),
             weak_dependency: ::std::default::Default::default(),
+            option_dependency: ::std::default::Default::default(),
             message_type: ::std::default::Default::default(),
             enum_type: ::std::default::Default::default(),
             service: ::std::default::Default::default(),
@@ -3431,9 +3803,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FileDescriptorProto_default: FileDescriptorProto = FileDescriptorProto::default();
-      }
+      pub static FileDescriptorProto_default: std::sync::LazyLock<FileDescriptorProto> = std::sync::LazyLock::new(FileDescriptorProto::default);
       impl ::pb_jelly::Message for FileDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -3486,9 +3856,18 @@ pub mod google {
                 oneof_index: None,
               },
               ::pb_jelly::FieldDescriptor {
+                name: "option_dependency",
+                full_name: "google.protobuf.FileDescriptorProto.option_dependency",
+                index: 5,
+                number: 15,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Repeated,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
                 name: "message_type",
                 full_name: "google.protobuf.FileDescriptorProto.message_type",
-                index: 5,
+                index: 6,
                 number: 4,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -3497,7 +3876,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "enum_type",
                 full_name: "google.protobuf.FileDescriptorProto.enum_type",
-                index: 6,
+                index: 7,
                 number: 5,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -3506,7 +3885,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "service",
                 full_name: "google.protobuf.FileDescriptorProto.service",
-                index: 7,
+                index: 8,
                 number: 6,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -3515,7 +3894,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "extension",
                 full_name: "google.protobuf.FileDescriptorProto.extension",
-                index: 8,
+                index: 9,
                 number: 7,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Repeated,
@@ -3524,7 +3903,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "options",
                 full_name: "google.protobuf.FileDescriptorProto.options",
-                index: 9,
+                index: 10,
                 number: 8,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -3533,7 +3912,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "source_code_info",
                 full_name: "google.protobuf.FileDescriptorProto.source_code_info",
-                index: 10,
+                index: 11,
                 number: 9,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -3542,7 +3921,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "syntax",
                 full_name: "google.protobuf.FileDescriptorProto.syntax",
-                index: 11,
+                index: 12,
                 number: 12,
                 typ: ::pb_jelly::wire_format::Type::LengthDelimited,
                 label: ::pb_jelly::Label::Optional,
@@ -3551,7 +3930,7 @@ pub mod google {
               ::pb_jelly::FieldDescriptor {
                 name: "edition",
                 full_name: "google.protobuf.FileDescriptorProto.edition",
-                index: 12,
+                index: 13,
                 number: 14,
                 typ: ::pb_jelly::wire_format::Type::Varint,
                 label: ::pb_jelly::Label::Optional,
@@ -3578,6 +3957,9 @@ pub mod google {
           }
           for val in &self.weak_dependency {
             size += ::pb_jelly::helpers::compute_size_field::<i32>(val, 11, ::pb_jelly::wire_format::Type::Varint);
+          }
+          for val in &self.option_dependency {
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 15, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
           for val in &self.message_type {
             size += ::pb_jelly::helpers::compute_size_field::<DescriptorProto>(val, 4, ::pb_jelly::wire_format::Type::LengthDelimited);
@@ -3645,6 +4027,9 @@ pub mod google {
           if let Some(ref val) = self.edition {
             ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 14, ::pb_jelly::wire_format::Type::Varint)?;
           }
+          for val in &self.option_dependency {
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 15, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
           Ok(())
         }
         fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -3667,6 +4052,10 @@ pub mod google {
               }
               11 => {
                 ::pb_jelly::helpers::deserialize_packed::<B, i32>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FileDescriptorProto", 11, &mut self.weak_dependency)?;
+              }
+              15 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "FileDescriptorProto", 15)?;
+                self.option_dependency.push(val);
               }
               4 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, DescriptorProto>(buf, typ, "FileDescriptorProto", 4)?;
@@ -3733,6 +4122,9 @@ pub mod google {
             "weak_dependency" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
+            "option_dependency" => {
+              unimplemented!("Repeated fields are not currently supported.")
+            }
             "message_type" => {
               unimplemented!("Repeated fields are not currently supported.")
             }
@@ -3779,6 +4171,8 @@ pub mod google {
         /// Reserved field names, which may not be used by fields in the same message.
         /// A given name may only be reserved once.
         pub reserved_name: ::std::vec::Vec<::std::string::String>,
+        /// Support for `export` and `local` keywords on enums.
+        pub visibility: ::std::option::Option<SymbolVisibility>,
       }
       impl DescriptorProto {
         pub fn has_name(&self) -> bool {
@@ -3901,6 +4295,15 @@ pub mod google {
         pub fn mut_reserved_name(&mut self) -> &mut ::std::vec::Vec<::std::string::String> {
           &mut self.reserved_name
         }
+        pub fn has_visibility(&self) -> bool {
+          self.visibility.is_some()
+        }
+        pub fn set_visibility(&mut self, v: SymbolVisibility) {
+          self.visibility = Some(v);
+        }
+        pub fn get_visibility(&self) -> SymbolVisibility {
+          self.visibility.unwrap_or_default()
+        }
       }
       impl ::std::default::Default for DescriptorProto {
         fn default() -> Self {
@@ -3915,12 +4318,11 @@ pub mod google {
             options: ::std::default::Default::default(),
             reserved_range: ::std::default::Default::default(),
             reserved_name: ::std::default::Default::default(),
+            visibility: ::std::default::Default::default(),
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref DescriptorProto_default: DescriptorProto = DescriptorProto::default();
-      }
+      pub static DescriptorProto_default: std::sync::LazyLock<DescriptorProto> = std::sync::LazyLock::new(DescriptorProto::default);
       impl ::pb_jelly::Message for DescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4017,6 +4419,15 @@ pub mod google {
                 label: ::pb_jelly::Label::Repeated,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "visibility",
+                full_name: "google.protobuf.DescriptorProto.visibility",
+                index: 10,
+                number: 11,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -4054,6 +4465,9 @@ pub mod google {
           for val in &self.reserved_name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 10, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
+          if let Some(ref val) = self.visibility {
+            size += ::pb_jelly::helpers::compute_size_field::<SymbolVisibility>(val, 11, ::pb_jelly::wire_format::Type::Varint);
+          }
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -4086,6 +4500,9 @@ pub mod google {
           }
           for val in &self.reserved_name {
             ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 10, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.visibility {
+            ::pb_jelly::helpers::serialize_field::<W, SymbolVisibility>(w, val, 11, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -4131,6 +4548,10 @@ pub mod google {
               10 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "DescriptorProto", 10)?;
                 self.reserved_name.push(val);
+              }
+              11 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, SymbolVisibility>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "DescriptorProto", 11)?;
+                self.visibility = Some(val);
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -4179,6 +4600,9 @@ pub mod google {
             }
             "reserved_name" => {
               unimplemented!("Repeated fields are not currently supported.")
+            }
+            "visibility" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.visibility.get_or_insert_with(::std::default::Default::default))
             }
             _ => {
               panic!("unknown field name given")
@@ -4236,9 +4660,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref DescriptorProto_ExtensionRange_default: DescriptorProto_ExtensionRange = DescriptorProto_ExtensionRange::default();
-      }
+      pub static DescriptorProto_ExtensionRange_default: std::sync::LazyLock<DescriptorProto_ExtensionRange> = std::sync::LazyLock::new(DescriptorProto_ExtensionRange::default);
       impl ::pb_jelly::Message for DescriptorProto_ExtensionRange {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4389,9 +4811,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref DescriptorProto_ReservedRange_default: DescriptorProto_ReservedRange = DescriptorProto_ReservedRange::default();
-      }
+      pub static DescriptorProto_ReservedRange_default: std::sync::LazyLock<DescriptorProto_ReservedRange> = std::sync::LazyLock::new(DescriptorProto_ReservedRange::default);
       impl ::pb_jelly::Message for DescriptorProto_ReservedRange {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4556,9 +4976,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ExtensionRangeOptions_default: ExtensionRangeOptions = ExtensionRangeOptions::default();
-      }
+      pub static ExtensionRangeOptions_default: std::sync::LazyLock<ExtensionRangeOptions> = std::sync::LazyLock::new(ExtensionRangeOptions::default);
       impl ::pb_jelly::Message for ExtensionRangeOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4658,7 +5076,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, ExtensionRangeOptions_VerificationState>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "ExtensionRangeOptions", 3)?;
                 self.verification = Some(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -4786,9 +5204,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ExtensionRangeOptions_Declaration_default: ExtensionRangeOptions_Declaration = ExtensionRangeOptions_Declaration::default();
-      }
+      pub static ExtensionRangeOptions_Declaration_default: std::sync::LazyLock<ExtensionRangeOptions_Declaration> = std::sync::LazyLock::new(ExtensionRangeOptions_Declaration::default);
       impl ::pb_jelly::Message for ExtensionRangeOptions_Declaration {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5136,9 +5552,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldDescriptorProto_default: FieldDescriptorProto = FieldDescriptorProto::default();
-      }
+      pub static FieldDescriptorProto_default: std::sync::LazyLock<FieldDescriptorProto> = std::sync::LazyLock::new(FieldDescriptorProto::default);
       impl ::pb_jelly::Message for FieldDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5467,9 +5881,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref OneofDescriptorProto_default: OneofDescriptorProto = OneofDescriptorProto::default();
-      }
+      pub static OneofDescriptorProto_default: std::sync::LazyLock<OneofDescriptorProto> = std::sync::LazyLock::new(OneofDescriptorProto::default);
       impl ::pb_jelly::Message for OneofDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5573,6 +5985,8 @@ pub mod google {
         /// Reserved enum value names, which may not be reused. A given name may only
         /// be reserved once.
         pub reserved_name: ::std::vec::Vec<::std::string::String>,
+        /// Support for `export` and `local` keywords on enums.
+        pub visibility: ::std::option::Option<SymbolVisibility>,
       }
       impl EnumDescriptorProto {
         pub fn has_name(&self) -> bool {
@@ -5635,6 +6049,15 @@ pub mod google {
         pub fn mut_reserved_name(&mut self) -> &mut ::std::vec::Vec<::std::string::String> {
           &mut self.reserved_name
         }
+        pub fn has_visibility(&self) -> bool {
+          self.visibility.is_some()
+        }
+        pub fn set_visibility(&mut self, v: SymbolVisibility) {
+          self.visibility = Some(v);
+        }
+        pub fn get_visibility(&self) -> SymbolVisibility {
+          self.visibility.unwrap_or_default()
+        }
       }
       impl ::std::default::Default for EnumDescriptorProto {
         fn default() -> Self {
@@ -5644,12 +6067,11 @@ pub mod google {
             options: ::std::default::Default::default(),
             reserved_range: ::std::default::Default::default(),
             reserved_name: ::std::default::Default::default(),
+            visibility: ::std::default::Default::default(),
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumDescriptorProto_default: EnumDescriptorProto = EnumDescriptorProto::default();
-      }
+      pub static EnumDescriptorProto_default: std::sync::LazyLock<EnumDescriptorProto> = std::sync::LazyLock::new(EnumDescriptorProto::default);
       impl ::pb_jelly::Message for EnumDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5701,6 +6123,15 @@ pub mod google {
                 label: ::pb_jelly::Label::Repeated,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "visibility",
+                full_name: "google.protobuf.EnumDescriptorProto.visibility",
+                index: 5,
+                number: 6,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -5723,6 +6154,9 @@ pub mod google {
           for val in &self.reserved_name {
             size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 5, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
+          if let Some(ref val) = self.visibility {
+            size += ::pb_jelly::helpers::compute_size_field::<SymbolVisibility>(val, 6, ::pb_jelly::wire_format::Type::Varint);
+          }
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -5740,6 +6174,9 @@ pub mod google {
           }
           for val in &self.reserved_name {
             ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 5, ::pb_jelly::wire_format::Type::LengthDelimited)?;
+          }
+          if let Some(ref val) = self.visibility {
+            ::pb_jelly::helpers::serialize_field::<W, SymbolVisibility>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
           }
           Ok(())
         }
@@ -5765,6 +6202,10 @@ pub mod google {
               5 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "EnumDescriptorProto", 5)?;
                 self.reserved_name.push(val);
+              }
+              6 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, SymbolVisibility>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "EnumDescriptorProto", 6)?;
+                self.visibility = Some(val);
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -5798,6 +6239,9 @@ pub mod google {
             }
             "reserved_name" => {
               unimplemented!("Repeated fields are not currently supported.")
+            }
+            "visibility" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.visibility.get_or_insert_with(::std::default::Default::default))
             }
             _ => {
               panic!("unknown field name given")
@@ -5847,9 +6291,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumDescriptorProto_EnumReservedRange_default: EnumDescriptorProto_EnumReservedRange = EnumDescriptorProto_EnumReservedRange::default();
-      }
+      pub static EnumDescriptorProto_EnumReservedRange_default: std::sync::LazyLock<EnumDescriptorProto_EnumReservedRange> = std::sync::LazyLock::new(EnumDescriptorProto_EnumReservedRange::default);
       impl ::pb_jelly::Message for EnumDescriptorProto_EnumReservedRange {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5991,9 +6433,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumValueDescriptorProto_default: EnumValueDescriptorProto = EnumValueDescriptorProto::default();
-      }
+      pub static EnumValueDescriptorProto_default: std::sync::LazyLock<EnumValueDescriptorProto> = std::sync::LazyLock::new(EnumValueDescriptorProto::default);
       impl ::pb_jelly::Message for EnumValueDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -6160,9 +6600,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ServiceDescriptorProto_default: ServiceDescriptorProto = ServiceDescriptorProto::default();
-      }
+      pub static ServiceDescriptorProto_default: std::sync::LazyLock<ServiceDescriptorProto> = std::sync::LazyLock::new(ServiceDescriptorProto::default);
       impl ::pb_jelly::Message for ServiceDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -6369,9 +6807,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref MethodDescriptorProto_default: MethodDescriptorProto = MethodDescriptorProto::default();
-      }
+      pub static MethodDescriptorProto_default: std::sync::LazyLock<MethodDescriptorProto> = std::sync::LazyLock::new(MethodDescriptorProto::default);
       impl ::pb_jelly::Message for MethodDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -6669,6 +7105,9 @@ pub mod google {
         /// determining the ruby package.
         pub ruby_package: ::std::option::Option<::std::string::String>,
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here.
         /// See the documentation for the "Options" section above.
@@ -6930,9 +7369,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FileOptions_default: FileOptions = FileOptions::default();
-      }
+      pub static FileOptions_default: std::sync::LazyLock<FileOptions> = std::sync::LazyLock::new(FileOptions::default);
       impl ::pb_jelly::Message for FileOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -7355,7 +7792,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "FileOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -7515,6 +7952,9 @@ pub mod google {
         /// teams have had time to migrate.
         pub deprecated_legacy_json_field_conflicts: ::std::option::Option<bool>,
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
@@ -7605,9 +8045,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref MessageOptions_default: MessageOptions = MessageOptions::default();
-      }
+      pub static MessageOptions_default: std::sync::LazyLock<MessageOptions> = std::sync::LazyLock::new(MessageOptions::default);
       impl ::pb_jelly::Message for MessageOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -7764,7 +8202,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "MessageOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -7880,6 +8318,7 @@ pub mod google {
         /// for accessors, or it will be completely ignored; in the very least, this
         /// is a formalization for deprecating fields.
         pub deprecated: ::std::option::Option<bool>,
+        /// DEPRECATED. DO NOT USE!
         /// For Google-internal migration only. Do not use.
         pub weak: ::std::option::Option<bool>,
         /// Indicate that the field value should not be printed out when using debug
@@ -7889,6 +8328,9 @@ pub mod google {
         pub targets: ::std::vec::Vec<FieldOptions_OptionTargetType>,
         pub edition_defaults: ::std::vec::Vec<FieldOptions_EditionDefault>,
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         pub feature_support: ::std::option::Option<FieldOptions_FeatureSupport>,
         /// The parser stores options it doesn't recognize here. See above.
@@ -8059,9 +8501,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldOptions_default: FieldOptions = FieldOptions::default();
-      }
+      pub static FieldOptions_default: std::sync::LazyLock<FieldOptions> = std::sync::LazyLock::new(FieldOptions::default);
       impl ::pb_jelly::Message for FieldOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8350,7 +8790,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "FieldOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -8462,9 +8902,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldOptions_EditionDefault_default: FieldOptions_EditionDefault = FieldOptions_EditionDefault::default();
-      }
+      pub static FieldOptions_EditionDefault_default: std::sync::LazyLock<FieldOptions_EditionDefault> = std::sync::LazyLock::new(FieldOptions_EditionDefault::default);
       impl ::pb_jelly::Message for FieldOptions_EditionDefault {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8572,6 +9010,9 @@ pub mod google {
         /// this one, the last default assigned will be used, and proto files will
         /// not be able to override it.
         pub edition_removed: ::std::option::Option<Edition>,
+        /// The removal error text if this feature is used after the edition it was
+        /// removed in.
+        pub removal_error: ::std::option::Option<::std::string::String>,
       }
       impl FieldOptions_FeatureSupport {
         pub fn has_edition_introduced(&self) -> bool {
@@ -8613,6 +9054,18 @@ pub mod google {
         pub fn get_edition_removed(&self) -> Edition {
           self.edition_removed.unwrap_or_default()
         }
+        pub fn has_removal_error(&self) -> bool {
+          self.removal_error.is_some()
+        }
+        pub fn set_removal_error(&mut self, v: ::std::string::String) {
+          self.removal_error = Some(v);
+        }
+        pub fn take_removal_error(&mut self) -> ::std::string::String {
+          self.removal_error.take().unwrap_or_default()
+        }
+        pub fn get_removal_error(&self) -> &str {
+          self.removal_error.as_deref().unwrap_or("")
+        }
       }
       impl ::std::default::Default for FieldOptions_FeatureSupport {
         fn default() -> Self {
@@ -8621,12 +9074,11 @@ pub mod google {
             edition_deprecated: ::std::default::Default::default(),
             deprecation_warning: ::std::default::Default::default(),
             edition_removed: ::std::default::Default::default(),
+            removal_error: ::std::default::Default::default(),
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldOptions_FeatureSupport_default: FieldOptions_FeatureSupport = FieldOptions_FeatureSupport::default();
-      }
+      pub static FieldOptions_FeatureSupport_default: std::sync::LazyLock<FieldOptions_FeatureSupport> = std::sync::LazyLock::new(FieldOptions_FeatureSupport::default);
       impl ::pb_jelly::Message for FieldOptions_FeatureSupport {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8669,6 +9121,15 @@ pub mod google {
                 label: ::pb_jelly::Label::Optional,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "removal_error",
+                full_name: "google.protobuf.FieldOptions_FeatureSupport.removal_error",
+                index: 4,
+                number: 5,
+                typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -8688,6 +9149,9 @@ pub mod google {
           if let Some(ref val) = self.edition_removed {
             size += ::pb_jelly::helpers::compute_size_field::<Edition>(val, 4, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.removal_error {
+            size += ::pb_jelly::helpers::compute_size_field::<::std::string::String>(val, 5, ::pb_jelly::wire_format::Type::LengthDelimited);
+          }
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
@@ -8702,6 +9166,9 @@ pub mod google {
           }
           if let Some(ref val) = self.edition_removed {
             ::pb_jelly::helpers::serialize_field::<W, Edition>(w, val, 4, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.removal_error {
+            ::pb_jelly::helpers::serialize_field::<W, ::std::string::String>(w, val, 5, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
           Ok(())
         }
@@ -8723,6 +9190,10 @@ pub mod google {
               4 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, Edition>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FieldOptions_FeatureSupport", 4)?;
                 self.edition_removed = Some(val);
+              }
+              5 => {
+                let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::string::String>(buf, typ, "FieldOptions_FeatureSupport", 5)?;
+                self.removal_error = Some(val);
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -8754,6 +9225,9 @@ pub mod google {
             "edition_removed" => {
               ::pb_jelly::reflection::FieldMut::Value(self.edition_removed.get_or_insert_with(::std::default::Default::default))
             }
+            "removal_error" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.removal_error.get_or_insert_with(::std::default::Default::default))
+            }
             _ => {
               panic!("unknown field name given")
             }
@@ -8764,6 +9238,9 @@ pub mod google {
       #[derive(Clone, Debug, PartialEq)]
       pub struct OneofOptions {
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
@@ -8804,9 +9281,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref OneofOptions_default: OneofOptions = OneofOptions::default();
-      }
+      pub static OneofOptions_default: std::sync::LazyLock<OneofOptions> = std::sync::LazyLock::new(OneofOptions::default);
       impl ::pb_jelly::Message for OneofOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8868,7 +9343,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "OneofOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -8925,6 +9400,9 @@ pub mod google {
         /// had time to migrate.
         pub deprecated_legacy_json_field_conflicts: ::std::option::Option<bool>,
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
@@ -8995,9 +9473,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumOptions_default: EnumOptions = EnumOptions::default();
-      }
+      pub static EnumOptions_default: std::sync::LazyLock<EnumOptions> = std::sync::LazyLock::new(EnumOptions::default);
       impl ::pb_jelly::Message for EnumOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9116,7 +9592,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "EnumOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -9172,6 +9648,9 @@ pub mod google {
         /// this is a formalization for deprecating enum values.
         pub deprecated: ::std::option::Option<bool>,
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         /// Indicate that fields annotated with this enum value should not be printed
         /// out when using debug formats, e.g. when the field contains sensitive
@@ -9251,9 +9730,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumValueOptions_default: EnumValueOptions = EnumValueOptions::default();
-      }
+      pub static EnumValueOptions_default: std::sync::LazyLock<EnumValueOptions> = std::sync::LazyLock::new(EnumValueOptions::default);
       impl ::pb_jelly::Message for EnumValueOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9372,7 +9849,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "EnumValueOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -9423,6 +9900,9 @@ pub mod google {
       #[derive(Clone, Debug, PartialEq)]
       pub struct ServiceOptions {
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         // Note:  Field numbers 1 through 32 are reserved for Google's internal RPC
         //   framework.  We apologize for hoarding these numbers to ourselves, but
@@ -9483,9 +9963,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ServiceOptions_default: ServiceOptions = ServiceOptions::default();
-      }
+      pub static ServiceOptions_default: std::sync::LazyLock<ServiceOptions> = std::sync::LazyLock::new(ServiceOptions::default);
       impl ::pb_jelly::Message for ServiceOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9566,7 +10044,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "ServiceOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -9622,6 +10100,9 @@ pub mod google {
         pub deprecated: ::std::option::Option<bool>,
         pub idempotency_level: ::std::option::Option<MethodOptions_IdempotencyLevel>,
         /// Any features defined in the specific edition.
+        /// WARNING: This field should only be used by protobuf plugins or special
+        /// cases like the proto compiler. Other uses are discouraged and
+        /// developers should rely on the protoreflect APIs for their client language.
         pub features: ::std::option::Option<FeatureSet>,
         /// The parser stores options it doesn't recognize here. See above.
         pub uninterpreted_option: ::std::vec::Vec<UninterpretedOption>,
@@ -9682,9 +10163,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref MethodOptions_default: MethodOptions = MethodOptions::default();
-      }
+      pub static MethodOptions_default: std::sync::LazyLock<MethodOptions> = std::sync::LazyLock::new(MethodOptions::default);
       impl ::pb_jelly::Message for MethodOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9784,7 +10263,7 @@ pub mod google {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, UninterpretedOption>(buf, typ, "MethodOptions", 999)?;
                 self.uninterpreted_option.push(val);
               }
-              1000..=536870911 => {
+              990..=998 | 1000..=536870911 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
@@ -9937,9 +10416,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref UninterpretedOption_default: UninterpretedOption = UninterpretedOption::default();
-      }
+      pub static UninterpretedOption_default: std::sync::LazyLock<UninterpretedOption> = std::sync::LazyLock::new(UninterpretedOption::default);
       impl ::pb_jelly::Message for UninterpretedOption {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10181,9 +10658,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref UninterpretedOption_NamePart_default: UninterpretedOption_NamePart = UninterpretedOption_NamePart::default();
-      }
+      pub static UninterpretedOption_NamePart_default: std::sync::LazyLock<UninterpretedOption_NamePart> = std::sync::LazyLock::new(UninterpretedOption_NamePart::default);
       impl ::pb_jelly::Message for UninterpretedOption_NamePart {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10291,6 +10766,8 @@ pub mod google {
         pub utf8_validation: ::std::option::Option<FeatureSet_Utf8Validation>,
         pub message_encoding: ::std::option::Option<FeatureSet_MessageEncoding>,
         pub json_format: ::std::option::Option<FeatureSet_JsonFormat>,
+        pub enforce_naming_style: ::std::option::Option<FeatureSet_EnforceNamingStyle>,
+        pub default_symbol_visibility: ::std::option::Option<FeatureSet_VisibilityFeature_DefaultSymbolVisibility>,
         pub _extensions: ::pb_jelly::Unrecognized,
       }
       impl FeatureSet {
@@ -10348,6 +10825,24 @@ pub mod google {
         pub fn get_json_format(&self) -> FeatureSet_JsonFormat {
           self.json_format.unwrap_or_default()
         }
+        pub fn has_enforce_naming_style(&self) -> bool {
+          self.enforce_naming_style.is_some()
+        }
+        pub fn set_enforce_naming_style(&mut self, v: FeatureSet_EnforceNamingStyle) {
+          self.enforce_naming_style = Some(v);
+        }
+        pub fn get_enforce_naming_style(&self) -> FeatureSet_EnforceNamingStyle {
+          self.enforce_naming_style.unwrap_or_default()
+        }
+        pub fn has_default_symbol_visibility(&self) -> bool {
+          self.default_symbol_visibility.is_some()
+        }
+        pub fn set_default_symbol_visibility(&mut self, v: FeatureSet_VisibilityFeature_DefaultSymbolVisibility) {
+          self.default_symbol_visibility = Some(v);
+        }
+        pub fn get_default_symbol_visibility(&self) -> FeatureSet_VisibilityFeature_DefaultSymbolVisibility {
+          self.default_symbol_visibility.unwrap_or_default()
+        }
       }
       impl ::std::default::Default for FeatureSet {
         fn default() -> Self {
@@ -10358,13 +10853,13 @@ pub mod google {
             utf8_validation: ::std::default::Default::default(),
             message_encoding: ::std::default::Default::default(),
             json_format: ::std::default::Default::default(),
+            enforce_naming_style: ::std::default::Default::default(),
+            default_symbol_visibility: ::std::default::Default::default(),
             _extensions: ::pb_jelly::Unrecognized::default(),
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FeatureSet_default: FeatureSet = FeatureSet::default();
-      }
+      pub static FeatureSet_default: std::sync::LazyLock<FeatureSet> = std::sync::LazyLock::new(FeatureSet::default);
       impl ::pb_jelly::Message for FeatureSet {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10425,6 +10920,24 @@ pub mod google {
                 label: ::pb_jelly::Label::Optional,
                 oneof_index: None,
               },
+              ::pb_jelly::FieldDescriptor {
+                name: "enforce_naming_style",
+                full_name: "google.protobuf.FeatureSet.enforce_naming_style",
+                index: 6,
+                number: 7,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
+              ::pb_jelly::FieldDescriptor {
+                name: "default_symbol_visibility",
+                full_name: "google.protobuf.FeatureSet.default_symbol_visibility",
+                index: 7,
+                number: 8,
+                typ: ::pb_jelly::wire_format::Type::Varint,
+                label: ::pb_jelly::Label::Optional,
+                oneof_index: None,
+              },
             ],
             oneofs: &[
             ],
@@ -10450,6 +10963,12 @@ pub mod google {
           if let Some(ref val) = self.json_format {
             size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_JsonFormat>(val, 6, ::pb_jelly::wire_format::Type::Varint);
           }
+          if let Some(ref val) = self.enforce_naming_style {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_EnforceNamingStyle>(val, 7, ::pb_jelly::wire_format::Type::Varint);
+          }
+          if let Some(ref val) = self.default_symbol_visibility {
+            size += ::pb_jelly::helpers::compute_size_field::<FeatureSet_VisibilityFeature_DefaultSymbolVisibility>(val, 8, ::pb_jelly::wire_format::Type::Varint);
+          }
           size += self._extensions.compute_size();
           size
         }
@@ -10471,6 +10990,12 @@ pub mod google {
           }
           if let Some(ref val) = self.json_format {
             ::pb_jelly::helpers::serialize_field::<W, FeatureSet_JsonFormat>(w, val, 6, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.enforce_naming_style {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_EnforceNamingStyle>(w, val, 7, ::pb_jelly::wire_format::Type::Varint)?;
+          }
+          if let Some(ref val) = self.default_symbol_visibility {
+            ::pb_jelly::helpers::serialize_field::<W, FeatureSet_VisibilityFeature_DefaultSymbolVisibility>(w, val, 8, ::pb_jelly::wire_format::Type::Varint)?;
           }
           self._extensions.serialize(w)?;
           Ok(())
@@ -10501,6 +11026,14 @@ pub mod google {
               6 => {
                 let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_JsonFormat>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 6)?;
                 self.json_format = Some(val);
+              }
+              7 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_EnforceNamingStyle>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 7)?;
+                self.enforce_naming_style = Some(val);
+              }
+              8 => {
+                let val = ::pb_jelly::helpers::deserialize_known_length::<B, FeatureSet_VisibilityFeature_DefaultSymbolVisibility>(buf, typ, ::pb_jelly::wire_format::Type::Varint, "FeatureSet", 8)?;
+                self.default_symbol_visibility = Some(val);
               }
               1000..=9994 | 9995..=9999 | 10000..=10000 => {
                 self._extensions.gather(field_number, typ, &mut buf)?;
@@ -10541,6 +11074,12 @@ pub mod google {
             "json_format" => {
               ::pb_jelly::reflection::FieldMut::Value(self.json_format.get_or_insert_with(::std::default::Default::default))
             }
+            "enforce_naming_style" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.enforce_naming_style.get_or_insert_with(::std::default::Default::default))
+            }
+            "default_symbol_visibility" => {
+              ::pb_jelly::reflection::FieldMut::Value(self.default_symbol_visibility.get_or_insert_with(::std::default::Default::default))
+            }
             _ => {
               panic!("unknown field name given")
             }
@@ -10550,6 +11089,63 @@ pub mod google {
       impl ::pb_jelly::extensions::Extensible for FeatureSet {
         fn _extensions(&self) -> &::pb_jelly::Unrecognized {
           &self._extensions
+        }
+      }
+      
+      #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+      pub struct FeatureSet_VisibilityFeature {
+      }
+      impl FeatureSet_VisibilityFeature {
+      }
+      impl ::std::default::Default for FeatureSet_VisibilityFeature {
+        fn default() -> Self {
+          FeatureSet_VisibilityFeature {
+          }
+        }
+      }
+      pub static FeatureSet_VisibilityFeature_default: std::sync::LazyLock<FeatureSet_VisibilityFeature> = std::sync::LazyLock::new(FeatureSet_VisibilityFeature::default);
+      impl ::pb_jelly::Message for FeatureSet_VisibilityFeature {
+        fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+          Some(::pb_jelly::MessageDescriptor {
+            name: "FeatureSet_VisibilityFeature",
+            full_name: "google.protobuf.FeatureSet_VisibilityFeature",
+            fields: &[
+            ],
+            oneofs: &[
+            ],
+          })
+        }
+        fn compute_size(&self) -> usize {
+          0usize
+        }
+        fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+          Ok(())
+        }
+        fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
+          while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+            match field_number {
+              _ => {
+                ::pb_jelly::skip(typ, &mut buf)?;
+              }
+            }
+          }
+          Ok(())
+        }
+      }
+      impl ::pb_jelly::Reflection for FeatureSet_VisibilityFeature {
+        fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+          match oneof_name {
+            _ => {
+              panic!("unknown oneof name given");
+            }
+          }
+        }
+        fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+          match field_name {
+            _ => {
+              panic!("unknown field name given")
+            }
+          }
         }
       }
       
@@ -10608,9 +11204,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FeatureSetDefaults_default: FeatureSetDefaults = FeatureSetDefaults::default();
-      }
+      pub static FeatureSetDefaults_default: std::sync::LazyLock<FeatureSetDefaults> = std::sync::LazyLock::new(FeatureSetDefaults::default);
       impl ::pb_jelly::Message for FeatureSetDefaults {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10779,9 +11373,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FeatureSetDefaults_FeatureSetEditionDefault_default: FeatureSetDefaults_FeatureSetEditionDefault = FeatureSetDefaults_FeatureSetEditionDefault::default();
-      }
+      pub static FeatureSetDefaults_FeatureSetEditionDefault_default: std::sync::LazyLock<FeatureSetDefaults_FeatureSetEditionDefault> = std::sync::LazyLock::new(FeatureSetDefaults_FeatureSetEditionDefault::default);
       impl ::pb_jelly::Message for FeatureSetDefaults_FeatureSetEditionDefault {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10899,7 +11491,7 @@ pub mod google {
       
       /// Encapsulates information about the original source file from which a
       /// FileDescriptorProto was generated.
-      #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+      #[derive(Clone, Debug, PartialEq)]
       pub struct SourceCodeInfo {
         /// A Location identifies a piece of source code in a .proto file which
         /// corresponds to a particular definition.  This information is intended
@@ -10945,6 +11537,7 @@ pub mod google {
         ///   ignore those that it doesn't understand, as more types of locations could
         ///   be recorded in the future.
         pub location: ::std::vec::Vec<SourceCodeInfo_Location>,
+        pub _extensions: ::pb_jelly::Unrecognized,
       }
       impl SourceCodeInfo {
         pub fn set_location(&mut self, v: ::std::vec::Vec<SourceCodeInfo_Location>) {
@@ -10964,12 +11557,11 @@ pub mod google {
         fn default() -> Self {
           SourceCodeInfo {
             location: ::std::default::Default::default(),
+            _extensions: ::pb_jelly::Unrecognized::default(),
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref SourceCodeInfo_default: SourceCodeInfo = SourceCodeInfo::default();
-      }
+      pub static SourceCodeInfo_default: std::sync::LazyLock<SourceCodeInfo> = std::sync::LazyLock::new(SourceCodeInfo::default);
       impl ::pb_jelly::Message for SourceCodeInfo {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10995,12 +11587,14 @@ pub mod google {
           for val in &self.location {
             size += ::pb_jelly::helpers::compute_size_field::<SourceCodeInfo_Location>(val, 1, ::pb_jelly::wire_format::Type::LengthDelimited);
           }
+          size += self._extensions.compute_size();
           size
         }
         fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
           for val in &self.location {
             ::pb_jelly::helpers::serialize_field::<W, SourceCodeInfo_Location>(w, val, 1, ::pb_jelly::wire_format::Type::LengthDelimited)?;
           }
+          self._extensions.serialize(w)?;
           Ok(())
         }
         fn deserialize<B: ::pb_jelly::PbBufferReader>(&mut self, mut buf: &mut B) -> ::std::io::Result<()> {
@@ -11009,6 +11603,9 @@ pub mod google {
               1 => {
                 let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, SourceCodeInfo_Location>(buf, typ, "SourceCodeInfo", 1)?;
                 self.location.push(val);
+              }
+              536000000..=536000000 => {
+                self._extensions.gather(field_number, typ, &mut buf)?;
               }
               _ => {
                 ::pb_jelly::skip(typ, &mut buf)?;
@@ -11035,6 +11632,11 @@ pub mod google {
               panic!("unknown field name given")
             }
           }
+        }
+      }
+      impl ::pb_jelly::extensions::Extensible for SourceCodeInfo {
+        fn _extensions(&self) -> &::pb_jelly::Unrecognized {
+          &self._extensions
         }
       }
       
@@ -11194,9 +11796,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref SourceCodeInfo_Location_default: SourceCodeInfo_Location = SourceCodeInfo_Location::default();
-      }
+      pub static SourceCodeInfo_Location_default: std::sync::LazyLock<SourceCodeInfo_Location> = std::sync::LazyLock::new(SourceCodeInfo_Location::default);
       impl ::pb_jelly::Message for SourceCodeInfo_Location {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -11409,9 +12009,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref GeneratedCodeInfo_default: GeneratedCodeInfo = GeneratedCodeInfo::default();
-      }
+      pub static GeneratedCodeInfo_default: std::sync::LazyLock<GeneratedCodeInfo> = std::sync::LazyLock::new(GeneratedCodeInfo::default);
       impl ::pb_jelly::Message for GeneratedCodeInfo {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -11560,9 +12158,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref GeneratedCodeInfo_Annotation_default: GeneratedCodeInfo_Annotation = GeneratedCodeInfo_Annotation::default();
-      }
+      pub static GeneratedCodeInfo_Annotation_default: std::sync::LazyLock<GeneratedCodeInfo_Annotation> = std::sync::LazyLock::new(GeneratedCodeInfo_Annotation::default);
       impl ::pb_jelly::Message for GeneratedCodeInfo_Annotation {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
