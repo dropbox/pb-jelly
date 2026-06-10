@@ -695,9 +695,7 @@ impl ::std::default::Default for ForeignMessage3 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref ForeignMessage3_default: ForeignMessage3 = ForeignMessage3::default();
-}
+pub static ForeignMessage3_default: std::sync::LazyLock<ForeignMessage3> = std::sync::LazyLock::new(ForeignMessage3::default);
 impl ::pb_jelly::Message for ForeignMessage3 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -778,9 +776,7 @@ impl ::std::default::Default for Version31OneOfNoneNullable {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version31OneOfNoneNullable_default: Version31OneOfNoneNullable = Version31OneOfNoneNullable::default();
-}
+pub static Version31OneOfNoneNullable_default: std::sync::LazyLock<Version31OneOfNoneNullable> = std::sync::LazyLock::new(Version31OneOfNoneNullable::default);
 impl ::pb_jelly::Message for Version31OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -923,9 +919,7 @@ impl ::std::default::Default for Version32OneOfNoneNullable {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version32OneOfNoneNullable_default: Version32OneOfNoneNullable = Version32OneOfNoneNullable::default();
-}
+pub static Version32OneOfNoneNullable_default: std::sync::LazyLock<Version32OneOfNoneNullable> = std::sync::LazyLock::new(Version32OneOfNoneNullable::default);
 impl ::pb_jelly::Message for Version32OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1096,9 +1090,7 @@ impl ::std::default::Default for Version31Enum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version31Enum_default: Version31Enum = Version31Enum::default();
-}
+pub static Version31Enum_default: std::sync::LazyLock<Version31Enum> = std::sync::LazyLock::new(Version31Enum::default);
 impl ::pb_jelly::Message for Version31Enum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1174,9 +1166,7 @@ impl ::std::default::Default for Version32Enum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version32Enum_default: Version32Enum = Version32Enum::default();
-}
+pub static Version32Enum_default: std::sync::LazyLock<Version32Enum> = std::sync::LazyLock::new(Version32Enum::default);
 impl ::pb_jelly::Message for Version32Enum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1256,9 +1246,7 @@ impl ::std::default::Default for Version31OneOf {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version31OneOf_default: Version31OneOf = Version31OneOf::default();
-}
+pub static Version31OneOf_default: std::sync::LazyLock<Version31OneOf> = std::sync::LazyLock::new(Version31OneOf::default);
 impl ::pb_jelly::Message for Version31OneOf {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1361,9 +1349,7 @@ impl ::std::default::Default for Version32OneOf {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version32OneOf_default: Version32OneOf = Version32OneOf::default();
-}
+pub static Version32OneOf_default: std::sync::LazyLock<Version32OneOf> = std::sync::LazyLock::new(Version32OneOf::default);
 impl ::pb_jelly::Message for Version32OneOf {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1495,9 +1481,7 @@ impl ::std::default::Default for Version31 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version31_default: Version31 = Version31::default();
-}
+pub static Version31_default: std::sync::LazyLock<Version31> = std::sync::LazyLock::new(Version31::default);
 impl ::pb_jelly::Message for Version31 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1573,9 +1557,7 @@ impl ::std::default::Default for Version31SSO {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version31SSO_default: Version31SSO = Version31SSO::default();
-}
+pub static Version31SSO_default: std::sync::LazyLock<Version31SSO> = std::sync::LazyLock::new(Version31SSO::default);
 impl ::pb_jelly::Message for Version31SSO {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1677,9 +1659,7 @@ impl ::std::default::Default for Version32 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version32_default: Version32 = Version32::default();
-}
+pub static Version32_default: std::sync::LazyLock<Version32> = std::sync::LazyLock::new(Version32::default);
 impl ::pb_jelly::Message for Version32 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -2127,9 +2107,7 @@ impl ::std::default::Default for TestMessage3 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3_default: TestMessage3 = TestMessage3::default();
-}
+pub static TestMessage3_default: std::sync::LazyLock<TestMessage3> = std::sync::LazyLock::new(TestMessage3::default);
 impl ::pb_jelly::Message for TestMessage3 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -3844,9 +3822,7 @@ impl ::std::default::Default for TestMessage3_NestedMessage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3_NestedMessage_default: TestMessage3_NestedMessage = TestMessage3_NestedMessage::default();
-}
+pub static TestMessage3_NestedMessage_default: std::sync::LazyLock<TestMessage3_NestedMessage> = std::sync::LazyLock::new(TestMessage3_NestedMessage::default);
 impl ::pb_jelly::Message for TestMessage3_NestedMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4053,9 +4029,7 @@ impl ::std::default::Default for TestMessage3_NestedMessage_File {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3_NestedMessage_File_default: TestMessage3_NestedMessage_File = TestMessage3_NestedMessage_File::default();
-}
+pub static TestMessage3_NestedMessage_File_default: std::sync::LazyLock<TestMessage3_NestedMessage_File> = std::sync::LazyLock::new(TestMessage3_NestedMessage_File::default);
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_File {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4151,9 +4125,7 @@ impl ::std::default::Default for TestMessage3_NestedMessage_Dir {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3_NestedMessage_Dir_default: TestMessage3_NestedMessage_Dir = TestMessage3_NestedMessage_Dir::default();
-}
+pub static TestMessage3_NestedMessage_Dir_default: std::sync::LazyLock<TestMessage3_NestedMessage_Dir> = std::sync::LazyLock::new(TestMessage3_NestedMessage_Dir::default);
 impl ::pb_jelly::Message for TestMessage3_NestedMessage_Dir {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4210,9 +4182,7 @@ impl ::std::default::Default for TestBoxedNonnullable {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestBoxedNonnullable_default: TestBoxedNonnullable = TestBoxedNonnullable::default();
-}
+pub static TestBoxedNonnullable_default: std::sync::LazyLock<TestBoxedNonnullable> = std::sync::LazyLock::new(TestBoxedNonnullable::default);
 impl ::pb_jelly::Message for TestBoxedNonnullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4301,9 +4271,7 @@ impl ::std::default::Default for TestMessage3NonNullableOneof {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3NonNullableOneof_default: TestMessage3NonNullableOneof = TestMessage3NonNullableOneof::default();
-}
+pub static TestMessage3NonNullableOneof_default: std::sync::LazyLock<TestMessage3NonNullableOneof> = std::sync::LazyLock::new(TestMessage3NonNullableOneof::default);
 impl ::pb_jelly::Message for TestMessage3NonNullableOneof {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4458,9 +4426,7 @@ impl ::std::default::Default for TestMessage3ErrIfDefaultEnum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3ErrIfDefaultEnum_default: TestMessage3ErrIfDefaultEnum = TestMessage3ErrIfDefaultEnum::default();
-}
+pub static TestMessage3ErrIfDefaultEnum_default: std::sync::LazyLock<TestMessage3ErrIfDefaultEnum> = std::sync::LazyLock::new(TestMessage3ErrIfDefaultEnum::default);
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4549,9 +4515,7 @@ impl ::std::default::Default for TestMessage3ErrIfDefaultEnumOneof {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3ErrIfDefaultEnumOneof_default: TestMessage3ErrIfDefaultEnumOneof = TestMessage3ErrIfDefaultEnumOneof::default();
-}
+pub static TestMessage3ErrIfDefaultEnumOneof_default: std::sync::LazyLock<TestMessage3ErrIfDefaultEnumOneof> = std::sync::LazyLock::new(TestMessage3ErrIfDefaultEnumOneof::default);
 impl ::pb_jelly::Message for TestMessage3ErrIfDefaultEnumOneof {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4671,9 +4635,7 @@ impl ::std::default::Default for TestMessage3RepeatedErrIfDefaultEnum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3RepeatedErrIfDefaultEnum_default: TestMessage3RepeatedErrIfDefaultEnum = TestMessage3RepeatedErrIfDefaultEnum::default();
-}
+pub static TestMessage3RepeatedErrIfDefaultEnum_default: std::sync::LazyLock<TestMessage3RepeatedErrIfDefaultEnum> = std::sync::LazyLock::new(TestMessage3RepeatedErrIfDefaultEnum::default);
 impl ::pb_jelly::Message for TestMessage3RepeatedErrIfDefaultEnum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4766,9 +4728,7 @@ impl ::std::default::Default for TestMessage3ClosedEnum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3ClosedEnum_default: TestMessage3ClosedEnum = TestMessage3ClosedEnum::default();
-}
+pub static TestMessage3ClosedEnum_default: std::sync::LazyLock<TestMessage3ClosedEnum> = std::sync::LazyLock::new(TestMessage3ClosedEnum::default);
 impl ::pb_jelly::Message for TestMessage3ClosedEnum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4844,9 +4804,7 @@ impl ::std::default::Default for TestMessage3ClosedEnum2 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3ClosedEnum2_default: TestMessage3ClosedEnum2 = TestMessage3ClosedEnum2::default();
-}
+pub static TestMessage3ClosedEnum2_default: std::sync::LazyLock<TestMessage3ClosedEnum2> = std::sync::LazyLock::new(TestMessage3ClosedEnum2::default);
 impl ::pb_jelly::Message for TestMessage3ClosedEnum2 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -4922,9 +4880,7 @@ impl ::std::default::Default for TestMessage3NonOptionalBoxedMessage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3NonOptionalBoxedMessage_default: TestMessage3NonOptionalBoxedMessage = TestMessage3NonOptionalBoxedMessage::default();
-}
+pub static TestMessage3NonOptionalBoxedMessage_default: std::sync::LazyLock<TestMessage3NonOptionalBoxedMessage> = std::sync::LazyLock::new(TestMessage3NonOptionalBoxedMessage::default);
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5006,9 +4962,7 @@ impl ::std::default::Default for TestMessage3NonOptionalBoxedMessage_InnerMessag
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage3NonOptionalBoxedMessage_InnerMessage_default: TestMessage3NonOptionalBoxedMessage_InnerMessage = TestMessage3NonOptionalBoxedMessage_InnerMessage::default();
-}
+pub static TestMessage3NonOptionalBoxedMessage_InnerMessage_default: std::sync::LazyLock<TestMessage3NonOptionalBoxedMessage_InnerMessage> = std::sync::LazyLock::new(TestMessage3NonOptionalBoxedMessage_InnerMessage::default);
 impl ::pb_jelly::Message for TestMessage3NonOptionalBoxedMessage_InnerMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5086,9 +5040,7 @@ impl ::std::default::Default for TestPreserveUnrecognized1 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestPreserveUnrecognized1_default: TestPreserveUnrecognized1 = TestPreserveUnrecognized1::default();
-}
+pub static TestPreserveUnrecognized1_default: std::sync::LazyLock<TestPreserveUnrecognized1> = std::sync::LazyLock::new(TestPreserveUnrecognized1::default);
 impl ::pb_jelly::Message for TestPreserveUnrecognized1 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5197,9 +5149,7 @@ impl ::std::default::Default for TestPreserveUnrecognized2 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestPreserveUnrecognized2_default: TestPreserveUnrecognized2 = TestPreserveUnrecognized2::default();
-}
+pub static TestPreserveUnrecognized2_default: std::sync::LazyLock<TestPreserveUnrecognized2> = std::sync::LazyLock::new(TestPreserveUnrecognized2::default);
 impl ::pb_jelly::Message for TestPreserveUnrecognized2 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5514,9 +5464,7 @@ impl ::std::default::Default for TestPreserveUnrecognizedEmpty {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestPreserveUnrecognizedEmpty_default: TestPreserveUnrecognizedEmpty = TestPreserveUnrecognizedEmpty::default();
-}
+pub static TestPreserveUnrecognizedEmpty_default: std::sync::LazyLock<TestPreserveUnrecognizedEmpty> = std::sync::LazyLock::new(TestPreserveUnrecognizedEmpty::default);
 impl ::pb_jelly::Message for TestPreserveUnrecognizedEmpty {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5579,9 +5527,7 @@ impl ::std::default::Default for TestSmallString {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestSmallString_default: TestSmallString = TestSmallString::default();
-}
+pub static TestSmallString_default: std::sync::LazyLock<TestSmallString> = std::sync::LazyLock::new(TestSmallString::default);
 impl ::pb_jelly::Message for TestSmallString {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5657,9 +5603,7 @@ impl ::std::default::Default for TestBoxedSmallString {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestBoxedSmallString_default: TestBoxedSmallString = TestBoxedSmallString::default();
-}
+pub static TestBoxedSmallString_default: std::sync::LazyLock<TestBoxedSmallString> = std::sync::LazyLock::new(TestBoxedSmallString::default);
 impl ::pb_jelly::Message for TestBoxedSmallString {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5735,9 +5679,7 @@ impl ::std::default::Default for TestNonOptionalSmallString {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestNonOptionalSmallString_default: TestNonOptionalSmallString = TestNonOptionalSmallString::default();
-}
+pub static TestNonOptionalSmallString_default: std::sync::LazyLock<TestNonOptionalSmallString> = std::sync::LazyLock::new(TestNonOptionalSmallString::default);
 impl ::pb_jelly::Message for TestNonOptionalSmallString {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5815,9 +5757,7 @@ impl ::std::default::Default for TestSmallStringPreserveUnrecognized {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestSmallStringPreserveUnrecognized_default: TestSmallStringPreserveUnrecognized = TestSmallStringPreserveUnrecognized::default();
-}
+pub static TestSmallStringPreserveUnrecognized_default: std::sync::LazyLock<TestSmallStringPreserveUnrecognized> = std::sync::LazyLock::new(TestSmallStringPreserveUnrecognized::default);
 impl ::pb_jelly::Message for TestSmallStringPreserveUnrecognized {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -5939,9 +5879,7 @@ impl ::std::default::Default for TestProto3Optional {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestProto3Optional_default: TestProto3Optional = TestProto3Optional::default();
-}
+pub static TestProto3Optional_default: std::sync::LazyLock<TestProto3Optional> = std::sync::LazyLock::new(TestProto3Optional::default);
 impl ::pb_jelly::Message for TestProto3Optional {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -6462,9 +6400,7 @@ impl ::std::default::Default for TestProto3Zerocopy {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestProto3Zerocopy_default: TestProto3Zerocopy = TestProto3Zerocopy::default();
-}
+pub static TestProto3Zerocopy_default: std::sync::LazyLock<TestProto3Zerocopy> = std::sync::LazyLock::new(TestProto3Zerocopy::default);
 impl ::pb_jelly::Message for TestProto3Zerocopy {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -6570,9 +6506,7 @@ impl ::std::default::Default for TestProto3ContainsZerocopy {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestProto3ContainsZerocopy_default: TestProto3ContainsZerocopy = TestProto3ContainsZerocopy::default();
-}
+pub static TestProto3ContainsZerocopy_default: std::sync::LazyLock<TestProto3ContainsZerocopy> = std::sync::LazyLock::new(TestProto3ContainsZerocopy::default);
 impl ::pb_jelly::Message for TestProto3ContainsZerocopy {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -6669,9 +6603,7 @@ impl ::std::default::Default for RecursiveOneof {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref RecursiveOneof_default: RecursiveOneof = RecursiveOneof::default();
-}
+pub static RecursiveOneof_default: std::sync::LazyLock<RecursiveOneof> = std::sync::LazyLock::new(RecursiveOneof::default);
 impl ::pb_jelly::Message for RecursiveOneof {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -6917,9 +6849,7 @@ impl ::std::default::Default for MentionsKeywordPath {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MentionsKeywordPath_default: MentionsKeywordPath = MentionsKeywordPath::default();
-}
+pub static MentionsKeywordPath_default: std::sync::LazyLock<MentionsKeywordPath> = std::sync::LazyLock::new(MentionsKeywordPath::default);
 impl ::pb_jelly::Message for MentionsKeywordPath {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7003,9 +6933,7 @@ impl ::std::default::Default for NonNullableOneofKeyword {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref NonNullableOneofKeyword_default: NonNullableOneofKeyword = NonNullableOneofKeyword::default();
-}
+pub static NonNullableOneofKeyword_default: std::sync::LazyLock<NonNullableOneofKeyword> = std::sync::LazyLock::new(NonNullableOneofKeyword::default);
 impl ::pb_jelly::Message for NonNullableOneofKeyword {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7102,9 +7030,7 @@ impl ::std::default::Default for NonNullableEnumKeyword {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref NonNullableEnumKeyword_default: NonNullableEnumKeyword = NonNullableEnumKeyword::default();
-}
+pub static NonNullableEnumKeyword_default: std::sync::LazyLock<NonNullableEnumKeyword> = std::sync::LazyLock::new(NonNullableEnumKeyword::default);
 impl ::pb_jelly::Message for NonNullableEnumKeyword {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7187,9 +7113,7 @@ impl ::std::default::Default for MutuallyRecursiveA {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MutuallyRecursiveA_default: MutuallyRecursiveA = MutuallyRecursiveA::default();
-}
+pub static MutuallyRecursiveA_default: std::sync::LazyLock<MutuallyRecursiveA> = std::sync::LazyLock::new(MutuallyRecursiveA::default);
 impl ::pb_jelly::Message for MutuallyRecursiveA {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7271,9 +7195,7 @@ impl ::std::default::Default for MutuallyRecursiveB {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MutuallyRecursiveB_default: MutuallyRecursiveB = MutuallyRecursiveB::default();
-}
+pub static MutuallyRecursiveB_default: std::sync::LazyLock<MutuallyRecursiveB> = std::sync::LazyLock::new(MutuallyRecursiveB::default);
 impl ::pb_jelly::Message for MutuallyRecursiveB {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7355,9 +7277,7 @@ impl ::std::default::Default for MutuallyRecursiveWithRepeatedA {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MutuallyRecursiveWithRepeatedA_default: MutuallyRecursiveWithRepeatedA = MutuallyRecursiveWithRepeatedA::default();
-}
+pub static MutuallyRecursiveWithRepeatedA_default: std::sync::LazyLock<MutuallyRecursiveWithRepeatedA> = std::sync::LazyLock::new(MutuallyRecursiveWithRepeatedA::default);
 impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedA {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7439,9 +7359,7 @@ impl ::std::default::Default for MutuallyRecursiveWithRepeatedB {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MutuallyRecursiveWithRepeatedB_default: MutuallyRecursiveWithRepeatedB = MutuallyRecursiveWithRepeatedB::default();
-}
+pub static MutuallyRecursiveWithRepeatedB_default: std::sync::LazyLock<MutuallyRecursiveWithRepeatedB> = std::sync::LazyLock::new(MutuallyRecursiveWithRepeatedB::default);
 impl ::pb_jelly::Message for MutuallyRecursiveWithRepeatedB {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7521,9 +7439,7 @@ impl ::std::default::Default for MutuallyRecursiveWithBoxedA {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MutuallyRecursiveWithBoxedA_default: MutuallyRecursiveWithBoxedA = MutuallyRecursiveWithBoxedA::default();
-}
+pub static MutuallyRecursiveWithBoxedA_default: std::sync::LazyLock<MutuallyRecursiveWithBoxedA> = std::sync::LazyLock::new(MutuallyRecursiveWithBoxedA::default);
 impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedA {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -7606,9 +7522,7 @@ impl ::std::default::Default for MutuallyRecursiveWithBoxedB {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref MutuallyRecursiveWithBoxedB_default: MutuallyRecursiveWithBoxedB = MutuallyRecursiveWithBoxedB::default();
-}
+pub static MutuallyRecursiveWithBoxedB_default: std::sync::LazyLock<MutuallyRecursiveWithBoxedB> = std::sync::LazyLock::new(MutuallyRecursiveWithBoxedB::default);
 impl ::pb_jelly::Message for MutuallyRecursiveWithBoxedB {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {

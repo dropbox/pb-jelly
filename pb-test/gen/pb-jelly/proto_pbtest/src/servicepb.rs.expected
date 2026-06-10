@@ -10,9 +10,7 @@ impl ::std::default::Default for InpMessage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref InpMessage_default: InpMessage = InpMessage::default();
-}
+pub static InpMessage_default: std::sync::LazyLock<InpMessage> = std::sync::LazyLock::new(InpMessage::default);
 impl ::pb_jelly::Message for InpMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -88,9 +86,7 @@ impl ::std::default::Default for OutMessage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref OutMessage_default: OutMessage = OutMessage::default();
-}
+pub static OutMessage_default: std::sync::LazyLock<OutMessage> = std::sync::LazyLock::new(OutMessage::default);
 impl ::pb_jelly::Message for OutMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
