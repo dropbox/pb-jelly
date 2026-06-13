@@ -189,9 +189,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref Version_default: Version = Version::default();
-        }
+        pub static Version_default: std::sync::LazyLock<Version> = std::sync::LazyLock::new(Version::default);
         impl ::pb_jelly::Message for Version {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -435,9 +433,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref CodeGeneratorRequest_default: CodeGeneratorRequest = CodeGeneratorRequest::default();
-        }
+        pub static CodeGeneratorRequest_default: std::sync::LazyLock<CodeGeneratorRequest> = std::sync::LazyLock::new(CodeGeneratorRequest::default);
         impl ::pb_jelly::Message for CodeGeneratorRequest {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -685,9 +681,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref CodeGeneratorResponse_default: CodeGeneratorResponse = CodeGeneratorResponse::default();
-        }
+        pub static CodeGeneratorResponse_default: std::sync::LazyLock<CodeGeneratorResponse> = std::sync::LazyLock::new(CodeGeneratorResponse::default);
         impl ::pb_jelly::Message for CodeGeneratorResponse {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -964,9 +958,7 @@ pub mod google {
             }
           }
         }
-        ::lazy_static::lazy_static! {
-          pub static ref CodeGeneratorResponse_File_default: CodeGeneratorResponse_File = CodeGeneratorResponse_File::default();
-        }
+        pub static CodeGeneratorResponse_File_default: std::sync::LazyLock<CodeGeneratorResponse_File> = std::sync::LazyLock::new(CodeGeneratorResponse_File::default);
         impl ::pb_jelly::Message for CodeGeneratorResponse_File {
           fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
             Some(::pb_jelly::MessageDescriptor {
@@ -3153,9 +3145,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FileDescriptorSet_default: FileDescriptorSet = FileDescriptorSet::default();
-      }
+      pub static FileDescriptorSet_default: std::sync::LazyLock<FileDescriptorSet> = std::sync::LazyLock::new(FileDescriptorSet::default);
       impl ::pb_jelly::Message for FileDescriptorSet {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -3431,9 +3421,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FileDescriptorProto_default: FileDescriptorProto = FileDescriptorProto::default();
-      }
+      pub static FileDescriptorProto_default: std::sync::LazyLock<FileDescriptorProto> = std::sync::LazyLock::new(FileDescriptorProto::default);
       impl ::pb_jelly::Message for FileDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -3918,9 +3906,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref DescriptorProto_default: DescriptorProto = DescriptorProto::default();
-      }
+      pub static DescriptorProto_default: std::sync::LazyLock<DescriptorProto> = std::sync::LazyLock::new(DescriptorProto::default);
       impl ::pb_jelly::Message for DescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4236,9 +4222,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref DescriptorProto_ExtensionRange_default: DescriptorProto_ExtensionRange = DescriptorProto_ExtensionRange::default();
-      }
+      pub static DescriptorProto_ExtensionRange_default: std::sync::LazyLock<DescriptorProto_ExtensionRange> = std::sync::LazyLock::new(DescriptorProto_ExtensionRange::default);
       impl ::pb_jelly::Message for DescriptorProto_ExtensionRange {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4389,9 +4373,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref DescriptorProto_ReservedRange_default: DescriptorProto_ReservedRange = DescriptorProto_ReservedRange::default();
-      }
+      pub static DescriptorProto_ReservedRange_default: std::sync::LazyLock<DescriptorProto_ReservedRange> = std::sync::LazyLock::new(DescriptorProto_ReservedRange::default);
       impl ::pb_jelly::Message for DescriptorProto_ReservedRange {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4556,9 +4538,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ExtensionRangeOptions_default: ExtensionRangeOptions = ExtensionRangeOptions::default();
-      }
+      pub static ExtensionRangeOptions_default: std::sync::LazyLock<ExtensionRangeOptions> = std::sync::LazyLock::new(ExtensionRangeOptions::default);
       impl ::pb_jelly::Message for ExtensionRangeOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -4786,9 +4766,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ExtensionRangeOptions_Declaration_default: ExtensionRangeOptions_Declaration = ExtensionRangeOptions_Declaration::default();
-      }
+      pub static ExtensionRangeOptions_Declaration_default: std::sync::LazyLock<ExtensionRangeOptions_Declaration> = std::sync::LazyLock::new(ExtensionRangeOptions_Declaration::default);
       impl ::pb_jelly::Message for ExtensionRangeOptions_Declaration {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5136,9 +5114,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldDescriptorProto_default: FieldDescriptorProto = FieldDescriptorProto::default();
-      }
+      pub static FieldDescriptorProto_default: std::sync::LazyLock<FieldDescriptorProto> = std::sync::LazyLock::new(FieldDescriptorProto::default);
       impl ::pb_jelly::Message for FieldDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5467,9 +5443,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref OneofDescriptorProto_default: OneofDescriptorProto = OneofDescriptorProto::default();
-      }
+      pub static OneofDescriptorProto_default: std::sync::LazyLock<OneofDescriptorProto> = std::sync::LazyLock::new(OneofDescriptorProto::default);
       impl ::pb_jelly::Message for OneofDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5647,9 +5621,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumDescriptorProto_default: EnumDescriptorProto = EnumDescriptorProto::default();
-      }
+      pub static EnumDescriptorProto_default: std::sync::LazyLock<EnumDescriptorProto> = std::sync::LazyLock::new(EnumDescriptorProto::default);
       impl ::pb_jelly::Message for EnumDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5847,9 +5819,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumDescriptorProto_EnumReservedRange_default: EnumDescriptorProto_EnumReservedRange = EnumDescriptorProto_EnumReservedRange::default();
-      }
+      pub static EnumDescriptorProto_EnumReservedRange_default: std::sync::LazyLock<EnumDescriptorProto_EnumReservedRange> = std::sync::LazyLock::new(EnumDescriptorProto_EnumReservedRange::default);
       impl ::pb_jelly::Message for EnumDescriptorProto_EnumReservedRange {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -5991,9 +5961,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumValueDescriptorProto_default: EnumValueDescriptorProto = EnumValueDescriptorProto::default();
-      }
+      pub static EnumValueDescriptorProto_default: std::sync::LazyLock<EnumValueDescriptorProto> = std::sync::LazyLock::new(EnumValueDescriptorProto::default);
       impl ::pb_jelly::Message for EnumValueDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -6160,9 +6128,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ServiceDescriptorProto_default: ServiceDescriptorProto = ServiceDescriptorProto::default();
-      }
+      pub static ServiceDescriptorProto_default: std::sync::LazyLock<ServiceDescriptorProto> = std::sync::LazyLock::new(ServiceDescriptorProto::default);
       impl ::pb_jelly::Message for ServiceDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -6369,9 +6335,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref MethodDescriptorProto_default: MethodDescriptorProto = MethodDescriptorProto::default();
-      }
+      pub static MethodDescriptorProto_default: std::sync::LazyLock<MethodDescriptorProto> = std::sync::LazyLock::new(MethodDescriptorProto::default);
       impl ::pb_jelly::Message for MethodDescriptorProto {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -6930,9 +6894,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FileOptions_default: FileOptions = FileOptions::default();
-      }
+      pub static FileOptions_default: std::sync::LazyLock<FileOptions> = std::sync::LazyLock::new(FileOptions::default);
       impl ::pb_jelly::Message for FileOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -7605,9 +7567,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref MessageOptions_default: MessageOptions = MessageOptions::default();
-      }
+      pub static MessageOptions_default: std::sync::LazyLock<MessageOptions> = std::sync::LazyLock::new(MessageOptions::default);
       impl ::pb_jelly::Message for MessageOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8059,9 +8019,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldOptions_default: FieldOptions = FieldOptions::default();
-      }
+      pub static FieldOptions_default: std::sync::LazyLock<FieldOptions> = std::sync::LazyLock::new(FieldOptions::default);
       impl ::pb_jelly::Message for FieldOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8462,9 +8420,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldOptions_EditionDefault_default: FieldOptions_EditionDefault = FieldOptions_EditionDefault::default();
-      }
+      pub static FieldOptions_EditionDefault_default: std::sync::LazyLock<FieldOptions_EditionDefault> = std::sync::LazyLock::new(FieldOptions_EditionDefault::default);
       impl ::pb_jelly::Message for FieldOptions_EditionDefault {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8624,9 +8580,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FieldOptions_FeatureSupport_default: FieldOptions_FeatureSupport = FieldOptions_FeatureSupport::default();
-      }
+      pub static FieldOptions_FeatureSupport_default: std::sync::LazyLock<FieldOptions_FeatureSupport> = std::sync::LazyLock::new(FieldOptions_FeatureSupport::default);
       impl ::pb_jelly::Message for FieldOptions_FeatureSupport {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8804,9 +8758,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref OneofOptions_default: OneofOptions = OneofOptions::default();
-      }
+      pub static OneofOptions_default: std::sync::LazyLock<OneofOptions> = std::sync::LazyLock::new(OneofOptions::default);
       impl ::pb_jelly::Message for OneofOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -8995,9 +8947,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumOptions_default: EnumOptions = EnumOptions::default();
-      }
+      pub static EnumOptions_default: std::sync::LazyLock<EnumOptions> = std::sync::LazyLock::new(EnumOptions::default);
       impl ::pb_jelly::Message for EnumOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9251,9 +9201,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref EnumValueOptions_default: EnumValueOptions = EnumValueOptions::default();
-      }
+      pub static EnumValueOptions_default: std::sync::LazyLock<EnumValueOptions> = std::sync::LazyLock::new(EnumValueOptions::default);
       impl ::pb_jelly::Message for EnumValueOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9483,9 +9431,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref ServiceOptions_default: ServiceOptions = ServiceOptions::default();
-      }
+      pub static ServiceOptions_default: std::sync::LazyLock<ServiceOptions> = std::sync::LazyLock::new(ServiceOptions::default);
       impl ::pb_jelly::Message for ServiceOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9682,9 +9628,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref MethodOptions_default: MethodOptions = MethodOptions::default();
-      }
+      pub static MethodOptions_default: std::sync::LazyLock<MethodOptions> = std::sync::LazyLock::new(MethodOptions::default);
       impl ::pb_jelly::Message for MethodOptions {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -9937,9 +9881,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref UninterpretedOption_default: UninterpretedOption = UninterpretedOption::default();
-      }
+      pub static UninterpretedOption_default: std::sync::LazyLock<UninterpretedOption> = std::sync::LazyLock::new(UninterpretedOption::default);
       impl ::pb_jelly::Message for UninterpretedOption {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10181,9 +10123,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref UninterpretedOption_NamePart_default: UninterpretedOption_NamePart = UninterpretedOption_NamePart::default();
-      }
+      pub static UninterpretedOption_NamePart_default: std::sync::LazyLock<UninterpretedOption_NamePart> = std::sync::LazyLock::new(UninterpretedOption_NamePart::default);
       impl ::pb_jelly::Message for UninterpretedOption_NamePart {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10362,9 +10302,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FeatureSet_default: FeatureSet = FeatureSet::default();
-      }
+      pub static FeatureSet_default: std::sync::LazyLock<FeatureSet> = std::sync::LazyLock::new(FeatureSet::default);
       impl ::pb_jelly::Message for FeatureSet {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10608,9 +10546,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FeatureSetDefaults_default: FeatureSetDefaults = FeatureSetDefaults::default();
-      }
+      pub static FeatureSetDefaults_default: std::sync::LazyLock<FeatureSetDefaults> = std::sync::LazyLock::new(FeatureSetDefaults::default);
       impl ::pb_jelly::Message for FeatureSetDefaults {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10779,9 +10715,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref FeatureSetDefaults_FeatureSetEditionDefault_default: FeatureSetDefaults_FeatureSetEditionDefault = FeatureSetDefaults_FeatureSetEditionDefault::default();
-      }
+      pub static FeatureSetDefaults_FeatureSetEditionDefault_default: std::sync::LazyLock<FeatureSetDefaults_FeatureSetEditionDefault> = std::sync::LazyLock::new(FeatureSetDefaults_FeatureSetEditionDefault::default);
       impl ::pb_jelly::Message for FeatureSetDefaults_FeatureSetEditionDefault {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -10967,9 +10901,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref SourceCodeInfo_default: SourceCodeInfo = SourceCodeInfo::default();
-      }
+      pub static SourceCodeInfo_default: std::sync::LazyLock<SourceCodeInfo> = std::sync::LazyLock::new(SourceCodeInfo::default);
       impl ::pb_jelly::Message for SourceCodeInfo {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -11194,9 +11126,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref SourceCodeInfo_Location_default: SourceCodeInfo_Location = SourceCodeInfo_Location::default();
-      }
+      pub static SourceCodeInfo_Location_default: std::sync::LazyLock<SourceCodeInfo_Location> = std::sync::LazyLock::new(SourceCodeInfo_Location::default);
       impl ::pb_jelly::Message for SourceCodeInfo_Location {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -11409,9 +11339,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref GeneratedCodeInfo_default: GeneratedCodeInfo = GeneratedCodeInfo::default();
-      }
+      pub static GeneratedCodeInfo_default: std::sync::LazyLock<GeneratedCodeInfo> = std::sync::LazyLock::new(GeneratedCodeInfo::default);
       impl ::pb_jelly::Message for GeneratedCodeInfo {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {
@@ -11560,9 +11488,7 @@ pub mod google {
           }
         }
       }
-      ::lazy_static::lazy_static! {
-        pub static ref GeneratedCodeInfo_Annotation_default: GeneratedCodeInfo_Annotation = GeneratedCodeInfo_Annotation::default();
-      }
+      pub static GeneratedCodeInfo_Annotation_default: std::sync::LazyLock<GeneratedCodeInfo_Annotation> = std::sync::LazyLock::new(GeneratedCodeInfo_Annotation::default);
       impl ::pb_jelly::Message for GeneratedCodeInfo_Annotation {
         fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
           Some(::pb_jelly::MessageDescriptor {

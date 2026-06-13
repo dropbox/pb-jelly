@@ -401,9 +401,7 @@ impl ::std::default::Default for Option {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Option_default: Option = Option::default();
-}
+pub static Option_default: std::sync::LazyLock<Option> = std::sync::LazyLock::new(Option::default);
 impl ::pb_jelly::Message for Option {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -460,9 +458,7 @@ impl ::std::default::Default for Vec {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Vec_default: Vec = Vec::default();
-}
+pub static Vec_default: std::sync::LazyLock<Vec> = std::sync::LazyLock::new(Vec::default);
 impl ::pb_jelly::Message for Vec {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -519,9 +515,7 @@ impl ::std::default::Default for Default {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Default_default: Default = Default::default();
-}
+pub static Default_default: std::sync::LazyLock<Default> = std::sync::LazyLock::new(Default::default);
 impl ::pb_jelly::Message for Default {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -578,9 +572,7 @@ impl ::std::default::Default for String {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref String_default: String = String::default();
-}
+pub static String_default: std::sync::LazyLock<String> = std::sync::LazyLock::new(String::default);
 impl ::pb_jelly::Message for String {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -643,9 +635,7 @@ impl ::std::default::Default for Version0OneOfNoneNullable {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version0OneOfNoneNullable_default: Version0OneOfNoneNullable = Version0OneOfNoneNullable::default();
-}
+pub static Version0OneOfNoneNullable_default: std::sync::LazyLock<Version0OneOfNoneNullable> = std::sync::LazyLock::new(Version0OneOfNoneNullable::default);
 impl ::pb_jelly::Message for Version0OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -749,9 +739,7 @@ impl ::std::default::Default for Version1OneOfNoneNullable {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version1OneOfNoneNullable_default: Version1OneOfNoneNullable = Version1OneOfNoneNullable::default();
-}
+pub static Version1OneOfNoneNullable_default: std::sync::LazyLock<Version1OneOfNoneNullable> = std::sync::LazyLock::new(Version1OneOfNoneNullable::default);
 impl ::pb_jelly::Message for Version1OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -896,9 +884,7 @@ impl ::std::default::Default for Version2OneOfNoneNullable {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version2OneOfNoneNullable_default: Version2OneOfNoneNullable = Version2OneOfNoneNullable::default();
-}
+pub static Version2OneOfNoneNullable_default: std::sync::LazyLock<Version2OneOfNoneNullable> = std::sync::LazyLock::new(Version2OneOfNoneNullable::default);
 impl ::pb_jelly::Message for Version2OneOfNoneNullable {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1080,9 +1066,7 @@ impl ::std::default::Default for Version1Enum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version1Enum_default: Version1Enum = Version1Enum::default();
-}
+pub static Version1Enum_default: std::sync::LazyLock<Version1Enum> = std::sync::LazyLock::new(Version1Enum::default);
 impl ::pb_jelly::Message for Version1Enum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1173,9 +1157,7 @@ impl ::std::default::Default for Version2Enum {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version2Enum_default: Version2Enum = Version2Enum::default();
-}
+pub static Version2Enum_default: std::sync::LazyLock<Version2Enum> = std::sync::LazyLock::new(Version2Enum::default);
 impl ::pb_jelly::Message for Version2Enum {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1261,9 +1243,7 @@ impl ::std::default::Default for Version1OneOf {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version1OneOf_default: Version1OneOf = Version1OneOf::default();
-}
+pub static Version1OneOf_default: std::sync::LazyLock<Version1OneOf> = std::sync::LazyLock::new(Version1OneOf::default);
 impl ::pb_jelly::Message for Version1OneOf {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1368,9 +1348,7 @@ impl ::std::default::Default for Version2OneOf {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version2OneOf_default: Version2OneOf = Version2OneOf::default();
-}
+pub static Version2OneOf_default: std::sync::LazyLock<Version2OneOf> = std::sync::LazyLock::new(Version2OneOf::default);
 impl ::pb_jelly::Message for Version2OneOf {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1516,9 +1494,7 @@ impl ::std::default::Default for Version1 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version1_default: Version1 = Version1::default();
-}
+pub static Version1_default: std::sync::LazyLock<Version1> = std::sync::LazyLock::new(Version1::default);
 impl ::pb_jelly::Message for Version1 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -1761,9 +1737,7 @@ impl ::std::default::Default for Version2 {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Version2_default: Version2 = Version2::default();
-}
+pub static Version2_default: std::sync::LazyLock<Version2> = std::sync::LazyLock::new(Version2::default);
 impl ::pb_jelly::Message for Version2 {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -2140,9 +2114,7 @@ impl ::std::default::Default for ForeignMessage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref ForeignMessage_default: ForeignMessage = ForeignMessage::default();
-}
+pub static ForeignMessage_default: std::sync::LazyLock<ForeignMessage> = std::sync::LazyLock::new(ForeignMessage::default);
 impl ::pb_jelly::Message for ForeignMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -2716,9 +2688,7 @@ impl ::std::default::Default for TestMessage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref TestMessage_default: TestMessage = TestMessage::default();
-}
+pub static TestMessage_default: std::sync::LazyLock<TestMessage> = std::sync::LazyLock::new(TestMessage::default);
 impl ::pb_jelly::Message for TestMessage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {

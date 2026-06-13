@@ -23,9 +23,7 @@ impl ::std::default::Default for Msg {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Msg_default: Msg = Msg::default();
-}
+pub static Msg_default: std::sync::LazyLock<Msg> = std::sync::LazyLock::new(Msg::default);
 impl ::pb_jelly::Message for Msg {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -190,9 +188,7 @@ impl ::std::default::Default for FakeMsg {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref FakeMsg_default: FakeMsg = FakeMsg::default();
-}
+pub static FakeMsg_default: std::sync::LazyLock<FakeMsg> = std::sync::LazyLock::new(FakeMsg::default);
 impl ::pb_jelly::Message for FakeMsg {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {

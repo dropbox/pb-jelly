@@ -18,9 +18,7 @@ impl ::std::default::Default for Outer {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Outer_default: Outer = Outer::default();
-}
+pub static Outer_default: std::sync::LazyLock<Outer> = std::sync::LazyLock::new(Outer::default);
 impl ::pb_jelly::Message for Outer {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
@@ -99,9 +97,7 @@ impl ::std::default::Default for Outer_Inner {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref Outer_Inner_default: Outer_Inner = Outer_Inner::default();
-}
+pub static Outer_Inner_default: std::sync::LazyLock<Outer_Inner> = std::sync::LazyLock::new(Outer_Inner::default);
 impl ::pb_jelly::Message for Outer_Inner {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {

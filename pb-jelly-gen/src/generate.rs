@@ -142,7 +142,7 @@ impl GenProtos {
             protoc_cmd.arg(path);
         }
 
-        // If we want to include our `extensions.proto` file for Rust extentions
+        // If we want to include our `extensions.proto` file for Rust extensions
         if self.include_extensions {
             fs::create_dir_all(temp_dir.path().join("rust")).expect("failed to create rust/");
             fs::write(temp_dir.path().join("rust").join("extensions.proto"), EXTENSIONS_PROTO)

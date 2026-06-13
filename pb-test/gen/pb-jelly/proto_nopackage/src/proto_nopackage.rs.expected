@@ -10,9 +10,7 @@ impl ::std::default::Default for NoPackage {
     }
   }
 }
-::lazy_static::lazy_static! {
-  pub static ref NoPackage_default: NoPackage = NoPackage::default();
-}
+pub static NoPackage_default: std::sync::LazyLock<NoPackage> = std::sync::LazyLock::new(NoPackage::default);
 impl ::pb_jelly::Message for NoPackage {
   fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
     Some(::pb_jelly::MessageDescriptor {
