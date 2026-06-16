@@ -1,19 +1,18 @@
 [package]
 name = "pb-jelly"
 description = "A protobuf runtime for the Rust language developed at Dropbox"
-version = "0.0.17"
-authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>", "Parker Timmerman <parkertimmerman@dropbox.com>"]
-edition = "2018"
-license = "Apache-2.0"
-homepage = "https://github.com/dropbox/pb-jelly"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
 repository = "https://github.com/dropbox/pb-jelly/tree/main/pb-jelly"
-readme = "README.md"
-keywords = ["google", "protobuf", "proto", "dropbox"]
-categories = ["encoding", "parsing", "web-programming"]
+keywords.workspace = true
+categories.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-byteorder = "1.4"
-bytes = "1.0"
-compact_str = { version = "0.5", features = ["bytes"] }
+byteorder = { workspace = true }
+bytes = { workspace = true }
+compact_str = { workspace = true }
