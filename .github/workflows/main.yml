@@ -96,7 +96,7 @@ jobs:
           cd pb-test/pb_test_gen
           rustup run nightly cargo run --features=bench_prost,bench_rust_protobuf
           cd ..
-          rustup run nightly cargo bench bench --features=bench_prost,bench_rust_protobuf
+          rustup run nightly cargo bench --features=bench_prost,bench_rust_protobuf
 
   clippy_gen:
     name: clippy gen

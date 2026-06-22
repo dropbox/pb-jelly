@@ -1,4 +1,8 @@
-#[cfg(test)]
+use criterion::{
+    criterion_group,
+    Criterion,
+};
+
 mod benches {
     use std::hint::black_box;
     use std::io::Cursor;
@@ -20,10 +24,10 @@ mod benches {
         VecData,
     };
     use serde::Deserialize;
-    use test::Bencher;
 
-    #[bench]
-    fn bench_deserialize_zero_copy_bytes(b: &mut Bencher) {
+    use super::*;
+
+    fn bench_deserialize_zero_copy_bytes(c: &mut Criterion) {
         // Generate 4MB of data
         let data = Lazy::new(Bytes::from(vec![42 as u8; 4 * 1024 * 1024]));
 
@@ -39,17 +43,18 @@ mod benches {
         // Read our serialized bytes into a Bytes
         let bytes_buf = Bytes::from(ser_bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut de_proto = BytesData::default();
-            de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
-            assert!(de_proto.has_data());
-            de_proto
+        c.bench_function("deserialize_zero_copy_bytes", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut de_proto = BytesData::default();
+                de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
+                assert!(de_proto.has_data());
+                de_proto
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_vec_bytes(b: &mut Bencher) {
+    fn bench_deserialize_vec_bytes(c: &mut Criterion) {
         // Generate 4MB of data
         let data = vec![42 as u8; 4 * 1024 * 1024];
 
@@ -65,17 +70,18 @@ mod benches {
         // Read our serialized bytes into a Bytes
         let bytes_buf = Bytes::from(ser_bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut de_proto = VecData::default();
-            de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
-            assert!(de_proto.has_data());
-            de_proto
+        c.bench_function("deserialize_vec_bytes", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut de_proto = VecData::default();
+                de_proto.deserialize(&mut Cursor::new(bytes_buf.clone())).unwrap();
+                assert!(de_proto.has_data());
+                de_proto
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_string(b: &mut Bencher) {
+    fn bench_deserialize_string(c: &mut Criterion) {
         let data = String::from(include_str!("../data/moby_dick.txt"));
 
         let mut proto = StringMessage::default();
@@ -84,16 +90,17 @@ mod benches {
         let bytes: Vec<u8> = proto.serialize_to_vec();
         let bytes = Bytes::from(bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut de_proto = StringMessage::default();
-            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
-            black_box(de_proto)
+        c.bench_function("deserialize_string", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut de_proto = StringMessage::default();
+                de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+                black_box(de_proto)
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_string_sso(b: &mut Bencher) {
+    fn bench_deserialize_string_sso(c: &mut Criterion) {
         let data = CompactString::from(include_str!("../data/moby_dick.txt"));
 
         let mut proto = StringMessageSSO::default();
@@ -102,16 +109,17 @@ mod benches {
         let bytes: Vec<u8> = proto.serialize_to_vec();
         let bytes = Bytes::from(bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut de_proto = StringMessageSSO::default();
-            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
-            black_box(de_proto)
+        c.bench_function("deserialize_string_sso", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut de_proto = StringMessageSSO::default();
+                de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+                black_box(de_proto)
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_small_string(b: &mut Bencher) {
+    fn bench_deserialize_small_string(c: &mut Criterion) {
         let data = String::from("IMG_1234.png");
 
         let mut proto = StringMessage::default();
@@ -120,16 +128,17 @@ mod benches {
         let bytes: Vec<u8> = proto.serialize_to_vec();
         let bytes = Bytes::from(bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut de_proto = StringMessage::default();
-            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
-            black_box(de_proto)
+        c.bench_function("deserialize_small_string", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut de_proto = StringMessage::default();
+                de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+                black_box(de_proto)
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_small_string_sso(b: &mut Bencher) {
+    fn bench_deserialize_small_string_sso(c: &mut Criterion) {
         let data = CompactString::from("IMG_1234.png");
 
         let mut proto = StringMessageSSO::default();
@@ -138,11 +147,13 @@ mod benches {
         let bytes: Vec<u8> = proto.serialize_to_vec();
         let bytes = Bytes::from(bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut de_proto = StringMessageSSO::default();
-            de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
-            black_box(de_proto)
+        c.bench_function("deserialize_small_string_sso", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut de_proto = StringMessageSSO::default();
+                de_proto.deserialize(&mut Cursor::new(bytes.clone())).unwrap();
+                black_box(de_proto)
+            })
         });
     }
 
@@ -157,8 +168,7 @@ mod benches {
         state: CompactString,
     }
 
-    #[bench]
-    fn bench_deserialize_many_strings(b: &mut Bencher) {
+    fn bench_deserialize_many_strings(c: &mut Criterion) {
         let json = String::from(include_str!("../data/cities.json"));
         let json_cities: Vec<JsonCity> = serde_json::from_str(&json).expect("failed to parse cities.json");
 
@@ -178,15 +188,16 @@ mod benches {
 
         let bytes = proto.serialize_to_vec();
 
-        b.iter(|| {
-            // Deserialize our proto
-            let de_proto: Cities = Message::deserialize_from_slice(&bytes[..]).unwrap();
-            black_box(de_proto)
+        c.bench_function("deserialize_many_strings", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let de_proto: Cities = Message::deserialize_from_slice(&bytes[..]).unwrap();
+                black_box(de_proto)
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_many_strings_sso(b: &mut Bencher) {
+    fn bench_deserialize_many_strings_sso(c: &mut Criterion) {
         let json = String::from(include_str!("../data/cities.json"));
         let json_cities: Vec<JsonCity> = serde_json::from_str(&json).expect("failed to parse cities.json");
 
@@ -206,26 +217,42 @@ mod benches {
 
         let bytes = proto.serialize_to_vec();
 
-        b.iter(|| {
-            // Deserialize our proto
-            let de_proto: CitiesSSO = Message::deserialize_from_slice(&bytes[..]).unwrap();
-            black_box(de_proto)
+        c.bench_function("deserialize_many_strings_sso", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let de_proto: CitiesSSO = Message::deserialize_from_slice(&bytes[..]).unwrap();
+                black_box(de_proto)
+            })
         });
+    }
+
+    criterion_group! {
+        name = group;
+        config = Criterion::default();
+        targets =
+        bench_deserialize_zero_copy_bytes,
+        bench_deserialize_vec_bytes,
+        bench_deserialize_string,
+        bench_deserialize_string_sso,
+        bench_deserialize_small_string,
+        bench_deserialize_small_string_sso,
+        bench_deserialize_many_strings,
+        bench_deserialize_many_strings_sso
     }
 }
 
-#[cfg(all(test, feature = "bench_prost"))]
+#[cfg(feature = "bench_prost")]
 mod prost {
-    use prost::bytes::Bytes;
-    use prost::Message;
-    use test::Bencher;
+    use ::prost::bytes::Bytes;
+    use ::prost::Message;
+
+    use super::*;
 
     mod gen {
         include!(concat!(env!("CARGO_MANIFEST_DIR"), "/gen/prost/pbtest.rs"));
     }
 
-    #[bench]
-    fn bench_deserialize_prost_bytes(b: &mut Bencher) {
+    fn bench_deserialize_prost_bytes(c: &mut Criterion) {
         // Generate 4MB of data
         let data = vec![42 as u8; 4 * 1024 * 1024];
 
@@ -243,15 +270,16 @@ mod prost {
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let de_proto = gen::BytesData::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
-            assert!(de_proto.data.is_some());
+        c.bench_function("deserialize_prost_bytes", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let de_proto = gen::BytesData::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
+                assert!(de_proto.data.is_some());
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_prost_string(b: &mut Bencher) {
+    fn bench_deserialize_prost_string(c: &mut Criterion) {
         let data = String::from(include_str!("../data/moby_dick.txt"));
 
         // Create our proto struct
@@ -268,30 +296,39 @@ mod prost {
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let de_proto = gen::StringMessage::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
-            assert!(de_proto.data.is_some());
+        c.bench_function("deserialize_prost_string", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let de_proto = gen::StringMessage::decode(bytes_buf.clone()).expect("failed to decode PROST proto!");
+                assert!(de_proto.data.is_some());
+            })
         });
+    }
+
+    criterion_group! {
+        name = group;
+        config = Criterion::default();
+        targets =
+        bench_deserialize_prost_bytes,
+        bench_deserialize_prost_string,
     }
 }
 
-#[cfg(all(test, feature = "bench_rust_protobuf"))]
+#[cfg(feature = "bench_rust_protobuf")]
 mod rust_protobuf {
     use bytes::Bytes;
+    use pb_test::gen::rust_protobuf::bench::{
+        BytesData,
+        StringMessage,
+    };
     use protobuf::{
         CodedInputStream,
         Message,
     };
-    use test::Bencher;
 
-    use crate::gen::rust_protobuf::bench::{
-        BytesData,
-        StringMessage,
-    };
+    use super::*;
 
-    #[bench]
-    fn bench_deserialize_rust_protobuf_bytes(b: &mut Bencher) {
+    fn bench_deserialize_rust_protobuf_bytes(c: &mut Criterion) {
         // Generate 4MB of data
         let data = Bytes::from(vec![42 as u8; 4 * 1024 * 1024]);
 
@@ -311,19 +348,20 @@ mod rust_protobuf {
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut input_stream = CodedInputStream::from_tokio_bytes(&bytes_buf);
-            let mut de_proto = BytesData::default();
-            de_proto
-                .merge_from(&mut input_stream)
-                .expect("failed to decode rust_protobuf proto!");
-            assert!(de_proto.has_data());
+        c.bench_function("deserialize_rust_protobuf_bytes", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut input_stream = CodedInputStream::from_tokio_bytes(&bytes_buf);
+                let mut de_proto = BytesData::default();
+                de_proto
+                    .merge_from(&mut input_stream)
+                    .expect("failed to decode rust_protobuf proto!");
+                assert!(de_proto.has_data());
+            })
         });
     }
 
-    #[bench]
-    fn bench_deserialize_rust_protobuf_string(b: &mut Bencher) {
+    fn bench_deserialize_rust_protobuf_string(c: &mut Criterion) {
         let data = String::from(include_str!("../data/moby_dick.txt"));
 
         // Create our proto struct
@@ -342,14 +380,34 @@ mod rust_protobuf {
         // Read our serialized bytes into a Bytes struct, this implements bytes::Buf
         let bytes_buf = Bytes::from(ser_bytes);
 
-        b.iter(|| {
-            // Deserialize our proto
-            let mut input_stream = CodedInputStream::from_tokio_bytes(&bytes_buf);
-            let mut de_proto = StringMessage::default();
-            de_proto
-                .merge_from(&mut input_stream)
-                .expect("failed to decode rust_protobuf proto!");
-            assert!(de_proto.has_data());
+        c.bench_function("deserialize_rust_protobuf_string", |b| {
+            b.iter(|| {
+                // Deserialize our proto
+                let mut input_stream = CodedInputStream::from_tokio_bytes(&bytes_buf);
+                let mut de_proto = StringMessage::default();
+                de_proto
+                    .merge_from(&mut input_stream)
+                    .expect("failed to decode rust_protobuf proto!");
+                assert!(de_proto.has_data());
+            })
         });
     }
+
+    criterion_group! {
+        name = group;
+        config = Criterion::default();
+        targets =
+        bench_deserialize_rust_protobuf_bytes,
+        bench_deserialize_rust_protobuf_string,
+    }
+}
+
+fn main() {
+    benches::group();
+    #[cfg(feature = "bench_prost")]
+    prost::group();
+    #[cfg(feature = "bench_rust_protobuf")]
+    rust_protobuf::group();
+
+    Criterion::default().configure_from_args().final_summary();
 }
