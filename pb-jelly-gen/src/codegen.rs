@@ -2564,7 +2564,7 @@ impl<'a> Context<'a> {
             }
 
             let mut versions: IndexMap<&str, String> = IndexMap::new();
-            versions.insert("pb-jelly", "version = \"0.0.17\"".to_string());
+            versions.insert("pb-jelly", "version = \"0.0.18\"".to_string());
             versions.insert("serde", "version = \"1.0\"".to_string());
             versions.insert("serde_derive", "version = \"1.0\"".to_string());
             versions.insert("bytes", "version = \"1.0\"".to_string());

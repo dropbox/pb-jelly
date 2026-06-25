@@ -1,6 +1,14 @@
 # Unreleased
 ... everything has been released!
 
+# 0.0.18
+### June 24, 2026
+* Fix codegen panic on messages containing nested `extend` blocks (#181)
+* Update `pb-jelly-gen` to use `std::sync::LazyLock` (#182)
+* Add Cargo workspace configuration to centralize dependency management (#183)
+* Rename `examples_gen` package from `pb-test/pb_test_gen` (#184)
+* Add crates.io publish workflow (#185)
+
 # 0.0.17
 ### Nov 20, 2024
 * Add read-only support for proto2 extension fields (#163, #170)
