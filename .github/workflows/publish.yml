@@ -33,9 +33,6 @@ jobs:
       - name: Dry run pb-jelly
         run: cargo +stable publish -p pb-jelly --dry-run
 
-      - name: Dry run pb-jelly-gen
-        run: cargo +stable publish -p pb-jelly-gen --dry-run
-
       - name: Authenticate with crates.io
         id: auth
         uses: rust-lang/crates-io-auth-action@v1
@@ -47,6 +44,11 @@ jobs:
 
       - name: Wait for crates.io index
         run: sleep 60
+
+      - name: Dry run pb-jelly-gen
+        run: cargo +stable publish -p pb-jelly-gen --dry-run
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
       - name: Publish pb-jelly-gen
         run: cargo +stable publish -p pb-jelly-gen
