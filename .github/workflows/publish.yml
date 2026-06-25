@@ -5,6 +5,10 @@ on:
     types: [published]
   workflow_dispatch:
 
+concurrency:
+  group: crates-publish
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
@@ -12,6 +16,7 @@ jobs:
   publish:
     name: Publish to crates.io
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment: crates-io-publish
 
     permissions:
@@ -41,7 +46,7 @@ jobs:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
       - name: Wait for crates.io index
-        run: sleep 30
+        run: sleep 60
 
       - name: Publish pb-jelly-gen
         run: cargo +stable publish -p pb-jelly-gen
