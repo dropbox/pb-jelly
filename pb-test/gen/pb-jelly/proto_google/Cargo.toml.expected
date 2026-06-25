@@ -5,4 +5,4 @@ version = "0.0.1"
 edition = "2018"
 
 [dependencies]
-pb-jelly = { version = "0.0.17" }
+pb-jelly = { version = "0.0.18" }

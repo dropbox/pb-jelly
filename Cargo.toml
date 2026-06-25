@@ -10,7 +10,7 @@ exclude = [
 ]
 
 [workspace.package]
-version = "0.0.17"
+version = "0.0.18"
 edition = "2018"
 repository = "https://github.com/dropbox/pb-jelly"
 authors = ["Rajat Goel <rajat@dropbox.com>", "Nipunn Koorapati <nipunn@dropbox.com>", "Parker Timmerman <parkertimmerman@dropbox.com>"]
@@ -26,6 +26,6 @@ bytes = "1.0"
 compact_str = { version = "0.5", features = ["bytes", "serde"] }
 tempfile = "3.1.0"
 walkdir = "2.3.1"
-pb-jelly = { path = "pb-jelly", version = "0.0.17" }
+pb-jelly = { path = "pb-jelly", version = "0.0.18" }
 indexmap = "2.0.2"
 
